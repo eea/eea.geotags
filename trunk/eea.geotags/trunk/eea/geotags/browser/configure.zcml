@@ -1,0 +1,41 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="eea.geotags">
+
+  <browser:page
+    for="zope.interface.Interface"
+    name="eea.geotags.dialog"
+    template="template/dialog.pt"
+    class=".app.dialog.Dialog"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="zope.interface.Interface"
+    name="eea.geotags.sidebar"
+    template="template/sidebar.pt"
+    class=".app.sidebar.Sidebar"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="zope.interface.Interface"
+    name="eea.geotags.basket"
+    template="template/basket.pt"
+    class=".app.basket.Basket"
+    permission="zope2.View"
+    />
+
+<browser:page
+    for="zope.interface.Interface"
+    name="eea.geotags.json"
+    class=".app.json.JSON"
+    permission="zope2.View"
+    />
+
+  <browser:resourceDirectory
+    name="geo-images"
+    directory="./images" />
+
+</configure>
