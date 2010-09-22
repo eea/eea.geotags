@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:tal="http://xml.zope.org/namespaces/tal"
+  xmlns:metal="http://xml.zope.org/namespaces/metal"
+  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+  i18n:domain="eea.geotags">
+
+  <head><title></title></head>
+
+  <body>
+
+  <metal:view_macro define-macro="view">
+    View location
+  </metal:view_macro>
+
+  <div metal:define-macro="location" tal:define="
+    dialog python:widget.dialog;
+    sidebar python:widget.sidebar;
+    basket python:widget.basket;
+    json python:widget.json;">
+    <div tal:define="label python:widget and widget.Label(here) or ''"
+    tal:attributes="
+      id fieldName;
+      title string:Edit $label"></div>
+    <input type="button" name="edit" i18n:attributes="value" value="Edit"
+    tal:attributes="id string:$fieldName-edit" />
+    <script type="text/javascript" tal:content="string:
+      (function(){
+        var name = '$fieldName';
+        var basket = '$basket';
+        var sidebar = '$sidebar';
+        var dialog = '$dialog';
+        var json = '$json';
+        var settings = {
+          template: dialog,
+          sidebar: {
+            json: json,
+            template: sidebar,
+            fieldName: name
+          },
+          map: {
+            json: json
+          },
+          basket: {
+            json: json,
+            template: basket
+          }
+        };
+
+        var geo = jQuery('#' + name).geodialog(settings);
+        jQuery('#' + name + '-edit').click(function(){
+          geo.dialog('open');
+        });
+      })();
+    "></script>
+  </div>
+
+  <metal:edit_macro define-macro="edit">
+    <metal:use use-macro="field_macro | here/widgets/field/macros/edit">
+      <metal:fill fill-slot="widget_body">
+        <metal:use use-macro="here/eea.geotags/macros/location" />
+      </metal:fill>
+    </metal:use>
+  </metal:edit_macro>
+
+  <metal:search_macro define-macro="search">
+    <div metal:use-macro="here/eea.geotags/macros/edit"></div>
+  </metal:search_macro>
+
+</body>
+</html>

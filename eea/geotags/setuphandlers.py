@@ -1,0 +1,47 @@
+import logging
+from Products.CMFCore.utils import getToolByName
+from eea.geotags.vocabularies.data.groups import VOC
+from Products.ATVocabularyManager.utils.vocabs import createHierarchicalVocabs
+
+logger = logging.getLogger('eea.geotags')
+
+def importVocabularies(site):
+    """ Import groups vocabulary
+    """
+    # AT Vocabulary Manager
+    qtool = getToolByName(site, 'portal_quickinstaller')
+    installed = [package['id'] for package in qtool.listInstalledProducts()]
+    if not set(['Products.ATVocabularyManager',
+                'ATVocabularyManager']).intersection(installed):
+        qtool.installProduct('Products.ATVocabularyManager')
+
+    atvm = getToolByName(site, 'portal_vocabularies', None)
+    createHierarchicalVocabs(atvm, VOC)
+
+def importVarious(self):
+    if self.readDataFile('eea.geotags.txt') is None:
+        return
+
+    site = self.getSite()
+
+    setup_tool = getToolByName(site, 'portal_setup')
+
+    # jQuery
+    setup_tool.setImportContext('profile-eea.jquery:01-jquery')
+    setup_tool.runAllImportSteps()
+
+    # jQuery UI
+    setup_tool.setImportContext('profile-eea.jquery:02-ui')
+    setup_tool.runAllImportSteps()
+
+    # jQuery Splitter
+    setup_tool.setImportContext('profile-eea.jquery:13-splitter')
+    setup_tool.runAllImportSteps()
+
+    # plone 2/3 compatibility (SKINS DIR)
+    setup_tool.setImportContext('profile-eea.geotags:02-skins')
+    setup_tool.runAllImportSteps()
+    setup_tool.setImportContext('profile-eea.geotags:01-default')
+
+    # Import vocabularies
+    importVocabularies(site)
