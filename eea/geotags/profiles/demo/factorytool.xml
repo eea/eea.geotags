@@ -2,5 +2,6 @@
 <object name="portal_factory">
  <factorytypes>
   <type portal_type="EEAGeotagsDemo"/>
+  <type portal_type="EEAGeotagsSimpleDemo"/>
  </factorytypes>
 </object>

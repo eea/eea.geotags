@@ -6,6 +6,7 @@
   <include file="profiles.zcml" />
 
   <include package=".browser" />
+  <include package=".storage" />
   <include package=".vocabularies" />
   <include package=".json" />
   <include package=".cache" />
