@@ -81,7 +81,8 @@ jQuery.fn.geodialog = function(settings){
   var self = this;
   self.initialized = false;
   self.events = {
-    initialize: 'geo-dialog-initialize'
+    initialize: 'geo-dialog-initialize',
+    save: 'geo-dialog-save'
   };
 
   self.options = {
@@ -101,13 +102,18 @@ jQuery.fn.geodialog = function(settings){
     },
 
     map: {
-      json: ''
+      json: '',
+      fieldName: self.attr('id')
     },
 
     basket: {
       json: '',
       template: '',
-      fieldName: self.attr('id')
+      fieldName: self.attr('id'),
+      geojson: {
+        type: 'FeatureCollection',
+        features: []
+      }
     },
 
     // Handlers
@@ -212,6 +218,13 @@ jQuery.fn.geodialog = function(settings){
       jQuery('a', self.rightbutton).click();
     },
 
+    handle_save: function(data){
+      var fieldName = self.attr('id');
+      var json = self.basket.options.geojson;
+      json = JSON.stringify(json);
+      jQuery('[name=' + fieldName + ']').text(json);
+    },
+
     initialize: function(){
       self.dialog({
         bgiframe: true,
@@ -223,6 +236,7 @@ jQuery.fn.geodialog = function(settings){
         resize: false,
         buttons: {
           'Done': function(){
+            self.trigger(self.events.save);
             self.dialog('close');
           },
           'Cancel': function(){
@@ -241,7 +255,11 @@ jQuery.fn.geodialog = function(settings){
         self.options.handle_initialize(data);
       });
 
-      jQuery(document).bind(jQuery.geoevents.map_loaded, function(data){
+      self.bind(self.events.save, function(evt, data){
+        self.options.handle_save(data);
+      });
+
+      jQuery(self).bind(jQuery.geoevents.map_loaded, function(data){
         self.options.handle_map_loaded(data);
       });
     }
@@ -262,6 +280,7 @@ jQuery.fn.geomap = function(settings){
 
   self.options = {
     json: '',
+    fieldName: '',
     map_options : {
       latitude: 55,
       longitude: 35,
@@ -299,6 +318,7 @@ jQuery.fn.geomap = function(settings){
 
       // Marker
       jQuery.geomarker({
+        fieldName: self.options.fieldName,
         map: self.Map,
         points: [data],
         center: data.properties.center
@@ -308,6 +328,7 @@ jQuery.fn.geomap = function(settings){
     handle_rightclick: function(data, center){
       // Markers
       jQuery.geomarker({
+        fieldName: self.options.fieldName,
         map: self.Map,
         points: data.features,
         center: center
@@ -329,7 +350,8 @@ jQuery.fn.geomap = function(settings){
       self.Geocoder = new google.maps.Geocoder();
 
       // Handle events
-      jQuery(document).bind(jQuery.geoevents.select_point, function(evt, data){
+      var context = jQuery('#' + self.options.fieldName);
+      jQuery(context).bind(jQuery.geoevents.select_point, function(evt, data){
         data.target.effect('transfer', {to: self}, 'slow', function(){
           self.options.handle_select(data.point);
         });
@@ -341,7 +363,7 @@ jQuery.fn.geomap = function(settings){
           return;
         }
         self.initialized = true;
-        jQuery(document).trigger(jQuery.geoevents.map_loaded);
+        jQuery(context).trigger(jQuery.geoevents.map_loaded);
       });
 
       // Right click
@@ -351,12 +373,13 @@ jQuery.fn.geomap = function(settings){
 
         // Empty marker to clear map
         jQuery.geomarker({
+          fieldName: self.options.fieldName,
           map: self.Map,
           center: center,
           points: []
         });
 
-        jQuery(document).trigger(jQuery.geoevents.ajax_start);
+        jQuery(context).trigger(jQuery.geoevents.ajax_start);
         self.Geocoder.geocode({location: latlng}, function(results){
           var features = [];
           jQuery.each(results, function(){
@@ -369,7 +392,7 @@ jQuery.fn.geomap = function(settings){
           };
 
           self.options.handle_rightclick(results, center);
-          jQuery(document).trigger(jQuery.geoevents.ajax_stop);
+          jQuery(context).trigger(jQuery.geoevents.ajax_stop);
         });
       });
     }
@@ -388,6 +411,7 @@ jQuery.geomarker = function(settings){
   var self = this;
 
   self.options = {
+    fieldName: '',
     template: '<div class="geo-marker">' +
                 '<h3 class="title"></h3>' +
                 '<h4 class="subtitle"></h4>' +
@@ -437,6 +461,7 @@ jQuery.geomarker = function(settings){
         template.append(itemplate);
       });
 
+      var context = jQuery('#' + self.options.fieldName);
       if(self.options.points.length){
         // Add info window
         self.info = new google.maps.InfoWindow({
@@ -447,7 +472,7 @@ jQuery.geomarker = function(settings){
         google.maps.event.addListener(self.info, 'domready', function(){
           jQuery('.geo-marker').click(function(){
             var _self = jQuery(this);
-            jQuery(document).trigger(jQuery.geoevents.select_marker, {
+            jQuery(context).trigger(jQuery.geoevents.select_marker, {
               point: self.mappoints[_self.attr('id')],
               button: _self
             });
@@ -487,6 +512,7 @@ jQuery.fn.geobasket = function(settings){
     json: '',
     template: '',
     fieldName: '',
+    multiline: 1,
     geojson: {
       type: 'FeatureCollection',
       features: []
@@ -497,21 +523,22 @@ jQuery.fn.geobasket = function(settings){
       query.fieldName = self.options.fieldName;
       jQuery.get(self.options.template, query, function(data){
         self.html(data);
+        self.options.redraw(false);
       });
 
-      jQuery(document).bind(jQuery.geoevents.select_marker, function(evt, data){
+      var context = jQuery('#' + self.options.fieldName);
+      jQuery(context).bind(jQuery.geoevents.select_marker, function(evt, data){
         data.button.effect('transfer', {to: self}, 'slow', function(){
           self.options.handle_select(data.point);
         });
       });
 
-      jQuery(document).bind(jQuery.geoevents.basket_delete, function(evt, data){
+      jQuery(context).bind(jQuery.geoevents.basket_delete, function(evt, data){
         data.element.slideUp(function(){
           jQuery(this).remove();
           self.options.handle_delete(data.point);
         });
       });
-      self.options.redraw(false);
     },
 
     handle_delete: function(point){
@@ -528,7 +555,11 @@ jQuery.fn.geobasket = function(settings){
     },
 
     handle_select: function(point){
-      self.options.handle_delete(point);
+      if(!self.options.multiline){
+        self.options.geojson.features = [];
+      }else{
+        self.options.handle_delete(point);
+      }
       self.options.geojson.features.unshift(point);
       self.options.redraw(true);
     },
@@ -536,10 +567,14 @@ jQuery.fn.geobasket = function(settings){
     redraw: function(highlight){
       var items = jQuery('.geo-basket-items', self);
       items.empty();
+
       jQuery.each(self.options.geojson.features, function(){
         var div = jQuery('<div>');
         items.append(div);
-        div.geobasketitem({point: this});
+        div.geobasketitem({
+          fieldName: self.options.fieldName,
+          point: this
+        });
       });
       if(highlight){
         var first = jQuery('.geo-point-view:first', items);
@@ -564,6 +599,7 @@ jQuery.fn.geobasket = function(settings){
 jQuery.fn.geobasketitem = function(settings){
   var self = this;
   self.options = {
+    fieldName: '',
     template: '<div>' +
                 '<h3 class="title"></h3>' +
                 '<h4 class="subtitle"></h4>' +
@@ -581,8 +617,9 @@ jQuery.fn.geobasketitem = function(settings){
         .attr('title', 'Delete');
       self.prepend(self.delbutton);
 
+      var context = jQuery('#' + self.options.fieldName);
       self.delbutton.click(function(){
-        jQuery(document).trigger(jQuery.geoevents.basket_delete, {
+        jQuery(context).trigger(jQuery.geoevents.basket_delete, {
           point: self.options.point,
           element: self
         });
@@ -634,12 +671,15 @@ jQuery.fn.geosidebar = function(settings){
 
         self.loading = jQuery('<div>');
         self.sidebararea.append(self.loading);
-        self.loading.geoloader();
+        self.loading.geoloader({
+          fieldName: self.options.fieldName
+        });
 
         self.append(self.sidebararea);
 
         var options = self.options.tabs;
         options.json = self.options.json;
+        options.fieldName = self.options.fieldName;
         self.sidebararea.geotabs(options);
       });
     }
@@ -659,24 +699,27 @@ jQuery.fn.geoloader = function(settings){
   self.working = 0;
 
   self.options = {
+    fieldName: '',
+
     initialize: function(){
       self.addClass('geo-loading');
       self.hide();
 
+      var context = jQuery('#' + self.options.fieldName);
       self.ajaxStart(function(){
-        jQuery(document).trigger(jQuery.geoevents.ajax_start);
+        jQuery(context).trigger(jQuery.geoevents.ajax_start);
       });
 
       self.ajaxStop(function(){
-        jQuery(document).trigger(jQuery.geoevents.ajax_stop);
+        jQuery(context).trigger(jQuery.geoevents.ajax_stop);
 
       });
 
-      jQuery(document).bind(jQuery.geoevents.ajax_start, function(){
+      jQuery(context).bind(jQuery.geoevents.ajax_start, function(){
         self.show();
       });
 
-      jQuery(document).bind(jQuery.geoevents.ajax_stop, function(){
+      jQuery(context).bind(jQuery.geoevents.ajax_stop, function(){
         self.hide();
       });
     },
@@ -721,10 +764,12 @@ jQuery.fn.geotabs = function(settings){
       self.tabs();
       var options = self.options.search;
       options.json = self.options.json;
+      options.fieldName = self.options.fieldName;
       jQuery('.geo-results', self).geosearchtab(options);
 
       options = self.options.advanced;
       options.json = self.options.json;
+      options.fieldName = self.options.fieldName;
       jQuery('.geo-advanced', self).geoadvancedtab(options);
 
     }
@@ -745,6 +790,7 @@ jQuery.fn.geosearchtab = function(settings){
   // Default settings
   self.options = {
     // Settings
+    fieldName: '',
     json: '',
     query: {
       address: ''
@@ -762,7 +808,8 @@ jQuery.fn.geosearchtab = function(settings){
       self.options.query.address = value;
       var query = self.options.query;
 
-      jQuery(document).trigger(jQuery.geoevents.ajax_start);
+      var context = jQuery('#' + self.options.fieldName);
+      jQuery(context).trigger(jQuery.geoevents.ajax_start);
       self.Geocoder.geocode(query, function(data){
         var features = [];
         jQuery.each(data, function(){
@@ -775,7 +822,7 @@ jQuery.fn.geosearchtab = function(settings){
         };
 
         self.options.handle_query(data);
-        jQuery(document).trigger(jQuery.geoevents.ajax_stop);
+        jQuery(context).trigger(jQuery.geoevents.ajax_stop);
       });
     },
 
@@ -793,7 +840,10 @@ jQuery.fn.geosearchtab = function(settings){
 
       jQuery.each(self.results.features, function(){
         var div = jQuery('<div>');
-        div.geopointview({point: this});
+        div.geopointview({
+          fieldName: self.options.fieldName,
+          point: this
+        });
         self.resultsarea.append(div);
       });
     },
@@ -828,6 +878,7 @@ jQuery.fn.geosearchtab = function(settings){
 jQuery.fn.geopointview = function(settings){
   var self = this;
   self.options = {
+    fieldName: '',
     template: '<div>' +
                 '<h3 class="title"></h3>' +
                 '<h4 class="subtitle"></h4>' +
@@ -857,8 +908,10 @@ jQuery.fn.geopointview = function(settings){
       jQuery('.tags', template).text(tags);
 
       self.append(template);
+
+      var context = jQuery('#' + self.options.fieldName);
       self.click(function(){
-        jQuery(document).trigger(jQuery.geoevents.select_point, {
+        jQuery(context).trigger(jQuery.geoevents.select_point, {
           point: self.options.point,
           target: self
         });
@@ -880,6 +933,7 @@ jQuery.fn.geopointview = function(settings){
 jQuery.fn.geoadvancedtab = function(settings){
   var self = this;
   self.options = {
+    fieldName: '',
     json: '',
 
     // Methods
@@ -935,13 +989,14 @@ jQuery.fn.geoadvancedtab = function(settings){
         region: country.data('geojson').properties.country
       };
 
+      var context = jQuery('#' + self.options.fieldName);
       self.Geocoder.geocode(query, function(data){
         if(!data.length){
           return;
         }
 
         data = jQuery.google2geojson(data[0]);
-        jQuery(document).trigger(jQuery.geoevents.select_point, {
+        jQuery(context).trigger(jQuery.geoevents.select_point, {
           point: data,
           target: self.countries
         });
@@ -998,6 +1053,7 @@ jQuery.fn.geoadvancedtab = function(settings){
         region: nut.data('geojson').properties.country
       };
 
+      var context = jQuery('#' + self.options.fieldName);
       // Center map
       self.Geocoder.geocode(query, function(data){
         if(!data.length){
@@ -1005,7 +1061,7 @@ jQuery.fn.geoadvancedtab = function(settings){
         }
 
         data = jQuery.google2geojson(data[0]);
-        jQuery(document).trigger(jQuery.geoevents.select_point, {
+        jQuery(context).trigger(jQuery.geoevents.select_point, {
           point: data,
           target: self.nuts
         });
@@ -1068,13 +1124,14 @@ jQuery.fn.geoadvancedtab = function(settings){
         region: city.data('geojson').properties.country
       };
 
+      var context = jQuery('#' + self.options.fieldName);
       self.Geocoder.geocode(query, function(data){
         if(!data.length){
           return;
         }
 
         data = jQuery.google2geojson(data[0]);
-        jQuery(document).trigger(jQuery.geoevents.select_point, {
+        jQuery(context).trigger(jQuery.geoevents.select_point, {
           point: data,
           target: self.cities
         });
@@ -1094,13 +1151,14 @@ jQuery.fn.geoadvancedtab = function(settings){
         region: natural.data('geojson').properties.country
       };
 
+      var context = jQuery('#' + self.options.fieldName);
       self.Geocoder.geocode(query, function(data){
         if(!data.length){
           return;
         }
 
         data = jQuery.google2geojson(data[0]);
-        jQuery(document).trigger(jQuery.geoevents.select_point, {
+        jQuery(context).trigger(jQuery.geoevents.select_point, {
           point: data,
           target: self.naturalfeatures
         });

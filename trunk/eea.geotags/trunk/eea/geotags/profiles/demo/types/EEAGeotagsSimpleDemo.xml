@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
-<object name="EEAGeotagsDemo"
+<object name="EEAGeotagsSimpleDemo"
    meta_type="Factory-based Type Information with dynamic views"
    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
- <property name="title">EEA Geotags Multiple Locations Demo</property>
+ <property name="title">EEA Geotags Single Location Demo</property>
  <property
     name="description"></property>
  <property name="content_icon">document_icon.gif</property>
- <property name="content_meta_type">EEAGeotagsDemo</property>
+ <property name="content_meta_type">EEAGeotagsSimpleDemo</property>
  <property name="product">eea.geotags</property>
- <property name="factory">addEEAGeotagsDemo</property>
+ <property name="factory">addEEAGeotagsSimpleDemo</property>
  <property name="immediate_view">folder_summary_view</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>

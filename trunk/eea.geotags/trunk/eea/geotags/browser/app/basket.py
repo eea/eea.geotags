@@ -1,4 +1,3 @@
-from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 
 class Basket(BrowserView):

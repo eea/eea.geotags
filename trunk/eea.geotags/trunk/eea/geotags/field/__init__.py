@@ -1,8 +1,14 @@
 from Products.Archetypes.Registry import registerField
-from location import GeotagsField
+from location import GeotagsStringField, GeotagsLinesField
 
 registerField(
-    GeotagsField,
-    title="Geotags Field",
-    description=("Geotags field.")
+    GeotagsStringField,
+    title="Geotags String Field",
+    description=("Geotags string field.")
+)
+
+registerField(
+    GeotagsLinesField,
+    title="Geotags Lines Field",
+    description=("Geotags lines field.")
 )

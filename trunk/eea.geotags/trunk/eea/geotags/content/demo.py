@@ -2,18 +2,35 @@
 
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content.folder import ATFolder
-from eea.geotags.field import GeotagsField
-from eea.geotags.widget import GeotagsWidget
+from eea.geotags import field
+from eea.geotags import widget
 
-SCHEMA = ATFolder.schema.copy() + atapi.Schema((
-    GeotagsField('location',
+SIMPLE_SCHEMA = ATFolder.schema.copy() + atapi.Schema((
+    field.GeotagsStringField('location',
         schemata='default',
-        widget=GeotagsWidget(
+        widget=widget.GeotagsWidget(
             label='Location',
-            description='Geographical location'
+            description='Single geographical location'
         )
     ),
 ))
+
+SCHEMA = ATFolder.schema.copy() + atapi.Schema((
+    field.GeotagsLinesField('location',
+        schemata='default',
+        widget=widget.GeotagsWidget(
+            label='Location',
+            description="Multiple geo tags"
+        )
+    ),
+))
+
+class EEAGeotagsSimpleDemo(ATFolder):
+    """ Demo from EEA Geotags Widget
+    """
+    archetypes_name = meta_type = portal_type = 'EEATagsSimpleDemo'
+    _at_rename_after_creation = True
+    schema = SIMPLE_SCHEMA
 
 class EEAGeotagsDemo(ATFolder):
     """ Demo from EEA Geotags Widget
