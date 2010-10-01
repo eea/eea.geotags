@@ -44,7 +44,7 @@ class GeoNamesJsonProvider(object):
                     'name': '',
                     'title': '',
                     'description': '',
-                    'tags': '',
+                    'tags': ["countries_group"],
                     'center': [],
                     'country': '',
                     'adminCode1': '',
@@ -56,6 +56,12 @@ class GeoNamesJsonProvider(object):
             feature['geometry']['type'] = 'Polygon'
             feature['properties']['name'] = term.value
             feature['properties']['title'] = term.title
+
+            # Description
+            countries = queryAdapter(self.context, IGeoCountries)
+            feature['properties']['description'] = term.title + ', ' + ', '.join((
+                country.title for country in countries(term.value)))
+
             json['features'].append(feature)
         return json
 
@@ -76,6 +82,15 @@ class GeoNamesJsonProvider(object):
             features = json['features']
             json['features'] = [feature for feature in features
                                 if feature['properties']['name'] in filters]
+
+        # Fix country title
+        for feature in json['features']:
+            title = feature.get('properties', {}).get(
+                'other', {}).get(
+                    'countryName', '')
+            if title:
+                feature['properties']['title'] = title
+
         return json
 
     def nuts(self, **kwargs):
@@ -106,6 +121,7 @@ class GeoNamesJsonProvider(object):
 
         query = kwargs.copy()
         query.setdefault('lang', 'en')
+
         query = urllib.urlencode(query, doseq=1)
         try:
             conn = urllib2.urlopen(WEBSERVICE, query)
