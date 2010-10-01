@@ -305,16 +305,20 @@ jQuery.fn.geomap = function(settings){
         return;
       }
 
-      var lat = data.bbox[0];
-      var lng = data.bbox[1];
-      var sw = new google.maps.LatLng(lat, lng);
+      if(data.bbox.length){
+        var lat = data.bbox[0];
+        var lng = data.bbox[1];
+        var sw = new google.maps.LatLng(lat, lng);
 
-      lat = data.bbox[2];
-      lng = data.bbox[3];
-      var ne = new google.maps.LatLng(lat, lng);
+        lat = data.bbox[2];
+        lng = data.bbox[3];
+        var ne = new google.maps.LatLng(lat, lng);
 
-      var viewport = new google.maps.LatLngBounds(sw, ne);
-      self.Map.fitBounds(viewport);
+        var viewport = new google.maps.LatLngBounds(sw, ne);
+        self.Map.fitBounds(viewport);
+      }else{
+        self.Map.setZoom(4);
+      }
 
       // Marker
       jQuery.geomarker({
@@ -952,18 +956,45 @@ jQuery.fn.geoadvancedtab = function(settings){
         return;
       }
 
+      var value_json = {};
+      jQuery.each(self.data.features, function(){
+        if(this.properties.name == value){
+          value_json = this;
+          return false;
+        }
+      });
+
+      var context = jQuery('#' + self.options.fieldName);
+
+      // Get countries
       jQuery.getJSON(self.options.json, {
         type: 'countries', group: value}, function(data){
         self.countries.empty();
         var option = jQuery('<option>').val('').text('');
         self.countries.append(option);
-        jQuery.each(data.features, function(){
+
+        jQuery.each(data.features, function(index){
+          // Center map on second country in group
+          if(index === 1){
+            value_json.properties.center = this.properties.center;
+            jQuery(context).trigger(jQuery.geoevents.select_point, {
+              point: value_json,
+              target: self.groups
+            });
+          }
+          // Add countries to datamodel
+          if(value_json.properties.countries == null){
+            value_json.properties.countries = [];
+          }
+          value_json.properties.countries.push(this.properties.title);
+
           option = jQuery('<option>')
             .val(this.properties.name)
             .text(this.properties.title)
             .data('geojson', this);
           self.countries.append(option);
         });
+
         self.countries.parent().show();
       });
     },
