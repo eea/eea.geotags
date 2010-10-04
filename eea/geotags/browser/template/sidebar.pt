@@ -2,7 +2,7 @@
   fieldName python:view.fieldName">
   <ul>
     <li><a tal:attributes="href string:#$fieldName-geo-results" i18n:translate="">Search</a></li>
-    <li><a tal:attributes="href string:#$fieldName-geo-advanced" i18n:translate="">Country & NUTS</a></li>
+    <li><a tal:attributes="href string:#$fieldName-geo-advanced" i18n:translate="">Country/regions drill down</a></li>
   </ul>
 
   <!-- Free search -->
@@ -25,7 +25,7 @@
     </div>
   </div>
 
-  <!-- Advanced search -->
+  <!-- Advanced drill down -->
   <div tal:attributes="id string:$fieldName-geo-advanced" class="geo-advanced">
     <div class="field">
       <label tal:attributes="for string:$fieldName-groups"
