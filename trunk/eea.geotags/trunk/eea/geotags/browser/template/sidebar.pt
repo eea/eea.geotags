@@ -2,8 +2,7 @@
   fieldName python:view.fieldName">
   <ul>
     <li><a tal:attributes="href string:#$fieldName-geo-results" i18n:translate="">Search</a></li>
-    <li><a tal:attributes="href string:#$fieldName-geo-advanced" i18n:translate="">Advanced</a></li>
-    <li><a tal:attributes="href string:#$fieldName-geo-suggestions" i18n:translate="">Suggestions</a></li>
+    <li><a tal:attributes="href string:#$fieldName-geo-advanced" i18n:translate="">Country & NUTS</a></li>
   </ul>
 
   <!-- Free search -->
@@ -65,8 +64,4 @@
     </div>
   </div>
 
-  <!-- Auto discovered locations -->
-  <div tal:attributes="id string:$fieldName-geo-suggestions">
-    <div class="geo-suggestions" i18n:translate="">There are no suggestions for this document</div>
-  </div>
 </div>

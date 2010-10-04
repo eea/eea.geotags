@@ -96,8 +96,7 @@ jQuery.fn.geodialog = function(settings){
       fieldName: self.attr('id'),
       tabs: {
         search: {},
-        advanced: {},
-        suggestions: {}
+        advanced: {}
       }
     },
 
@@ -662,8 +661,7 @@ jQuery.fn.geosidebar = function(settings){
     fieldName: '',
     tabs: {
       search: {},
-      advanced: {},
-      suggestions: {}
+      advanced: {}
     },
 
     // Methods
@@ -761,7 +759,6 @@ jQuery.fn.geotabs = function(settings){
     fieldName: '',
     search: {},
     advanced: {},
-    suggestions: {},
 
     // Methods
     initialize: function(){
@@ -857,7 +854,7 @@ jQuery.fn.geosearchtab = function(settings){
       self.searchform = jQuery('form', self);
       self.searchbutton = jQuery('input[type=submit]', self.searchform);
       self.searchtext = jQuery('input[type=text]', self.searchform);
-      self.resultsarea = jQuery('div', self);
+      self.resultsarea = jQuery('.geo-results-area', self);
 
       self.Geocoder = new google.maps.Geocoder();
 
@@ -983,7 +980,7 @@ jQuery.fn.geoadvancedtab = function(settings){
             });
           }
           // Add countries to datamodel
-          if(value_json.properties.countries == null){
+          if(value_json.properties.countries === undefined){
             value_json.properties.countries = [];
           }
           value_json.properties.countries.push(this.properties.title);
