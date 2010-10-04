@@ -28,6 +28,13 @@
   <!-- Advanced drill down -->
   <div tal:attributes="id string:$fieldName-geo-advanced" class="geo-advanced">
     <div class="field">
+      <label tal:attributes="for string:$fieldName-biogroups"
+        i18n:translate="">Biogeographical region</label>
+      <div class="formHelp" i18n:translate="">Select biogeographical region</div>
+      <select name="biogroups" tal:attributes="id string:$fieldName-biogroups">
+      </select>
+    </div>
+    <div class="field">
       <label tal:attributes="for string:$fieldName-groups"
         i18n:translate="">Countries group</label>
       <div class="formHelp" i18n:translate="">Select countries group</div>

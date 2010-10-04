@@ -11,6 +11,10 @@ class IJsonProvider(Interface):
         """ Country groups (e.g continents)
         """
 
+    def biogroups(**kwargs):
+        """ Biogeographical regions
+        """
+
     def countries(group=None, continentCode='EU', **kwargs):
         """ Countries in group and continent
         """

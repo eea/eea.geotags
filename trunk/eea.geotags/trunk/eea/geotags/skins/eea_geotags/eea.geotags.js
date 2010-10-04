@@ -938,6 +938,28 @@ jQuery.fn.geoadvancedtab = function(settings){
     json: '',
 
     // Methods
+    handle_biogroups_change: function(){
+      var value = self.biogroups.val();
+
+      if(!value){
+        return;
+      }
+
+      var value_json = {};
+      jQuery.each(self.biogroups.geojson.features, function(){
+        if(this.properties.name == value){
+          value_json = this;
+          return false;
+        }
+      });
+
+      var context = jQuery('#' + self.options.fieldName);
+      jQuery(context).trigger(jQuery.geoevents.select_point, {
+        point: value_json,
+        target: self.biogroups
+      });
+    },
+
     handle_groups_change_reset: function(){
       self.countries.empty().parent().hide();
       self.nuts.empty().parent().hide();
@@ -1195,6 +1217,7 @@ jQuery.fn.geoadvancedtab = function(settings){
 
     // Initialize
     initialize: function(){
+      self.biogroups = jQuery('select[name=biogroups]', self);
       self.groups = jQuery('select[name=groups]', self);
       self.countries = jQuery('select[name=countries]', self);
       self.nuts = jQuery('select[name=nuts]', self);
@@ -1210,7 +1233,21 @@ jQuery.fn.geoadvancedtab = function(settings){
       self.cities.parent().hide();
       self.naturalfeatures.parent().hide();
 
-      // Fill
+      // Fill biogeographical regions
+      jQuery.getJSON(self.options.json, {type: 'biogroups'}, function(data){
+        self.biogroups.empty();
+        var option = jQuery('<option>').val('').text('');
+        self.biogroups.append(option);
+        jQuery.each(data.features, function(){
+          self.biogroups.geojson = data;
+          option = jQuery('<option>')
+            .val(this.properties.name)
+            .text(this.properties.title);
+          self.biogroups.append(option);
+        });
+      });
+
+      // Fill groups
       jQuery.getJSON(self.options.json, {type: 'groups'}, function(data){
         self.data = data;
         self.groups.empty();
@@ -1225,6 +1262,10 @@ jQuery.fn.geoadvancedtab = function(settings){
       });
 
       // Events
+      self.biogroups.change(function(){
+        self.options.handle_biogroups_change();
+      });
+
       self.groups.change(function(){
         self.options.handle_groups_change();
       });
