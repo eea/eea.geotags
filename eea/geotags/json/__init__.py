@@ -7,9 +7,10 @@ import operator
 from zope.component import queryAdapter
 from zope.interface import implements
 
-from eea.geotags.config import WEBSERVICE
+from eea.geotags.config import WEBSERVICE, BIO_COORDS
 
 from eea.geotags.interfaces import IGeoGroups
+from eea.geotags.interfaces import IBioGroups
 from eea.geotags.interfaces import IGeoCountries
 from interfaces import IJsonProvider
 
@@ -37,7 +38,7 @@ class GeoNamesJsonProvider(object):
                 'type': 'Feature',
                 'bbox': [],
                 'geometry': {
-                    'type': 'Point',
+                    'type': 'Polygon',
                     'coordinates': [],
                     },
                 'properties': {
@@ -53,7 +54,6 @@ class GeoNamesJsonProvider(object):
                 }
             }
 
-            feature['geometry']['type'] = 'Polygon'
             feature['properties']['name'] = term.value
             feature['properties']['title'] = term.title
 
@@ -61,6 +61,46 @@ class GeoNamesJsonProvider(object):
             countries = queryAdapter(self.context, IGeoCountries)
             feature['properties']['description'] = term.title + ', ' + ', '.join((
                 country.title for country in countries(term.value)))
+
+            json['features'].append(feature)
+        return json
+
+    def biogroups(self, **kwargs):
+        voc = queryAdapter(self.context, IBioGroups)
+        json = {
+            'type': 'FeatureCollection',
+            'features': []
+        }
+        json['features'] = []
+
+        terms = [term for term in voc()]
+        terms.sort(key=operator.attrgetter('title'))
+
+        for term in terms:
+            feature = {
+                'type': 'Feature',
+                'bbox': [],
+                'geometry': {
+                    'type': 'Polygon',
+                    'coordinates': [],
+                    },
+                'properties': {
+                    'name': '',
+                    'title': '',
+                    'description': '',
+                    'tags': ["biogeographical_region"],
+                    'center': [],
+                    'country': '',
+                    'adminCode1': '',
+                    'adminName1': '',
+                    'other': {}
+                }
+            }
+
+            feature['properties']['name'] = term.value
+            feature['properties']['title'] = term.title
+            feature['properties']['description'] = term.title
+            feature['properties']['center'] = BIO_COORDS.get(term.value, [])
 
             json['features'].append(feature)
         return json

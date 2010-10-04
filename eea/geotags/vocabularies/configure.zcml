@@ -9,6 +9,11 @@
 
   <adapter
     for="zope.interface.Interface"
+    factory=".biogroups.BioGroups"
+    />
+
+  <adapter
+    for="zope.interface.Interface"
     factory=".countries.Countries"
     />
 

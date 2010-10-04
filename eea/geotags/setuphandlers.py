@@ -1,6 +1,7 @@
 import logging
 from Products.CMFCore.utils import getToolByName
 from eea.geotags.vocabularies.data.groups import VOC
+from eea.geotags.vocabularies.data.biogroups import VOC as BIOVOC
 from Products.ATVocabularyManager.utils.vocabs import createHierarchicalVocabs
 
 logger = logging.getLogger('eea.geotags')
@@ -17,6 +18,7 @@ def importVocabularies(site):
 
     atvm = getToolByName(site, 'portal_vocabularies', None)
     createHierarchicalVocabs(atvm, VOC)
+    createHierarchicalVocabs(atvm, BIOVOC)
 
 def importVarious(self):
     if self.readDataFile('eea.geotags.txt') is None:

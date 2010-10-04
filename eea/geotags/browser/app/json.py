@@ -22,6 +22,8 @@ class JSON(BrowserView):
         json = kwargs.pop('type', 'search')
         if json == 'groups':
             res = service.groups(**kwargs)
+        elif json == 'biogroups':
+            res = service.biogroups(**kwargs)
         elif json == 'countries':
             res = service.countries(**kwargs)
         elif json == 'nuts':

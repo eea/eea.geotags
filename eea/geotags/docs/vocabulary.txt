@@ -15,6 +15,17 @@ Returns a SimpleVocabulary instance with Contry Groups
     >>> values
     ['efta4', 'eu15', 'eu25', 'eu27']
 
+eea.geotags.interfaces.IBioGroups
+---------------------------------
+Returns a SimpleVocabulary instance with Biogeographical regions
+
+    >>> from zope.component import queryAdapter
+    >>> from eea.geotags.interfaces import IBioGroups
+    >>> voc = queryAdapter(folder, IBioGroups)
+    >>> values = [term.value for term in voc()]
+    >>> values.sort()
+    >>> values
+    ['alpine', 'atlantic', 'black sea', 'boreal', 'continental', 'macaronesia', 'mediterranean', 'pannonian', 'steppic']
 
 eea.geotags.interfaces.IGeoCountries
 ------------------------------------

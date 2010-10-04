@@ -12,6 +12,16 @@ class IGeoGroups(Interface):
         Returns a SimpleVocabulary instance of geo groups
         """
 
+class IBioGroups(Interface):
+    """
+    Provide an adapter for this interface in order to
+    get Biogeographical regions
+    """
+    def __call__():
+        """
+        Returns a SimpleVocabulary instance of biogeographical regions
+        """
+
 class IGeoCountries(Interface):
     """
     Provide an adapter for this in order to get geotags countries for a
