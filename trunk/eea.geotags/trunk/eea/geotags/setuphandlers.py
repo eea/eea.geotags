@@ -20,6 +20,15 @@ def importVocabularies(site):
     createHierarchicalVocabs(atvm, VOC)
     createHierarchicalVocabs(atvm, BIOVOC)
 
+def setupAlchemy(site):
+    """ Add alchemyapi properties
+    """
+    ptool = getToolByName(site, 'portal_properties')
+    if 'alchemyapi' not in ptool.objectIds():
+        ptool.addPropertySheet(id='alchemyapi', title='Alcehmy API')
+        alchemy = getattr(ptool, 'alchemyapi')
+        alchemy.manage_addProperty('key', '', 'string')
+
 def importVarious(self):
     if self.readDataFile('eea.geotags.txt') is None:
         return
@@ -47,3 +56,6 @@ def importVarious(self):
 
     # Import vocabularies
     importVocabularies(site)
+
+    # Setup alchemy API
+    setupAlchemy(site)

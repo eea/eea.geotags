@@ -93,6 +93,7 @@ jQuery.fn.geodialog = function(settings){
     sidebar: {
       json: '',
       template: '',
+      suggestions: '',
       fieldName: self.attr('id'),
       tabs: {
         search: {},
@@ -658,6 +659,7 @@ jQuery.fn.geosidebar = function(settings){
   self.options = {
     json: '',
     template: '',
+    suggestions: '',
     fieldName: '',
     tabs: {
       search: {},
@@ -682,6 +684,7 @@ jQuery.fn.geosidebar = function(settings){
         var options = self.options.tabs;
         options.json = self.options.json;
         options.fieldName = self.options.fieldName;
+        options.suggestions = self.options.suggestions;
         self.sidebararea.geotabs(options);
       });
     }
@@ -757,6 +760,7 @@ jQuery.fn.geotabs = function(settings){
   self.options = {
     json: '',
     fieldName: '',
+    suggestions: '',
     search: {},
     advanced: {},
 
@@ -766,6 +770,7 @@ jQuery.fn.geotabs = function(settings){
       var options = self.options.search;
       options.json = self.options.json;
       options.fieldName = self.options.fieldName;
+      options.suggestions = self.options.suggestions;
       jQuery('.geo-results', self).geosearchtab(options);
 
       options = self.options.advanced;
@@ -793,8 +798,41 @@ jQuery.fn.geosearchtab = function(settings){
     // Settings
     fieldName: '',
     json: '',
+    suggestions: '',
     query: {
       address: ''
+    },
+
+    handle_suggestions: function(data){
+      var suggestions = data.suggestions;
+
+      if(!suggestions.length){
+        return;
+      }
+
+      var htitle = jQuery('<h5>').text('Suggestions').addClass('geo-suggestions');
+      self.resultsarea.append(htitle);
+
+      var context = jQuery('#' + self.options.fieldName);
+
+      jQuery.each(suggestions, function(){
+        self.options.query.address = this.text;
+        jQuery(context).trigger(jQuery.geoevents.ajax_start);
+        self.Geocoder.geocode(self.options.query, function(data){
+          var features = [];
+          jQuery.each(data, function(){
+            features.push(jQuery.google2geojson(this));
+          });
+
+          var geojson = {
+            type: 'FeatureCollection',
+            features: features
+          };
+
+          self.options.handle_query(geojson, false);
+          jQuery(context).trigger(jQuery.geoevents.ajax_stop);
+        });
+      });
     },
 
     // Handlers
@@ -822,21 +860,23 @@ jQuery.fn.geosearchtab = function(settings){
           features: features
         };
 
-        self.options.handle_query(data);
+        self.options.handle_query(data, true);
         jQuery(context).trigger(jQuery.geoevents.ajax_stop);
       });
     },
 
-    handle_query: function(data){
+    handle_query: function(data, reset){
       self.results = data;
-      self.resultsarea.empty();
+      if(reset){
+        self.resultsarea.empty();
 
-      if(!self.results.features.length){
-        var div = jQuery('<div>').addClass('geo-hints');
-        div.text('We could not find a match for this location anywhere. ' +
-        'Please check your spelling or try looking for a different location.');
-        self.resultsarea.append(div);
-        return;
+        if(!self.results.features.length){
+          var div = jQuery('<div>').addClass('geo-hints');
+          div.text('We could not find a match for this location anywhere. ' +
+          'Please check your spelling or try looking for a different location.');
+          self.resultsarea.append(div);
+          return;
+        }
       }
 
       jQuery.each(self.results.features, function(){
@@ -857,6 +897,13 @@ jQuery.fn.geosearchtab = function(settings){
       self.resultsarea = jQuery('.geo-results-area', self);
 
       self.Geocoder = new google.maps.Geocoder();
+
+      // Handle suggestions
+      if(self.options.suggestions.length){
+        jQuery.getJSON(self.options.suggestions, {}, function(data){
+          self.options.handle_suggestions(data);
+        });
+      }
 
       self.searchform.submit(function(){
         self.options.handle_submit();

@@ -12,4 +12,5 @@ class GeotagsWidget(StringWidget):
         'sidebar': '@@eea.geotags.sidebar',
         'basket': '@@eea.geotags.basket',
         'json': '@@eea.geotags.json',
+        'suggestions': '@@eea.geotags.suggestions',
     })

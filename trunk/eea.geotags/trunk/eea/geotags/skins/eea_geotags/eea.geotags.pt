@@ -17,6 +17,7 @@
     sidebar python:widget.sidebar;
     basket python:widget.basket;
     json python:widget.json;
+    suggestions python:widget.suggestions;
     multiline python:field.multiline and 1 or 0;
     geojson python:field.getJSON(here)">
     <div tal:define="label python:widget and widget.Label(here) or ''"
@@ -35,12 +36,14 @@
         var dialog = '$dialog';
         var json = '$json';
         var multiline = $multiline;
+        var suggestions = '$suggestions';
 
         var settings = {
           template: dialog,
           sidebar: {
             json: json,
             template: sidebar,
+            suggestions: suggestions,
             fieldName: name
           },
           map: {

@@ -13,7 +13,7 @@
     />
 
   <adapter
-    for="Products.Archetypes.interfaces.IBaseContent"
+    for="eea.geotags.interfaces.IGeoTaggable"
     provides=".interfaces.IGeoTags"
     factory=".storage.GeoTags" />
 

@@ -157,8 +157,6 @@ class GeoNamesJsonProvider(object):
             'features': []
         }
 
-        template['features'] = []
-
         query = kwargs.copy()
         query.setdefault('lang', 'en')
 

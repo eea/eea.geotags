@@ -4,7 +4,7 @@
   i18n_domain="eea.geotags">
 
   <browser:page
-    for="zope.interface.Interface"
+    for="eea.geotags.interfaces.IGeoTaggable"
     name="eea.geotags.dialog"
     template="template/dialog.pt"
     class=".app.dialog.Dialog"
@@ -12,7 +12,7 @@
     />
 
   <browser:page
-    for="zope.interface.Interface"
+    for="eea.geotags.interfaces.IGeoTaggable"
     name="eea.geotags.sidebar"
     template="template/sidebar.pt"
     class=".app.sidebar.Sidebar"
@@ -20,17 +20,24 @@
     />
 
   <browser:page
-    for="zope.interface.Interface"
+    for="eea.geotags.interfaces.IGeoTaggable"
     name="eea.geotags.basket"
     template="template/basket.pt"
     class=".app.basket.Basket"
     permission="zope2.View"
     />
 
-<browser:page
-    for="zope.interface.Interface"
+  <browser:page
+    for="eea.geotags.interfaces.IGeoTaggable"
     name="eea.geotags.json"
     class=".app.json.JSON"
+    permission="zope2.View"
+    />
+
+  <browser:page
+    for="eea.geotags.interfaces.IGeoTaggable"
+    name="eea.geotags.suggestions"
+    class=".app.suggestions.View"
     permission="zope2.View"
     />
 
