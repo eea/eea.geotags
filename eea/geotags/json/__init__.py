@@ -7,8 +7,9 @@ import operator
 from zope.component import queryAdapter
 from zope.interface import implements
 
-from eea.geotags.config import WEBSERVICE, BIO_COORDS
+from Products.CMFCore.utils import getToolByName
 
+from eea.geotags.config import WEBSERVICE
 from eea.geotags.interfaces import IGeoGroups
 from eea.geotags.interfaces import IBioGroups
 from eea.geotags.interfaces import IGeoCountries
@@ -76,6 +77,9 @@ class GeoNamesJsonProvider(object):
         terms = [term for term in voc()]
         terms.sort(key=operator.attrgetter('title'))
 
+        atvm = getToolByName(self.context, 'portal_vocabularies')
+        avoc = atvm['biotags']
+
         for term in terms:
             feature = {
                 'type': 'Feature',
@@ -100,7 +104,16 @@ class GeoNamesJsonProvider(object):
             feature['properties']['name'] = term.value
             feature['properties']['title'] = term.title
             feature['properties']['description'] = term.title
-            feature['properties']['center'] = BIO_COORDS.get(term.value, [])
+
+            try:
+                latitude = float(avoc[term.value]['latitude'].title)
+                longitude = float(avoc[term.value]['longitude'].title)
+            except Exception, err:
+                logger.exception(err)
+                # Fallback to center of Europe
+                latitude = 55
+                longitude = 35
+            feature['properties']['center'] = [latitude, longitude]
 
             json['features'].append(feature)
         return json

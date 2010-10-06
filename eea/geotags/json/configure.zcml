@@ -3,7 +3,7 @@
   i18n_domain="eea.geotags">
 
   <adapter
-    for="zope.interface.Interface"
+    for="eea.geotags.interfaces.IGeoTaggable"
     provides=".interfaces.IJsonProvider"
     factory="..json.GeoNamesJsonProvider"
     />
