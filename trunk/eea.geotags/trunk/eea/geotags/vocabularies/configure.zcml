@@ -3,17 +3,17 @@
   i18n_domain="eea.geotags">
 
   <adapter
-    for="zope.interface.Interface"
+    for="eea.geotags.interfaces.IGeoTaggable"
     factory=".groups.Groups"
     />
 
   <adapter
-    for="zope.interface.Interface"
+    for="eea.geotags.interfaces.IGeoTaggable"
     factory=".biogroups.BioGroups"
     />
 
   <adapter
-    for="zope.interface.Interface"
+    for="eea.geotags.interfaces.IGeoTaggable"
     factory=".countries.Countries"
     />
 

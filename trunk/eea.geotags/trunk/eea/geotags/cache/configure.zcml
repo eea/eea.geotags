@@ -4,7 +4,7 @@
 
   <browser:page
     name="eea.geotags.cache.invalidate"
-    for="zope.interface.Interface"
+    for="eea.geotags.interfaces.IGeoTaggable"
     class=".browser.InvalidateCache"
     permission="cmf.ModifyPortalContent"
     />
