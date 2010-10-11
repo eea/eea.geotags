@@ -7,7 +7,7 @@ from eea.geotags import widget
 
 SIMPLE_SCHEMA = ATFolder.schema.copy() + atapi.Schema((
     field.GeotagsStringField('location',
-        schemata='default',
+        schemata='geographical coverage',
         widget=widget.GeotagsWidget(
             label='Location',
             description='Single geographical location'
@@ -17,7 +17,7 @@ SIMPLE_SCHEMA = ATFolder.schema.copy() + atapi.Schema((
 
 SCHEMA = ATFolder.schema.copy() + atapi.Schema((
     field.GeotagsLinesField('location',
-        schemata='default',
+        schemata='geographical coverage',
         widget=widget.GeotagsWidget(
             label='Location',
             description="Multiple geo tags"

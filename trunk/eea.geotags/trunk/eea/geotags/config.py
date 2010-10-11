@@ -5,4 +5,4 @@ ADD_CONTENT_PERMISSION = "Add portal content"
 
 # See http://geonames.org
 WEBSERVICE = 'http://ws.geonames.org/searchJSON'
-ANNO_TAGS = 'geotags'
+ANNO_TAGS = 'eea.geotags.tags'

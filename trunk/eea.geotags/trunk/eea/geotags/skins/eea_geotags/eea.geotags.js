@@ -13,6 +13,7 @@ jQuery.geoevents = {
   select_marker: 'geo-event-select-marker',
   map_loaded: 'geo-events-map-loaded',
   basket_delete: 'geo-events-basket-delete',
+  basket_save: 'geo-events-basket-save',
   ajax_start: 'geo-events-ajax-start',
   ajax_stop: 'geo-events-ajax-stop'
 };
@@ -221,6 +222,8 @@ jQuery.fn.geodialog = function(settings){
     handle_save: function(data){
       var fieldName = self.attr('id');
       var json = self.basket.options.geojson;
+      self.trigger(jQuery.geoevents.basket_save, {json: json});
+
       json = JSON.stringify(json);
       jQuery('[name=' + fieldName + ']').text(json);
     },
@@ -1332,6 +1335,115 @@ jQuery.fn.geoadvancedtab = function(settings){
       self.naturalfeatures.change(function(){
         self.options.handle_naturalfeatures_change();
       });
+    }
+  };
+
+  if(settings){
+    jQuery.extend(self.options, settings);
+  }
+
+  // Return
+  self.options.initialize();
+  return this;
+};
+
+jQuery.fn.geopreview = function(settings){
+  var self = this;
+  self.options = {
+    json: {},
+    fieldName: '',
+    template: '<div><div class="geo-preview-marker">' +
+                '<h3 class="title"></h3>' +
+                '<h4 class="subtitle"></h4>' +
+                '<h5 class="tags"></h5>' +
+              '</div></div>',
+    map_options : {
+      latitude: 55,
+      longitude: 35,
+      center: null,
+      zoom: 3,
+      navigationControl: true,
+      navigationControlOptions: {
+        style: google.maps.NavigationControlStyle.ZOOM_PAN,
+        position: google.maps.ControlPosition.RIGHT
+      },
+      mapTypeControl: true,
+      mapTypeControlOptions: {
+        position: google.maps.ControlPosition.TOP_RIGHT,
+        style: google.maps.MapTypeControlStyle.DEFAULT
+      },
+      mapTypeId: google.maps.MapTypeId.TERRAIN
+    },
+
+    handle_points: function(json){
+      self.options.handle_cleanup();
+      if(!json.features){
+        return;
+      }
+
+      jQuery.each(json.features, function(){
+        var center = this.properties.center;
+        var latlng = new google.maps.LatLng(center[0], center[1]);
+        var marker = new google.maps.Marker({
+          position: latlng
+        });
+        marker.setMap(self.Map);
+        self.markers.push(marker);
+
+        var title = this.properties.title;
+        var subtitle = this.properties.description;
+        var tags = '';
+        jQuery.each(this.properties.tags, function(){
+          tags += this + ', ';
+        });
+        var itemplate = jQuery(self.options.template);
+        jQuery('.title', itemplate).text(title);
+        jQuery('.subtitle', itemplate).text(subtitle);
+        jQuery('.tags', itemplate).text(tags);
+
+        // Google event handlers
+        google.maps.event.addListener(marker, 'click', function() {
+          self.info.setContent(itemplate.html());
+          self.info.open(self.Map, marker);
+        });
+      });
+    },
+
+    handle_cleanup: function(){
+     jQuery.each(self.markers, function(){
+        this.setMap(null);
+      });
+      self.markers.length = 0;
+
+      if(self.info){
+        self.info.close();
+      }
+    },
+
+    initialize: function(){
+      self.markers = [];
+      self.info = new google.maps.InfoWindow({
+        content: ''
+      });
+
+      self.addClass('geo-preview-mapcanvas');
+      var options = self.options.map_options;
+      if(!options.latlng){
+        options.center = new google.maps.LatLng(
+          options.latitude,
+          options.longitude
+        );
+      }
+
+      self.Map = new google.maps.Map(self[0], options);
+      self.Geocoder = new google.maps.Geocoder();
+
+      self.options.handle_points(self.options.json);
+      var context = jQuery('#' + self.options.fieldName);
+      context.bind(jQuery.geoevents.basket_save, function(evt, data){
+        self.options.handle_points(data.json);
+      });
+
     }
   };
 
