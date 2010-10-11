@@ -183,6 +183,11 @@
   border: 1px solid #8CACBB;
 }
 
+.geo-preview-mapcanvas {
+  height: 400px;
+  border: 1px solid #8CACBB;
+}
+
 .geo-marker {
   padding-bottom: 1em;
   border: 1px dotted #ffffff;
@@ -224,6 +229,35 @@
 }
 
 .geo-marker h3, .geo-marker h4 {
+  margin: 0px;
+}
+
+.geo-preview-marker {
+  padding-bottom: 1em;
+  border: 1px dotted #ffffff;
+  cursor: pointer;
+}
+
+.geo-preview-marker .title {
+  color: #578308;
+  cursor: pointer;
+  font-size: 115%;
+  font-weight: normal;
+}
+
+.geo-preview-marker .subtitle {
+  color: #495B6B;
+  font-size: 95%;
+  font-weight: normal;
+}
+
+.geo-preview-marker .tags {
+  color: #95B229;
+  font-size: 85%;
+  font-weight: normal;
+}
+
+.geo-preview-marker h3, .geo-preview-marker h4 {
   margin: 0px;
 }
 

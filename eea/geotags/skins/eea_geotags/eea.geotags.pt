@@ -26,6 +26,7 @@
       title string:Edit $label"></div>
     <textarea tal:attributes="name fieldName" style="display: none" rows="10"
       tal:content="geojson"></textarea>
+    <div tal:attributes="id string:$fieldName-geopreview"></div>
     <input type="button" name="edit" i18n:attributes="value" value="Edit"
     tal:attributes="id string:$fieldName-edit" />
     <script type="text/javascript" tal:content="string:
@@ -63,9 +64,20 @@
           settings.basket.geojson = geojson;
         }
 
-        var geo = jQuery('#' + name).geodialog(settings);
-        jQuery('#' + name + '-edit').click(function(){
-          geo.dialog('open');
+        // Initialize popup
+        jQuery(document).ready(function(){
+          var geo = jQuery('#' + name).geodialog(settings);
+          jQuery('#' + name + '-edit').click(function(){
+            geo.dialog('open');
+          });
+        });
+
+        // Display map
+        jQuery(document).ready(function(){
+          jQuery('#' + name + '-geopreview').geopreview({
+            fieldName: name,
+            json: geojson
+          });
         });
       })();
     "></script>
