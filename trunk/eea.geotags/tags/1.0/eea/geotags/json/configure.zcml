@@ -1,0 +1,11 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  i18n_domain="eea.geotags">
+
+  <adapter
+    for="eea.geotags.interfaces.IGeoTaggable"
+    provides=".interfaces.IJsonProvider"
+    factory="..json.GeoNamesJsonProvider"
+    />
+
+</configure>

@@ -1,0 +1,12 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+    name="eea.geotags.cache.invalidate"
+    for="eea.geotags.interfaces.IGeoTaggable"
+    class=".browser.InvalidateCache"
+    permission="cmf.ModifyPortalContent"
+    />
+
+</configure>
