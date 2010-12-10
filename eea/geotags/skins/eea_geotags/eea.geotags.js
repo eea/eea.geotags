@@ -134,7 +134,7 @@ jQuery.fn.geodialog = function(settings){
     handle_rightbutton_dblclick: function(button, area){
       var width = self.rightarea.width();
       var min_width = area.width();
-      var max_width = parseInt (3 * area.width() / 4, 10);
+      var max_width = parseInt(3 * area.width() / 4, 10);
 
       if(width < 20){
         area.trigger('resize', [max_width]);
