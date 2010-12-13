@@ -1,0 +1,12 @@
+Changelog
+=========
+
+1.1 - (2010-12-13)
+------------------
+ * Bug fix: Fixed jslint warnings [voineali #3821]
+ * Bug fix: Fixed doc tests [voineali #3821]
+
+1.0 - (2010-10-12)
+------------------
+* Initial release
+
