@@ -31,6 +31,7 @@ setup(name=NAME,
           # -*- Extra requirements: -*-
           'simplejson',
           'eea.jquery',
+          'eea.alchemy',
 
       ],
       entry_points="""

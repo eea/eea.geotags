@@ -25,8 +25,4 @@ def test_suite():
                   optionflags=OPTIONFLAGS,
                   package='eea.geotags',
                   test_class=EEAGeotagsFunctionalTestCase) ,
-            Suite('docs/discover.txt',
-                  optionflags=OPTIONFLAGS,
-                  package='eea.geotags',
-                  test_class=EEAGeotagsFunctionalTestCase) ,
     ))
