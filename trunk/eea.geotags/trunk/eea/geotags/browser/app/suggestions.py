@@ -3,7 +3,7 @@ import simplejson
 from zope.component import queryAdapter
 from Products.Five.browser import BrowserView
 
-from eea.geotags.interfaces import IDiscoverGeoTags
+from eea.alchemy.interfaces import IDiscoverGeoTags
 
 logger = logging.getLogger('@@eea.geotags.suggestions')
 LOOKIN = ('title', 'description')

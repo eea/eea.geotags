@@ -3,6 +3,9 @@ Changelog
 
 1.2-dev - (unreleased)
 ----------------------
+ * Change: Moved alchemy auto-discover code to eea.alchemy 
+     as it's not only about geotags, it will also discover
+     temporal coverage and keywords [voineali #3357]
 
 1.1 - (2010-12-13)
 ------------------

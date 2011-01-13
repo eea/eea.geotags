@@ -3,10 +3,10 @@
   i18n_domain="eea.geotags">
 
   <include package="eea.jquery" />
+  <include package="eea.alchemy" />
   <include file="profiles.zcml" />
 
   <include package=".browser" />
-  <include package=".discover" />
   <include package=".storage" />
   <include package=".vocabularies" />
   <include package=".json" />

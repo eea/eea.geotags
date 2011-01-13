@@ -2,7 +2,6 @@
 """
 from Products.Five import zcml
 from Products.Five import fiveconfigure
-from fake import FakeAlchemyAPI, IAlchemyAPI
 product_globals = globals()
 
 # Import PloneTestCase - this registers more products with Zope as a side effect
@@ -31,7 +30,6 @@ def setup_eea_geotags():
         pass
 
     from zope.component import provideUtility
-    provideUtility(FakeAlchemyAPI(), IAlchemyAPI)
     ptc.installProduct('ATVocabularyManager')
     ptc.installProduct('Five')
 
