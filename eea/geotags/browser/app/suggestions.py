@@ -11,18 +11,11 @@ LOOKIN = ('title', 'description')
 class View(BrowserView):
     """ Suggest geotags for context
     """
-    _discover = None
-
-    @property
-    def discover(self):
-        if not self._discover:
-            self._discover = queryAdapter(self.context, IDiscoverGeoTags)
-        return self._discover
-
     def __call__(self, lookin=LOOKIN, **kwargs):
         entities = []
-        for metadata in lookin:
-            entities.extend(self.discover(metadata))
+        discover = queryAdapter(self.context, IDiscoverGeoTags)
+        if discover:
+            entities = [entity for entity in discover(lookin)]
 
         return simplejson.dumps({
             'suggestions': entities
