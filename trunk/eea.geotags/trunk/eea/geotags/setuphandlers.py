@@ -28,20 +28,12 @@ def importVarious(self):
 
     setup_tool = getToolByName(site, 'portal_setup')
 
-    # jQuery
-    setup_tool.setImportContext('profile-eea.jquery:01-jquery')
-    setup_tool.runAllImportSteps()
-
-    # jQuery UI
-    setup_tool.setImportContext('profile-eea.jquery:02-ui')
+    # Alchemy
+    setup_tool.setImportContext('profile-eea.alchemy:default')
     setup_tool.runAllImportSteps()
 
     # jQuery Splitter
     setup_tool.setImportContext('profile-eea.jquery:13-splitter')
-    setup_tool.runAllImportSteps()
-
-    # Alchemy
-    setup_tool.setImportContext('profile-eea.alchemy:default')
     setup_tool.runAllImportSteps()
 
     # plone 2/3 compatibility (SKINS DIR)
