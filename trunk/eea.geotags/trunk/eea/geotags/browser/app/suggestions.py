@@ -15,7 +15,8 @@ class View(BrowserView):
         entities = []
         discover = queryAdapter(self.context, IDiscoverGeoTags)
         if discover:
-            entities = [entity for entity in discover(lookin)]
+            discover.metadata = lookin
+            entities = [entity for entity in discover.tags]
 
         return simplejson.dumps({
             'suggestions': entities
