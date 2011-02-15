@@ -43,17 +43,17 @@ class GeotagsFieldMixin(object):
         """ Util method to extract human readable geo tags from geojson struct
         """
         if not geojson:
-            raise StopIteration
+            return
 
         try:
             value = json.loads(geojson)
         except Exception, err:
             logger.exception(err)
-            raise StopIteration
+            return
 
         features = value.get('features', [])
         if not features:
-            raise StopIteration
+            return
 
         for feature in features:
             properties = feature.get('properties', {})
@@ -82,3 +82,4 @@ class GeotagsLinesField(atapi.LinesField, GeotagsFieldMixin):
         self.setJSON(instance, value, **kwargs)
         tags = [tag for tag in self.json2list(value)]
         return atapi.LinesField.set(self, instance, tags, **kwargs)
+
