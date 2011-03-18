@@ -1,7 +1,7 @@
 """ Widget
 """
 from Products.Archetypes.Registry import registerWidget
-from location import GeotagsWidget
+from eea.geotags.widget.location import GeotagsWidget
 
 registerWidget(GeotagsWidget,
     title='Geotags Widget',

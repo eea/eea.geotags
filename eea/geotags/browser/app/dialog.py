@@ -1,4 +1,4 @@
-from Products.CMFCore.utils import getToolByName
+#from Products.CMFCore.utils import getToolByName
 from Products.Five.browser import BrowserView
 
 class Dialog(BrowserView):

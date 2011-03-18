@@ -3,6 +3,8 @@ Changelog
 
 1.2-dev - (unreleased)
 ----------------------
+ * Cleanup: of most pylint violations [ichimdav #4140]
+ * Cleanup: of pyflakes warnings [ichimdav #4141]
  * Bug fix: Remove geotags suggestion duplicates [voineali #3357]
  * Change: Moved alchemy auto-discover code to eea.alchemy
      as it's not only about geotags, it will also discover

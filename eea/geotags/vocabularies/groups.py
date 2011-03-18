@@ -4,7 +4,7 @@ from zope.interface import implements
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
 from Products.CMFCore.utils import getToolByName
-from interfaces import IGeoGroups
+from eea.geotags.vocabularies.interfaces import IGeoGroups
 
 class Groups(object):
     """ Extract countries for group

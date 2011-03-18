@@ -5,7 +5,7 @@ from Products.Archetypes.atapi import process_types, listTypes
 from eea.geotags.config import PROJECTNAME, ADD_CONTENT_PERMISSION
 
 from Products.Archetypes.atapi import registerType
-from demo import EEAGeotagsDemo, EEAGeotagsSimpleDemo
+from eea.geotags.content.demo import EEAGeotagsDemo, EEAGeotagsSimpleDemo
 
 registerType(EEAGeotagsDemo, PROJECTNAME)
 registerType(EEAGeotagsSimpleDemo, PROJECTNAME)

@@ -5,7 +5,7 @@ import urllib, urllib2
 import simplejson
 import operator
 from zope.component import queryAdapter
-from zope.interface import implements
+#from zope.interface import implements
 
 from Products.CMFCore.utils import getToolByName
 
@@ -13,7 +13,7 @@ from eea.geotags.config import WEBSERVICE
 from eea.geotags.interfaces import IGeoGroups
 from eea.geotags.interfaces import IBioGroups
 from eea.geotags.interfaces import IGeoCountries
-from interfaces import IJsonProvider
+#from interfaces import IJsonProvider
 
 logger = logging.getLogger('eea.geotags.json')
 
@@ -165,7 +165,7 @@ class GeoNamesJsonProvider(object):
     def search(self, **kwargs):
         """ Search using geonames webservice
         """
-        template = GEOJSON = {
+        template = { # ichimdav was = GEOJSON = ### not used 
             'type': 'FeatureCollection',
             'features': []
         }
