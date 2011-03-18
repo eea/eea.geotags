@@ -112,7 +112,7 @@ class Updater(object):
         for group, countries in self.groups.items():
             self._data[group] = {}
             print 'Update group: %s' % group[0]
-            for code, country in countries.keys():
+            for code, _country in countries.keys():
                 query = {
                     'country': code,
                     'lang': 'en',

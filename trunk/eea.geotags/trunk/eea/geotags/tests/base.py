@@ -7,6 +7,8 @@ product_globals = globals()
 # Import PloneTestCase - this registers more products with Zope as a side effect
 from Products.PloneTestCase import PloneTestCase as ptc
 from Products.PloneTestCase.layer import onsetup
+import logging
+logger = logging.getLogger('eea.geotags.tests.base')
 
 @onsetup
 def setup_eea_geotags():
@@ -27,14 +29,16 @@ def setup_eea_geotags():
         ptc.installPackage('eea.geotags')
     except AttributeError, err:
         #BBB Plone 2.5
-        pass
+        logger.info(err)
 
-    from zope.component import provideUtility
+    #from zope.component import provideUtility
     ptc.installProduct('ATVocabularyManager')
     ptc.installProduct('Five')
 
     #BBB Plone 2.5
-    try: import Products.FiveSite
+    try: 
+        import Products.FiveSite
+        Products.FiveSite
     except ImportError: pass
     else: ptc.installProduct('FiveSite')
 

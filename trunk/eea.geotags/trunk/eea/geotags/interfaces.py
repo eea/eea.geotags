@@ -1,11 +1,12 @@
 """ EEA Geotags interfaces
 """
 # Vocabulary adapters
-from vocabularies.interfaces import IGeoGroups
-from vocabularies.interfaces import IBioGroups
-from vocabularies.interfaces import IGeoCountries
-from json.interfaces import IJsonProvider
-
+from eea.geotags.vocabularies.interfaces import IGeoGroups
+from eea.geotags.vocabularies.interfaces import IBioGroups
+from eea.geotags.vocabularies.interfaces import IGeoCountries
+from eea.geotags.json.interfaces import IJsonProvider
+IGeoGroups, IBioGroups, IGeoCountries, IJsonProvider
 # GeoTags storage
-from storage.interfaces import IGeoTaggable
-from storage.interfaces import IGeoTags
+from eea.geotags.storage.interfaces import IGeoTaggable
+from eea.geotags.storage.interfaces import IGeoTags
+IGeoTaggable, IGeoTags

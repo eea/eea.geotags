@@ -4,7 +4,7 @@ from zope.interface import implements
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
 from Products.CMFCore.utils import getToolByName
-from interfaces import IBioGroups
+from eea.geotags.vocabularies.interfaces import IBioGroups
 
 class BioGroups(object):
     """ Biogeographical regions

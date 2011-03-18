@@ -1,5 +1,5 @@
 from Products.Archetypes.Registry import registerField
-from location import GeotagsStringField, GeotagsLinesField
+from eea.geotags.field.location import GeotagsStringField, GeotagsLinesField
 
 registerField(
     GeotagsStringField,
