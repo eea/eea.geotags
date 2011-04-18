@@ -3,6 +3,7 @@ Changelog
 
 1.2-dev - (unreleased)
 ----------------------
+ * Bug fix: fix import errors [szabozo0 #4260]
  * Feature: created formlib version of the widget [szabozo0 #4260]
  * Cleanup: of most pylint violations [ichimdav #4140]
  * Cleanup: of pyflakes warnings [ichimdav #4141]

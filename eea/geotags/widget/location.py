@@ -11,12 +11,6 @@ from zope.app.pagetemplate import ViewPageTemplateFile
 
 from eea.geotags import field
 
-from zope.interface import Interface, implements
-from zope.component import adapts
-from p4a.video.interfaces import IVideoEnhanced
-from Products.Archetypes.interfaces import ISchema
-
-
 class GeotagsWidget(StringWidget):
     """ Geotags
     """
@@ -29,8 +23,7 @@ class GeotagsWidget(StringWidget):
         'json': '@@eea.geotags.json',
         'suggestions': '@@eea.geotags.suggestions',
     })
-
-
+    
 
 """Formlib widget"""
 
