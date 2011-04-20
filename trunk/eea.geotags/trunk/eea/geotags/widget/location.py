@@ -93,6 +93,9 @@ class FormlibGeotagWidget(object):
         self._prefix = prefix
         self.name = prefix + self.context.__name__
 
+    def setRenderedValue(self, value):
+	pass
+	
     def hasInput(self):
         val = self.request.form.get('location')
         if val and val.strip():
