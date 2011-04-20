@@ -94,7 +94,11 @@ class FormlibGeotagWidget(object):
         self.name = prefix + self.context.__name__
 
     def hasInput(self):
-	return True
+        val = self.request.form.get('location')
+        if val and val.strip():
+            return True
+
+        return False
 
     def error(self):
         """See zope.app.form.browser.interfaces.IBrowserWidget"""
@@ -102,7 +106,7 @@ class FormlibGeotagWidget(object):
             return "Need valid input"
 
     def getInputValue(self):
-	return self.request.location
+        return self.request.form['location']
 
     def applyChanges(self, content):
         """See zope.app.form.interfaces.IInputWidget"""
@@ -114,6 +118,6 @@ class FormlibGeotagWidget(object):
             return False
         field.set(content, new_value)
         return True
-	
+    
     def __call__(self):
-	return self.template()
+        return self.template()
