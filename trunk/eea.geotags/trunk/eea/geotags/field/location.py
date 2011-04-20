@@ -30,7 +30,7 @@ class GeotagsFieldMixin(object):
         if not geo:
             return
 
-        if not isinstance(value, dict):
+        if not isinstance(value, dict) and value:
             try:
                 value = json.loads(value)
             except Exception, err:
