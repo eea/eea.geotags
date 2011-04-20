@@ -3,7 +3,8 @@ Changelog
 
 1.3-dev - (unreleased)
 ----------------------
-
+ * Bug fix: fix widget bugs [szabozo0 #4260]
+ 
 1.2 - (2011-04-19)
 ------------------
  * Bug fix: fix import errors [szabozo0 #4260]
