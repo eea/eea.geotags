@@ -11,7 +11,8 @@ logger = logging.getLogger('eea.geotags.setuphandlers')
 def importVocabularies(context):
     """ Import groups vocabulary
     """
-    atvm = getToolByName(context, 'portal_vocabularies', None)
+    site = context.getSite()
+    atvm = getToolByName(site, 'portal_vocabularies', None)
 
     createHierarchicalVocabs(atvm, VOC)
     logger.info("Added 'Geotags Tree' vocabulary")
@@ -20,11 +21,9 @@ def importVocabularies(context):
     logger.info('Added "Biogeographical regions" vocabulary')
 
 def importVarious(context):
-    if self.readDataFile('eea.geotags.txt') is None:
+    """ Import various
+    """
+    if context.readDataFile('eea.geotags.txt') is None:
         return
 
-    site = self.getSite()
-
-    # Import vocabularies
     importVocabularies(context)
-
