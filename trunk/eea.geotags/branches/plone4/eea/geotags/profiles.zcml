@@ -15,6 +15,13 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot" />
 
+  <genericsetup:importStep
+        name="eea-geotags-various"
+        title="EEA Geotags Various"
+        description="Various setup for eea.geotags"
+        handler="eea.geotags.setuphandlers.importVarious">
+  </genericsetup:importStep>
+
   <genericsetup:registerProfile
         name="03-demo"
         title="EEA Geotags (Demo Content)"

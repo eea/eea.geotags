@@ -3,6 +3,7 @@
 
   <include package="eea.jquery" />
   <include package="eea.alchemy" />
+  <include package="Products.ATVocabularyManager" />
 
   <include file="profiles.zcml" />
   <include file="skins.zcml" />

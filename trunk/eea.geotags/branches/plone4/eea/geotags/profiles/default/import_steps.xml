@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<import-steps>
-  <import-step id="eea-geotags-various" version="20100526-01"
-    title="EEA Geotags Various"
-    handler="eea.geotags.setuphandlers.importVarious">
-    Additional import steps
-  </import-step>
-</import-steps>

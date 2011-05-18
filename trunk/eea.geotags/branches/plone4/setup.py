@@ -32,6 +32,7 @@ setup(name=NAME,
           'setuptools',
           'eea.jquery',
           'eea.alchemy',
+          'Products.ATVocabularyManager',
 
           #TODO: fix me, plone4, deprecated
           #'simplejson',
