@@ -3,8 +3,7 @@
 
   <include package="Products.ATVocabularyManager" />
   <include package="eea.jquery" />
-  <!-- include package="eea.alchemy" / -->
-
+  <include package="eea.alchemy" />
 
   <include file="profiles.zcml" />
   <include file="skins.zcml" />

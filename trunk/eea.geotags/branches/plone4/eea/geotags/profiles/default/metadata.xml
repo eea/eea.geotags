@@ -3,7 +3,7 @@
  <description>EEA Geotags profile</description>
  <version>1</version>
  <dependencies>
-  <!-- dependency>profile-eea.alchemy:default</dependency -->
+  <dependency>profile-eea.alchemy:default</dependency>
   <dependency>profile-Products.ATVocabularyManager:default</dependency>
   <dependency>profile-eea.jquery:13-splitter</dependency>
  </dependencies>
