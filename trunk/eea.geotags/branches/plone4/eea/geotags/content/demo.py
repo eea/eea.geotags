@@ -1,5 +1,5 @@
-""" Demonstrates the use of EEA Geotags widget """
-
+""" Demonstrates the use of EEA Geotags widget
+"""
 from Products.Archetypes import atapi
 from Products.ATContentTypes.content.folder import ATFolder
 from eea.geotags import field

@@ -1,3 +1,5 @@
+""" Geotags popup basket
+"""
 from Products.Five.browser import BrowserView
 
 class Basket(BrowserView):
@@ -7,6 +9,8 @@ class Basket(BrowserView):
 
     @property
     def fieldName(self):
+        """ Field name
+        """
         return self._fieldName
 
     def __call__(self, **kwargs):

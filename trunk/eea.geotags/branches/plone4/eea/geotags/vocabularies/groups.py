@@ -15,7 +15,6 @@ class Groups(object):
         self.context = context
 
     def __call__(self):
-
         atvm = getToolByName(self.context, 'portal_vocabularies')
         if not 'geotags' in atvm.objectIds():
             return SimpleVocabulary([])

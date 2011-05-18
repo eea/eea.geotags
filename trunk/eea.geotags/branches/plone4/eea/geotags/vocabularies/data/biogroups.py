@@ -1,3 +1,5 @@
+""" Biogeographical regions vocabulary
+"""
 VOC = {
     ('biotags', 'Biogeographical regions'): {
         ('ALP', 'Alpine'): {

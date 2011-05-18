@@ -1,4 +1,5 @@
-#from Products.CMFCore.utils import getToolByName
+""" Dialog
+"""
 from Products.Five.browser import BrowserView
 
 class Dialog(BrowserView):
@@ -8,6 +9,8 @@ class Dialog(BrowserView):
 
     @property
     def fieldName(self):
+        """ Field name
+        """
         return self._fieldName
 
     def __call__(self, **kwargs):

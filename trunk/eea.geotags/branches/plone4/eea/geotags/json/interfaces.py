@@ -28,9 +28,8 @@ class IJsonProvider(Interface):
         """
 
     def natural_features(country=None, adminCode1=None, **kwargs):
-        """
-        Natural features filtered by country and/or primary
-        administrative division
+        """ Natural features filtered by country and/or primary
+            administrative division
         """
 
     def search(**kwargs):

@@ -5,25 +5,23 @@ import urllib, urllib2
 import json as simplejson
 import operator
 from zope.component import queryAdapter
-#from zope.interface import implements
-
 from Products.CMFCore.utils import getToolByName
-
 from eea.geotags.config import WEBSERVICE
 from eea.geotags.interfaces import IGeoGroups
 from eea.geotags.interfaces import IBioGroups
 from eea.geotags.interfaces import IGeoCountries
-#from interfaces import IJsonProvider
 
 logger = logging.getLogger('eea.geotags.json')
 
 class GeoNamesJsonProvider(object):
-    """ get json from http://geonames.org and convert it to geojson
+    """ Get json from http://geonames.org and convert it to geojson
     """
     def __init__(self, context):
         self.context = context
 
     def groups(self, **kwargs):
+        """ Groups
+        """
         voc = queryAdapter(self.context, IGeoGroups)
         json = {
             'type': 'FeatureCollection',
@@ -67,6 +65,8 @@ class GeoNamesJsonProvider(object):
         return json
 
     def biogroups(self, **kwargs):
+        """ Biogroups
+        """
         voc = queryAdapter(self.context, IBioGroups)
         json = {
             'type': 'FeatureCollection',
@@ -119,6 +119,8 @@ class GeoNamesJsonProvider(object):
         return json
 
     def countries(self, **kwargs):
+        """ Countries
+        """
         group = kwargs.get('group', '')
         filters = []
         if group:
@@ -147,17 +149,23 @@ class GeoNamesJsonProvider(object):
         return json
 
     def nuts(self, **kwargs):
+        """ Nuts
+        """
         query = kwargs.copy()
         query['featureClass'] = 'A'
         query['featureCode'] = 'ADM1'
         return self.search(**query)
 
     def cities(self, **kwargs):
+        """ Cities
+        """
         query = kwargs.copy()
         query['featureClass'] = 'P'
         return self.search(**query)
 
     def natural_features(self, **kwargs):
+        """ Natural features
+        """
         query = kwargs.copy()
         query['featureClass'] = ['H', 'T']
         return self.search(**query)
@@ -165,7 +173,7 @@ class GeoNamesJsonProvider(object):
     def search(self, **kwargs):
         """ Search using geonames webservice
         """
-        template = { # ichimdav was = GEOJSON = ### not used 
+        template = { # ichimdav was = GEOJSON = ### not used
             'type': 'FeatureCollection',
             'features': []
         }

@@ -15,7 +15,6 @@ class BioGroups(object):
         self.context = context
 
     def __call__(self):
-
         atvm = getToolByName(self.context, 'portal_vocabularies')
         if not 'biotags' in atvm.objectIds():
             return SimpleVocabulary([])

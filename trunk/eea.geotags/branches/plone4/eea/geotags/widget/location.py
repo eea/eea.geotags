@@ -1,14 +1,12 @@
 """ Widget
 """
 from Products.Archetypes.atapi import StringWidget
-
 from zope.interface import implements
 from zope.app.form.browser.interfaces import IBrowserWidget
 from zope.app.form.interfaces import IInputWidget
 from zope.schema import Field
 from zope.schema.interfaces import IField
 from zope.app.pagetemplate import ViewPageTemplateFile
-
 from eea.geotags import field
 
 class GeotagsWidget(StringWidget):
@@ -23,43 +21,53 @@ class GeotagsWidget(StringWidget):
         'json': '@@eea.geotags.json',
         'suggestions': '@@eea.geotags.suggestions',
     })
-    
 
-"""Formlib widget"""
+""" Formlib widget """
 
 class IGeotagSingleField(IField):
-    """The field interface"""
-
+    """ The field interface
+    """
 
 class GeotagMixinField(Field, field.location.GeotagsFieldMixin):
+    """ Geotag Mixin Field
+    """
 
     def set(self, instance, value, **kwargs):
+        """ Set
+        """
         self.setJSON(instance.context, value, **kwargs)
         tag = self.json2string(value)
 
 
 class GeotagSingleField(GeotagMixinField):
+    """ Geotag Single Field
+    """
     implements(IGeotagSingleField)
-    
+
     @property
     def multiline(self):
+        """ Multiline
+        """
         return False
-        
-
 
 class IGeotagMultiField(IField):
-    """The field interface"""
-
+    """ The field interface
+    """
 
 class GeotagMultiField(GeotagMixinField):
+    """ Geotag Multi Field
+    """
     implements(IGeotagMultiField)
-    
+
     @property
     def multiline(self):
+        """ Multiline
+        """
         return True
-        
-    
+
 class FormlibGeotagWidget(object):
+    """ Formlib Geotag Widget
+    """
     implements(IBrowserWidget, IInputWidget)
     template = ViewPageTemplateFile("location.pt")
 
@@ -86,7 +94,8 @@ class FormlibGeotagWidget(object):
         self.name = self._prefix + field.__name__
 
     def setPrefix(self, prefix):
-        """See zope.app.form.interfaces.IWidget"""
+        """ See zope.app.form.interfaces.IWidget
+        """
         # Set the prefix locally
         if not prefix.endswith("."):
             prefix += '.'
@@ -94,9 +103,13 @@ class FormlibGeotagWidget(object):
         self.name = prefix + self.context.__name__
 
     def setRenderedValue(self, value):
-	pass
-	
+        """ Set rendered value
+        """
+        pass
+
     def hasInput(self):
+        """ Has input
+        """
         val = self.request.form.get('location')
         if val and val.strip():
             return True
@@ -104,15 +117,19 @@ class FormlibGeotagWidget(object):
         return False
 
     def error(self):
-        """See zope.app.form.browser.interfaces.IBrowserWidget"""
+        """ See zope.app.form.browser.interfaces.IBrowserWidget
+        """
         if self._error:
             return "Need valid input"
 
     def getInputValue(self):
+        """ Get input value
+        """
         return self.request.form['location']
 
     def applyChanges(self, content):
-        """See zope.app.form.interfaces.IInputWidget"""
+        """ See zope.app.form.interfaces.IInputWidget
+        """
         field = self.context
         new_value = self.getInputValue()
         old_value = field.query(content, self)
@@ -121,6 +138,6 @@ class FormlibGeotagWidget(object):
             return False
         field.set(content, new_value)
         return True
-    
+
     def __call__(self):
         return self.template()

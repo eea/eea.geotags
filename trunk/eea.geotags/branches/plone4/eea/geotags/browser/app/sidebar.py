@@ -1,4 +1,5 @@
-#from Products.CMFCore.utils import getToolByName
+""" Sidebar
+"""
 from Products.Five.browser import BrowserView
 
 class Sidebar(BrowserView):
@@ -8,6 +9,8 @@ class Sidebar(BrowserView):
 
     @property
     def fieldName(self):
+        """ Field name
+        """
         return self._fieldName
 
     def __call__(self, **kwargs):

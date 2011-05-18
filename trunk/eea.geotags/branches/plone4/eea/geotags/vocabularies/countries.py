@@ -27,5 +27,6 @@ class Countries(object):
             return SimpleVocabulary([])
 
         voc = voc[group]
-        items = [SimpleTerm(key, key, item.title) for key, item in voc.objectItems()]
+        items = [SimpleTerm(key, key, item.title)
+                        for key, item in voc.objectItems()]
         return SimpleVocabulary(items)

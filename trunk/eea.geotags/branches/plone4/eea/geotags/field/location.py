@@ -13,6 +13,8 @@ class GeotagsFieldMixin(object):
     """
     @property
     def multiline(self):
+        """ Multiline
+        """
         return isinstance(self, atapi.LinesField)
 
     def getJSON(self, instance, **kwargs):
@@ -71,6 +73,8 @@ class GeotagsStringField(atapi.StringField, GeotagsFieldMixin):
     """ Single geotag field
     """
     def set(self, instance, value, **kwargs):
+        """ Set
+        """
         self.setJSON(instance, value, **kwargs)
         tag = self.json2string(value)
         return atapi.StringField.set(self, instance, tag, **kwargs)
@@ -79,6 +83,8 @@ class GeotagsLinesField(atapi.LinesField, GeotagsFieldMixin):
     """ Multiple geotags field
     """
     def set(self, instance, value, **kwargs):
+        """ Set
+        """
         self.setJSON(instance, value, **kwargs)
         tags = [tag for tag in self.json2list(value)]
         return atapi.LinesField.set(self, instance, tags, **kwargs)

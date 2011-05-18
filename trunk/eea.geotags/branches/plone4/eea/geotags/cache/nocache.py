@@ -1,8 +1,14 @@
-"""
+""" No cache
 """
 def ramcache(get_key, dependencies=None):
+    """ RAM cache
+    """
     def decorator(method):
+        """ Decorator
+        """
         def replacement(*args, **kwargs):
+            """ Replacement
+            """
             return method(*args, **kwargs)
         return replacement
     return decorator

@@ -19,16 +19,22 @@ class GeoTags(object):
         self.context = context
 
     def gett(self):
+        """ Get tags
+        """
         anno = queryAdapter(self.context, IAnnotations)
         if not anno:
-            logger.exception('%s is not Annotable', self.context.absolute_url())
+            logger.exception('%s is not Annotable',
+                             self.context.absolute_url())
             return {}
         return dict(anno.get(ANNO_TAGS, {}))
 
     def sett(self, value):
+        """ Set tags
+        """
         anno = queryAdapter(self.context, IAnnotations)
         if not anno:
-            logger.exception('%s is not Annotable', self.context.absolute_url())
+            logger.exception('%s is not Annotable',
+                             self.context.absolute_url())
             return
         anno[ANNO_TAGS] = PersistentDict(value)
 
