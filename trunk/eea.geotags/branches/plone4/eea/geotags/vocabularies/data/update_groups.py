@@ -1,6 +1,6 @@
 """ Update countries dictionary
 """
-import simplejson
+import json as simplejson
 import urllib
 import urllib2
 from datetime import datetime

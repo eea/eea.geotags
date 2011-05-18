@@ -1,5 +1,5 @@
 import logging
-import simplejson
+import json as simplejson
 from zope.component import queryAdapter
 from Products.Five.browser import BrowserView
 

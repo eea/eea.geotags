@@ -2,7 +2,7 @@
 """
 from pprint import pformat
 import logging
-import simplejson
+import json as simplejson
 from zope.component import queryAdapter
 from Products.Five.browser import BrowserView
 from eea.geotags.interfaces import IJsonProvider

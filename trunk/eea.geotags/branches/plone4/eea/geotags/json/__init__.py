@@ -2,7 +2,7 @@
 """
 import logging
 import urllib, urllib2
-import simplejson
+import json as simplejson
 import operator
 from zope.component import queryAdapter
 #from zope.interface import implements

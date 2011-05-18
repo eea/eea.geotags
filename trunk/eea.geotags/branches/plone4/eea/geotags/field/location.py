@@ -1,7 +1,7 @@
 """ Field
 """
 import logging
-import simplejson as json
+import json
 from zope.component import queryAdapter
 from Products.Archetypes import atapi
 from eea.geotags.interfaces import IGeoTags

@@ -1,67 +1,26 @@
-<configure
-  xmlns="http://namespaces.zope.org/zope"
-  xmlns:zcml="http://namespaces.zope.org/zcml"
-  xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-  xmlns:five="http://namespaces.zope.org/five"
-  xmlns:cmf="http://namespaces.zope.org/cmf"
-  i18n_domain="eea.geotags">
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+           xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+           xmlns:five="http://namespaces.zope.org/five"
+           xmlns:cmf="http://namespaces.zope.org/cmf"
+           i18n_domain="eea">
 
   <five:registerPackage package="." initialize=".initialize" />
 
-  <!-- Default -->
   <genericsetup:registerProfile
-    name="01-default"
-    title="EEA Geotags"
-    directory="profiles/default"
-    description="Geotags profile"
-    provides="Products.GenericSetup.interfaces.EXTENSION"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    />
+        name="01-default"
+        title="EEA Geotags"
+        directory="profiles/default"
+        description="Geotags profile"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot" />
 
-  <!-- Plone 3.0+ skins directory -->
-  <configure zcml:condition="installed zope.annotation">
-    <cmf:registerDirectory
-      name="skins"
-      directory="skins"
-      recursive="True"
-      />
-  </configure>
-
-  <!-- Plone 2.5 skins directory -->
-  <!-- See plone25.py file in this package -->
-
-  <!-- Plone 3.0+ compatible profile -->
-  <configure zcml:condition="installed zope.annotation">
-    <genericsetup:registerProfile
-      name="02-skins"
-      title="EEA Geotags (SKINS)"
-      directory="profiles/plone3"
-      description="Geotags skins directory"
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      />
-  </configure>
-
-  <!-- Plone 2.5 compatible profile -->
-  <configure zcml:condition="installed zope.app.annotation.tests">
-    <genericsetup:registerProfile
-      name="02-skins"
-      title="EEA Geotags (SKINS)"
-      directory="profiles/plone25"
-      description="Geotags skins directory"
-      provides="Products.GenericSetup.interfaces.EXTENSION"
-      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-      />
-  </configure>
-
-  <!-- Demo content -->
   <genericsetup:registerProfile
-    name="03-demo"
-    title="EEA Geotags (Demo Content)"
-    directory="profiles/demo"
-    description="Geotags demo content"
-    provides="Products.GenericSetup.interfaces.EXTENSION"
-    for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-    />
+        name="03-demo"
+        title="EEA Geotags (Demo Content)"
+        directory="profiles/demo"
+        description="Geotags demo content"
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot" />
 
 </configure>
