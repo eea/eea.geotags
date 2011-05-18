@@ -1,3 +1,5 @@
+""" Suggestions
+"""
 import logging
 import json as simplejson
 from zope.component import queryAdapter

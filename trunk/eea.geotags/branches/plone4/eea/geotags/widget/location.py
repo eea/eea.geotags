@@ -22,7 +22,9 @@ class GeotagsWidget(StringWidget):
         'suggestions': '@@eea.geotags.suggestions',
     })
 
-""" Formlib widget """
+###
+# Formlib widget
+######
 
 class IGeotagSingleField(IField):
     """ The field interface
@@ -36,8 +38,6 @@ class GeotagMixinField(Field, field.location.GeotagsFieldMixin):
         """ Set
         """
         self.setJSON(instance.context, value, **kwargs)
-        tag = self.json2string(value)
-
 
 class GeotagSingleField(GeotagMixinField):
     """ Geotag Single Field

@@ -58,8 +58,8 @@ class GeoNamesJsonProvider(object):
 
             # Description
             countries = queryAdapter(self.context, IGeoCountries)
-            feature['properties']['description'] = term.title + ', ' + ', '.join((
-                country.title for country in countries(term.value)))
+            feature['properties']['description'] = term.title + ', ' + \
+              ', '.join((country.title for country in countries(term.value)))
 
             json['features'].append(feature)
         return json

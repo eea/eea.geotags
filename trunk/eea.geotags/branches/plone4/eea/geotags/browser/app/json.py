@@ -19,18 +19,18 @@ class JSON(BrowserView):
             kwargs.update(self.request.form)
 
         service = queryAdapter(self.context, IJsonProvider)
-        json = kwargs.pop('type', 'search')
-        if json == 'groups':
+        jsondata = kwargs.pop('type', 'search')
+        if jsondata == 'groups':
             res = service.groups(**kwargs)
-        elif json == 'biogroups':
+        elif jsondata == 'biogroups':
             res = service.biogroups(**kwargs)
-        elif json == 'countries':
+        elif jsondata == 'countries':
             res = service.countries(**kwargs)
-        elif json == 'nuts':
+        elif jsondata == 'nuts':
             res = service.nuts(**kwargs)
-        elif json == 'cities':
+        elif jsondata == 'cities':
             res = service.cities(**kwargs)
-        elif json == 'natural':
+        elif jsondata == 'natural':
             res = service.natural_features(**kwargs)
         else:
             res = service.search(**kwargs)
