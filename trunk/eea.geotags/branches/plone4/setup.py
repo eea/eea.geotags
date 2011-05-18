@@ -33,9 +33,6 @@ setup(name=NAME,
           'eea.jquery',
           'Products.ATVocabularyManager',
           'eea.alchemy',
-
-          #TODO: fix me, plone4, deprecated
-          #'simplejson',
       ],
       entry_points="""
       # -*- Entry points: -*-

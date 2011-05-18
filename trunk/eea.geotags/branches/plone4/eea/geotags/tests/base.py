@@ -2,13 +2,11 @@
 """
 from Products.Five import zcml
 from Products.Five import fiveconfigure
-from Products.PloneTestCase import PloneTestCase as ptc
+from Products.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.layer import onsetup
 import eea.geotags
 import logging
 
-#TODO: plone4
-#product_globals = globals()
 logger = logging.getLogger('eea.geotags.tests.base')
 
 PloneTestCase.installProduct('ATVocabularyManager')
@@ -24,14 +22,19 @@ def setup_eea_geotags():
     zcml.load_config('configure.zcml', eea.geotags)
     fiveconfigure.debug_mode = False
 
-setup_eea_geotags()
-ptc.setupPloneSite(extension_profiles=('eea.geotags:01-default', 'eea.geotags:03-demo'))
+    PloneTestCase.installPackage('eea.alchemy')
+    PloneTestCase.installPackage('eea.jquery')
 
-class EEAGeotagsTestCase(ptc.PloneTestCase):
+setup_eea_geotags()
+PloneTestCase.setupPloneSite(extension_profiles=('eea.geotags:default',
+                                                 'eea.geotags:demo'))
+
+class EEAGeotagsTestCase(PloneTestCase.PloneTestCase):
     """ Base class for integration tests for the 'EEA Geotags' product.
     """
 
-class EEAGeotagsFunctionalTestCase(ptc.FunctionalTestCase, EEAGeotagsTestCase):
+class EEAGeotagsFunctionalTestCase(PloneTestCase.FunctionalTestCase,
+                                   EEAGeotagsTestCase):
     """ Base class for functional integration tests for the
         'EEA Geotags' product.
     """
