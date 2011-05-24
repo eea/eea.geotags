@@ -22,7 +22,7 @@
 
   <browser:page for="eea.geotags.interfaces.IGeoTaggable"
                 name="eea.geotags.json"
-                class=".app.json.JSON"
+                class=".app.geojson.JSON"
                 permission="zope2.View" />
 
   <browser:page for="eea.geotags.interfaces.IGeoTaggable"

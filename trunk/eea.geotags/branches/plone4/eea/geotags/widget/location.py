@@ -7,7 +7,7 @@ from zope.app.form.interfaces import IInputWidget
 from zope.schema import Field
 from zope.schema.interfaces import IField
 from zope.app.pagetemplate import ViewPageTemplateFile
-from eea.geotags import field
+from eea.geotags.field.location import GeotagsFieldMixin
 
 class GeotagsWidget(StringWidget):
     """ Geotags
@@ -30,7 +30,7 @@ class IGeotagSingleField(IField):
     """ The field interface
     """
 
-class GeotagMixinField(Field, field.location.GeotagsFieldMixin):
+class GeotagMixinField(Field, GeotagsFieldMixin):
     """ Geotag Mixin Field
     """
 

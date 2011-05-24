@@ -769,7 +769,7 @@ jQuery.fn.geotabs = function(settings){
 
     // Methods
     initialize: function(){
-      self.tabs();
+      jQuery('ul.geo-tabs', self).tabs('div.geo-panes > div');
       var options = self.options.search;
       options.json = self.options.json;
       options.fieldName = self.options.fieldName;
