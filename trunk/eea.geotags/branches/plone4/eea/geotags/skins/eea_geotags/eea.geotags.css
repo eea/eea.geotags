@@ -2,6 +2,11 @@
 .geo-dialog {
   width: 100%;
   height: 100%;
+  font-size: 0.7em;
+}
+
+.geo-dialog h2 {
+  font-size: 1.4em;
 }
 
 .geo-splitter {
@@ -59,18 +64,6 @@
   height: 100%;
   border: none;
   min-width: 300px;
-}
-
-.geo-sidebar-area ul.ui-tabs-nav {
-  background: none;
-  border-style: none none solid none;
-  border-color: #8CACBB;
-  padding: 0px;
-}
-
-.geo-sidebar-area ul.ui-tabs-nav li {
-  border-color: #8CACBB;
-  border-style: solid solid solid none;
 }
 
 .geo-sidebar-button {
@@ -306,4 +299,56 @@
 
 .geo-basket-items .ui-pulsate-item {
   background-color: #e9efcd;
+}
+
+/* Tabs */
+.geo-sidebar-area ul.formTabs {
+  background-color: #ddd;
+  border: 0.3em solid #ddd;
+}
+
+.geo-sidebar-area ul.formTabs {
+  display: block;
+  border-style: solid solid none solid;
+  margin-left: 0;
+  border-top-right-radius: 0.5em;
+  border-top-left-radius: 0.5em;
+  -webkit-border-top-right-radius: 0.5em;
+  -webkit-border-top-left-radius: 0.5em;
+  -moz-border-radius-topleft: 0.5em;
+  -moz-border-radius-topright: 0.5em;
+}
+
+.geo-sidebar-area li.formTab {
+    display: inline;
+    margin-right:0.25em;
+}
+
+.geo-sidebar-area li.formTab a {
+    /* this isn't supported by all browsers, so we keep it in a separate rule */
+    display: inline-block;
+}
+
+.geo-sidebar-area li.formTab a {
+    line-height: 2em;
+    padding: 0 0.75em;
+    text-decoration: none;
+    border: none;
+    margin: 0 ;
+}
+
+.geo-sidebar-area li.formTab a.current {
+    font-weight: bold;
+}
+
+.geo-sidebar-area li.formTab a.current,
+.geo-sidebar-area li.formTab a:hover {
+    background: White;
+    color: Black;
+}
+
+.geo-sidebar-area .panes {
+  border-width: 0px 1px 1px 1px;
+  border-style: solid;
+  border-color: #DDDDDD;
 }

@@ -1,8 +1,8 @@
 <div class="geo-sidebar-area" tal:define="
   fieldName python:view.fieldName">
-  <ul class="geo-tabs">
-    <li><a tal:attributes="href string:#$fieldName-geo-results" i18n:translate="">Search</a></li>
-    <li><a tal:attributes="href string:#$fieldName-geo-advanced" i18n:translate="">Country/regions drill down</a></li>
+  <ul class="geo-tabs formTabs">
+    <li class="formTab"><a tal:attributes="href string:#$fieldName-geo-results" i18n:translate="">Search</a></li>
+    <li class="formTab"><a tal:attributes="href string:#$fieldName-geo-advanced" i18n:translate="">Country/regions drill down</a></li>
   </ul>
 
   <!-- Free search -->
