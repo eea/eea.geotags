@@ -1,13 +1,5 @@
 (function(){
 
-// Google API
-if(!window.google){
-  var script = jQuery('<script>')
-                .attr('type', 'text/javascript')
-                .attr('src', 'http://maps.google.com/maps/api/js?sensor=true');
-  jQuery('head').append(script);
-}
-
 jQuery.geoevents = {
   select_point: 'geo-event-select-point',
   select_marker: 'geo-event-select-marker',
@@ -1444,6 +1436,12 @@ jQuery.fn.geopreview = function(settings){
         self.options.handle_points(data.json);
       });
 
+      // Fix preview map
+      jQuery('form[name=edit_form] .formTab').click(function(){
+        google.maps.event.trigger(self.Map, 'resize');
+        self.Map.setCenter(options.center);
+        self.Map.setZoom(options.zoom);
+      });
     }
   };
 

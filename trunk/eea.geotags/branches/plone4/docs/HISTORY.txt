@@ -6,7 +6,7 @@ Changelog
 
 4.0-dev - (unreleased)
 ----------------------
- * #TODO: fix JS errors after eea.geotags get installed, plone4
+ * Cleanup: Fixed all pylint, pyflakes warnings [voineali #4236]
  * Feature: Plone 4.0.4 compatible release [ghicaale #4236]
 
 1.3 - (2011-04-20)
