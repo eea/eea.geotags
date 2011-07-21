@@ -5,6 +5,8 @@ Changelog
 4.0-dev - (unreleased)
 ----------------------
 
+* Bugfix: Fixed missing google map api [szabozo0 #4428]
+
 * Cleanup: Fixed all pylint, pyflakes warnings
   [voineali #4236]
 
