@@ -4,6 +4,10 @@ Changelog
 1.4-dev - (unreleased)
 ----------------------
 
+* Feature: Geotag widget usability, add tag in one click
+  [voineali #4429]
+
+
 1.3 - (2011-04-20)
 ------------------
  * Bug fix: fix widget bugs [szabozo0 #4260]
