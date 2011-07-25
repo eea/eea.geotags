@@ -303,7 +303,7 @@ jQuery.fn.geomap = function(settings){
     },
 
     // Handlers
-    handle_select: function(data){
+    handle_select: function(data, autoclick){
       if(!data){
         return;
       }
@@ -328,7 +328,8 @@ jQuery.fn.geomap = function(settings){
         fieldName: self.options.fieldName,
         map: self.Map,
         points: [data],
-        center: data.properties.center
+        center: data.properties.center,
+        autoclick: autoclick
       });
     },
 
@@ -360,7 +361,7 @@ jQuery.fn.geomap = function(settings){
       var context = jQuery('#' + self.options.fieldName);
       jQuery(context).bind(jQuery.geoevents.select_point, function(evt, data){
         data.target.effect('transfer', {to: self}, 'slow', function(){
-          self.options.handle_select(data.point);
+          self.options.handle_select(data.point, data.autoclick);
         });
       });
 
@@ -427,6 +428,7 @@ jQuery.geomarker = function(settings){
     map: null,
     points: [],
     center: [0, 0],
+    autoclick: false,
 
     initialize: function(){
       self.options.clear();
@@ -484,6 +486,11 @@ jQuery.geomarker = function(settings){
               button: _self
             });
           });
+
+          // Autoclick
+          if(self.options.autoclick){
+            jQuery('.geo-marker').click();
+          }
         });
 
         // Google event handlers
@@ -964,7 +971,8 @@ jQuery.fn.geopointview = function(settings){
       self.click(function(){
         jQuery(context).trigger(jQuery.geoevents.select_point, {
           point: self.options.point,
-          target: self
+          target: self,
+          autoclick: true
         });
       });
     }
