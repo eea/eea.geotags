@@ -4,6 +4,7 @@ Changelog
 
 4.0-dev - (unreleased)
 ----------------------
+* Bugfix: Fixed IE js error on google maps, we don't move the navigation widget to the right of the map on preview [szabozo #4542]
 
 * Bugfix: Fixed missing google map api [szabozo0 #4428]
 

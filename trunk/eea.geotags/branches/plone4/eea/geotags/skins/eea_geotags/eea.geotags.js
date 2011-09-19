@@ -1357,7 +1357,7 @@ jQuery.fn.geopreview = function(settings){
       navigationControl: true,
       navigationControlOptions: {
         style: google.maps.NavigationControlStyle.ZOOM_PAN,
-        position: google.maps.ControlPosition.RIGHT
+//        position: google.maps.ControlPosition.RIGHT // this generated a javascript error in IE
       },
       mapTypeControl: true,
       mapTypeControlOptions: {
