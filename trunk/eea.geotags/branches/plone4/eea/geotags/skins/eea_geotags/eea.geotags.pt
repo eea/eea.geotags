@@ -75,10 +75,17 @@
 
         // Display map
         jQuery(document).ready(function(){
-          jQuery('#' + name + '-geopreview').geopreview({
-            fieldName: name,
-            json: geojson
-          });
+            if (jQuery.browser.msie){
+                // If the browser is IE we delay the init of the preview, otherwise we get an error from google maps main.js
+                setTimeout(function(){jQuery('#' + name + '-geopreview').geopreview({fieldName: name,json: geojson})}, 10000);
+            }
+            else{
+                jQuery('#' + name + '-geopreview').geopreview({
+                    fieldName: name,
+                    json: geojson
+                });
+            }
+
         });
       })();
     "></script>
