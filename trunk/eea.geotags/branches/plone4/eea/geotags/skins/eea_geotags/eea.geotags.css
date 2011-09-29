@@ -2,11 +2,6 @@
 .geo-dialog {
   width: 100%;
   height: 100%;
-  font-size: 0.7em;
-}
-
-.geo-dialog h2 {
-  font-size: 1.4em;
 }
 
 .geo-splitter {
@@ -52,6 +47,10 @@
   border-style: none solid solid none;
   -moz-border-radius-bottomright:5px;
   -webkit-border-bottom-right-radius:5px;
+}
+
+.geo-left {
+  z-index: 1001 !important;
 }
 
 /* Left panel */
