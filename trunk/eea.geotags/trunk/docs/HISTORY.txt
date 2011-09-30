@@ -1,17 +1,15 @@
 Changelog
 =========
 
-1.5-dev - (unreleased)
-----------------------
+1.5 - (2011-09-30)
+------------------
 * Feature: Updated geonames API usage according with
   this specifications: http://www.geonames.org/export/web-services.html
   Please update the 'geonames_key' in portal_properties/geographical_properties
   with your geonames username
   [voineali #4525]
-
 * Feature: Use geonames.org service for free search, then fallback to Google service
   [voineali #4525]
-
 
 1.4 - (2011-09-07)
 ------------------
