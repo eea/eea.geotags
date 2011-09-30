@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.6-dev - (unreleased)
+----------------------
+
 1.5 - (2011-09-30)
 ------------------
 * Feature: Updated geonames API usage according with
