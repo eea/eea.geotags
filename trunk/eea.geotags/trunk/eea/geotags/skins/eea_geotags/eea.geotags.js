@@ -452,9 +452,13 @@ jQuery.geomarker = function(settings){
         var title = this.properties.title;
         var subtitle = this.properties.description;
         var tags = '';
-        jQuery.each(this.properties.tags, function(){
-          tags += this + ', ';
-        });
+        if(typeof(this.properties.tags) === 'string'){
+          tags = this.properties.tags;
+        }else{
+          jQuery.each(this.properties.tags, function(){
+            tags += this + ', ';
+          });
+        }
 
         var itemplate = jQuery(self.options.template);
         itemplate.attr('id', uid).attr('title', 'Add');
@@ -642,9 +646,13 @@ jQuery.fn.geobasketitem = function(settings){
       var title = self.options.point.properties.title;
       var subtitle = self.options.point.properties.description;
       var tags = '';
-      jQuery.each(self.options.point.properties.tags, function(){
-        tags += this + ', ';
-      });
+      if(typeof(self.options.point.properties.tags) === 'string'){
+        tags = self.options.point.properties.tags;
+      }else{
+        jQuery.each(self.options.point.properties.tags, function(){
+          tags += this + ', ';
+        });
+      }
 
       var template = jQuery(self.options.template);
       jQuery('.title', template).text(title);
@@ -810,7 +818,9 @@ jQuery.fn.geosearchtab = function(settings){
     json: '',
     suggestions: '',
     query: {
-      address: ''
+      address: '',
+      q: '',
+      maxRows: 10
     },
 
     handle_suggestions: function(data){
@@ -855,23 +865,35 @@ jQuery.fn.geosearchtab = function(settings){
       }
 
       self.options.query.address = value;
+      self.options.query.q = value;
       var query = self.options.query;
 
       var context = jQuery('#' + self.options.fieldName);
       jQuery(context).trigger(jQuery.geoevents.ajax_start);
-      self.Geocoder.geocode(query, function(data){
-        var features = [];
-        jQuery.each(data, function(){
-          features.push(jQuery.google2geojson(this));
-        });
 
-        data = {
-          type: 'FeatureCollection',
-          features: features
-        };
+      // Search with geonames.org
+      jQuery.getJSON(self.options.json, query, function(data){
+        if(data.features.length){
+          self.options.handle_query(data, true);
+          jQuery(context).trigger(jQuery.geoevents.ajax_stop);
+        }else{
+        // Search with Google
+          var xquery = {address: query.address};
+          self.Geocoder.geocode(xquery, function(data){
+            var features = [];
+            jQuery.each(data, function(){
+              features.push(jQuery.google2geojson(this));
+            });
 
-        self.options.handle_query(data, true);
-        jQuery(context).trigger(jQuery.geoevents.ajax_stop);
+            data = {
+              type: 'FeatureCollection',
+              features: features
+            };
+
+            self.options.handle_query(data, true);
+            jQuery(context).trigger(jQuery.geoevents.ajax_stop);
+          });
+        }
       });
     },
 
@@ -956,9 +978,13 @@ jQuery.fn.geopointview = function(settings){
       var title = self.options.point.properties.title;
       var subtitle = self.options.point.properties.description;
       var tags = '';
-      jQuery.each(self.options.point.properties.tags, function(){
-        tags += this + ', ';
-      });
+      if(typeof(self.options.point.properties.tags) === 'string'){
+        tags = self.options.point.properties.tags;
+      }else{
+        jQuery.each(self.options.point.properties.tags, function(){
+          tags += this + ', ';
+        });
+      }
 
       var template = jQuery(self.options.template);
       jQuery('.title', template).text(title);
@@ -1401,9 +1427,14 @@ jQuery.fn.geopreview = function(settings){
         var title = this.properties.title;
         var subtitle = this.properties.description;
         var tags = '';
-        jQuery.each(this.properties.tags, function(){
-          tags += this + ', ';
-        });
+        if(typeof(this.properties.tags) === 'string'){
+          tags = this.properties.tags;
+        }else{
+          jQuery.each(this.properties.tags, function(){
+            tags += this + ', ';
+          });
+        }
+
         var itemplate = jQuery(self.options.template);
         jQuery('.title', itemplate).text(title);
         jQuery('.subtitle', itemplate).text(subtitle);

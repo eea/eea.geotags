@@ -23,7 +23,7 @@ class GeotagsWidget(StringWidget):
         'json': '@@eea.geotags.json',
         'suggestions': '@@eea.geotags.suggestions',
     })
-    
+
 
 """Formlib widget"""
 
@@ -40,11 +40,11 @@ class GeotagMixinField(Field, field.location.GeotagsFieldMixin):
 
 class GeotagSingleField(GeotagMixinField):
     implements(IGeotagSingleField)
-    
+
     @property
     def multiline(self):
         return False
-        
+
 
 
 class IGeotagMultiField(IField):
@@ -53,12 +53,12 @@ class IGeotagMultiField(IField):
 
 class GeotagMultiField(GeotagMixinField):
     implements(IGeotagMultiField)
-    
+
     @property
     def multiline(self):
         return True
-        
-    
+
+
 class FormlibGeotagWidget(object):
     implements(IBrowserWidget, IInputWidget)
     template = ViewPageTemplateFile("location.pt")
@@ -94,8 +94,8 @@ class FormlibGeotagWidget(object):
         self.name = prefix + self.context.__name__
 
     def setRenderedValue(self, value):
-	pass
-	
+        pass
+
     def hasInput(self):
         val = self.request.form.get('location')
         if val and val.strip():
@@ -121,6 +121,6 @@ class FormlibGeotagWidget(object):
             return False
         field.set(content, new_value)
         return True
-    
+
     def __call__(self):
         return self.template()

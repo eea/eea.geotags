@@ -22,6 +22,17 @@ class GeoNamesJsonProvider(object):
     """
     def __init__(self, context):
         self.context = context
+        self._username = None
+
+    @property
+    def username(self):
+        """ Geonames username
+        """
+        if self._username is None:
+            ptool = getToolByName(self.context, 'portal_properties')
+            gtool = getattr(ptool, 'geographical_properties', None)
+            self._username = getattr(gtool, 'geonames_key', '')
+        return self._username
 
     def groups(self, **kwargs):
         voc = queryAdapter(self.context, IGeoGroups)
@@ -165,13 +176,14 @@ class GeoNamesJsonProvider(object):
     def search(self, **kwargs):
         """ Search using geonames webservice
         """
-        template = { # ichimdav was = GEOJSON = ### not used 
+        template = { # ichimdav was = GEOJSON = ### not used
             'type': 'FeatureCollection',
             'features': []
         }
 
         query = kwargs.copy()
         query.setdefault('lang', 'en')
+        query.setdefault('username', self.username)
 
         query = urllib.urlencode(query, doseq=1)
         try:
@@ -187,8 +199,6 @@ class GeoNamesJsonProvider(object):
         except Exception, err:
             logger.exception(err)
             return template
-
-        json.sort(key=operator.itemgetter('name'))
 
         for item in json:
             feature = {
