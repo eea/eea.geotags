@@ -32,6 +32,10 @@ class GeoNamesJsonProvider(object):
             ptool = getToolByName(self.context, 'portal_properties')
             gtool = getattr(ptool, 'geographical_properties', None)
             self._username = getattr(gtool, 'geonames_key', '')
+
+        if not self._username:
+            logger.warn("You need to provide a valid username within "
+             "ZMI > portal_properties > geographical_properties > geonames_key")
         return self._username
 
     def groups(self, **kwargs):
@@ -195,10 +199,14 @@ class GeoNamesJsonProvider(object):
 
         try:
             json = simplejson.loads(json)
-            json = json.get('geonames', []) or []
         except Exception, err:
             logger.exception(err)
             return template
+        else:
+            status = json.get('status', {}).get('message', '')
+            if status:
+                logger.warn(status)
+            json = json.get('geonames', []) or []
 
         for item in json:
             feature = {
