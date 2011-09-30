@@ -6,6 +6,17 @@ from Products.ATVocabularyManager.utils.vocabs import createHierarchicalVocabs
 
 logger = logging.getLogger('eea.geotags')
 
+def setupGeonames(site):
+    """ Add geonames_key properties
+    """
+    ptool = getToolByName(site, 'portal_properties')
+    if 'geographical_properties' not in ptool.objectIds():
+        ptool.addPropertySheet(id='geographical_properties',
+                               title='Geographical properties')
+    gprops = getattr(ptool, 'geographical_properties')
+    if not hasattr(gprops, 'geonames_key'):
+        gprops.manage_addProperty('geonames_key', '', 'string')
+
 def importVocabularies(site):
     """ Import groups vocabulary
     """
@@ -44,3 +55,5 @@ def importVarious(self):
     # Import vocabularies
     importVocabularies(site)
 
+    # Setup geonames
+    setupGeonames(site)
