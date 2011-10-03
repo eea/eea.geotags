@@ -3,6 +3,8 @@ Changelog
 
 1.6-dev - (unreleased)
 ----------------------
+* Bug fix: Fixed search results description and tags when searching with geonames.org
+  [voineali #4525]
 
 1.5 - (2011-09-30)
 ------------------
