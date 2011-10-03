@@ -236,8 +236,12 @@ class GeoNamesJsonProvider(object):
                 item.get('lat'), item.get('lng')]
 
             feature['properties']['name'] = str(item.get('geonameId'))
+
             feature['properties']['title'] = item.get('name')
-            feature['properties']['tags'] = item.get('fclName')
+            feature['properties']['description'] = ', '.join(x
+                for x in (item.get('adminName1'), item.get('countryName')) if x)
+
+            feature['properties']['tags'] = item.get('fcodeName')
             feature['properties']['country'] = item.get('countryCode')
             feature['properties']['adminCode1'] = item.get('adminCode1')
             feature['properties']['adminName1'] = item.get('adminName1')
