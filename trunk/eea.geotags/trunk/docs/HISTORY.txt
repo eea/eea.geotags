@@ -1,6 +1,9 @@
 Changelog
 =========
 
+1.7-dev - (unreleased)
+----------------------
+
 1.6 - (2011-10-04)
 ------------------
 * Bug fix: Fixed search results description and tags when searching with geonames.org
