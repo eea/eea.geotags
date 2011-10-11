@@ -157,17 +157,12 @@
 
 .geo-point-view .ui-icon {
   float: right;
-  visibility: hidden;
   cursor: pointer;
 }
 
 .geo-point-view:hover {
   background: #FBF9EE;
   border: 1px dotted #95b229;
-}
-
-.geo-point-view:hover .ui-icon {
-  visibility: visible;
 }
 
 .geo-mapcanvas {
