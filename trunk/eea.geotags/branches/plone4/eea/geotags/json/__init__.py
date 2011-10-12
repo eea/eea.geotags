@@ -18,17 +18,17 @@ class GeoNamesJsonProvider(object):
     """
     def __init__(self, context):
         self.context = context
-        self._username = None 
- 
-    @property 
-    def username(self): 
-        """ Geonames username 
-        """ 
-        if self._username is None: 
-            ptool = getToolByName(self.context, 'portal_properties') 
-            gtool = getattr(ptool, 'geographical_properties', None) 
-            self._username = getattr(gtool, 'geonames_key', '') 
-        return self._username 
+        self._username = None
+
+    @property
+    def username(self):
+        """ Geonames username
+        """
+        if self._username is None:
+            ptool = getToolByName(self.context, 'portal_properties')
+            gtool = getattr(ptool, 'geographical_properties', None)
+            self._username = getattr(gtool, 'geonames_key', '')
+        return self._username
 
     def groups(self, **kwargs):
         """ Groups
@@ -193,7 +193,7 @@ class GeoNamesJsonProvider(object):
 
         query = kwargs.copy()
         query.setdefault('lang', 'en')
-        query.setdefault('username', self.username) 
+        query.setdefault('username', self.username)
 
         query = urllib.urlencode(query, doseq=1)
         try:
@@ -242,10 +242,10 @@ class GeoNamesJsonProvider(object):
             feature['properties']['name'] = str(item.get('geonameId'))
 
             feature['properties']['title'] = item.get('name')
-            feature['properties']['description'] = ', '.join(x 
-                for x in (item.get('adminName1'), item.get('countryName')) if x) 
- 
-            feature['properties']['tags'] = item.get('fcodeName') 
+            feature['properties']['description'] = ', '.join(x
+                for x in (item.get('adminName1'), item.get('countryName')) if x)
+
+            feature['properties']['tags'] = item.get('fcodeName')
             feature['properties']['country'] = item.get('countryCode')
             feature['properties']['adminCode1'] = item.get('adminCode1')
             feature['properties']['adminName1'] = item.get('adminName1')
