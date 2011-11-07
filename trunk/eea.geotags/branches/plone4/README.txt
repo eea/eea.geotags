@@ -29,6 +29,8 @@ EEA Geotags features:
      biogeographical region, countries group, country, nuts region, city and natural feature
   5. The widget can be used as single or multiple location picker
 
+Also read README.txt under eea.alchemy.
+
 More details about how to use this package can be found at the following link:
 
   1. https://svn.eionet.europa.eu/projects/Zope/wiki/HowToGeotag
