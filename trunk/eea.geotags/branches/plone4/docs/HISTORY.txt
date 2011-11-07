@@ -1,24 +1,29 @@
 Changelog
 =========
 
-
 4.0-dev - (unreleased)
 ----------------------
+
 * Bug fix: Fixed search results description and tags when searching with geonames.org 
-  [voineali #4525] (v1.6 backport)
+  [voineali #4525]
+  
 * Feature: Updated geonames API usage according with 
   this specifications: http://www.geonames.org/export/web-services.html 
   Please update the 'geonames_key' in portal_properties/geographical_properties 
   with your geonames username 
-  [voineali #4525] (v1.5 backport)
+  [voineali #4525]
+  
 * Feature: Use geonames.org service for free search, then fallback to Google service 
-  [voineali #4525] (v1.5 backport)
+  [voineali #4525]
+  
 * Feature: Geotag widget usability, add tag in one click 
-  [voineali #4429] (v1.4 backport)
+  [voineali #4429]
 
-* Bugfix: Fixed IE js error on google maps, we don't move the navigation widget to the right of the map on preview [szabozo #4542]
+* Bugfix: Fixed IE js error on google maps, we don't move the navigation widget to the right of the map on preview
+  [szabozo #4542]
 
-* Bugfix: Fixed missing google map api [szabozo0 #4428]
+* Bugfix: Fixed missing google map api
+  [szabozo0 #4428]
 
 * Cleanup: Fixed all pylint, pyflakes warnings
   [voineali #4236]
