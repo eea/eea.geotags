@@ -4,6 +4,10 @@ Changelog
 4.0-dev - (unreleased)
 ----------------------
 
+* Feature: Added a way to override default Archetypes location field/widget
+  by just adding eea.geotags.default within zcml directive in your buildout
+  [voineali #4694]
+
 * Bug fix: Fixed geotags dialog on Add form when portal_factory is enabled
   [voineali #4696]
 

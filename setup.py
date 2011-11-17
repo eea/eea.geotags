@@ -30,8 +30,9 @@ setup(name=NAME,
       zip_safe=False,
       install_requires=[
           'setuptools',
-          'eea.jquery',
           'Products.ATVocabularyManager',
+          'archetypes.schemaextender',
+          'eea.jquery',
           'eea.alchemy',
       ],
       entry_points="""
