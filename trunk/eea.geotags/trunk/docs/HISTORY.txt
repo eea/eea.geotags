@@ -3,6 +3,9 @@ Changelog
 
 4.2-dev - (unreleased)
 ----------------------
+* Bug fix: Fixed required validation for location field
+  [voineali #4694]
+
 * Bug fix: Fix test if context is annotable
   [voineali #4741]
 
