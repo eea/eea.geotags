@@ -2,8 +2,12 @@
 """
 import logging
 import json
+from Acquisition import aq_get
+from zope.i18nmessageid import Message
+from zope.i18n import translate
 from zope.component import queryAdapter
 from Products.Archetypes import atapi
+from Products.Archetypes import PloneMessageFactory as _
 from eea.geotags.interfaces import IGeoTags
 
 logger = logging.getLogger('eea.geotags.field')
@@ -69,7 +73,25 @@ class GeotagsFieldMixin(object):
             return item
         return ''
 
-class GeotagsStringField(atapi.StringField, GeotagsFieldMixin):
+    def validate_required(self, instance, value, errors):
+        """ Validate
+        """
+        value = [item for item in self.json2list(value)]
+        if not value:
+            request = aq_get(instance, 'REQUEST')
+            label = self.widget.Label(instance)
+            name = self.getName()
+            if isinstance(label, Message):
+                label = translate(label, context=request)
+            error = _(u'error_required',
+                      default=u'${name} is required, please correct.',
+                      mapping={'name': label})
+            error = translate(error, context=request)
+            errors[name] = error
+            return error
+        return None
+
+class GeotagsStringField(GeotagsFieldMixin, atapi.StringField):
     """ Single geotag field
     """
     def set(self, instance, value, **kwargs):
@@ -79,7 +101,7 @@ class GeotagsStringField(atapi.StringField, GeotagsFieldMixin):
         tag = self.json2string(value)
         return atapi.StringField.set(self, instance, tag, **kwargs)
 
-class GeotagsLinesField(atapi.LinesField, GeotagsFieldMixin):
+class GeotagsLinesField(GeotagsFieldMixin, atapi.LinesField):
     """ Multiple geotags field
     """
     def set(self, instance, value, **kwargs):
@@ -88,4 +110,3 @@ class GeotagsLinesField(atapi.LinesField, GeotagsFieldMixin):
         self.setJSON(instance, value, **kwargs)
         tags = [tag for tag in self.json2list(value)]
         return atapi.LinesField.set(self, instance, tags, **kwargs)
-
