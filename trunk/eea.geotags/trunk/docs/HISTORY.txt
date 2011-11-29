@@ -3,6 +3,9 @@ Changelog
 
 4.3-dev - (unreleased)
 ----------------------
+* Bug fix: Fixed geotags widget to keep filled values if the edit form fails to
+  submit due to validation errors
+  [voineali #4773]
 
 4.2 - (2011-11-21)
 ------------------
