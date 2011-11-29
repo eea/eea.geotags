@@ -9,7 +9,11 @@ VERSION = open(os.path.join(*PATH)).read().strip()
 
 setup(name=NAME,
       version=VERSION,
-      description="Geo tags widget",
+      description=(
+          "EEA Geotags package redefines the location field in Plone. "
+          "Right now in Plone location field is a free text field. "
+          "EEA Geotags lets you easy define locations using a map picker "
+          "and http://geonames.org geographical database."),
       long_description=open("README.txt").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
@@ -18,11 +22,12 @@ setup(name=NAME,
           "Topic :: Software Development :: Libraries :: Python Modules",
         ],
       keywords='eea geotags widget field zope plone',
-      author='Alin Voinea (Eaudeweb), Antonio De Marinis (EEA), '
-             'European Environment Agency (EEA)',
+      author=('Alin Voinea (Eaudeweb), '
+              'Antonio De Marinis (EEA), '
+              'European Environment Agency (EEA)'),
       author_email='webadmin@eea.europa.eu',
-      url='http://svn.eionet.europa.eu/projects/'
-          'Zope/browser/trunk/eea.geotags',
+      url=('http://svn.eionet.europa.eu/projects/'
+           'Zope/browser/trunk/eea.geotags'),
       license='GPL',
       packages=find_packages(exclude=['ez_setup']),
       namespace_packages=['eea'],
