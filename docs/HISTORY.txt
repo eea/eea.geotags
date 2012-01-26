@@ -3,6 +3,8 @@ Changelog
 
 4.4-dev - (unreleased)
 ----------------------
+* Feature: implemented first basic list view of geotags.
+  [demarant] 
 
 4.3 - (2011-11-29)
 ------------------
