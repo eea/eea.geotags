@@ -9,7 +9,11 @@
   <body>
 
   <metal:view_macro define-macro="view">
-    View location
+    <ul tal:define="geotags python:field.getAccessor(here)()" tal:condition="geotags">
+        <li tal:repeat="tag geotags" tal:content="tag">
+           Geotag label
+        </li>
+    </ul>
   </metal:view_macro>
 
   <div metal:define-macro="location" tal:define="
