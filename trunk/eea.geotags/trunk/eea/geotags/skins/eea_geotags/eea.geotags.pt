@@ -1,19 +1,125 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:tal="http://xml.zope.org/namespaces/tal"
-  xmlns:metal="http://xml.zope.org/namespaces/metal"
-  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
-  i18n:domain="eea.geotags">
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="eea.geotags">
 
   <head><title></title></head>
 
   <body>
 
   <metal:view_macro define-macro="view">
-    <ul tal:define="geotags python:field.getAccessor(here)()" tal:condition="geotags">
-        <li tal:repeat="tag geotags" tal:content="tag">
-           Geotag label
-        </li>
-    </ul>
+    <!-- TODO: remove me -->
+    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css">
+
+    <script type="text/javascript">var djConfig = {parseOnLoad: true};</script>
+    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7"></script>
+    <script type="text/javascript">
+
+      dojo.require("dijit.layout.BorderContainer");
+      dojo.require("dijit.layout.ContentPane");
+      dojo.require("esri.map");
+      dojo.require("esri.dijit.Scalebar");
+
+      var map;
+
+      function init() {
+        // To get initial coordonates, zoom to default location and run in debuger: dojo.toJson(map.extent.toJson());
+        var initExtent = new esri.geometry.Extent({"xmin":-40,"ymin":30,"xmax":122,"ymax":74,"spatialReference":{"wkid":102100}});
+        map = new esri.Map("map",{"extent":esri.geometry.geographicToWebMercator(initExtent),
+                                  "wrapAround180":true,
+                                  "fadeOnZoom": true,
+                                  "force3DTransforms": true,
+                                  "isScrollWheelZoom": false,
+                                  "navigationMode": "css-transforms"});
+
+        var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
+        map.addLayer(basemap);
+
+        // Loading images
+        loading = dojo.byId("loadingImg");
+        dojo.connect(map,"onUpdateStart",showLoading);
+        dojo.connect(map,"onUpdateEnd",hideLoading);
+
+        dojo.connect(map, 'onLoad', function() {
+          // Resize the map when the browser resizes
+          dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
+
+          // Draw a point on map
+          drawPoints();
+
+          // Scalebar
+          var scalebar = new esri.dijit.Scalebar({
+            map: map,
+            scalebarUnit:"metric", // Use 'english' for miles
+            attachTo:"bottom-left"
+          });
+
+          // Hack to disable scroll wheel zooming, as map.disableScrollWheelZoom() has no effect
+          map.onMouseWheel = function() {};
+        });
+      }
+
+      dojo.addOnLoad(init);
+
+      // Draw a point on map
+      function drawPoints() {
+       var contextURL = window.location.href;
+
+       var infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color("#B1C748"));
+       var infoTemplate = new esri.InfoTemplate("${Name}",
+                                                "${Addr}<br />Latitude: ${Latitude}<br />Longitude: ${Longitude}");
+
+       jQuery.getJSON(contextURL + '/eea.geotags.jsondata', {}, function(data) {
+               jQuery.each(data.features, function(i,item){
+
+                   var geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
+                   geometry = esri.geometry.geographicToWebMercator(geometry);
+
+                   var mapPoint = new esri.Graphic({"geometry":geometry,
+                                                    "attributes":{"Name":"Location",
+                                                                  "Addr":item.properties.description,
+                                                                  "Latitude":item.properties.center[0],
+                                                                  "Longitude":item.properties.center[1]}});
+                   mapPoint.setSymbol(infoSymbol);
+                   mapPoint.setInfoTemplate(infoTemplate);
+                   map.graphics.add(mapPoint);
+               })
+       })
+      }
+
+      function showLoading() {
+        esri.show(loading);
+        map.disableMapNavigation();
+        map.hideZoomSlider();
+      }
+
+      function hideLoading(error) {
+        esri.hide(loading);
+        map.enableMapNavigation();
+        map.showZoomSlider();
+      }
+
+    </script>
+
+    <tal:block define="geotags python:field.getAccessor(here)()" condition="geotags">
+      <div id="map" style="padding:0">
+          <img id="loadingImg"
+               src="http://help.arcgis.com/en/webapi/javascript/arcgis/demos/map/images/loading.gif"
+               style="position:absolute; right:512px; top:256px; z-index:100;" />
+      </div>
+
+      <div style="text-align: right; color: #666; line-height: 2em;">
+            <span i18n:translate="">Location:</span>
+            <span tal:repeat="tag geotags">
+                <a href="#map" title=""
+                   tal:content="tag"
+                   tal:attributes="title tag;
+                                   href python:context.absolute_url() + '#map'"
+                   style="color: black; display: inline-block; background: #ECECEC; border-radius: 0.5em; padding: 0 5px; margin: 2px 0; -webkit-border-radius: 0.5em; font-size: 10px;" />
+            </span>
+      </div>
+    </tal:block>
   </metal:view_macro>
 
   <div metal:define-macro="location" tal:define="

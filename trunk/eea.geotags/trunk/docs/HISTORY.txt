@@ -3,6 +3,14 @@ Changelog
 
 4.5-dev - (unreleased)
 ----------------------
+* Feature: WIP: eea.geotags widget view macro is now using ArcGIS JavaScript framework to display
+  locations on a map
+  [ghicaale #3354]
+* Feature: WIP: the view macro has two options, with map or plain text
+  [ghicaale #3354]
+* Feature: WIP: the map view use CSS3 transform for better performance on rendering, disabled wheel
+  scroll, loading image, continous pan, default map is centered on Europe and visible scalebar in km
+  [ghicaale #3354]
 
 4.4 - (2012-02-06)
 ------------------

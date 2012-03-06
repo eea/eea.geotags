@@ -3,9 +3,9 @@
 from pprint import pformat
 import logging
 import json as simplejson
-from zope.component import queryAdapter
+from zope.component import queryAdapter, getAdapter
 from Products.Five.browser import BrowserView
-from eea.geotags.interfaces import IJsonProvider
+from eea.geotags.interfaces import IJsonProvider, IGeoTags
 from eea.geotags.cache import ramcache, cacheGeoJsonKey
 
 logger = logging.getLogger('eea.geotags.browser.json')
@@ -13,6 +13,7 @@ logger = logging.getLogger('eea.geotags.browser.json')
 class JSON(BrowserView):
     """ JSON service
     """
+
     @ramcache(cacheGeoJsonKey, dependencies=['eea.geotags'])
     def __call__(self, **kwargs):
         if self.request:
@@ -38,3 +39,12 @@ class JSON(BrowserView):
         if kwargs.get('print', None):
             return pformat(res)
         return simplejson.dumps(res)
+
+class JSONDATA(BrowserView):
+    """ Return the JSON with geographical tags from annotations
+    """
+
+    @ramcache(cacheGeoJsonKey, dependencies=['eea.geotags'])
+    def __call__(self, **kwargs):
+        geo = getAdapter(self.context, IGeoTags)
+        return simplejson.dumps(geo.tags)
