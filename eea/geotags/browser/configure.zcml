@@ -26,6 +26,11 @@
                 permission="zope2.View" />
 
   <browser:page for="eea.geotags.interfaces.IGeoTaggable"
+                name="eea.geotags.jsondata"
+                class=".app.geojson.JSONDATA"
+                permission="zope2.View" />
+
+  <browser:page for="eea.geotags.interfaces.IGeoTaggable"
                 name="eea.geotags.suggestions"
                 class=".app.suggestions.View"
                 permission="zope2.View" />
