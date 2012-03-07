@@ -364,14 +364,17 @@
   background: #ECECEC;
   border-radius: 0.5em;
   -webkit-border-radius: 0.5em;
+  -moz-border-radius: 0.5em;
   padding: 0 5px;
   margin: 2px 0;
   font-size: 10px;
+  word-break: keep-all;
 }
 
 .location-listing a:hover {
   background: orange;
-  color: white;
+  color: white !important;
+  border-color: #205c90;
 }
 
 #esriMapLoadingImg {
