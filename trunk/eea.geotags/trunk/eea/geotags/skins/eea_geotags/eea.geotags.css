@@ -350,6 +350,7 @@
 /* View macro */
 #esriMap {
   padding:0;
+  border: 1px solid black;
 }
 
 .location-listing {
@@ -379,7 +380,7 @@
 
 #esriMapLoadingImg {
   position:absolute;
-  right:512px;
-  top:256px;
+  right:300px;
+  top:400px;
   z-index:100;
 }
