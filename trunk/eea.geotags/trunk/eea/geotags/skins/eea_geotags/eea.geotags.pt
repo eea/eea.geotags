@@ -12,36 +12,78 @@
     <!-- TODO: remove me -->
     <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css">
 
-    <script type="text/javascript">var djConfig = {parseOnLoad: true};</script>
+    <script type="text/javascript" tal:content="string:(function(){var djConfig = {parseOnLoad: true};})"></script>
     <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7"></script>
-    <script type="text/javascript">
-
-      dojo.require("dijit.layout.BorderContainer");
-      dojo.require("dijit.layout.ContentPane");
-      dojo.require("esri.map");
-      dojo.require("esri.dijit.Scalebar");
+    <script type="text/javascript" tal:content="string:(function () {
+      'use strict';
+      dojo.require('dijit.layout.BorderContainer');
+      dojo.require('dijit.layout.ContentPane');
+      dojo.require('esri.map');
+      dojo.require('esri.dijit.Scalebar');
 
       var map;
 
+      function showLoading() {
+        var loading;
+        loading = dojo.byId('loadingImg');
+        esri.show(loading);
+        map.disableMapNavigation();
+        map.hideZoomSlider();
+      }
+
+      function hideLoading(error) {
+        var loading;
+        loading = dojo.byId('loadingImg');
+        esri.hide(loading);
+        map.enableMapNavigation();
+        map.showZoomSlider();
+      }
+
+      // Draw a point on map
+      function drawPoints() {
+       var contextURL, infoSymbol, infoTemplate;
+
+       contextURL = window.location.href;
+       infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
+       infoTemplate = new esri.InfoTemplate('$${Name}',
+                                                '$${Addr}<br />Latitude: $${Latitude}<br />Longitude: $${Longitude}');
+
+       jQuery.getJSON(contextURL + '/eea.geotags.jsondata', {}, function (data) {
+               jQuery.each(data.features, function (i, item) {
+                 var geometry, mapPoint;
+                 geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
+                 geometry = esri.geometry.geographicToWebMercator(geometry);
+
+                 mapPoint = new esri.Graphic({'geometry': geometry,
+                                              'attributes': {'Name': 'Location',
+                                                             'Addr': item.properties.description,
+                                                             'Latitude': item.properties.center[0],
+                                                             'Longitude': item.properties.center[1]}});
+                 mapPoint.setSymbol(infoSymbol);
+                 mapPoint.setInfoTemplate(infoTemplate);
+                 map.graphics.add(mapPoint);
+               });
+       });
+      }
+
       function init() {
         // To get initial coordonates, zoom to default location and run in debuger: dojo.toJson(map.extent.toJson());
-        var initExtent = new esri.geometry.Extent({"xmin":-40,"ymin":30,"xmax":122,"ymax":74,"spatialReference":{"wkid":102100}});
-        map = new esri.Map("map",{"extent":esri.geometry.geographicToWebMercator(initExtent),
-                                  "wrapAround180":true,
-                                  "fadeOnZoom": true,
-                                  "force3DTransforms": true,
-                                  "isScrollWheelZoom": false,
-                                  "navigationMode": "css-transforms"});
-
-        var basemap = new esri.layers.ArcGISTiledMapServiceLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer");
+        var initExtent, basemap;
+        initExtent = new esri.geometry.Extent({'xmin': -40, 'ymin': 30, 'xmax': 122, 'ymax': 74, 'spatialReference': {'wkid': 102100}});
+        basemap = new esri.layers.ArcGISTiledMapServiceLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer');
+        map = new esri.Map('esriMap', {'extent': esri.geometry.geographicToWebMercator(initExtent),
+                                       'wrapAround180': true,
+                                       'fadeOnZoom': true,
+                                       'force3DTransforms': true,
+                                       'isScrollWheelZoom': false,
+                                       'navigationMode': 'css-transforms'});
         map.addLayer(basemap);
 
         // Loading images
-        loading = dojo.byId("loadingImg");
-        dojo.connect(map,"onUpdateStart",showLoading);
-        dojo.connect(map,"onUpdateEnd",hideLoading);
+        dojo.connect(map, 'onUpdateStart', showLoading);
+        dojo.connect(map, 'onUpdateEnd', hideLoading);
 
-        dojo.connect(map, 'onLoad', function() {
+        dojo.connect(map, 'onLoad', function () {
           // Resize the map when the browser resizes
           dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
 
@@ -51,59 +93,21 @@
           // Scalebar
           var scalebar = new esri.dijit.Scalebar({
             map: map,
-            scalebarUnit:"metric", // Use 'english' for miles
-            attachTo:"bottom-left"
+            scalebarUnit: 'metric', // Use 'english' for miles
+            attachTo: 'bottom-left'
           });
 
           // Hack to disable scroll wheel zooming, as map.disableScrollWheelZoom() has no effect
-          map.onMouseWheel = function() {};
+          map.onMouseWheel = function () {};
         });
       }
 
       dojo.addOnLoad(init);
 
-      // Draw a point on map
-      function drawPoints() {
-       var contextURL = window.location.href;
-
-       var infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color("#B1C748"));
-       var infoTemplate = new esri.InfoTemplate("${Name}",
-                                                "${Addr}<br />Latitude: ${Latitude}<br />Longitude: ${Longitude}");
-
-       jQuery.getJSON(contextURL + '/eea.geotags.jsondata', {}, function(data) {
-               jQuery.each(data.features, function(i,item){
-
-                   var geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
-                   geometry = esri.geometry.geographicToWebMercator(geometry);
-
-                   var mapPoint = new esri.Graphic({"geometry":geometry,
-                                                    "attributes":{"Name":"Location",
-                                                                  "Addr":item.properties.description,
-                                                                  "Latitude":item.properties.center[0],
-                                                                  "Longitude":item.properties.center[1]}});
-                   mapPoint.setSymbol(infoSymbol);
-                   mapPoint.setInfoTemplate(infoTemplate);
-                   map.graphics.add(mapPoint);
-               })
-       })
-      }
-
-      function showLoading() {
-        esri.show(loading);
-        map.disableMapNavigation();
-        map.hideZoomSlider();
-      }
-
-      function hideLoading(error) {
-        esri.hide(loading);
-        map.enableMapNavigation();
-        map.showZoomSlider();
-      }
-
-    </script>
+    })()"></script>
 
     <tal:block define="geotags python:field.getAccessor(here)()" condition="geotags">
-      <div id="map" style="padding:0">
+      <div id="esriMap" style="padding:0">
           <img id="loadingImg"
                src="http://help.arcgis.com/en/webapi/javascript/arcgis/demos/map/images/loading.gif"
                style="position:absolute; right:512px; top:256px; z-index:100;" />
