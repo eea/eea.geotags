@@ -9,12 +9,17 @@
   <body>
 
   <metal:view_macro define-macro="view">
-    <!-- TODO: remove me -->
-    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css">
+  <tal:view_macro define="geotags python:field.getAccessor(here)();
+                          hideMap hideMap|nothing"
+                  condition="geotags">
 
-    <script type="text/javascript" tal:content="string:(function(){var djConfig = {parseOnLoad: true};})"></script>
-    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7"></script>
-    <script type="text/javascript" tal:content="string:(function () {
+    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css" tal:condition="not:hideMap">
+
+    <script type="text/javascript" tal:content="string:(function(){var djConfig = {parseOnLoad: true};})" tal:condition="not:hideMap"></script>
+    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7" tal:condition="not:hideMap"></script>
+    <script type="text/javascript"
+            tal:condition="not:hideMap"
+            tal:content="string:(function () {
       'use strict';
       dojo.require('dijit.layout.BorderContainer');
       dojo.require('dijit.layout.ContentPane');
@@ -25,7 +30,7 @@
 
       function showLoading() {
         var loading;
-        loading = dojo.byId('loadingImg');
+        loading = dojo.byId('esriMapLoadingImg');
         esri.show(loading);
         map.disableMapNavigation();
         map.hideZoomSlider();
@@ -33,7 +38,7 @@
 
       function hideLoading(error) {
         var loading;
-        loading = dojo.byId('loadingImg');
+        loading = dojo.byId('esriMapLoadingImg');
         esri.hide(loading);
         map.enableMapNavigation();
         map.showZoomSlider();
@@ -106,24 +111,24 @@
 
     })()"></script>
 
-    <tal:block define="geotags python:field.getAccessor(here)()" condition="geotags">
-      <div id="esriMap" style="padding:0">
-          <img id="loadingImg"
-               src="http://help.arcgis.com/en/webapi/javascript/arcgis/demos/map/images/loading.gif"
-               style="position:absolute; right:512px; top:256px; z-index:100;" />
-      </div>
 
-      <div style="text-align: right; color: #666; line-height: 2em;">
-            <span i18n:translate="">Location:</span>
-            <span tal:repeat="tag geotags">
-                <a href="#map" title=""
-                   tal:content="tag"
-                   tal:attributes="title tag;
-                                   href python:context.absolute_url() + '#map'"
-                   style="color: black; display: inline-block; background: #ECECEC; border-radius: 0.5em; padding: 0 5px; margin: 2px 0; -webkit-border-radius: 0.5em; font-size: 10px;" />
-            </span>
-      </div>
-    </tal:block>
+    <div id="esriMap" class="claro" tal:condition="not:hideMap">
+        <img id="esriMapLoadingImg"
+             src="loading.gif"
+             tal:attributes="src string:$portal_url/loading.gif" />
+    </div>
+
+    <div class="location-listing">
+          <span i18n:translate="">Location:</span>
+          <span tal:repeat="tag geotags">
+              <a href="#esriMap" title=""
+                 tal:content="tag"
+                 tal:attributes="title tag;
+                                 href python:context.absolute_url() + '#esriMap'" />
+          </span>
+    </div>
+    <br />
+  </tal:view_macro>
   </metal:view_macro>
 
   <div metal:define-macro="location" tal:define="
