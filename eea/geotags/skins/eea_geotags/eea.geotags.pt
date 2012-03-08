@@ -110,7 +110,7 @@ Usage with hidden map:
         dojo.connect(map, 'onLoad', function () {
           // Resize the map when the browser resizes
           dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
-          map.infoWindow.resize(140, 130);
+          map.infoWindow.resize(140, 100);
 
           // Draw a point on map
           drawPoints();
@@ -130,11 +130,6 @@ Usage with hidden map:
       dojo.addOnLoad(init);
 
     })()"></script>
-
-    <!-- dl class="portalMessage info">
-        <dt>Info</dt>
-        <dd>Changes saved.</dd>
-    </dl -->
 
     <div id="esriMap" class="claro" tal:condition="not:hideMap">
         <img id="esriMapLoadingImg"
