@@ -8,6 +8,19 @@
 
   <body>
 
+  <tal:comment condition="nothing">
+<!--
+Macro parameters:
+
+  @@param hideMap
+
+Usage:
+
+  <metal:popup use-macro="here/eeareferencebrowser/macros/popup" />
+
+-->
+  </tal:comment>
+
   <metal:view_macro define-macro="view">
   <tal:view_macro define="geotags python:field.getAccessor(here)();
                           hideMap hideMap|nothing"
@@ -19,7 +32,7 @@
     <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7" tal:condition="not:hideMap"></script>
     <script type="text/javascript"
             tal:condition="not:hideMap"
-            tal:content="string:(function () {
+            tal:content="structure string:(function () {
       'use strict';
       dojo.require('dijit.layout.BorderContainer');
       dojo.require('dijit.layout.ContentPane');
@@ -50,8 +63,7 @@
 
        contextURL = window.location.href;
        infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
-       infoTemplate = new esri.InfoTemplate('$${Name}',
-                                                '$${Addr}<br />Latitude: $${Latitude}<br />Longitude: $${Longitude}');
+       infoTemplate = new esri.InfoTemplate('$${Name}', '$${Addr}');
 
        jQuery.getJSON(contextURL + '/eea.geotags.jsondata', {}, function (data) {
                jQuery.each(data.features, function (i, item) {
@@ -61,9 +73,7 @@
 
                  mapPoint = new esri.Graphic({'geometry': geometry,
                                               'attributes': {'Name': 'Location',
-                                                             'Addr': item.properties.description,
-                                                             'Latitude': item.properties.center[0],
-                                                             'Longitude': item.properties.center[1]}});
+                                                             'Addr': item.properties.description}});
                  mapPoint.setSymbol(infoSymbol);
                  mapPoint.setInfoTemplate(infoTemplate);
                  map.graphics.add(mapPoint);
@@ -91,6 +101,7 @@
         dojo.connect(map, 'onLoad', function () {
           // Resize the map when the browser resizes
           dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
+          map.infoWindow.resize(140, 130);
 
           // Draw a point on map
           drawPoints();
@@ -111,6 +122,10 @@
 
     })()"></script>
 
+    <!-- dl class="portalMessage info">
+        <dt>Info</dt>
+        <dd>Changes saved.</dd>
+    </dl -->
 
     <div id="esriMap" class="claro" tal:condition="not:hideMap">
         <img id="esriMapLoadingImg"
