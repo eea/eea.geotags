@@ -14,10 +14,19 @@ Macro parameters:
 
   @@param hideMap
 
-Usage:
+Usage with map visible:
 
-  <metal:popup use-macro="here/eeareferencebrowser/macros/popup" />
+   <metal:field use-macro="python:context.widget('location', mode='view')">
+        Location field view macro
+    </metal:field>
 
+Usage with hidden map:
+
+    <tal:hideMap define="hideMap python:True">
+        <metal:field use-macro="python:context.widget('location', mode='view')">
+            Location field view macro
+        </metal:field>
+    </tal:hideMap>
 -->
   </tal:comment>
 
