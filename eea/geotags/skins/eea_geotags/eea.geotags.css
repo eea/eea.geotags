@@ -349,8 +349,9 @@
 
 /* View macro */
 #esriMap {
-  padding:0;
+  padding: 0;
   border: 1px solid black;
+  height: 400px;
 }
 
 .location-listing {
@@ -379,8 +380,13 @@
 }
 
 #esriMapLoadingImg {
-  position:absolute;
-  right:300px;
-  top:400px;
+  position: relative;
+  margin-left: 48%;
+  margin-top: 30%;
   z-index:100;
+}
+
+div .esriScalebar {
+  position: relative;
+  margin-top: -15px;
 }
