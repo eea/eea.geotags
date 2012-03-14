@@ -1494,5 +1494,7 @@ jQuery.fn.geopreview = function(settings){
   return this;
 };
 
+// EEA Geotags widget view on map
+
 // End namespace
 })();
