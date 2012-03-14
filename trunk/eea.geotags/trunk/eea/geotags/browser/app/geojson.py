@@ -44,7 +44,6 @@ class JSONDATA(BrowserView):
     """ Return the JSON with geographical tags from annotations
     """
 
-    @ramcache(cacheGeoJsonKey, dependencies=['eea.geotags'])
     def __call__(self, **kwargs):
         geo = getAdapter(self.context, IGeoTags)
         return simplejson.dumps(geo.tags)

@@ -68,13 +68,17 @@ Usage with hidden map:
 
       // Draw a point on map
       function drawPoints() {
-       var contextURL, infoSymbol, infoTemplate;
+       var context_url, infoSymbol, infoTemplate;
 
-       contextURL = window.location.href;
+       context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
+
        infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
        infoTemplate = new esri.InfoTemplate('$${Name}', '$${Addr}');
 
-       jQuery.getJSON(contextURL + '/eea.geotags.jsondata', {}, function (data) {
+       jQuery.getJSON(context_url + '/eea.geotags.jsondata', {}, function (data) {
+               var locationTags;
+               locationTags = jQuery('.location-listing span a');
+
                jQuery.each(data.features, function (i, item) {
                  var geometry, mapPoint;
                  geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
@@ -86,6 +90,18 @@ Usage with hidden map:
                  mapPoint.setSymbol(infoSymbol);
                  mapPoint.setInfoTemplate(infoTemplate);
                  map.graphics.add(mapPoint);
+
+                 // Bind onClick event to html tags
+                 //locationTags[i].title = item.properties.center[1] + ', ' + item.properties.center[0];
+                 jQuery(locationTags[i]).data('latitude', item.properties.center[1])
+                 jQuery(locationTags[i]).data('longitude', item.properties.center[0])
+
+                 locationTags.click(function () {
+                   var geometryClick;
+                   geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
+                   geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
+                   map.centerAndZoom(geometryClick, 5);
+                 });
                });
        });
       }
@@ -140,7 +156,8 @@ Usage with hidden map:
     <div class="location-listing">
           <span i18n:translate="">Location:</span>
           <span tal:repeat="tag geotags">
-              <a href="#esriMap" title=""
+              <a href="#esriMap"
+                 title=""
                  tal:content="tag"
                  tal:attributes="title tag;
                                  href python:context.absolute_url() + '#esriMap'" />
