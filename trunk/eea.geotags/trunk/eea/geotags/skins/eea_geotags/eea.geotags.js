@@ -1525,7 +1525,7 @@ EEAGeotags.View.prototype = {
     dojo.require('dijit.layout.ContentPane');
     dojo.require('esri.map');
     dojo.require('esri.dijit.Scalebar');
-    self.initMap()
+    self.initMap();
   },
 
   // Show loading image
@@ -1575,15 +1575,14 @@ EEAGeotags.View.prototype = {
                 self.map.graphics.add(mapPoint);
 
                 // Bind onClick event to html tags
-                //locationTags[i].title = item.properties.center[1] + ', ' + item.properties.center[0];
-                jQuery(locationTags[i]).data('latitude', item.properties.center[1])
-                jQuery(locationTags[i]).data('longitude', item.properties.center[0])
+                jQuery(locationTags[i]).data('latitude', item.properties.center[1]);
+                jQuery(locationTags[i]).data('longitude', item.properties.center[0]);
 
                 locationTags.click(function () {
-                var geometryClick;
-                geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
-                geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
-                self.map.centerAndZoom(geometryClick, 5);
+                  var geometryClick;
+                  geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
+                  geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
+                  self.map.centerAndZoom(geometryClick, 5);
                 });
             });
     });
@@ -1629,7 +1628,7 @@ EEAGeotags.View.prototype = {
         // Hack to disable scroll wheel zooming, as map.disableScrollWheelZoom() has no effect
         self.map.onMouseWheel = function () {};
     });
-  },
+  }
 };
 
 // jQuery plugin for EEAGeotags.View
