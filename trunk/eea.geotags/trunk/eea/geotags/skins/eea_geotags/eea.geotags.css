@@ -348,19 +348,19 @@
 }
 
 /* View macro */
-#esriMap {
+#eeaEsriMap {
   padding: 0;
   border: 1px solid black;
   height: 400px;
 }
 
-.location-listing {
+.eea-location-listing {
   text-align: right;
   color: #666;
   line-height: 2em;
 }
 
-.location-listing a {
+.eea-location-listing a {
   color: black;
   display: inline-block;
   background: #ECECEC;
@@ -373,13 +373,13 @@
   word-break: keep-all;
 }
 
-.location-listing a:hover {
+.eea-location-listing a:hover {
   background: orange;
   color: white !important;
   border-color: #205c90;
 }
 
-#esriMapLoadingImg {
+#eeaEsriMapLoadingImg {
   position: relative;
   margin-left: 48%;
   margin-top: 30%;

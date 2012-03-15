@@ -35,132 +35,41 @@ Usage with hidden map:
                           hideMap hideMap|nothing"
                   condition="geotags">
 
-    <link rel="stylesheet" type="text/css" href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css" tal:condition="not:hideMap">
+    <link rel="stylesheet" type="text/css"
+          href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css"
+          tal:condition="not:hideMap" />
 
-    <script type="text/javascript" tal:content="string:(function(){var djConfig = {parseOnLoad: true};})" tal:condition="not:hideMap"></script>
-    <script type="text/javascript" src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7" tal:condition="not:hideMap"></script>
+    <script type="text/javascript"
+            tal:content="string:(function(){var djConfig = {parseOnLoad: true};})"
+            tal:condition="not:hideMap"></script>
+    <script type="text/javascript"
+            src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7"
+            tal:condition="not:hideMap"></script>
     <script type="text/javascript"
             tal:condition="not:hideMap"
             tal:content="structure string:(function () {
-      'use strict';
-      dojo.require('dijit.layout.BorderContainer');
-      dojo.require('dijit.layout.ContentPane');
-      dojo.require('esri.map');
-      dojo.require('esri.dijit.Scalebar');
+  'use strict';
+  var map;
+  dojo.ready( function() {
+    jQuery('#eeaEsriMap').EEAGeotagsView();
+    jQuery('#eeaEsriMap').data('EEAGeotagsView').initMap();
+  });
+})()"></script>
 
-      var map;
-
-      function showLoading() {
-        var loading;
-        loading = dojo.byId('esriMapLoadingImg');
-        esri.show(loading);
-        map.disableMapNavigation();
-        map.hideZoomSlider();
-      }
-
-      function hideLoading(error) {
-        var loading;
-        loading = dojo.byId('esriMapLoadingImg');
-        esri.hide(loading);
-        map.enableMapNavigation();
-        map.showZoomSlider();
-      }
-
-      // Draw a point on map
-      function drawPoints() {
-       var context_url, infoSymbol, infoTemplate;
-
-       context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
-
-       infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
-       infoTemplate = new esri.InfoTemplate('$${Name}', '$${Addr}');
-
-       jQuery.getJSON(context_url + '/eea.geotags.jsondata', {}, function (data) {
-               var locationTags;
-               locationTags = jQuery('.location-listing span a');
-
-               jQuery.each(data.features, function (i, item) {
-                 var geometry, mapPoint;
-                 geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
-                 geometry = esri.geometry.geographicToWebMercator(geometry);
-
-                 mapPoint = new esri.Graphic({'geometry': geometry,
-                                              'attributes': {'Name': 'Location',
-                                                             'Addr': item.properties.description}});
-                 mapPoint.setSymbol(infoSymbol);
-                 mapPoint.setInfoTemplate(infoTemplate);
-                 map.graphics.add(mapPoint);
-
-                 // Bind onClick event to html tags
-                 //locationTags[i].title = item.properties.center[1] + ', ' + item.properties.center[0];
-                 jQuery(locationTags[i]).data('latitude', item.properties.center[1])
-                 jQuery(locationTags[i]).data('longitude', item.properties.center[0])
-
-                 locationTags.click(function () {
-                   var geometryClick;
-                   geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
-                   geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
-                   map.centerAndZoom(geometryClick, 5);
-                 });
-               });
-       });
-      }
-
-      function init() {
-        // To get initial coordonates, zoom to default location and run in debuger: dojo.toJson(map.extent.toJson());
-        var initExtent, basemap;
-        initExtent = new esri.geometry.Extent({'xmin': -40, 'ymin': 30, 'xmax': 122, 'ymax': 74, 'spatialReference': {'wkid': 102100}});
-        basemap = new esri.layers.ArcGISTiledMapServiceLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer');
-        map = new esri.Map('esriMap', {'extent': esri.geometry.geographicToWebMercator(initExtent),
-                                       'wrapAround180': true,
-                                       'fadeOnZoom': true,
-                                       'force3DTransforms': true,
-                                       'isScrollWheelZoom': false,
-                                       'navigationMode': 'css-transforms'});
-        map.addLayer(basemap);
-
-        // Loading images
-        dojo.connect(map, 'onUpdateStart', showLoading);
-        dojo.connect(map, 'onUpdateEnd', hideLoading);
-
-        dojo.connect(map, 'onLoad', function () {
-          // Resize the map when the browser resizes
-          dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
-          map.infoWindow.resize(140, 100);
-
-          // Draw a point on map
-          drawPoints();
-
-          // Scalebar
-          var scalebar = new esri.dijit.Scalebar({
-            map: map,
-            scalebarUnit: 'metric', // Use 'english' for miles
-            attachTo: 'bottom-left'
-          });
-
-          // Hack to disable scroll wheel zooming, as map.disableScrollWheelZoom() has no effect
-          map.onMouseWheel = function () {};
-        });
-      }
-
-      dojo.addOnLoad(init);
-
-    })()"></script>
-
-    <div id="esriMap" class="claro" tal:condition="not:hideMap">
-        <img id="esriMapLoadingImg"
+    <div id="eeaEsriMap" class="claro" tal:condition="not:hideMap">
+        <img id="eeaEsriMapLoadingImg"
              src="loading.gif"
              tal:attributes="src string:$portal_url/loading.gif" />
     </div>
 
-    <div class="location-listing">
+    <div class="eea-location-listing">
           <span i18n:translate="">Location:</span>
           <span tal:repeat="tag geotags">
-              <a href="#esriMap"
+              <a href="#eeaEsriMap"
                  title=""
                  tal:content="tag"
                  tal:attributes="title tag;
-                                 href python:context.absolute_url() + '#esriMap'" />
+                                 href python:context.absolute_url() + '#eeaEsriMap'" />
           </span>
     </div>
     <br />
