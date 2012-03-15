@@ -1494,7 +1494,139 @@ jQuery.fn.geopreview = function(settings){
   return this;
 };
 
-// EEA Geotags widget view on map
-
 // End namespace
 })();
+
+
+if(window.EEAGeotags === undefined){
+  var EEAGeotags = {'version': '1.0'};
+}
+
+// EEA Geotags view widget on map
+EEAGeotags.View = function(context, options){
+  var self = this;
+  self.context = context;
+  self.context.parent().addClass('eea-geotags-view');
+  self.settings = {};
+
+  if(options){
+    jQuery.extend(self.settings, options);
+  }
+
+  self.initialize();
+};
+
+EEAGeotags.View.prototype = {
+  initialize: function(){
+    dojo.require('dijit.layout.BorderContainer');
+    dojo.require('dijit.layout.ContentPane');
+    dojo.require('esri.map');
+    dojo.require('esri.dijit.Scalebar');
+  },
+
+  // Show loading image
+  showLoading: function(){
+    var loading;
+    loading = jQuery('#eeaEsriMapLoadingImg')[0];
+    esri.show(loading);
+    map.disableMapNavigation();
+    map.hideZoomSlider();
+  },
+
+  // Hide loading image
+  hideLoading: function(){
+    var loading;
+    loading = jQuery('#eeaEsriMapLoadingImg')[0];
+    esri.hide(loading);
+    map.enableMapNavigation();
+    map.showZoomSlider();
+  },
+
+  // Draw points on map
+  drawPoints: function(){
+    var context_url, infoSymbol, infoTemplate;
+
+    context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
+
+    infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
+    infoTemplate = new esri.InfoTemplate('${Name}', '${Addr}');
+
+    jQuery.getJSON(context_url + '/eea.geotags.jsondata', {}, function (data) {
+            var locationTags;
+            locationTags = jQuery('.eea-location-listing span a');
+
+            jQuery.each(data.features, function (i, item) {
+                var geometry, mapPoint;
+                geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
+                geometry = esri.geometry.geographicToWebMercator(geometry);
+
+                mapPoint = new esri.Graphic({'geometry': geometry,
+                                            'attributes': {'Name': 'Location',
+                                                           'Addr': item.properties.description}});
+                mapPoint.setSymbol(infoSymbol);
+                mapPoint.setInfoTemplate(infoTemplate);
+                map.graphics.add(mapPoint);
+
+                // Bind onClick event to html tags
+                //locationTags[i].title = item.properties.center[1] + ', ' + item.properties.center[0];
+                jQuery(locationTags[i]).data('latitude', item.properties.center[1])
+                jQuery(locationTags[i]).data('longitude', item.properties.center[0])
+
+                locationTags.click(function () {
+                var geometryClick;
+                geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
+                geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
+                map.centerAndZoom(geometryClick, 5);
+                });
+            });
+    });
+  },
+
+  // Create map
+  initMap: function(){
+    // To get initial coordonates, zoom to default location and run in debuger: dojo.toJson(map.extent.toJson());
+    var self = this;
+    var initExtent, basemap;
+    initExtent = new esri.geometry.Extent({'xmin': -40, 'ymin': 30, 'xmax': 122, 'ymax': 74, 'spatialReference': {'wkid': 102100}});
+    basemap = new esri.layers.ArcGISTiledMapServiceLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer');
+    map = new esri.Map('eeaEsriMap', {'extent': esri.geometry.geographicToWebMercator(initExtent),
+                                    'wrapAround180': true,
+                                    'fadeOnZoom': true,
+                                    'force3DTransforms': true,
+                                    'isScrollWheelZoom': false,
+                                    'navigationMode': 'css-transforms'});
+    map.addLayer(basemap);
+
+    // Loading images
+    dojo.connect(map, 'onUpdateStart', self.showLoading);
+    dojo.connect(map, 'onUpdateEnd', self.hideLoading);
+
+    dojo.connect(map, 'onLoad', function () {
+        // Resize the map when the browser resizes
+        dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
+        map.infoWindow.resize(140, 100);
+
+        // Draw a point on map
+        self.drawPoints();
+
+        // Scalebar
+        var scalebar = new esri.dijit.Scalebar({
+        map: map,
+        scalebarUnit: 'metric', // Use 'english' for miles
+        attachTo: 'bottom-left'
+        });
+
+        // Hack to disable scroll wheel zooming, as map.disableScrollWheelZoom() has no effect
+        map.onMouseWheel = function () {};
+    });
+  },
+};
+
+// jQuery plugin for EEAGeotags.View
+jQuery.fn.EEAGeotagsView = function(options){
+  return this.each(function(){
+    var context = jQuery(this).addClass('eea-ajax');
+    var geoview = new EEAGeotags.View(context, options);
+    context.data('EEAGeotagsView', geoview);
+  });
+};
