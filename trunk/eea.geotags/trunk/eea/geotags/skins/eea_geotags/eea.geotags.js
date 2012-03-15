@@ -1505,6 +1505,7 @@ if(window.EEAGeotags === undefined){
 // EEA Geotags view widget on map
 EEAGeotags.View = function(context, options){
   var self = this;
+  self.map = '';
   self.context = context;
   self.context.parent().addClass('eea-geotags-view');
   self.settings = {};
@@ -1517,33 +1518,39 @@ EEAGeotags.View = function(context, options){
 };
 
 EEAGeotags.View.prototype = {
+
   initialize: function(){
+    var self = this;
     dojo.require('dijit.layout.BorderContainer');
     dojo.require('dijit.layout.ContentPane');
     dojo.require('esri.map');
     dojo.require('esri.dijit.Scalebar');
+    self.initMap()
   },
 
   // Show loading image
   showLoading: function(){
     var loading;
+    var self = this;
     loading = jQuery('#eeaEsriMapLoadingImg')[0];
     esri.show(loading);
-    map.disableMapNavigation();
-    map.hideZoomSlider();
+    self.disableMapNavigation();
+    self.hideZoomSlider();
   },
 
   // Hide loading image
   hideLoading: function(){
     var loading;
+    var self = this;
     loading = jQuery('#eeaEsriMapLoadingImg')[0];
     esri.hide(loading);
-    map.enableMapNavigation();
-    map.showZoomSlider();
+    self.enableMapNavigation();
+    self.showZoomSlider();
   },
 
   // Draw points on map
   drawPoints: function(){
+    var self = this;
     var context_url, infoSymbol, infoTemplate;
 
     context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
@@ -1565,7 +1572,7 @@ EEAGeotags.View.prototype = {
                                                            'Addr': item.properties.description}});
                 mapPoint.setSymbol(infoSymbol);
                 mapPoint.setInfoTemplate(infoTemplate);
-                map.graphics.add(mapPoint);
+                self.map.graphics.add(mapPoint);
 
                 // Bind onClick event to html tags
                 //locationTags[i].title = item.properties.center[1] + ', ' + item.properties.center[0];
@@ -1576,7 +1583,7 @@ EEAGeotags.View.prototype = {
                 var geometryClick;
                 geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
                 geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
-                map.centerAndZoom(geometryClick, 5);
+                self.map.centerAndZoom(geometryClick, 5);
                 });
             });
     });
@@ -1589,35 +1596,38 @@ EEAGeotags.View.prototype = {
     var initExtent, basemap;
     initExtent = new esri.geometry.Extent({'xmin': -40, 'ymin': 30, 'xmax': 122, 'ymax': 74, 'spatialReference': {'wkid': 102100}});
     basemap = new esri.layers.ArcGISTiledMapServiceLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer');
-    map = new esri.Map('eeaEsriMap', {'extent': esri.geometry.geographicToWebMercator(initExtent),
-                                    'wrapAround180': true,
-                                    'fadeOnZoom': true,
-                                    'force3DTransforms': true,
-                                    'isScrollWheelZoom': false,
-                                    'navigationMode': 'css-transforms'});
-    map.addLayer(basemap);
+    self.map = new esri.Map('eeaEsriMap', {'extent': esri.geometry.geographicToWebMercator(initExtent),
+                                           'wrapAround180': true,
+                                           'fadeOnZoom': true,
+                                           'force3DTransforms': true,
+                                           'isScrollWheelZoom': false,
+                                           'navigationMode': 'css-transforms'});
+    self.map.addLayer(basemap);
 
     // Loading images
-    dojo.connect(map, 'onUpdateStart', self.showLoading);
-    dojo.connect(map, 'onUpdateEnd', self.hideLoading);
+    dojo.connect(self.map, 'onUpdateStart', self.showLoading);
+    dojo.connect(self.map, 'onUpdateEnd', self.hideLoading);
 
-    dojo.connect(map, 'onLoad', function () {
+    dojo.connect(self.map, 'onLoad', function () {
         // Resize the map when the browser resizes
-        dojo.connect(dijit.byId('map'), 'resize', map, map.resize);
-        map.infoWindow.resize(140, 100);
+        dojo.connect(dijit.byId('map'), 'resize', self.map, self.map.resize);
+        self.map.infoWindow.resize(140, 100);
 
         // Draw a point on map
         self.drawPoints();
 
         // Scalebar
-        var scalebar = new esri.dijit.Scalebar({
-        map: map,
-        scalebarUnit: 'metric', // Use 'english' for miles
-        attachTo: 'bottom-left'
-        });
+        try {
+          var scalebar = new esri.dijit.Scalebar({ map: self.map,
+                                                  scalebarUnit: 'metric', // Use 'english' for miles
+                                                  attachTo: 'bottom-left' });
+        }
+        catch(err) {
+          // TODO: fix abive scalebar to show up
+        }
 
         // Hack to disable scroll wheel zooming, as map.disableScrollWheelZoom() has no effect
-        map.onMouseWheel = function () {};
+        self.map.onMouseWheel = function () {};
     });
   },
 };
