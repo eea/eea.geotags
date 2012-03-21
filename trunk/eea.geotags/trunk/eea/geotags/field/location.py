@@ -8,7 +8,7 @@ from zope.i18n import translate
 from zope.component import queryAdapter
 from Products.Archetypes import atapi
 from Products.Archetypes import PloneMessageFactory as _
-from eea.geotags.interfaces import IGeoTags
+from eea.geotags.interfaces import IGeoTags, IJsonProvider
 
 logger = logging.getLogger('eea.geotags.field')
 
@@ -42,7 +42,7 @@ class GeotagsFieldMixin(object):
             except Exception, err:
                 logger.exception(err)
                 return
-
+        #import pdb; pdb.set_trace()
         geo.tags = value
 
     def json2list(self, geojson, attr='description'):
@@ -91,12 +91,45 @@ class GeotagsFieldMixin(object):
             return error
         return None
 
+    def convert(self, instance, value):
+        """ Convert to a structure that can be deserialized to a dict
+        """
+        if not isinstance(value, dict) and value:
+            try:
+                test_deserialize = json.loads(value)
+            except TypeError, err:
+                service = queryAdapter(instance, IJsonProvider)
+                if isinstance(value, str):
+                    query = {'name': value}
+                    value = service.search(**query)
+                    if len(value['features']):
+                        match_value = value['features'][0]
+                        value['features'] = []
+                        value['features'].append(match_value)
+                elif isinstance(value, list):
+                    agg_value = {"type": "FeatureCollection", "features": []}
+                    for tag in value:
+                        query = {'name': tag}
+                        match_value = service.search(**query)
+                        if len(match_value['features']):
+                            agg_value['features'].append(match_value['features'][0])
+                    value = agg_value
+                else:
+                    logger.exception(err)
+                    return
+                value = json.dumps(value)
+            except Exception, err:
+                logger.exception(err)
+                return
+        return value
+
 class GeotagsStringField(GeotagsFieldMixin, atapi.StringField):
     """ Single geotag field
     """
     def set(self, instance, value, **kwargs):
         """ Set
         """
+        value = self.convert(instance, value)
         self.setJSON(instance, value, **kwargs)
         tag = self.json2string(value)
         return atapi.StringField.set(self, instance, tag, **kwargs)
@@ -107,6 +140,7 @@ class GeotagsLinesField(GeotagsFieldMixin, atapi.LinesField):
     def set(self, instance, value, **kwargs):
         """ Set
         """
+        value = self.convert(instance, value)
         self.setJSON(instance, value, **kwargs)
         tags = [tag for tag in self.json2list(value)]
         return atapi.LinesField.set(self, instance, tags, **kwargs)
