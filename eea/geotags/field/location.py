@@ -96,7 +96,7 @@ class GeotagsFieldMixin(object):
         """
         if not isinstance(value, dict) and value:
             try:
-                test_deserialize = json.loads(value)
+                json.loads(value)
             except TypeError, err:
                 service = queryAdapter(instance, IJsonProvider)
                 if isinstance(value, str):
@@ -112,7 +112,8 @@ class GeotagsFieldMixin(object):
                         query = {'name': tag}
                         match_value = service.search(**query)
                         if len(match_value['features']):
-                            agg_value['features'].append(match_value['features'][0])
+                            agg_value['features'].append(
+                                                  match_value['features'][0])
                     value = agg_value
                 else:
                     logger.exception(err)
