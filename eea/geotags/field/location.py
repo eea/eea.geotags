@@ -99,8 +99,10 @@ class GeotagsFieldMixin(object):
                 json.loads(value)
             except TypeError, err:
                 service = queryAdapter(instance, IJsonProvider)
+                query = {'q': value,
+                         'maxRows': 10,
+                         'address': value}
                 if isinstance(value, str):
-                    query = {'name': value}
                     value = service.search(**query)
                     if len(value['features']):
                         match_value = value['features'][0]
@@ -109,14 +111,15 @@ class GeotagsFieldMixin(object):
                 elif isinstance(value, list):
                     agg_value = {"type": "FeatureCollection", "features": []}
                     for tag in value:
-                        query = {'name': tag}
+                        query['q'] = tag;
+                        query['address'] = tag;
                         match_value = service.search(**query)
                         if len(match_value['features']):
                             agg_value['features'].append(
                                                   match_value['features'][0])
                     value = agg_value
                 else:
-                    logger.exception(err)
+                    logger.warn(err)
                     return
                 value = json.dumps(value)
             except Exception, err:
