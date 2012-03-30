@@ -1,8 +1,8 @@
 Changelog
 =========
 
-4.5-dev - (unreleased)
-----------------------
+4.5 - (2012-03-30)
+------------------
 * Bug fix: fixed that eea.geotags field on set will convert on the fly strings toward geonames service and
   saves the geoJSON structure. This will also fix the auto-tagging from eea.alchemy
   [ghicaale #5008]
