@@ -111,8 +111,8 @@ class GeotagsFieldMixin(object):
                 elif isinstance(value, list):
                     agg_value = {"type": "FeatureCollection", "features": []}
                     for tag in value:
-                        query['q'] = tag;
-                        query['address'] = tag;
+                        query['q'] = tag
+                        query['address'] = tag
                         match_value = service.search(**query)
                         if len(match_value['features']):
                             agg_value['features'].append(
