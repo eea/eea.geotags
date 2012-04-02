@@ -42,7 +42,6 @@ class GeotagsFieldMixin(object):
             except Exception, err:
                 logger.exception(err)
                 return
-        #import pdb; pdb.set_trace()
         geo.tags = value
 
     def json2list(self, geojson, attr='description'):
@@ -63,7 +62,11 @@ class GeotagsFieldMixin(object):
 
         for feature in features:
             properties = feature.get('properties', {})
-            yield properties.get(attr, properties.get('title', ''))
+            data = properties.get(attr, properties.get('title', ''))
+            if data:
+                yield data
+            else:
+                yield properties.get('title', '')
 
     def json2string(self, geojson, attr='description'):
         """ Util method to extract human readable geo tag from geojson struct

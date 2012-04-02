@@ -3,6 +3,8 @@ Changelog
 
 4.6-dev - (unreleased)
 ----------------------
+* Bug fix: fixed so 'title' get saved on the field when 'description' is empty on geonames.org response
+  [ghicaale #5008]
 
 4.5 - (2012-03-30)
 ------------------
