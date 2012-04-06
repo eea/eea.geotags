@@ -146,6 +146,7 @@ jQuery.fn.geodialog = function(settings){
       // Splitter
       jQuery.get(self.options.template, function(data){
         data = jQuery(data);
+        self.empty();
         self.append(data);
 
         // Left splitter
