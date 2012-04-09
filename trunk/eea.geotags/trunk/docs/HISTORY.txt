@@ -3,6 +3,8 @@ Changelog
 
 4.6-dev - (unreleased)
 ----------------------
+* Bug fix: Make it work with eea.inidicators aggregated edit
+  [voineali #5077]
 * Bug fix: fixed so 'title' get saved on the field when 'description' is empty on geonames.org response
   [ghicaale #5008]
 
