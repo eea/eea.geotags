@@ -15,24 +15,32 @@ Macro parameters:
   @@param hideMap
 
 Usage with map visible:
+    <tal:hideMap define="hideMap python:False">
+       <metal:field use-macro="python:context.widget('location', mode='view')">
+            Location field view macro
+        </metal:field>
+    </tal:hideMap>
+
+Usage with map visible as modal pop-up:
+    <tal:hideMap define="hideMap python:False; modal python:True">
+       <metal:field use-macro="python:context.widget('location', mode='view')">
+            Location field view macro
+        </metal:field>
+    </tal:hideMap>
+
+Usage with hidden map:
 
    <metal:field use-macro="python:context.widget('location', mode='view')">
         Location field view macro
     </metal:field>
 
-Usage with hidden map:
-
-    <tal:hideMap define="hideMap python:True">
-        <metal:field use-macro="python:context.widget('location', mode='view')">
-            Location field view macro
-        </metal:field>
-    </tal:hideMap>
 -->
   </tal:comment>
 
   <metal:view_macro define-macro="view">
   <tal:view_macro define="geotags python:field.getAccessor(here)();
-                          hideMap hideMap|python:True"
+                          hideMap hideMap|python:True;
+                          modal modal|python:False"
                   condition="geotags">
 
     <link rel="stylesheet" type="text/css"
@@ -49,7 +57,7 @@ Usage with hidden map:
             tal:condition="not:hideMap"
             tal:content="structure string:(function () { dojo.ready( function() { jQuery('#eeaEsriMap').EEAGeotagsView(); }); })()"></script>
 
-    <div class="eea-location-listing">
+        <div class="eea-location-listing" tal:attributes="data-modal python:'True' if modal else 'False'">
           <span i18n:translate="">Geotags:</span>
           <span tal:repeat="tag geotags">
               <a href="#eeaEsriMap"
