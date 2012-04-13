@@ -1526,9 +1526,42 @@ EEAGeotags.View.prototype = {
     dojo.require('dijit.layout.ContentPane');
     dojo.require('esri.map');
     dojo.require('esri.dijit.Scalebar');
-    self.initMap();
+    self.init();
   },
 
+  init: function(){
+    var self = this,
+        eea_location = $('.eea-location-listing'),
+        init_func;
+    if (eea_location.data().modal === "False") {
+        self.initMap();
+    }
+    else {
+        init_func = function(){
+            var dialogBox, 
+                eea_location_offset = eea_location.offset(),
+                pos_top = eea_location_offset.top + eea_location.height(),
+                pos_left = eea_location_offset.left,
+                $body = $('html, body'),
+                map_div = $("#eeaEsriMap").hide(),
+                a = eea_location.find('a').click(function(e){
+                if (!dialogBox) {
+                    $body.animate({scrollTop: pos_top - 80 }, 400);
+                    dialogBox = map_div.dialog('open').dialog({width: 620, height: 420}); 
+                    dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top});
+                    // CREATE MAP
+                    self.initMap();
+                }
+                else {
+                    $body.animate({scrollTop: pos_top - 80 }, 400);
+                    dialogBox.dialog('open').closest('.ui-dialog').css({left: pos_left, top: pos_top});
+                }
+                e.preventDefault();
+            });
+        };
+        init_func();
+    }
+  },
   // Show loading image
   showLoading: function(){
     var loading;
