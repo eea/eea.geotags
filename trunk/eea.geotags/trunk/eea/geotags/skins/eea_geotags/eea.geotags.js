@@ -1531,35 +1531,32 @@ EEAGeotags.View.prototype = {
 
   init: function(){
     var self = this,
-        eea_location = $('.eea-location-listing'),
-        init_func;
-    if (eea_location.data().modal === "False") {
-        self.initMap();
+        $eea_location = $('.eea-location-listing'),
+        $eea_location_links = $eea_location.find('a');
+    if ($eea_location.data().modal === "False") {
+        self.initMap($eea_location_links);
     }
     else {
-        init_func = function(){
-            var dialogBox, 
-                eea_location_offset = eea_location.offset(),
-                pos_top = eea_location_offset.top + eea_location.height(),
-                pos_left = eea_location_offset.left,
-                $body = $('html, body'),
-                map_div = $("#eeaEsriMap").hide(),
-                a = eea_location.find('a').click(function(e){
-                if (!dialogBox) {
-                    $body.animate({scrollTop: pos_top - 80 }, 400);
-                    dialogBox = map_div.dialog('open').dialog({width: 620, height: 420}); 
-                    dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top});
-                    // CREATE MAP
-                    self.initMap();
-                }
-                else {
-                    $body.animate({scrollTop: pos_top - 80 }, 400);
-                    dialogBox.dialog('open').closest('.ui-dialog').css({left: pos_left, top: pos_top});
-                }
-                e.preventDefault();
-            });
-        };
-        init_func();
+        var dialogBox, 
+            eea_location_offset = $eea_location.offset(),
+            pos_top = eea_location_offset.top + $eea_location.height(),
+            pos_left = eea_location_offset.left,
+            $body = $('html, body'),
+            map_div = $("#eeaEsriMap").hide();
+        $eea_location_links.click(function(e){
+            if (!dialogBox) {
+                $body.animate({scrollTop: pos_top - 80 }, 400);
+                dialogBox = map_div.dialog('open').dialog({width: 620, height: 420}); 
+                dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top});
+                // CREATE MAP
+                self.initMap($eea_location_links);
+            }
+            else {
+                $body.animate({scrollTop: pos_top - 80 }, 400);
+                dialogBox.dialog('open').closest('.ui-dialog').css({left: pos_left, top: pos_top});
+            }
+            e.preventDefault();
+        });
     }
   },
   // Show loading image
@@ -1583,7 +1580,7 @@ EEAGeotags.View.prototype = {
   },
 
   // Draw points on map
-  drawPoints: function(){
+  drawPoints: function(eea_location_links){
     var self = this;
     var context_url, infoSymbol, infoTemplate;
 
@@ -1594,7 +1591,7 @@ EEAGeotags.View.prototype = {
 
     jQuery.getJSON(context_url + '/eea.geotags.jsondata', {}, function (data) {
             var locationTags;
-            locationTags = jQuery('.eea-location-listing span a');
+            locationTags = eea_location_links;
 
             jQuery.each(data.features, function (i, item) {
                 var geometry, mapPoint;
@@ -1612,18 +1609,18 @@ EEAGeotags.View.prototype = {
                 jQuery(locationTags[i]).data('latitude', item.properties.center[1]);
                 jQuery(locationTags[i]).data('longitude', item.properties.center[0]);
 
-                locationTags.click(function () {
-                  var geometryClick;
-                  geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
-                  geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
-                  self.map.centerAndZoom(geometryClick, 5);
-                });
+            });
+            locationTags.click(function () {
+              var geometryClick;
+              geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
+              geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
+              self.map.centerAndZoom(geometryClick, 5);
             });
     });
   },
 
   // Create map
-  initMap: function(){
+  initMap: function(eea_location_links){
     // To get initial coordonates, zoom to default location and run in debuger: dojo.toJson(map.extent.toJson());
     var self = this;
     var initExtent, basemap;
@@ -1647,7 +1644,7 @@ EEAGeotags.View.prototype = {
         self.map.infoWindow.resize(140, 100);
 
         // Draw a point on map
-        self.drawPoints();
+        self.drawPoints(eea_location_links);
 
         // Scalebar
         try {
