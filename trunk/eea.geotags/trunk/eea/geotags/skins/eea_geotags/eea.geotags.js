@@ -1532,11 +1532,10 @@ EEAGeotags.View.prototype = {
   init: function(){
     var self = this,
         $eea_location = $('.eea-location-listing'),
-        $eea_location_links = $eea_location.find('a');
-    if ($eea_location.data().modal === "False") {
-        self.initMap($eea_location_links);
-    }
-    else {
+        $eea_location_links = $eea_location.find('a'),
+        eea_location_links_length = $eea_location_links.length,
+        modal = $eea_location.data().modal; 
+    if(modal !== "False" || eea_location_links_length < 4){
         var dialogBox, 
             eea_location_offset = $eea_location.offset(),
             pos_top = eea_location_offset.top + $eea_location.height(),
@@ -1554,6 +1553,7 @@ EEAGeotags.View.prototype = {
                 // resize map root to fit the designated space of #content
                 // without scrollbars
                 map_div.find('#eeaEsriMap_root').css({width: '100%', height: '100%'});
+
             }
             else {
                 $body.animate({scrollTop: pos_top - 80 }, 400);
@@ -1561,6 +1561,9 @@ EEAGeotags.View.prototype = {
             }
             e.preventDefault();
         });
+    }
+    else {
+        self.initMap($eea_location_links);
     }
   },
   // Show loading image
@@ -1609,16 +1612,25 @@ EEAGeotags.View.prototype = {
                 mapPoint.setInfoTemplate(infoTemplate);
                 self.map.graphics.add(mapPoint);
 
-                // Bind onClick event to html tags
+                // set latitude and longitude on each tag as data attribute
                 jQuery(locationTags[i]).data('latitude', item.properties.center[1]);
                 jQuery(locationTags[i]).data('longitude', item.properties.center[0]);
 
             });
-            locationTags.click(function () {
+            
+            // center map and display infoWindow when clicking on a geotag 
+            locationTags.click(function(e) {
               var geometryClick;
               geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
               geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
               self.map.centerAndZoom(geometryClick, 5);
+              // show infoWindow after clicking on tag name 
+              var point = $.grep(self.map.graphics.graphics, function(i){return i.geometry.x === geometryClick.x;})[0];
+              self.map.infoWindow.setContent(point.getContent());
+              self.map.infoWindow.setTitle(point.getTitle());
+              point = point.geometry;
+              self.map.infoWindow.show(point, self.map.getInfoWindowAnchor(point));
+              e.preventDefault();
             });
     });
   },

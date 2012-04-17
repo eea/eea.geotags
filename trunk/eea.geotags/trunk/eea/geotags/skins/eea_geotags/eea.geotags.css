@@ -350,8 +350,14 @@
 /* View macro */
 #eeaEsriMap {
   padding: 0;
-  border: 1px solid black;
   height: 400px;
+  border: 2px solid black;
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+  -webkit-box-shadow: 2px 2px 4px #ADADAD;
+     -moz-box-shadow: 2px 2px 4px #ADADAD;
+          box-shadow: 2px 2px 4px #ADADAD;
 }
 
 .eea-location-listing {
