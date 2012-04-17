@@ -1553,7 +1553,7 @@ EEAGeotags.View.prototype = {
             }
             else {
                 $body.animate({scrollTop: pos_top - 80 }, 400);
-                dialogBox.dialog('open').closest('.ui-dialog').css({left: pos_left, top: pos_top});
+                dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top, display: 'block'});
             }
             e.preventDefault();
         });
