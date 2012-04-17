@@ -1542,14 +1542,18 @@ EEAGeotags.View.prototype = {
             pos_top = eea_location_offset.top + $eea_location.height(),
             pos_left = eea_location_offset.left,
             $body = $('html, body'),
-            map_div = $("#eeaEsriMap").hide();
+            map_div = $("#eeaEsriMap").hide(),
+            content_width = $("#content").width();
         $eea_location_links.click(function(e){
             if (!dialogBox) {
                 $body.animate({scrollTop: pos_top - 80 }, 400);
-                dialogBox = map_div.dialog('open').dialog({width: 620, height: 420}); 
+                dialogBox = map_div.dialog('open').dialog({width: content_width - 6, height: '100%'}); 
                 dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top});
                 // CREATE MAP
                 self.initMap($eea_location_links);
+                // resize map root to fit the designated space of #content
+                // without scrollbars
+                map_div.find('#eeaEsriMap_root').css({width: '100%', height: '100%'});
             }
             else {
                 $body.animate({scrollTop: pos_top - 80 }, 400);
