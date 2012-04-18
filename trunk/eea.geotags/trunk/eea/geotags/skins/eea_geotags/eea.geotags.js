@@ -1548,8 +1548,10 @@ EEAGeotags.View.prototype = {
         $eea_location_links.click(function(e){
             if (!dialogBox) {
                 $body.animate({scrollTop: pos_top - 80 }, 400);
-                dialogBox = map_div.dialog({width: content_width - 6, height: 450}); 
-                dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top, display: 'block'});
+                // ie bug which fails if we have open and width and height in
+                // the dialog options so we add then with plain jquery css
+                dialogBox = map_div.dialog({autoOpen : false}); 
+                dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top, display: 'block', width: content_width - 6, height: 450});
                 // resize map root to fit the designated space of #content
                 // without scrollbars
                 map_div.find('#eeaEsriMap_root').css({width: '100%', height: '100%'});
