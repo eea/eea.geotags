@@ -1539,7 +1539,7 @@ EEAGeotags.View.prototype = {
         var dialogBox, 
             eea_location_offset = $eea_location.offset(),
             pos_top = eea_location_offset.top + $eea_location.height(),
-            pos_left = eea_location_offset.left,
+            pos_left = $("#content").offset().left,
             $body = $('html, body'),
             content_width = $("#content").width();
             // CREATE MAP
@@ -1625,7 +1625,7 @@ EEAGeotags.View.prototype = {
               var geometryClick;
               geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
               geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
-              self.map.centerAndZoom(geometryClick, 5);
+              self.map.centerAndZoom(geometryClick, 6);
               // show infoWindow after clicking on tag name 
               var point = $.grep(self.map.graphics.graphics, function(i){return i.geometry.x === geometryClick.x;})[0];
               self.map.infoWindow.setContent(point.getContent());
@@ -1642,8 +1642,8 @@ EEAGeotags.View.prototype = {
     // To get initial coordonates, zoom to default location and run in debuger: dojo.toJson(map.extent.toJson());
     var self = this;
     var initExtent, basemap;
-    initExtent = new esri.geometry.Extent({'xmin': -40, 'ymin': 30, 'xmax': 122, 'ymax': 74, 'spatialReference': {'wkid': 102100}});
-    basemap = new esri.layers.ArcGISTiledMapServiceLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer');
+    initExtent = new esri.geometry.Extent({"xmin": -40, "ymin": 30, "xmax":122, "ymax":74, "spatialReference":{"wkid": 102100}});
+    basemap = new esri.layers.ArcGISTiledMapServiceLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer');
     self.map = new esri.Map('eeaEsriMap', {'extent': esri.geometry.geographicToWebMercator(initExtent),
                                            'wrapAround180': true,
                                            'fadeOnZoom': true,
