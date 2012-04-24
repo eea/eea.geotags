@@ -230,6 +230,7 @@ jQuery.fn.geodialog = function(settings){
         width: self.options.width,
         height: self.options.height,
         resize: false,
+        dialogClass: 'eea-geotags-popup',
         buttons: {
           'Done': function(){
             self.trigger(self.events.save);
@@ -1534,9 +1535,9 @@ EEAGeotags.View.prototype = {
         $eea_location = $('.eea-location-listing'),
         $eea_location_links = $eea_location.find('a'),
         eea_location_links_length = $eea_location_links.length,
-        modal = $eea_location.data().modal; 
+        modal = $eea_location.data().modal;
     if(modal !== "False" || eea_location_links_length < 4){
-        var dialogBox, 
+        var dialogBox,
             eea_location_offset = $eea_location.offset(),
             pos_top = eea_location_offset.top + $eea_location.height(),
             pos_left = $("#content").offset().left,
@@ -1550,7 +1551,7 @@ EEAGeotags.View.prototype = {
                 $body.animate({scrollTop: pos_top - 80 }, 400);
                 // ie bug which fails if we have open and width and height in
                 // the dialog options so we add then with plain jquery css
-                dialogBox = map_div.dialog({autoOpen : false}); 
+                dialogBox = map_div.dialog({autoOpen : false});
                 dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top, display: 'block', width: content_width - 6, height: 450});
                 // resize map root to fit the designated space of #content
                 // without scrollbars
@@ -1619,14 +1620,14 @@ EEAGeotags.View.prototype = {
                 jQuery(locationTags[i]).data('longitude', item.properties.center[0]);
 
             });
-            
-            // center map and display infoWindow when clicking on a geotag 
+
+            // center map and display infoWindow when clicking on a geotag
             locationTags.click(function(e) {
               var geometryClick;
               geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
               geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
               self.map.centerAndZoom(geometryClick, 6);
-              // show infoWindow after clicking on tag name 
+              // show infoWindow after clicking on tag name
               var point = $.grep(self.map.graphics.graphics, function(i){return i.geometry.x === geometryClick.x;})[0];
               self.map.infoWindow.setContent(point.getContent());
               self.map.infoWindow.setTitle(point.getTitle());
