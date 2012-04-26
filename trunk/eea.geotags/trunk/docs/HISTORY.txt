@@ -1,8 +1,8 @@
 Changelog
 =========
 
-4.6-dev - (unreleased)
-----------------------
+4.6 - (2012-04-26)
+------------------
 * Feature: added  modal map as a pop-up for geotags [ichimdav #3354]
 * Bug fix: Make it work with eea.inidicators aggregated edit
   [voineali #5077]
