@@ -1536,7 +1536,8 @@ EEAGeotags.View.prototype = {
         $eea_location_links = $eea_location.find('a'),
         eea_location_links_length = $eea_location_links.length,
         modal = $eea_location.data().modal;
-    if(modal !== "False" || eea_location_links_length < 4){
+
+    if(modal !== "False" && modal !== "Events" || eea_location_links_length < 4 && modal !== "Events"){
         var dialogBox,
             eea_location_offset = $eea_location.offset(),
             pos_top = eea_location_offset.top + $eea_location.height(),
