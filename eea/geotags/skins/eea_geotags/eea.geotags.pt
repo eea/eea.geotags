@@ -15,21 +15,30 @@ Macro parameters:
   @@param hideMap
 
 Usage with map visible:
+By default if there are less than 4 geotags the map will be displayed as a modal
+map which appears after you've clicked on a geotag
     <tal:hideMap define="hideMap python:False">
        <metal:field use-macro="python:context.widget('location', mode='view')">
             Location field view macro
         </metal:field>
     </tal:hideMap>
 
-Usage with map visible as modal pop-up:
+Usage with map visible as modal pop-up set explicitly with disregards to the 
+minimum number of geotags:
     <tal:hideMap define="hideMap python:False; modal python:True">
        <metal:field use-macro="python:context.widget('location', mode='view')">
             Location field view macro
         </metal:field>
     </tal:hideMap>
 
-Usage with hidden map:
+Usage with map visible and no automatic modal map if less than 4 geotags:
+    <tal:hideMap define="hideMap python:False; events python:True">
+       <metal:field use-macro="python:context.widget('location', mode='view')">
+            Location field view macro
+        </metal:field>
+    </tal:hideMap>
 
+Usage with hidden map:
    <metal:field use-macro="python:context.widget('location', mode='view')">
         Location field view macro
     </metal:field>
@@ -40,9 +49,21 @@ Usage with hidden map:
   <metal:view_macro define-macro="view">
   <tal:view_macro define="geotags python:field.getAccessor(here)();
                           hideMap hideMap|python:True;
-                          modal modal|python:False"
+                          modal modal|python:False;
+                          data_modal python: 'True' if modal else 'False';
+                          events events|python:False"
                   condition="geotags">
-
+    <div class="eea-location-listing" tal:attributes="data-modal python:'Events' if events else data_modal" metal:define-slot="location-listing">
+      <span i18n:translate="" metal:define-slot="geotags">Geotags:</span>
+      <span tal:repeat="tag geotags">
+          <a href="#eeaEsriMap"
+             title=""
+             tal:content="tag"
+             tal:attributes="title tag;
+                             href python:context.absolute_url() + '#eeaEsriMap'" />
+      </span>
+    </div>
+  <metal:map define-slot="map">
     <link rel="stylesheet" type="text/css"
           href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css"
           tal:condition="not:hideMap" />
@@ -57,17 +78,6 @@ Usage with hidden map:
             tal:condition="not:hideMap"
             tal:content="structure string:(function () { dojo.ready( function() { jQuery('#eeaEsriMap').EEAGeotagsView(); }); })()"></script>
 
-        <div class="eea-location-listing" tal:attributes="data-modal python:'True' if modal else 'False'">
-          <span i18n:translate="">Geotags:</span>
-          <span tal:repeat="tag geotags">
-              <a href="#eeaEsriMap"
-                 title=""
-                 tal:content="tag"
-                 tal:attributes="title tag;
-                                 href python:context.absolute_url() + '#eeaEsriMap'" />
-          </span>
-    </div>
-
     <div id="eeaEsriMap" class="claro" tal:condition="not:hideMap">
         <img id="eeaEsriMapLoadingImg"
              src="loading.gif"
@@ -75,7 +85,7 @@ Usage with hidden map:
     </div>
 
     <br class="visualClear" />
-
+  </metal:map>
   </tal:view_macro>
   </metal:view_macro>
 
