@@ -21,7 +21,7 @@ class GeotagsFieldMixin(object):
         """
         return isinstance(self, atapi.LinesField)
 
-    def sortByTitle(self,instance):
+    def sortByTitle(self, instance):
         """ return geotags sorted by title
         """
         return sorted(instance)
