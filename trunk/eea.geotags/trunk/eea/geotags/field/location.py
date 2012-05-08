@@ -49,7 +49,7 @@ class GeotagsFieldMixin(object):
                 return
         geo.tags = value
 
-    def json2list(self, geojson, attr='description'):
+    def json2list(self, geojson, attr='title'):
         """ Util method to extract human readable geo tags from geojson struct
         """
         if not geojson:
@@ -67,13 +67,13 @@ class GeotagsFieldMixin(object):
 
         for feature in features:
             properties = feature.get('properties', {})
-            data = properties.get(attr, properties.get('title', ''))
+            data = properties.get(attr, properties.get('description', ''))
             if data:
                 yield data
             else:
                 yield properties.get('title', '')
 
-    def json2string(self, geojson, attr='description'):
+    def json2string(self, geojson, attr='title'):
         """ Util method to extract human readable geo tag from geojson struct
         """
         items = self.json2list(geojson, attr)
