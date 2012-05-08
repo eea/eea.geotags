@@ -1604,7 +1604,15 @@ EEAGeotags.View.prototype = {
             var locationTags;
             locationTags = eea_location_links;
 
-            jQuery.each(data.features, function (i, item) {
+            var SortByName = function(a,b){  
+                                var aName = a.properties.title.toLowerCase();
+                                var bName = b.properties.title.toLowerCase(); 
+                                return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0)); };
+
+            var sorted_geotags = data.features.sort(SortByName);
+            
+            jQuery.each(sorted_geotags, function (i, item) {
+
                 var geometry, mapPoint;
                 geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
                 geometry = esri.geometry.geographicToWebMercator(geometry);
