@@ -48,7 +48,6 @@ Usage with hidden map:
 
   <metal:view_macro define-macro="view">
   <tal:view_macro define="geotags python:field.getAccessor(here)();
-                          geotags python:field.sortByTitle(geotags);
                           hideMap hideMap|python:True;
                           modal modal|python:False;
                           data_modal python: 'True' if modal else 'False';

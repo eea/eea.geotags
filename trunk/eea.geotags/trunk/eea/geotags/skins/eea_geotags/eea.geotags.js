@@ -215,8 +215,15 @@ jQuery.fn.geodialog = function(settings){
     handle_save: function(data){
       var fieldName = self.attr('id');
       var json = self.basket.options.geojson;
-      self.trigger(jQuery.geoevents.basket_save, {json: json});
+      // sort the geotags by name before sending it to object
+      // annotation
+      json.features = json.features.sort(function(a,b){
+        var aName = a.properties.title.toLowerCase();
+        var bName = b.properties.title.toLowerCase(); 
+        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0)); 
+      });
 
+      self.trigger(jQuery.geoevents.basket_save, {json: json});
       json = JSON.stringify(json);
       jQuery('[name=' + fieldName + ']').text(json);
     },
@@ -1604,14 +1611,8 @@ EEAGeotags.View.prototype = {
             var locationTags;
             locationTags = eea_location_links;
 
-            var SortByName = function(a,b){  
-                                var aName = a.properties.title.toLowerCase();
-                                var bName = b.properties.title.toLowerCase(); 
-                                return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0)); };
-
-            var sorted_geotags = data.features.sort(SortByName);
             
-            jQuery.each(sorted_geotags, function (i, item) {
+            jQuery.each(data.features, function (i, item) {
 
                 var geometry, mapPoint;
                 geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
