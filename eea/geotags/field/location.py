@@ -21,11 +21,6 @@ class GeotagsFieldMixin(object):
         """
         return isinstance(self, atapi.LinesField)
 
-    def sortByTitle(self, instance):
-        """ return geotags sorted by title
-        """
-        return sorted(instance)
-
     def getJSON(self, instance, **kwargs):
         """ Get GeoJSON tags from instance annotations using IGeoTags adapter
         """
@@ -49,7 +44,7 @@ class GeotagsFieldMixin(object):
                 return
         geo.tags = value
 
-    def json2list(self, geojson, attr='title'):
+    def json2list(self, geojson, attr='description'):
         """ Util method to extract human readable geo tags from geojson struct
         """
         if not geojson:
@@ -73,7 +68,7 @@ class GeotagsFieldMixin(object):
             else:
                 yield properties.get('title', '')
 
-    def json2string(self, geojson, attr='title'):
+    def json2string(self, geojson, attr='description'):
         """ Util method to extract human readable geo tag from geojson struct
         """
         items = self.json2list(geojson, attr)
