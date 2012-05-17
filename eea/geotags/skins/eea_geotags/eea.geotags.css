@@ -388,6 +388,9 @@
   color: #666;
   line-height: 2em;
 }
+.eea-location-listing.events {
+    text-align: left;
+}
 
 .eea-location-listing a {
   color: black;
