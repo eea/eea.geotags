@@ -1669,24 +1669,22 @@ EEAGeotags.View.prototype = {
 
     dojo.connect(self.map, 'onLoad', function () {
         // Resize the map when the browser resizes
-        dojo.connect(dijit.byId('map'), 'resize', self.map, self.map.resize);
-        self.map.infoWindow.resize(140, 100);
+        //
+        dojo.ready(function(){
+            dojo.connect(dijit.byId('map'), 'resize', self.map, self.map.resize);
+            self.map.infoWindow.resize(140, 100);
 
-        // Draw a point on map
-        self.drawPoints(eea_location_links);
+            // Draw a point on map
+            self.drawPoints(eea_location_links);
 
-        // Scalebar
-        try {
-          var scalebar = new esri.dijit.Scalebar({ map: self.map,
-                                                  scalebarUnit: 'metric', // Use 'english' for miles
-                                                  attachTo: 'bottom-left' });
-        }
-        catch(err) {
-          // TODO: fix abive scalebar to show up
-        }
+            // Scalebar
+              var scalebar = new esri.dijit.Scalebar({ map: self.map,
+                                                      scalebarUnit: 'metric', // Use 'english' for miles
+                                                      attachTo: 'bottom-left' });
 
-        // Hack to disable scroll wheel zooming, as map.disableScrollWheelZoom() has no effect
-        self.map.onMouseWheel = function () {};
+            // Hack to disable scroll wheel zooming, as map.disableScrollWheelZoom() has no effect
+            self.map.onMouseWheel = function () {};
+        });
     });
   }
 };

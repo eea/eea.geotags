@@ -3,6 +3,7 @@ Changelog
 
 4.7-dev - (unreleased)
 ----------------------
+ * Bug fix: display scalebar on map [ichimdav #4788]
  * Feature: display tags left aligned for the map macros that use the
    version with events variable defined [ichimdav #4788]
 
