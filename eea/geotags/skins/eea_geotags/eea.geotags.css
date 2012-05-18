@@ -383,6 +383,10 @@
           box-shadow: 2px 2px 4px #ADADAD;
 }
 
+#eeaEsriMap table{
+    display: table;
+}
+
 .eea-location-listing {
   text-align: right;
   color: #666;
