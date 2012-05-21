@@ -1541,10 +1541,11 @@ EEAGeotags.View.prototype = {
     var self = this,
         $eea_location = $('.eea-location-listing'),
         $eea_location_links = $eea_location.find('a'),
-        eea_location_links_length = $eea_location_links.length,
-        modal = $eea_location.data().modal;
+        eea_location_links_length = $eea_location_links.length;
+        self.modal = $eea_location.data().modal;
 
-    if(modal !== "False" && modal !== "Events" || eea_location_links_length < 4 && modal !== "Events"){
+        self.map_div = $("#eeaEsriMap").hide();
+    if(self.modal !== "False" && self.modal !== "Events" || eea_location_links_length < 4 && self.modal !== "Events"){
         var dialogBox,
             eea_location_offset = $eea_location.offset(),
             pos_top = eea_location_offset.top + $eea_location.height(),
@@ -1552,18 +1553,19 @@ EEAGeotags.View.prototype = {
             $body = $('html, body'),
             content_width = $("#content").width();
             // CREATE MAP
+            self.map_div.show();
             self.initMap($eea_location_links);
-            var map_div = $("#eeaEsriMap").hide();
+            self.map_div.hide();
         $eea_location_links.click(function(e){
             if (!dialogBox) {
                 $body.animate({scrollTop: pos_top - 80 }, 400);
                 // ie bug which fails if we have open and width and height in
                 // the dialog options so we add then with plain jquery css
-                dialogBox = map_div.dialog({autoOpen : false});
+                dialogBox = self.map_div.dialog({autoOpen : false});
                 dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top, display: 'block', width: content_width - 6, height: 450});
                 // resize map root to fit the designated space of #content
                 // without scrollbars
-                map_div.find('#eeaEsriMap_root').css({width: '100%', height: '100%'});
+                self.map_div.find('#eeaEsriMap_root').css({width: '100%', height: '100%'});
 
             }
             else {
@@ -1574,6 +1576,7 @@ EEAGeotags.View.prototype = {
         });
     }
     else {
+        self.map_div.show();
         self.initMap($eea_location_links);
     }
   },
@@ -1645,6 +1648,9 @@ EEAGeotags.View.prototype = {
               self.map.infoWindow.show(point, self.map.getInfoWindowAnchor(point));
               e.preventDefault();
             });
+            if(self.modal === "Events"){
+                locationTags.eq(0).trigger('click');
+            }
     });
   },
 
