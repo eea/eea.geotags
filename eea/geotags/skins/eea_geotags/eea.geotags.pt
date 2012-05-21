@@ -80,7 +80,7 @@ Usage with hidden map:
             tal:condition="not:hideMap"
             tal:content="structure string:(function () { dojo.ready( function() { jQuery('#eeaEsriMap').EEAGeotagsView(); }); })()"></script>
 
-    <div id="eeaEsriMap" class="claro" tal:condition="not:hideMap">
+    <div id="eeaEsriMap" class="claro" tal:condition="not:hideMap" style="display:none;">
         <img id="eeaEsriMapLoadingImg"
              src="loading.gif"
              tal:attributes="src string:$portal_url/loading.gif" />
