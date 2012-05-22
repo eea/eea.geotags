@@ -1682,12 +1682,12 @@ EEAGeotags.View.prototype = {
     dojo.connect(self.map, 'onLoad', function () {
         // Resize the map when the browser resizes
         //
-            self.drawPoints(eea_location_links);
         dojo.ready(function(){
             dojo.connect(dijit.byId('map'), 'resize', self.map, self.map.resize);
             self.map.infoWindow.resize(140, 100);
 
             // Draw a point on map
+            self.drawPoints(eea_location_links);
 
             // Scalebar
               var scalebar = new esri.dijit.Scalebar({ map: self.map,
