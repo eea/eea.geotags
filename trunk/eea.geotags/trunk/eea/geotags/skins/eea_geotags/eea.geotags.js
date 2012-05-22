@@ -1544,7 +1544,7 @@ EEAGeotags.View.prototype = {
         eea_location_links_length = $eea_location_links.length;
         self.modal = $eea_location.data().modal;
 
-        self.map_div = $("#eeaEsriMap").hide();
+        self.map_div = $("#eeaEsriMap");
     if(self.modal !== "False" && self.modal !== "Events" || eea_location_links_length < 4 && self.modal !== "Events"){
         var dialogBox,
             eea_location_offset = $eea_location.offset(),
@@ -1576,7 +1576,7 @@ EEAGeotags.View.prototype = {
         });
     }
     else {
-        self.map_div.show();
+        self.map_div.show().css('opacity', 0);
         self.initMap($eea_location_links);
     }
   },
@@ -1646,8 +1646,14 @@ EEAGeotags.View.prototype = {
               self.map.infoWindow.setTitle(point.getTitle());
               point = point.geometry;
               self.map.infoWindow.show(point, self.map.getInfoWindowAnchor(point));
+
+              window.setTimeout(function(){
+                self.map_div.animate({opacity: 1}, 500);
+              }, 500);
+              
               e.preventDefault();
             });
+
             if(self.modal === "Events"){
                 locationTags.eq(0).trigger('click');
             }
@@ -1676,12 +1682,12 @@ EEAGeotags.View.prototype = {
     dojo.connect(self.map, 'onLoad', function () {
         // Resize the map when the browser resizes
         //
+            self.drawPoints(eea_location_links);
         dojo.ready(function(){
             dojo.connect(dijit.byId('map'), 'resize', self.map, self.map.resize);
             self.map.infoWindow.resize(140, 100);
 
             // Draw a point on map
-            self.drawPoints(eea_location_links);
 
             // Scalebar
               var scalebar = new esri.dijit.Scalebar({ map: self.map,
