@@ -8,6 +8,7 @@ from eea.geotags.json.interfaces import IJsonProvider
 
 # GeoTags storage
 from eea.geotags.storage.interfaces import IGeoTaggable
+from eea.geotags.storage.interfaces import IGeoTagged
 from eea.geotags.storage.interfaces import IGeoTags
 
 __all__ = [ IGeoGroups.__name__,
@@ -15,4 +16,5 @@ __all__ = [ IGeoGroups.__name__,
             IGeoCountries.__name__,
             IJsonProvider.__name__,
             IGeoTaggable.__name__,
+            IGeoTagged.__name__,
             IGeoTags.__name__ ]
