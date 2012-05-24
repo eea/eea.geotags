@@ -14,4 +14,15 @@
 
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeSteps
+    source="*"
+    destination="4.7"
+    profile="eea.geotags:default">
+
+    <genericsetup:upgradeStep
+      title="Set IGeoTagged for every object that has geotags"
+      handler="eea.geotags.upgrades.evolve47.set_geotags_interface"
+      />
+  </genericsetup:upgradeSteps>
+
 </configure>

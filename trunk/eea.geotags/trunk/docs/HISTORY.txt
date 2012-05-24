@@ -3,6 +3,8 @@ Changelog
 
 4.7-dev - (unreleased)
 ----------------------
+ * Upgrade step: on a serviceWWW instance in /portal_setup/manage_upgrades:
+   - Run the upgrade step Set IGeoTagged for every object that has geotags
  * Bug fix: display scalebar on map [ichimdav #4788]
  * Feature: display tags left aligned for the map macros that use the
    version with events variable defined [ichimdav #4788]
