@@ -22,7 +22,7 @@ def set_geotags_interface(context):
         tags = IGeoTags(doc).tags
         if tags:
             alsoProvides(doc, IGeoTagged)
-            doc.reindexObject(idxs = ['object_provides'])
+            doc.reindexObject(idxs=['object_provides'])
             count += 1
             if count % 10 == 0:
                 logg.info("Committing geotags interface migration transaction")

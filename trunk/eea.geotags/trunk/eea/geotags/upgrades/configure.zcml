@@ -19,6 +19,11 @@
     destination="4.7"
     profile="eea.geotags:default">
 
+    <genericsetup:upgradeDepends
+      title="Import profile steps with changes: catalog"
+      import_steps="catalog"
+      />
+
     <genericsetup:upgradeStep
       title="Set IGeoTagged for every object that has geotags"
       handler="eea.geotags.upgrades.evolve47.set_geotags_interface"
