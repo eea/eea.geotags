@@ -6,9 +6,11 @@ from Acquisition import aq_get
 from zope.i18nmessageid import Message
 from zope.i18n import translate
 from zope.component import queryAdapter
+from zope.interface import noLongerProvides, alsoProvides
 from Products.Archetypes import atapi
 from Products.Archetypes import PloneMessageFactory as _
-from eea.geotags.interfaces import IGeoTags, IJsonProvider
+from eea.geotags.interfaces import IGeoTags, IGeoTagged, IJsonProvider
+
 
 logger = logging.getLogger('eea.geotags.field')
 
@@ -42,6 +44,17 @@ class GeotagsFieldMixin(object):
             except Exception, err:
                 logger.exception(err)
                 return
+
+        # remove IGeoTagged if all geotags are removed or provide it
+        # if geotags are added
+        value_len = len(value.get('features'))
+        if not value_len:
+            if IGeoTagged.providedBy(instance):
+                noLongerProvides(instance, IGeoTagged)
+        else:
+            if not IGeoTagged.providedBy(instance):
+                alsoProvides(instance, IGeoTagged)
+
         geo.tags = value
 
     def json2list(self, geojson, attr='description'):
