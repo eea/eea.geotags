@@ -47,13 +47,14 @@ class GeotagsFieldMixin(object):
 
         # remove IGeoTagged if all geotags are removed or provide it
         # if geotags are added
-        value_len = len(value.get('features'))
-        if not value_len:
-            if IGeoTagged.providedBy(instance):
-                noLongerProvides(instance, IGeoTagged)
-        else:
-            if not IGeoTagged.providedBy(instance):
-                alsoProvides(instance, IGeoTagged)
+        if value:
+            value_len = len(value.get('features'))
+            if not value_len:
+                if IGeoTagged.providedBy(instance):
+                    noLongerProvides(instance, IGeoTagged)
+            else:
+                if not IGeoTagged.providedBy(instance):
+                    alsoProvides(instance, IGeoTagged)
 
         geo.tags = value
 
