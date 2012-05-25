@@ -16,6 +16,8 @@ def set_geotags_interface(context):
     brains = ctool(object_provides=iface, show_inactive=True, Language='all')
     count = 0
     for brain in brains:
+        if not brain.location:
+            continue
         doc = brain.getObject()
         tags = IGeoTags(doc).tags
         if tags:
