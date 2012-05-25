@@ -13,6 +13,7 @@
   <include package=".vocabularies" />
   <include package=".json" />
   <include package=".cache" />
+  <include package=".catalog" />
 
   <include package=".upgrades" />
 

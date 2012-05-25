@@ -3,11 +3,14 @@ Changelog
 
 4.7-dev - (unreleased)
 ----------------------
- * Upgrade step: on a serviceWWW instance in /portal_setup/manage_upgrades:
-   - Run the upgrade step Set IGeoTagged for every object that has geotags
- * Bug fix: display scalebar on map [ichimdav #4788]
- * Feature: display tags left aligned for the map macros that use the
-   version with events variable defined [ichimdav #4788]
+* Upgrade step: Within "Plone > Site setup > Add-ons" click on
+  upgrade button available for eea.geotags
+* Feature: Added 'geotags' zCatalog metadata to store the objects
+  geographic information on brain in order for this to be used in map views
+  [voineali refs #3355]
+* Bug fix: display scalebar on map [ichimdav #4788]
+* Feature: display tags left aligned for the map macros that use the
+  version with events variable defined [ichimdav #4788]
 
 4.6 - (2012-04-26)
 ------------------
@@ -34,7 +37,7 @@ Changelog
 4.4 - (2012-02-06)
 ------------------
 * Feature: implemented first basic list view of geotags.
-  [demarant] 
+  [demarant]
 
 4.3 - (2011-11-29)
 ------------------
