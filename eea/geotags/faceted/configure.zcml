@@ -1,0 +1,30 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
+  i18n_domain="eea">
+
+  <!-- A faceted view for displaying a map with the help of the geotags map -->
+  <configure zcml:condition="installed eea.facetednavigation"
+        xmlns:faceted="http://namespaces.zope.org/faceted">
+        <faceted:view
+            name="faceted-map-view"
+            class=".map.MapView"
+            template="faceted_map_view.pt"
+            title="Faceted map view"
+            permission="zope2.View"
+        />
+  </configure>
+
+  <!-- A normal browser view for displaying a map with the help of the geotags map
+       if faceted navigation is not installed -->
+  <configure zcml:condition="not-installed eea.facetednavigation"
+      xmlns:browser="http://namespaces.zope.org/browser">
+        <browser:view
+            name="faceted-map-view"
+            class=".map.MapView"
+            template="faceted_map_view.pt"
+            title="Map view"
+            permission="zope2.View"
+        />
+    </configure>
+</configure>
