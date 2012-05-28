@@ -17,4 +17,7 @@
 
   <include package=".upgrades" />
 
+
+  <include package=".faceted" />
+
 </configure>
