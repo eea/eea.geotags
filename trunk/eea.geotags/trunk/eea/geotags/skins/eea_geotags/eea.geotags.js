@@ -219,8 +219,8 @@ jQuery.fn.geodialog = function(settings){
       // annotation
       json.features = json.features.sort(function(a,b){
         var aName = a.properties.title.toLowerCase();
-        var bName = b.properties.title.toLowerCase(); 
-        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0)); 
+        var bName = b.properties.title.toLowerCase();
+        return ((aName < bName) ? -1 : ((aName > bName) ? 1 : 0));
       });
 
       self.trigger(jQuery.geoevents.basket_save, {json: json});
@@ -1602,67 +1602,79 @@ EEAGeotags.View.prototype = {
 
   // Draw points on map
   drawPoints: function(eea_location_links){
-    var self = this;
-    var context_url, infoSymbol, infoTemplate;
+    var self = this,
+        context_url, infoSymbol, infoTemplate, map_points, locationTags;
+    locationTags = eea_location_links;
 
     context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
 
     infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
     infoTemplate = new esri.InfoTemplate('${Name}', '${Addr}');
 
-    jQuery.getJSON(context_url + '/eea.geotags.jsondata', {}, function (data) {
-            var locationTags;
-            locationTags = eea_location_links;
+    var setPoints = function(res){
+        jQuery.each(res.features, function (i, item) {
 
-            
-            jQuery.each(data.features, function (i, item) {
+            var geometry, mapPoint;
+            geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
+            geometry = esri.geometry.geographicToWebMercator(geometry);
 
-                var geometry, mapPoint;
-                geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
-                geometry = esri.geometry.geographicToWebMercator(geometry);
+            mapPoint = new esri.Graphic({'geometry': geometry,
+                                        'attributes': {'Name': 'Location',
+                                                        'Addr': item.properties.description}});
+            mapPoint.setSymbol(infoSymbol);
+            mapPoint.setInfoTemplate(infoTemplate);
+            self.map.graphics.add(mapPoint);
 
-                mapPoint = new esri.Graphic({'geometry': geometry,
-                                            'attributes': {'Name': 'Location',
-                                                           'Addr': item.properties.description}});
-                mapPoint.setSymbol(infoSymbol);
-                mapPoint.setInfoTemplate(infoTemplate);
-                self.map.graphics.add(mapPoint);
+            // set latitude and longitude on each tag as data attribute
+            jQuery(locationTags[i]).data('latitude', item.properties.center[1]);
+            jQuery(locationTags[i]).data('longitude', item.properties.center[0]);
 
-                // set latitude and longitude on each tag as data attribute
-                jQuery(locationTags[i]).data('latitude', item.properties.center[1]);
-                jQuery(locationTags[i]).data('longitude', item.properties.center[0]);
+        });
+    };
 
-            });
-
-            // center map and display infoWindow when clicking on a geotag
+    map_points = jQuery('#map_points');
+    if(map_points.length) {
+        var results = map_points.html();
+        // we need to get rid of extra ' otherwise the JSON will not validate
+        results = results.replace(/'/g, "");
+        var features = '{"type": "FeatureCollection", "features":' + results + '}';
+        results = jQuery.parseJSON(features);
+        setPoints(results);
+    }
+    else {
+        jQuery.getJSON(context_url + '/eea.geotags.jsondata', {}, function (res) {
+            setPoints(res);
+            //center map and display infoWindow when clicking on a geotag
             locationTags.click(function(e) {
-              var geometryClick;
-              geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
-              geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
-              self.map.centerAndZoom(geometryClick, 6);
-              // show infoWindow after clicking on tag name
-              var point = $.grep(self.map.graphics.graphics, function(i){return i.geometry.x === geometryClick.x;})[0];
-              self.map.infoWindow.setContent(point.getContent());
-              self.map.infoWindow.setTitle(point.getTitle());
-              point = point.geometry;
-              self.map.infoWindow.show(point, self.map.getInfoWindowAnchor(point));
+                var geometryClick;
+                geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
+                geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
+                self.map.centerAndZoom(geometryClick, 6);
+                // show infoWindow after clicking on tag name
+                var point = $.grep(self.map.graphics.graphics, function(i){return i.geometry.x === geometryClick.x;})[0];
+                self.map.infoWindow.setContent(point.getContent());
+                self.map.infoWindow.setTitle(point.getTitle());
+                point = point.geometry;
+                self.map.infoWindow.show(point, self.map.getInfoWindowAnchor(point));
 
-              window.setTimeout(function(){
+                window.setTimeout(function(){
                 self.map_div.animate({opacity: 1}, 500);
-              }, 500);
-              
-              e.preventDefault();
+                }, 500);
+
+                e.preventDefault();
             });
 
             if(self.modal === "Events"){
                 locationTags.eq(0).trigger('click');
             }
-    });
+        });
+    }
+
   },
 
   // Create map
   initMap: function(eea_location_links){
-    // To get initial coordonates, zoom to default location and run in debuger: dojo.toJson(map.extent.toJson());
+    // To get initial coordonates, zoom to default location and run in debugger: dojo.toJson(map.extent.toJson());
     var self = this;
     var initExtent, basemap;
     initExtent = new esri.geometry.Extent({"xmin": -40, "ymin": 30, "xmax":122, "ymax":74, "spatialReference":{"wkid": 102100}});

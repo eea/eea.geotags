@@ -1,4 +1,3 @@
-
 <metal:map define-macro="map">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
   xmlns:tal="http://xml.zope.org/namespaces/tal"
@@ -10,7 +9,8 @@
 <body>
   <metal:content-core fill-slot="content-core">
     <metal:block define-macro="content-core">
-  <tal:map replace="structure here/@@geoEventsMap" />
+      <div metal:use-macro="context/map_macros/macros/geotags_map" />
+
       <div tal:define="
         contentFilter contentFilter|request/contentFilter|nothing;
         contentFilter python:contentFilter and dict(contentFilter) or {};
@@ -24,9 +24,9 @@
         self nocall:context/@@faceted-map-view;
         res python:self.map_points(batch);
         ">
-
+        <div id="map_points" style="display:none;" tal:content="res" />
         <div metal:use-macro="context/batch_macros/macros/navigation" />
-        <div class="eea-preview-items">
+        <div class="eea-preview-items eea-location-listing">
           <tal:entries repeat="brain folderContents">
             <tal:entry
               define="doc brain/getObject|nothing"
