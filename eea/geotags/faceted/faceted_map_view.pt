@@ -26,13 +26,58 @@
         ">
         <div id="map_points" style="display:none;" tal:content="res" />
         <div metal:use-macro="context/batch_macros/macros/navigation" />
-        <div class="eea-preview-items eea-location-listing">
-          <tal:entries repeat="brain folderContents">
-            <tal:entry
-              define="doc brain/getObject|nothing"
-              condition="exists:doc/@@faceted-preview-item"
-              replace="structure doc/@@faceted-preview-item" />
-          </tal:entries>
+        <div class="eea-location-listing" tal:attributes="data-modal string:False">
+
+                <table class="listing"
+
+                        tal:define="vocab python:here.listMetaDataFields(False); topicContents folderContents">
+                     <caption class="hiddenStructure" i18n:translate="">Content listing</caption>
+                     <thead>
+                        <tr>
+                            <th tal:repeat="field here/getCustomViewFields"
+                                tal:content="python:vocab.getValue(field, field)"
+                                i18n:translate=""/>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tal:brain tal:repeat="obj topicContents">
+                        <tr tal:define="oddrow repeat/obj/odd;"
+                            tal:attributes="class python:'even' if oddrow else 'odd'">
+                            <tal:fields repeat="field here/getCustomViewFields"
+                                        define="urlview context/@@url;
+                                                url python: urlview.listing_url(brain=obj);
+                                                obj_description obj/Description;
+                                                obj_icon python:plone_view.getIcon(obj);
+                                                title_or_id obj/pretty_title_or_id">
+                            <tal:block define="value python: getattr(obj, field, None)">
+                                <td tal:condition="python: field != 'Title'"
+                                  tal:define="format_view nocall:context/@@format_catalog_metadata"
+                                    tal:content="python:format_view(value)"
+                                    i18n:translate="" tal:on-error="python:value"/>
+                                <td tal:condition="python: field == 'Title'">
+                                    <a href="#" tal:attributes="href url;
+                                                                title obj_description;">
+                                        <img src="#"
+                                             height="16"
+                                             width="16"
+                                             tal:condition="obj_icon/url"
+                                             tal:attributes="src obj_icon/url;
+                                                             alt obj_icon/description;
+                                                             title obj_icon/title;
+                                                             width obj_icon/width;
+                                                             height obj_icon/height;"/>
+                                    </a>
+                                     <a href="#" tal:attributes="href url;
+                                                                class python:'link-plain' if urlview.is_external() else None"
+                                                tal:content="title_or_id" />
+
+                                </td>
+                            </tal:block>
+                            </tal:fields>
+                        </tr>
+                        </tal:brain>
+                     </tbody>
+                </table>
         </div>
 
         <div metal:use-macro="context/batch_macros/macros/navigation" />
