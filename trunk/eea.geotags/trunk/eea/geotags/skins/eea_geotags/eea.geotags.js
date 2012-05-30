@@ -1539,26 +1539,26 @@ EEAGeotags.View.prototype = {
 
   init: function(){
     var self = this,
-        $eea_location = $('.eea-location-listing'),
-        $eea_location_links = $eea_location.find('a'),
-        eea_location_links_length = $eea_location_links.length;
-        self.modal = $eea_location.data().modal;
+        eea_location = jQuery('.eea-location-listing'),
+        eea_location_links = eea_location.find('a'),
+        eea_location_links_length = eea_location_links.length;
+        self.modal = eea_location.data().modal;
 
-        self.map_div = $("#eeaEsriMap");
+        self.map_div = jQuery("#eeaEsriMap");
     if(self.modal !== "False" && self.modal !== "Events" || eea_location_links_length < 4 && self.modal !== "Events"){
         var dialogBox,
-            eea_location_offset = $eea_location.offset(),
-            pos_top = eea_location_offset.top + $eea_location.height(),
-            pos_left = $("#content").offset().left,
-            $body = $('html, body'),
-            content_width = $("#content").width();
+            eea_location_offset = eea_location.offset(),
+            pos_top = eea_location_offset.top + eea_location.height(),
+            pos_left = jQuery("#content").offset().left,
+            body = jQuery('html, body'),
+            content_width = jQuery("#content").width();
             // CREATE MAP
             self.map_div.show();
-            self.initMap($eea_location_links);
+            self.initMap(eea_location_links);
             self.map_div.hide();
-        $eea_location_links.click(function(e){
+        eea_location_links.click(function(e){
             if (!dialogBox) {
-                $body.animate({scrollTop: pos_top - 80 }, 400);
+                body.animate({scrollTop: pos_top - 80 }, 400);
                 // ie bug which fails if we have open and width and height in
                 // the dialog options so we add then with plain jquery css
                 dialogBox = self.map_div.dialog({autoOpen : false});
@@ -1569,7 +1569,7 @@ EEAGeotags.View.prototype = {
 
             }
             else {
-                $body.animate({scrollTop: pos_top - 80 }, 400);
+                body.animate({scrollTop: pos_top - 80 }, 400);
                 dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top, display: 'block'});
             }
             e.preventDefault();
@@ -1577,7 +1577,7 @@ EEAGeotags.View.prototype = {
     }
     else {
         self.map_div.show(); //.css('opacity', 0);
-        self.initMap($eea_location_links);
+        self.initMap(eea_location_links);
     }
   },
   // Show loading image
@@ -1604,23 +1604,29 @@ EEAGeotags.View.prototype = {
   drawPoints: function(eea_location_links){
     var self = this,
         context_url, infoSymbol, infoTemplate, map_points, locationTags;
+    map_points = jQuery('#map_points');
     locationTags = eea_location_links;
 
     context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
 
     infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
-    infoTemplate = new esri.InfoTemplate('${Name}', '${Addr}');
+    var infotemplate = map_points.length ? '<p><strong>Location: </strong>${Addr}</p> <p>${Desc}</p> <a href="${Url}">Read More</a>': '${Addr}';
+    infoTemplate = new esri.InfoTemplate('${Name}', infotemplate);
 
     var setPoints = function(res){
         jQuery.each(res.features, function (i, item) {
 
-            var geometry, mapPoint;
+            var geometry, mapPoint, attributes;
             geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
             geometry = esri.geometry.geographicToWebMercator(geometry);
+            attributes = {'Name': 'Location',
+                          'Addr': decodeURIComponent(item.properties.description)};
 
             mapPoint = new esri.Graphic({'geometry': geometry,
                                         'attributes': {'Name': 'Location',
-                                                        'Addr': item.properties.description}});
+                                                       'Addr': decodeURIComponent(item.properties.description),
+                                                       'Desc': decodeURIComponent(item.itemDescription),
+                                                       'Url' : item.itemUrl }});
             mapPoint.setSymbol(infoSymbol);
             mapPoint.setInfoTemplate(infoTemplate);
             self.map.graphics.add(mapPoint);
@@ -1632,7 +1638,6 @@ EEAGeotags.View.prototype = {
         });
     };
 
-    map_points = jQuery('#map_points');
     if(map_points.length) {
         var results = map_points.html();
         // we need to get rid of extra ' otherwise the JSON will not validate
@@ -1641,7 +1646,7 @@ EEAGeotags.View.prototype = {
         results = jQuery.parseJSON(features);
         setPoints(results);
         window.setTimeout(function(){
-        self.map_div.animate({opacity: 1}, 500);
+            self.map_div.animate({opacity: 1}, 500);
         }, 500);
     }
     else {

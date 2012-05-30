@@ -2,6 +2,7 @@
 """
 from Products.Five.browser import BrowserView
 import json
+import urllib
 
 
 class MapView(BrowserView):
@@ -17,6 +18,8 @@ class MapView(BrowserView):
             if brain.geotags:
                 # we only need the features items
                 feature = json.loads(brain.geotags).get('features')
+                feature[0].update({"itemDescription": urllib.quote(brain.Description)})
+                feature[0].update({"itemUrl": brain.getURL()})
                 feature = json.dumps(feature)
                 # hack as we only need the objects within the list
                 res.append(feature[1: -1])
