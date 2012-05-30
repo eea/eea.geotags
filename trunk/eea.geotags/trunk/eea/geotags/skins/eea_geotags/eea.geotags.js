@@ -1576,7 +1576,7 @@ EEAGeotags.View.prototype = {
         });
     }
     else {
-        self.map_div.show().css('opacity', 0);
+        self.map_div.show(); //.css('opacity', 0);
         self.initMap($eea_location_links);
     }
   },
@@ -1640,6 +1640,9 @@ EEAGeotags.View.prototype = {
         var features = '{"type": "FeatureCollection", "features":' + results + '}';
         results = jQuery.parseJSON(features);
         setPoints(results);
+        window.setTimeout(function(){
+        self.map_div.animate({opacity: 1}, 500);
+        }, 500);
     }
     else {
         jQuery.getJSON(context_url + '/eea.geotags.jsondata', {}, function (res) {
