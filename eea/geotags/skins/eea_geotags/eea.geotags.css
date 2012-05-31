@@ -373,7 +373,7 @@
 #eeaEsriMap {
   padding: 0;
   height: 400px;
-  width: 592px;
+  width: 100%;
   border: 2px solid black;
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;

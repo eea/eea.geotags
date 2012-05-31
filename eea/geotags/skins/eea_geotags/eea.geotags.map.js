@@ -1,10 +1,13 @@
 jQuery(document).ready(function(){
     var djConfig = { parseOnLoad: true },
-        url = "http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7";
+        url = "http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7",
+        map_points =jQuery("#map_points"),
+        map;
+
     if(jQuery('#faceted-form').length) {
         jQuery(Faceted.Events).one('FACETED-AJAX-QUERY-SUCCESS', function(){
-             var map = jQuery("#eeaEsriMap");
-             if (map.length) {
+             if (map_points.length) {
+                map = jQuery('#eeaEsriMap');
                 map.insertAfter("#plone-document-byline");
                 jQuery.getScript(url, function () {
                     dojo.ready(function () {
@@ -18,11 +21,11 @@ jQuery(document).ready(function(){
         });
     }
     else {
-        var map = jQuery("#eeaEsriMap");
-        if (map.length) {
+        if (map_points.length) {
+            map = jQuery("#eeaEsriMap");
             jQuery.getScript(url, function () {
                 dojo.ready(function () {
-                    jQuery('#eeaEsriMap').EEAGeotagsView();
+                    map.EEAGeotagsView();
                 });
             });
         }
