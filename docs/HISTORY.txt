@@ -3,18 +3,23 @@ Changelog
 
 4.7-dev - (unreleased)
 ----------------------
+* Bug fix: fixed markup of HISTORY.txt file
+  [ciobabog refs #5231]
 * Upgrade step: Within "Plone > Site setup > Add-ons" click on
   upgrade button available for eea.geotags
 * Feature: Added 'geotags' zCatalog metadata to store the objects
   geographic information on brain in order for this to be used in map views
   [voineali refs #3355]
-* Bug fix: display scalebar on map [ichimdav #4788]
+* Bug fix: display scalebar on map
+  [ichimdav #4788]
 * Feature: display tags left aligned for the map macros that use the
-  version with events variable defined [ichimdav #4788]
+  version with events variable defined
+  [ichimdav #4788]
 
 4.6 - (2012-04-26)
 ------------------
-* Feature: added  modal map as a pop-up for geotags [ichimdav #3354]
+* Feature: added  modal map as a pop-up for geotags
+  [ichimdav #3354]
 * Bug fix: Make it work with eea.inidicators aggregated edit
   [voineali #5077]
 * Bug fix: fixed so 'title' get saved on the field when 'description' is empty on geonames.org response
