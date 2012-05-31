@@ -4,4 +4,8 @@
   cacheable="True" compression="none" cookable="True" enabled="True" inline="False"
   expression="python: request.get('jsdisable','') != 'jquery'"
   />
+ <javascript id="eea.geotags.map.js"
+  cacheable="True" compression="none" cookable="True" enabled="True" inline="False"
+  expression="python: request.get('jsdisable','') != 'jquery'"
+  />
 </object>

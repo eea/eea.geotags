@@ -3,17 +3,6 @@
                               portal_url portal_state/portal_url;">
     <link rel="stylesheet" type="text/css"
             href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css" />
-    <script type="text/javascript">
-        (function () {
-            var djConfig = { parseOnLoad: true },
-                url = "http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7";
-            jQuery.getScript(url, function () {
-                dojo.ready(function () {
-                    jQuery('#eeaEsriMap').EEAGeotagsView();
-                });
-            });
-        }());
-    </script>
 
     <div id="eeaEsriMap" class="claro" style="display:none;">
         <img id="eeaEsriMapLoadingImg"

@@ -1612,6 +1612,9 @@ EEAGeotags.View.prototype = {
     infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
     var infotemplate = map_points.length ? '<p><strong>Location: </strong>${Addr}</p> <p>${Desc}</p> <a href="${Url}">Read More</a>': '${Addr}';
     infoTemplate = new esri.InfoTemplate('${Name}', infotemplate);
+    // remove previous graphics before adding new ones with faceted navigation
+    // queries
+    EEAGeotags.map.graphics.clear();
 
     var setPoints = function(res){
         jQuery.each(res.features, function (i, item) {
@@ -1629,7 +1632,7 @@ EEAGeotags.View.prototype = {
                                                        'Url' : item.itemUrl }});
             mapPoint.setSymbol(infoSymbol);
             mapPoint.setInfoTemplate(infoTemplate);
-            self.map.graphics.add(mapPoint);
+            EEAGeotags.map.graphics.add(mapPoint);
 
             // set latitude and longitude on each tag as data attribute
             jQuery(locationTags[i]).data('latitude', item.properties.center[1]);
@@ -1646,7 +1649,7 @@ EEAGeotags.View.prototype = {
         results = jQuery.parseJSON(features);
         setPoints(results);
         window.setTimeout(function(){
-            self.map_div.animate({opacity: 1}, 500);
+            jQuery("#map_points").animate({opacity: 1}, 500);
         }, 500);
     }
     else {
@@ -1694,7 +1697,7 @@ EEAGeotags.View.prototype = {
                                            'isScrollWheelZoom': false,
                                            'navigationMode': 'css-transforms'});
     self.map.addLayer(basemap);
-
+    EEAGeotags.map = self.map;
     // Loading images
     dojo.connect(self.map, 'onUpdateStart', self.showLoading);
     dojo.connect(self.map, 'onUpdateEnd', self.hideLoading);
