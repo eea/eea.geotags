@@ -1615,6 +1615,7 @@ EEAGeotags.View.prototype = {
     // remove previous graphics before adding new ones with faceted navigation
     // queries
     EEAGeotags.map.graphics.clear();
+    EEAGeotags.map.infoWindow.hide();
 
     var setPoints = function(res){
         jQuery.each(res.features, function (i, item) {
