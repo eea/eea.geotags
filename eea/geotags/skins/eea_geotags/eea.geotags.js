@@ -28,7 +28,6 @@ jQuery.google2geojson = function(googlejson){
       other: googlejson
     }
   };
-
   feature.properties.title = googlejson.address_components[0].long_name;
   feature.properties.description = googlejson.formatted_address;
   feature.properties.tags = googlejson.types;
@@ -1522,7 +1521,6 @@ EEAGeotags.View = function(context, options){
   if(options){
     jQuery.extend(self.settings, options);
   }
-
   self.initialize();
 };
 
@@ -1534,6 +1532,8 @@ EEAGeotags.View.prototype = {
     dojo.require('dijit.layout.ContentPane');
     dojo.require('esri.map');
     dojo.require('esri.dijit.Scalebar');
+    dojo.require("esri.layers.FeatureLayer");
+    dojo.require("esri.dijit.Popup");
     self.init();
   },
 
@@ -1616,59 +1616,110 @@ EEAGeotags.View.prototype = {
     // queries
     EEAGeotags.map.graphics.clear();
     EEAGeotags.map.infoWindow.hide();
+    var featureCollection = {
+        "layerDefinition": null,
+        "featureSet": {
+        "features": [],
+        "geometryType": "esriGeometryPoint"
+        }
+    };
+    featureCollection.layerDefinition = {
+        "geometryType": "esriGeometryPoint",
+        "objectIdField": "ObjectID",
+        "drawingInfo": {
+        "renderer": self.settings.featureCollectionRenderer
+        },
+        "fields": [{
+        "name": "ObjectID",
+        "alias": "ObjectID",
+        "type": "esriFieldTypeOID"
+        },{
+        "name": "description",
+        "alias": "Description",
+        "type": "esriFieldTypeString"
+        },{
+        "name": "title",
+        "alias": "Title",
+        "type": "esriFieldTypeString"
+        }]
+    };
 
-    var setPoints = function(res){
-        jQuery.each(res.features, function (i, item) {
-
-            var geometry, mapPoint, attributes;
-            geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
-            geometry = esri.geometry.geographicToWebMercator(geometry);
-            attributes = {'Name': 'Location',
-                          'Addr': decodeURIComponent(item.properties.description)};
-
-            mapPoint = new esri.Graphic({'geometry': geometry,
-                                        'attributes': {'Name': 'Location',
-                                                       'Addr': decodeURIComponent(item.properties.description),
-                                                       'Desc': decodeURIComponent(item.itemDescription),
-                                                       'Url' : item.itemUrl }});
-            mapPoint.setSymbol(infoSymbol);
-            mapPoint.setInfoTemplate(infoTemplate);
-            EEAGeotags.map.graphics.add(mapPoint);
-
-            // set latitude and longitude on each tag as data attribute
-            jQuery(locationTags[i]).data('latitude', item.properties.center[1]);
-            jQuery(locationTags[i]).data('longitude', item.properties.center[0]);
-
+    var setPoints = function(res, results){
+        //define a popup template
+        var popup = new esri.dijit.Popup(null, dojo.create("div"));
+           self.map.setInfoWindow(popup);
+        var popupTemplate = new esri.dijit.PopupTemplate({
+          title: "{title}",
+          description:"{description}"
         });
+
+        //create a feature layer based on the feature collection
+        featureLayer = new esri.layers.FeatureLayer(res, {
+          id: 'geotagsLayer',
+          infoTemplate: popupTemplate
+        });
+
+        //associate the features with the popup on click
+        dojo.connect(featureLayer,"onClick",function(evt){
+            var features = [];
+            dojo.forEach(featureLayer.graphics, function(item) {
+                if (evt.graphic.geometry.x === item.geometry.x) {
+                        features.push(item);
+                }
+            });
+            self.map.infoWindow.setFeatures(features);
+        });
+
+        dojo.connect(self.map,"onLayersAddResult",function(objs){
+            var features = [];
+            jQuery.each(results, function (i, item) {
+
+                var geometry, mapPoint, attributes;
+                geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
+                geometry = esri.geometry.geographicToWebMercator(geometry);
+                var utf8bytes = unescape(encodeURIComponent(item.properties.description));
+                var unicodecharacters = decodeURIComponent(escape(utf8bytes));
+                mapPoint = new esri.Graphic({'geometry': geometry,
+                                            'attributes': {'Name': 'Location',
+                                                        'Addr': unicodecharacters,
+                                                        'Desc': decodeURIComponent(item.itemDescription),
+                                                        'Url' : item.itemUrl }});
+                /* mapPoint.setSymbol(infoSymbol); */
+                mapPoint.setInfoTemplate(infoTemplate);
+                features.push(mapPoint);
+                // set latitude and longitude on each tag as data attribute
+                jQuery(locationTags[i]).data('latitude', item.properties.center[1]);
+                jQuery(locationTags[i]).data('longitude', item.properties.center[0]);
+            });
+            featureLayer.applyEdits(features, null, null);
+        });
+
+        self.map.addLayers([featureLayer]);
     };
 
     if(map_points.length) {
         var results = map_points.html();
-        // we need to get rid of extra ' otherwise the JSON will not validate
         results = results.replace(/'/g, "");
-        var features = '{"type": "FeatureCollection", "features":' + results + '}';
-        results = jQuery.parseJSON(features);
-        setPoints(results);
+        results = jQuery.parseJSON(results);
+        setPoints(featureCollection, results);
         window.setTimeout(function(){
             jQuery("#map_points").animate({opacity: 1}, 500);
         }, 500);
     }
     else {
         jQuery.getJSON(context_url + '/eea.geotags.jsondata', {}, function (res) {
-            setPoints(res);
+            setPoints(featureCollection, res.features);
             //center map and display infoWindow when clicking on a geotag
             locationTags.click(function(e) {
                 var geometryClick;
                 geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
                 geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
-                self.map.centerAndZoom(geometryClick, 6);
                 // show infoWindow after clicking on tag name
-                var point = $.grep(self.map.graphics.graphics, function(i){return i.geometry.x === geometryClick.x;})[0];
-                self.map.infoWindow.setContent(point.getContent());
-                self.map.infoWindow.setTitle(point.getTitle());
-                point = point.geometry;
+                var location = $.grep(featureLayer.graphics, function(i){return i.geometry.x === geometryClick.x;})[0];
+                var point = location.geometry;
+                self.map.infoWindow.setFeatures([location]);
                 self.map.infoWindow.show(point, self.map.getInfoWindowAnchor(point));
-
+                self.map.centerAndZoom(geometryClick, 6);
                 window.setTimeout(function(){
                 self.map_div.animate({opacity: 1}, 500);
                 }, 500);
@@ -1681,7 +1732,6 @@ EEAGeotags.View.prototype = {
             }
         });
     }
-
   },
 
   // Create map
@@ -1708,7 +1758,9 @@ EEAGeotags.View.prototype = {
         //
         dojo.ready(function(){
             dojo.connect(dijit.byId('map'), 'resize', self.map, self.map.resize);
-            self.map.infoWindow.resize(140, 100);
+            var resize = self.settings.infoWindowSize;
+                resize = resize ? resize: [140, 100];
+            self.map.infoWindow.resize(resize[0], resize[1]);
 
             // Draw a point on map
             self.drawPoints(eea_location_links);
