@@ -23,8 +23,10 @@
         batch python:isinstance(folderContents, Batch) and folderContents or Batch(folderContents, limit_display or 100, int(b_start), orphan=1);
         self nocall:context/@@faceted-map-view;
         res python:self.map_points(batch);
+        portal_url context/@@plone_portal_state/portal_url;
         ">
         <div id="map_points" style="display:none;" tal:content="res" />
+        <div id="portal_url" tal:content="portal_url" />
         <div metal:use-macro="context/batch_macros/macros/navigation" />
         <div class="eea-location-listing" tal:attributes="data-modal string:False">
 
