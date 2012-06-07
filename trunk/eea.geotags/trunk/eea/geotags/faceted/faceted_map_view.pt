@@ -28,7 +28,7 @@
         <div id="map_points" tal:content="res" class="visualHidden" />
         <div id="portal_url" tal:content="portal_url" class="visualHidden" />
         <div metal:use-macro="context/batch_macros/macros/navigation" />
-        <div class="eea-location-listing" tal:attributes="data-modal string:False">
+        <div tal:attributes="data-modal string:False">
 
                 <table class="listing"
 

@@ -1543,7 +1543,7 @@ EEAGeotags.View.prototype = {
         eea_location = jQuery('.eea-location-listing'),
         eea_location_links = eea_location.find('a'),
         eea_location_links_length = eea_location_links.length;
-        self.modal = eea_location.data().modal;
+        self.modal = eea_location_links_length  ? eea_location.data().modal : "Events";
 
         self.map_div = jQuery("#eeaEsriMap");
     if( (self.modal !== "False" && self.modal !== "Events") || (eea_location_links_length < 4 && self.modal !== "Events")){
@@ -1604,9 +1604,10 @@ EEAGeotags.View.prototype = {
   // Draw points on map
   drawPoints: function(eea_location_links){
     var self = this,
-        context_url, infoSymbol, infoTemplate, map_points, locationTags;
+        context_url, infoSymbol, infoTemplate, map_points, locationTags, locationTagsLen;
     map_points = jQuery('#map_points');
     locationTags = eea_location_links;
+    locationTagsLen = locationTags.length;
 
     context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
 
@@ -1712,8 +1713,10 @@ EEAGeotags.View.prototype = {
             mapPoint.setInfoTemplate(infoTemplate);
             features.push(mapPoint);
             // set latitude and longitude on each tag as data attribute
-            jQuery(locationTags[i]).data('latitude', item.properties.center[1]);
-            jQuery(locationTags[i]).data('longitude', item.properties.center[0]);
+            if(locationTagsLen) {
+                jQuery(locationTags[i]).data('latitude', item.properties.center[1]);
+                jQuery(locationTags[i]).data('longitude', item.properties.center[0]);
+            }
         });
         // first is add, second is update, third is delete parameter
         featureLayer.applyEdits(features, null, null);
