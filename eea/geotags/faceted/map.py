@@ -19,10 +19,13 @@ class MapView(BrowserView):
                 # we only need the features items
                 feature = json.loads(brain.geotags).get('features')
                 location = feature[0]['properties']['description']
-                feature[0]['properties']['description'] = urllib.quote(location.encode('utf-8'))
+                feature[0]['properties']['description'] = urllib.quote(
+                                    location.encode('utf-8'))
                 feature[0].update({"itemDescription":
                                     urllib.quote(brain.Description)})
                 feature[0].update({"itemUrl": brain.getURL()})
+                feature[0].update({"itemTitle":
+                                    urllib.quote(brain.Title)})
                 feature = json.dumps(feature)
                 # hack as we only need the objects within the list
                 res.append(feature[1: -1])
