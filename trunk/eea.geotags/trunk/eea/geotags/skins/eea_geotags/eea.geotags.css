@@ -426,3 +426,7 @@ div .esriScalebar {
   position: relative;
   margin-top: -15px;
 }
+
+.visualHidden {
+    display: none;
+}
