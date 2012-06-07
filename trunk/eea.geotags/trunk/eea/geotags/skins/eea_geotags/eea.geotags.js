@@ -1652,13 +1652,19 @@ EEAGeotags.View.prototype = {
           title: "{title}",
           description:"{description}"
         });
-
         //create a feature layer based on the feature collection
         featureLayer = new esri.layers.FeatureLayer(res, {
           id: 'geotagsLayer',
           infoTemplate: popupTemplate
         });
 
+        dojo.connect(popup,"onShow",function(){
+            var flength = popup.features.length;
+            if (flength > 1){
+                popup.setTitle("(1 of " + flength + ")");
+            }
+            popup.resize(300, 200);
+        });
         //associate the features with the popup on click
         dojo.connect(featureLayer,"onClick",function(evt){
             var features = [];
@@ -1667,6 +1673,7 @@ EEAGeotags.View.prototype = {
                         features.push(item);
                 }
             });
+            popup.hide();
             self.map.infoWindow.setFeatures(features);
         });
 
@@ -1718,6 +1725,7 @@ EEAGeotags.View.prototype = {
                 var location = $.grep(featureLayer.graphics, function(i){return i.geometry.x === geometryClick.x;})[0];
                 var point = location.geometry;
                 self.map.infoWindow.setFeatures([location]);
+
                 self.map.infoWindow.show(point, self.map.getInfoWindowAnchor(point));
                 self.map.centerAndZoom(geometryClick, 6);
                 window.setTimeout(function(){
