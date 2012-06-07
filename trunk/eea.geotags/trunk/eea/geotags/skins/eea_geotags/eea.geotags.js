@@ -1612,7 +1612,7 @@ EEAGeotags.View.prototype = {
     context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
 
     infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
-    var infotemplate = map_points.length ? '<p><strong>Location: </strong>${Addr}</p> <p>${Desc}</p> <a href="${Url}">Read More</a>': '${Addr}';
+    var infotemplate = map_points.length ? '<h3>${Title}</h3><p><strong>Location: </strong>${Addr}</p><p><strong>Period:</strong>${Period}</p> <p>${Desc}</p> <a href="${Url}">Read More</a>': '${Addr}';
     infoTemplate = new esri.InfoTemplate('${Name}', infotemplate);
     EEAGeotags.map.infoWindow.hide();
     var featureCollection = {
@@ -1706,6 +1706,7 @@ EEAGeotags.View.prototype = {
                                         'attributes': {'Name': 'Location',
                                                     'Addr': decodeURIComponent(item.properties.description),
                                                     'Desc': decodeURIComponent(item.itemDescription),
+                                                    'Title': decodeURIComponent(item.itemTitle),
                                                     'Url' : item.itemUrl }});
             /* mapPoint.setSymbol(infoSymbol); */
             mapPoint.setInfoTemplate(infoTemplate);
