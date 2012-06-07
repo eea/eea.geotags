@@ -25,8 +25,8 @@
         res python:self.map_points(batch);
         portal_url context/@@plone_portal_state/portal_url;
         ">
-        <div id="map_points" style="display:none;" tal:content="res" />
-        <div id="portal_url" tal:content="portal_url" />
+        <div id="map_points" tal:content="res" class="visualHidden" />
+        <div id="portal_url" tal:content="portal_url" class="visualHidden" />
         <div metal:use-macro="context/batch_macros/macros/navigation" />
         <div class="eea-location-listing" tal:attributes="data-modal string:False">
 
