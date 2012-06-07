@@ -18,6 +18,8 @@ class MapView(BrowserView):
             if brain.geotags:
                 # we only need the features items
                 feature = json.loads(brain.geotags).get('features')
+                location = feature[0]['properties']['description']
+                feature[0]['properties']['description'] = urllib.quote(location.encode('utf-8'))
                 feature[0].update({"itemDescription":
                                     urllib.quote(brain.Description)})
                 feature[0].update({"itemUrl": brain.getURL()})

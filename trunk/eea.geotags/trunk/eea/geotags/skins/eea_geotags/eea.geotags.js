@@ -1702,11 +1702,9 @@ EEAGeotags.View.prototype = {
             var geometry, mapPoint, attributes;
             geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
             geometry = esri.geometry.geographicToWebMercator(geometry);
-            var utf8bytes = unescape(encodeURIComponent(item.properties.description));
-            var unicodecharacters = decodeURIComponent(escape(utf8bytes));
             mapPoint = new esri.Graphic({'geometry': geometry,
                                         'attributes': {'Name': 'Location',
-                                                    'Addr': unicodecharacters,
+                                                    'Addr': decodeURIComponent(item.properties.description),
                                                     'Desc': decodeURIComponent(item.itemDescription),
                                                     'Url' : item.itemUrl }});
             /* mapPoint.setSymbol(infoSymbol); */
