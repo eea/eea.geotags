@@ -18,6 +18,8 @@ Changelog
 * Feature: display tags left aligned for the map macros that use the
   version with events variable defined
   [ichimdav #4788]
+* Bug fix: fixed eea.alchemy suggestions url to get suggestions for
+  the object, instead of the parent folder [batradav]
 
 4.6 - (2012-04-26)
 ------------------
