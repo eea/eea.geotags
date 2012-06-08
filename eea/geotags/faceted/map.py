@@ -30,7 +30,8 @@ class MapView(BrowserView):
                                     urllib.quote(brain.Title)})
                 start_date = brain.start.strftime(props.localLongTimeFormat)
                 end_date = brain.end.strftime(props.localLongTimeFormat)
-                feature[0].update({"itemDate": '%s to %s' % (start_date, end_date)})
+                feature[0].update({"itemDate": '%s to %s' % (
+                                                        start_date, end_date)})
                 feature = json.dumps(feature)
                 # hack as we only need the objects within the list
                 res.append(feature[1: -1])
