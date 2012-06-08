@@ -51,7 +51,8 @@ Usage with hidden map:
                           hideMap hideMap|python:True;
                           modal modal|python:False;
                           data_modal python: 'True' if modal else 'False';
-                          events events|python:False"
+                          events events|python:False;
+                          infoWindowImgName infoWindowImgName|python:'event_icon.gif'"
                   condition="geotags">
                   <div tal:attributes="data-modal python:'Events' if events else data_modal; 
                                        class python:'eea-location-listing events' if events else 'eea-location-listing'" 
@@ -82,7 +83,7 @@ Usage with hidden map:
     <script type="text/javascript"
             tal:condition="not:hideMap"
             tal:content="structure string:(function () { dojo.ready( function() { 
-                var map_options = {'infoWindowSize' : [400, 200]};
+            var map_options = {'infoWindowSize' : [400, 200], 'infoWindowImgName' : '${infoWindowImgName}'};
                 jQuery.extend(map_options, EEAGeotags.settings);
                 jQuery('#eeaEsriMap').EEAGeotagsView(map_options); }); })()">
     </script>

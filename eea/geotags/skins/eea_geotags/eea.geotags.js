@@ -1623,15 +1623,14 @@ EEAGeotags.View.prototype = {
         }
     };
     var renderer;
-    var portal = portal_url || "";
+    var portal = portal_url + "/" || "/";
     if(self.modal === "Events") {
        renderer =
         {
             "type": "simple",
             "symbol": {
                 "type": "esriPMS",
-                "url": portal + "/event_icon.gif",
-                "contentType": "image/gif",
+                "url": portal + EEAGeotags.settings.infoWindowImgName,
                 "width": 15,
                 "height": 15
             }
