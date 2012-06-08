@@ -46,7 +46,7 @@ to be somewhat tricky.
 
 To get started you will simply need to add the package to your "eggs" and
 "zcml" sections, run buildout, restart your Plone instance and install the
-"eea.epub" package using the quick-installer or via the "Add-on
+"eea.geotags" package using the quick-installer or via the "Add-on
 Products" section in "Site Setup".
 
   .. _`zc.buildout`: http://pypi.python.org/pypi/zc.buildout/
