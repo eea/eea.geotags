@@ -13,7 +13,7 @@ jQuery(document).ready(function(){
                 "height": 15
             }
         };
-    map_options = {'infoWindowSize' : [300, 200], 'portalUrl': portal_url, 'featureCollectionRenderer': feature_collection_renderer};
+    map_options = {'infoWindowSize' : [400, 200], 'portalUrl': portal_url, 'featureCollectionRenderer': feature_collection_renderer};
     if(jQuery('#faceted-form').length) {
         jQuery(Faceted.Events).one('FACETED-AJAX-QUERY-SUCCESS', function(){
              if (jQuery("#map_points").length) {
@@ -27,7 +27,7 @@ jQuery(document).ready(function(){
                     });
                 });
                 jQuery(Faceted.Events).bind('FACETED-AJAX-QUERY-SUCCESS', function(){
-                    EEAGeotags.View.prototype.drawPoints(jQuery('.eea-location-links'));
+                    EEAGeotags.View.prototype.drawPoints();
                 });
             }
         });
@@ -37,7 +37,6 @@ jQuery(document).ready(function(){
             map = jQuery("#eeaEsriMap");
             jQuery.getScript(url, function () {
                 dojo.ready(function () {
-                    console.log(map_options);
                     map.EEAGeotagsView(map_options);
                 });
             });

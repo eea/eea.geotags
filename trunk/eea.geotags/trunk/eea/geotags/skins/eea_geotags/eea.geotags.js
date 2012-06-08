@@ -1682,7 +1682,7 @@ EEAGeotags.View.prototype = {
             if (flength > 1){
                 popup.setTitle("(1 of " + flength + ")");
             }
-            popup.resize(300, 200);
+            popup.resize(EEAGeotags.settings.infoWindowSize[0], EEAGeotags.settings.infoWindowSize[1]);
         });
         //associate the features with the popup on click
         dojo.connect(featureLayer,"onClick",function(evt){
@@ -1707,6 +1707,7 @@ EEAGeotags.View.prototype = {
                                                     'Addr': decodeURIComponent(item.properties.description),
                                                     'Desc': decodeURIComponent(item.itemDescription),
                                                     'Title': decodeURIComponent(item.itemTitle),
+                                                    'Period': item.itemDate,
                                                     'Url' : item.itemUrl }});
             /* mapPoint.setSymbol(infoSymbol); */
             mapPoint.setInfoTemplate(infoTemplate);
