@@ -1607,7 +1607,7 @@ EEAGeotags.View.prototype = {
         context_url, infoSymbol, infoTemplate, map_points, locationTags, locationTagsLen;
     map_points = jQuery('#map_points');
     locationTags = eea_location_links;
-    locationTagsLen = locationTags.length;
+    locationTagsLen = locationTags ? locationTags.length : 0;
 
     context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
 
