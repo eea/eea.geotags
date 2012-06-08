@@ -13,7 +13,7 @@ jQuery(document).ready(function(){
                 "height": 15
             }
         };
-    map_options = {'infoWindowSize' : [400, 200], 'portalUrl': portal_url, 'featureCollectionRenderer': feature_collection_renderer};
+    map_options = {'infoWindowSize' : [350, 200], 'portalUrl': portal_url, 'featureCollectionRenderer': feature_collection_renderer};
     if(jQuery('#faceted-form').length) {
         jQuery(Faceted.Events).one('FACETED-AJAX-QUERY-SUCCESS', function(){
              if (jQuery("#map_points").length) {

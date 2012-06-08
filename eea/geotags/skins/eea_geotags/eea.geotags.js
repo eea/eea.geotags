@@ -1612,7 +1612,7 @@ EEAGeotags.View.prototype = {
     context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
 
     infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
-    var infotemplate = map_points.length ? '<h3>${Title}</h3><p><strong>Location: </strong>${Addr}</p><p><strong>Period:</strong>${Period}</p> <p>${Desc}</p> <a href="${Url}">Read More</a>': '${Addr}';
+    var infotemplate = map_points.length ? '<h3>${Title}</h3><p><strong>Location: </strong>${Addr}</p><p><strong>Period: </strong>${Period}</p> <p>${Desc}</p> <a href="${Url}">Read More</a>': '${Addr}';
     infoTemplate = new esri.InfoTemplate('${Name}', infotemplate);
     EEAGeotags.map.infoWindow.hide();
     var featureCollection = {
@@ -1698,7 +1698,6 @@ EEAGeotags.View.prototype = {
 
         var features = [];
         jQuery.each(results, function (i, item) {
-
             var geometry, mapPoint, attributes;
             geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
             geometry = esri.geometry.geographicToWebMercator(geometry);
@@ -1743,9 +1742,9 @@ EEAGeotags.View.prototype = {
                 var location = jQuery.grep(EEAGeotags.featureLayer.graphics, function(i){return i.geometry.x === geometryClick.x;})[0];
                 var point = location.geometry;
                 EEAGeotags.map.infoWindow.setFeatures([location]);
-
                 EEAGeotags.map.infoWindow.show(point, self.map.getInfoWindowAnchor(point));
-                EEAGeotags.map.centerAndZoom(geometryClick, 6);
+                self.map.infoWindow.resize(250, 150);
+                EEAGeotags.map.centerAndZoom(point, 6);
                 e.preventDefault();
             });
 
