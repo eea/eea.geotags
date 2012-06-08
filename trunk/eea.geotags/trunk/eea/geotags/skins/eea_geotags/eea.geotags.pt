@@ -100,7 +100,7 @@ Usage with hidden map:
   </metal:view_macro>
 
   <div metal:define-macro="location" tal:define="
-    base_url python: request.URL1.split('portal_factory')[0] if 'portal_factory' in request.URL1 else '';
+    base_url python: request.URL1.split('portal_factory')[0] if 'portal_factory' in request.URL1 else request.URL1 + '/';
     dialog python:base_url + widget.dialog;
     sidebar python:base_url + widget.sidebar;
     basket python:base_url + widget.basket;
