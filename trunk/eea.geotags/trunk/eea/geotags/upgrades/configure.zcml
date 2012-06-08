@@ -24,6 +24,11 @@
       import_steps="catalog"
       />
 
+    <genericsetup:upgradeDepends
+      title="Import profile steps with changes: jsregistry"
+      import_steps="jsregistry"
+      />
+
     <genericsetup:upgradeStep
       title="Set IGeoTagged for every object that has geotags"
       handler="eea.geotags.upgrades.evolve47.set_geotags_interface"
