@@ -20,7 +20,7 @@ jQuery(document).ready(function(){
                 var portal_url = jQuery("#portal_url").html();
                 map_options.featureCollectionRenderer.symbol.url = portal_url + "/event_icon.gif";
                 map = jQuery('#eeaEsriMap');
-                map.insertAfter("#plone-document-byline");
+                map.insertBefore("#content-core");
                 jQuery.getScript(url, function () {
                     dojo.ready(function () {
                         map.EEAGeotagsView(map_options);

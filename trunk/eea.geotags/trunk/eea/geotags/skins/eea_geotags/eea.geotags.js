@@ -1614,7 +1614,7 @@ EEAGeotags.View.prototype = {
     context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
 
     infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
-    var infotemplate = map_points.length ? '<h3>${Title}</h3><p><strong>Location: </strong>${Addr}</p><p><strong>Period: </strong>${Period}</p> <p>${Desc}</p> <a href="${Url}">Read More</a>': '${Addr}';
+    var infotemplate = map_points.length ? '<h3>${Title}</h3><img src="${Url}/image_thumb" class="esriInfoImg" /><p><strong>Location: </strong>${Addr}</p><p><strong>Period: </strong>${Period}</p> <p>${Desc}</p>': '${Addr}';
     infoTemplate = new esri.InfoTemplate('${Name}', infotemplate);
     EEAGeotags.map.infoWindow.hide();
     var featureCollection = {
@@ -1678,6 +1678,7 @@ EEAGeotags.View.prototype = {
           infoTemplate: popupTemplate
         });
 
+        // add 1 of message if we have more than one feature
         dojo.connect(popup,"onShow",function(){
             var flength = popup.features.length;
             if (flength > 1){
@@ -1685,6 +1686,25 @@ EEAGeotags.View.prototype = {
             }
             popup.resize(EEAGeotags.settings.infoWindowSize[0], EEAGeotags.settings.infoWindowSize[1]);
         });
+
+        // add or change read more link for pop-up
+        dojo.connect(popup,"onSelectionChange",function(){
+            var feature = popup.getSelectedFeature();
+            var readmeLink = dojo.query(".readmore", EEAGeotags.map.infoWindow.domNode)[0];
+                if(feature) {
+                    if (!readmeLink) {
+                        dojo.create("a", {
+                            "class": "action readmore",
+                            "innerHTML": "Read More",
+                            "href": feature.attributes.Url
+                        }, dojo.query(".actionList", EEAGeotags.map.infoWindow.domNode)[0]);
+                    }
+                    else {
+                        readmeLink.href = feature.attributes.Url;
+                    }
+                }
+        });
+
         //associate the features with the popup on click
         dojo.connect(featureLayer,"onClick",function(evt){
             var features = [];
@@ -1710,6 +1730,7 @@ EEAGeotags.View.prototype = {
                                                     'Title': decodeURIComponent(item.itemTitle),
                                                     'Period': item.itemDate,
                                                     'Url' : item.itemUrl }});
+
             /* mapPoint.setSymbol(infoSymbol); */
             mapPoint.setInfoTemplate(infoTemplate);
             features.push(mapPoint);
