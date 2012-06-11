@@ -430,3 +430,8 @@ div .esriScalebar {
 .visualHidden {
     display: none;
 }
+
+.esriInfoImg {
+    float: left;
+    margin: 5px;
+}
