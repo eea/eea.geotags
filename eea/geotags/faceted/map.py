@@ -28,6 +28,7 @@ class MapView(BrowserView):
                     feature.update({"itemUrl": brain.getURL()})
                     feature.update({"itemTitle":
                                         urllib.quote(brain.Title)})
+                    feature.update({"itemType": brain.Type})
                     start_date = brain.start.strftime(props.localLongTimeFormat)
                     end_date = brain.end.strftime(props.localLongTimeFormat)
                     feature.update({"itemDate": '%s to %s' % (

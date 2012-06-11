@@ -1,3 +1,5 @@
+/*global window, jQuery, google, dojo, esri, dijit*/
+
 (function(){
 
 jQuery.geoevents = {
@@ -1700,8 +1702,9 @@ EEAGeotags.View.prototype = {
             var geometry, mapPoint, attributes;
             geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
             geometry = esri.geometry.geographicToWebMercator(geometry);
+            var name = item.itemType || 'Location';
             mapPoint = new esri.Graphic({'geometry': geometry,
-                                        'attributes': {'Name': 'Location',
+                                        'attributes': {'Name': name,
                                                     'Addr': decodeURIComponent(item.properties.description),
                                                     'Desc': decodeURIComponent(item.itemDescription),
                                                     'Title': decodeURIComponent(item.itemTitle),
@@ -1759,7 +1762,7 @@ EEAGeotags.View.prototype = {
     // To get initial coordonates, zoom to default location and run in debugger: dojo.toJson(map.extent.toJson());
     var self = this;
     var initExtent, basemap;
-    initExtent = new esri.geometry.Extent({"xmin": -40, "ymin": 30, "xmax":122, "ymax":74, "spatialReference":{"wkid": 102100}});
+    initExtent = new esri.geometry.Extent({"xmin": -171, "ymin":-330, "xmax":240, "ymax":140, "spatialReference":{"wkid": 102100}});
     basemap = new esri.layers.ArcGISTiledMapServiceLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer');
     self.map = new esri.Map('eeaEsriMap', {'extent': esri.geometry.geographicToWebMercator(initExtent),
                                            'wrapAround180': true,
@@ -1767,6 +1770,7 @@ EEAGeotags.View.prototype = {
                                            'force3DTransforms': true,
                                            'isScrollWheelZoom': false,
                                            'navigationMode': 'css-transforms'});
+    /* self.map.setLevel(10); */
     self.map.addLayer(basemap);
     EEAGeotags.map = self.map;
     // Loading images
