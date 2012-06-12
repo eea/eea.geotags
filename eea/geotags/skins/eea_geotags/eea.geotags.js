@@ -1723,6 +1723,7 @@ EEAGeotags.View.prototype = {
             geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
             geometry = esri.geometry.geographicToWebMercator(geometry);
             var name = item.itemType || 'Location';
+            var icon = item.itemIcon || item.itemUrl + '/image_listing';
             mapPoint = new esri.Graphic({'geometry': geometry,
                                         'attributes': {'Name': name,
                                                     'Addr': decodeURIComponent(item.properties.description),
@@ -1730,8 +1731,9 @@ EEAGeotags.View.prototype = {
                                                     'Title': decodeURIComponent(item.itemTitle),
                                                     'Period': item.itemDate,
                                                     'Url' : item.itemUrl }});
-
-            /* mapPoint.setSymbol(infoSymbol); */
+            if(!EEAGeotags.settings.generalIcon) {
+                mapPoint.setSymbol(new esri.symbol.PictureMarkerSymbol(icon, 20, 20));
+            }
             mapPoint.setInfoTemplate(infoTemplate);
             features.push(mapPoint);
             // set latitude and longitude on each tag as data attribute
