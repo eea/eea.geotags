@@ -1723,7 +1723,8 @@ EEAGeotags.View.prototype = {
             geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
             geometry = esri.geometry.geographicToWebMercator(geometry);
             var name = item.itemType || 'Location';
-            var icon = item.itemIcon || item.itemUrl + '/image_listing';
+            var itemUrl = item.itemUrl || context_url;
+            var icon = item.itemIcon || itemUrl + '/image_listing';
             mapPoint = new esri.Graphic({'geometry': geometry,
                                         'attributes': {'Name': name,
                                                     'Addr': decodeURIComponent(item.properties.description),
@@ -1752,6 +1753,7 @@ EEAGeotags.View.prototype = {
     if(map_points.length) {
         var results = map_points.html();
         results = results.replace(/'/g, "");
+
         results = jQuery.parseJSON(results);
         setPoints(featureCollection, results);
     }
