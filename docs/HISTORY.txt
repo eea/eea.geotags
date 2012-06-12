@@ -3,7 +3,7 @@ Changelog
 
 4.7-dev - (unreleased)
 ----------------------
-* Ugrade step: Within ZMI > portal_types > Folder add map_view
+* Ugrade step: Within ZMI > portal_types > Topic add map_view
   to Available view methods
   [ichimdav #3355]
 * Bug fix: fixed markup of HISTORY.txt file
