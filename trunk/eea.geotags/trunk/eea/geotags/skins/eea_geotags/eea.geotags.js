@@ -1691,7 +1691,7 @@ EEAGeotags.View.prototype = {
         dojo.connect(popup,"onSelectionChange",function(){
             var feature = popup.getSelectedFeature();
             var readmeLink = dojo.query(".readmore", EEAGeotags.map.infoWindow.domNode)[0];
-                if(feature) {
+                if(feature && feature.attributes.Url) {
                     if (!readmeLink) {
                         dojo.create("a", {
                             "class": "action readmore",
