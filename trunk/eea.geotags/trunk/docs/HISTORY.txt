@@ -1,8 +1,8 @@
 Changelog
 =========
 
-4.7-dev - (unreleased)
-----------------------
+4.7 - (2012-06-13)
+------------------
 * Ugrade step: Within ZMI > portal_types > Topic add map_view
   to Available view methods
   [ichimdav #3355]
