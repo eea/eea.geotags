@@ -57,7 +57,7 @@ Usage with hidden map:
                   <div tal:attributes="data-modal python:'Events' if events else data_modal; 
                                        class python:'eea-location-listing events' if events else 'eea-location-listing'" 
                                                                                     metal:define-slot="location-listing">
-      <span i18n:translate="">Geotags:</span>
+      <span i18n:translate="" metal:define-slot="geotags">Geotags:</span>
       <span tal:repeat="tag geotags">
           <a href="#eeaEsriMap"
              title=""
