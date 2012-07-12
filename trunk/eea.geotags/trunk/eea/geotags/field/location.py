@@ -100,8 +100,7 @@ class GeotagsFieldMixin(object):
             name = self.getName()
             if isinstance(label, Message):
                 label = translate(label, context=request)
-            error = _(u'error_required',
-                      default=u'${name} is required, please correct.',
+            error = _(u'${name} is required, please correct.',
                       mapping={'name': label})
             error = translate(error, context=request)
             errors[name] = error
