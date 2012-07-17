@@ -1487,10 +1487,13 @@ jQuery.fn.geopreview = function(settings){
       });
 
       // Fix preview map
-      jQuery('form[name=edit_form] .formTab').click(function(){
-        google.maps.event.trigger(self.Map, 'resize');
-        self.Map.setCenter(options.center);
-        self.Map.setZoom(options.zoom);
+      jQuery('form[name=edit_form] .formTab, .wizard-left, .wizard-right').click(function(){
+        // #5339 fix preview map also when using eea.forms
+        if(jQuery(this).closest('form').find('.formPanel:visible').find('#location-geopreview').length){
+            google.maps.event.trigger(self.Map, 'resize');
+            self.Map.setCenter(options.center);
+            self.Map.setZoom(options.zoom);
+        }
       });
     }
   };

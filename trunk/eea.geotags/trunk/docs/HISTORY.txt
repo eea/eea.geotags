@@ -3,6 +3,9 @@ Changelog
 
 4.9-dev - (unreleased)
 ----------------------
+* Bug fix: fix preview of geotags widget on edit form when using
+  eea.forms 
+  [ichimdav #5339]
 
 4.8 - (2012-07-13)
 ------------------
