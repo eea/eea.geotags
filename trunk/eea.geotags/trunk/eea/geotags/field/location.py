@@ -10,9 +10,8 @@ from zope.interface import noLongerProvides, alsoProvides
 from Products.Archetypes import atapi
 from Products.Archetypes import PloneMessageFactory as _
 from eea.geotags.interfaces import IGeoTags, IGeoTagged, IJsonProvider
-
-
 logger = logging.getLogger('eea.geotags.field')
+
 
 class GeotagsFieldMixin(object):
     """ Add methods to get/set json tags
@@ -47,15 +46,16 @@ class GeotagsFieldMixin(object):
 
         # remove IGeoTagged if all geotags are removed or provide it
         # if geotags are added
-        if value:
-            value_len = len(value.get('features'))
-            if not value_len:
-                if IGeoTagged.providedBy(instance):
-                    noLongerProvides(instance, IGeoTagged)
-            else:
-                if not IGeoTagged.providedBy(instance):
-                    alsoProvides(instance, IGeoTagged)
+        if not value:
+            return
 
+        value_len = len(value.get('features'))
+        if not value_len:
+            if IGeoTagged.providedBy(instance):
+                noLongerProvides(instance, IGeoTagged)
+        else:
+            if not IGeoTagged.providedBy(instance):
+                alsoProvides(instance, IGeoTagged)
         geo.tags = value
 
     def json2list(self, geojson, attr='description'):
@@ -64,11 +64,14 @@ class GeotagsFieldMixin(object):
         if not geojson:
             return
 
-        try:
-            value = json.loads(geojson)
-        except Exception, err:
-            logger.exception(err)
-            return
+        if not isinstance(geojson, dict):
+            try:
+                value = json.loads(geojson)
+            except Exception, err:
+                logger.exception(err)
+                return
+        else:
+            value = geojson
 
         features = value.get('features', [])
         if not features:
@@ -110,38 +113,76 @@ class GeotagsFieldMixin(object):
     def convert(self, instance, value):
         """ Convert to a structure that can be deserialized to a dict
         """
-        if not isinstance(value, dict) and value:
-            try:
-                json.loads(value)
-            except TypeError, err:
-                service = queryAdapter(instance, IJsonProvider)
-                query = {'q': value,
-                         'maxRows': 10,
-                         'address': value}
-                if isinstance(value, str):
-                    value = service.search(**query)
-                    if len(value['features']):
-                        match_value = value['features'][0]
-                        value['features'] = []
-                        value['features'].append(match_value)
-                elif isinstance(value, list):
-                    agg_value = {"type": "FeatureCollection", "features": []}
-                    for tag in value:
-                        query['q'] = tag
-                        query['address'] = tag
-                        match_value = service.search(**query)
-                        if len(match_value['features']):
-                            agg_value['features'].append(
-                                                  match_value['features'][0])
-                    value = agg_value
-                else:
-                    logger.warn(err)
-                    return
-                value = json.dumps(value)
-            except Exception, err:
-                logger.exception(err)
-                return
+        if isinstance(value, dict):
+            return value
+        if not value:
+            return value
+
+        try:
+            json.loads(value)
+        except TypeError, err:
+            service = queryAdapter(instance, IJsonProvider)
+            query = {
+                'q': value,
+                'maxRows': 10,
+                'address': value
+            }
+            if isinstance(value, str):
+                value = service.search(**query)
+                if len(value['features']):
+                    match_value = value['features'][0]
+                    value['features'] = []
+                    value['features'].append(match_value)
+            elif isinstance(value, (tuple, list)):
+                agg_value = {"type": "FeatureCollection", "features": []}
+                for tag in value:
+                    query['q'] = tag
+                    query['address'] = tag
+                    match_value = service.search(**query)
+                    if len(match_value['features']):
+                        agg_value['features'].append(
+                                              match_value['features'][0])
+                value = agg_value
+            else:
+                logger.warn(err)
+                return None
+            value = json.dumps(value)
+        except Exception, err:
+            logger.exception(err)
+            return None
         return value
+
+    def setTranslationJSON(self, instance, value, **kwargs):
+        """ Mutator for translations
+        """
+        # No translations
+        if not getattr(instance, 'isCanonical', None):
+            return None
+        if instance.isCanonical():
+            return None
+        canonical = instance.getCanonical()
+        value = self.getJSON(canonical)
+        self.setJSON(instance, value, **kwargs)
+        return value
+
+    def setCanonicalJSON(self, instance, value, **kwargs):
+        """ Mutator for canonical
+        """
+        isCanonical = getattr(instance, 'isCanonical', None)
+        if isCanonical and not isCanonical():
+            return None
+
+        hasJSON = self.getJSON(instance)
+        if not isinstance(value, dict):
+            try:
+                value = json.loads(value)
+            except Exception:
+                if hasJSON:
+                    return None
+        value = self.convert(instance, value)
+        self.setJSON(instance, value, **kwargs)
+        return value
+
 
 class GeotagsStringField(GeotagsFieldMixin, atapi.StringField):
     """ Single geotag field
@@ -149,9 +190,12 @@ class GeotagsStringField(GeotagsFieldMixin, atapi.StringField):
     def set(self, instance, value, **kwargs):
         """ Set
         """
-        value = self.convert(instance, value)
-        self.setJSON(instance, value, **kwargs)
-        tag = self.json2string(value)
+        new_value = self.setTranslationJSON(instance, value, **kwargs)
+        if new_value is None:
+            new_value = self.setCanonicalJSON(instance, value, **kwargs)
+        if not new_value:
+            return
+        tag = self.json2string(new_value)
         return atapi.StringField.set(self, instance, tag, **kwargs)
 
 class GeotagsLinesField(GeotagsFieldMixin, atapi.LinesField):
@@ -160,7 +204,10 @@ class GeotagsLinesField(GeotagsFieldMixin, atapi.LinesField):
     def set(self, instance, value, **kwargs):
         """ Set
         """
-        value = self.convert(instance, value)
-        self.setJSON(instance, value, **kwargs)
-        tags = [tag for tag in self.json2list(value)]
+        new_value = self.setTranslationJSON(instance, value, **kwargs)
+        if new_value is None:
+            new_value = self.setCanonicalJSON(instance, value, **kwargs)
+        if not new_value:
+            return
+        tags = [tag for tag in self.json2list(new_value)]
         return atapi.LinesField.set(self, instance, tags, **kwargs)
