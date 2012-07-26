@@ -177,7 +177,7 @@ class GeotagsFieldMixin(object):
             try:
                 value = json.loads(value)
             except Exception:
-                if hasJSON:
+                if hasJSON and hasJSON != '{}':
                     return None
         value = self.convert(instance, value)
         self.setJSON(instance, value, **kwargs)
