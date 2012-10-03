@@ -45,6 +45,10 @@ class GeoTags(object):
         """ get a list of points: lat,long pairs in WGS 84 reference.
         """
         #import pdb; pdb.set_trace()
-        points = [self.tags['features'][0]['properties']['center'],]
+        #WIP: please finish this
+        try:
+            points = [self.tags['features'][0]['properties']['center'],]
+        except KeyError:
+            return []
         
         return points

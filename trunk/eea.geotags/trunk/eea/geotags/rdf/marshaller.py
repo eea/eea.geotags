@@ -33,12 +33,14 @@ class GeotagsField2Surf(ATField2Surf):
             rdfp[surf.ns.GEO['long']] = GeoLong(point[1])
             rdfp[surf.ns.RDFS['label']] = 'Rome'
 
-            rdfp.save()
+            #rdfp.save()
+            rdfp.update()
             output.append(rdfp)
             i += 1
 
         #this is like example 2 in #3425
         #output.append((rdfp, None, surf.ns.GEO))   
+        #import pdb; pdb.set_trace()
 
         return output
 
