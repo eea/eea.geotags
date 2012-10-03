@@ -39,3 +39,12 @@ class GeoTags(object):
                              self.context.absolute_url())
             return
         anno[ANNO_TAGS] = PersistentDict(value)
+        
+        
+    def getPoints(self):
+        """ get a list of points: lat,long pairs in WGS 84 reference.
+        """
+        #import pdb; pdb.set_trace()
+        points = [self.tags['features'][0]['properties']['center'],]
+        
+        return points
