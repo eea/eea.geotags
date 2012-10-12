@@ -1,19 +1,21 @@
 """ RDF Marshaller module for geotags """
-from eea.rdfmarshaller.marshaller import ATField2Surf
-from eea.rdfmarshaller.interfaces import IATField2Surf, ISurfSession
+
 from eea.geotags.field.location import GeotagsFieldMixin
-from zope.component import adapts, getAdapter
-from zope.interface import implements
 from eea.geotags.interfaces import IGeoTags
+from eea.rdfmarshaller.archetypes.fields import ATField2Surf
+from eea.rdfmarshaller.archetypes.interfaces import IATField2Surf
+from eea.rdfmarshaller.interfaces import ISurfSession
+from zope.component import adapts, getAdapter
+from zope.interface import implements, Interface
 
 import surf
 
 class GeotagsField2Surf(ATField2Surf):
     """Adapter to express geotags field with RDF using Surf."""
     implements(IATField2Surf)
-    adapts(GeotagsFieldMixin, ISurfSession)
+    adapts(GeotagsFieldMixin, Interface, ISurfSession)
 
-    def value(self, context):
+    def value(self):
         """ Value of geotags field """
                 
         # create a GeoPoint Class
@@ -21,9 +23,9 @@ class GeotagsField2Surf(ATField2Surf):
         GeoLat = self.session.get_class(surf.ns.GEO.Lat)
         GeoLong = self.session.get_class(surf.ns.GEO.Long)
         
-        value = self.field.getAccessor(context)()
+        value = self.field.getAccessor(self.context)()
         
-        geo = getAdapter(context, IGeoTags)
+        geo = getAdapter(self.context, IGeoTags)
 
         output = []
         i = 0
