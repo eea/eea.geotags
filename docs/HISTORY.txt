@@ -3,6 +3,9 @@ Changelog
 
 5.1-dev - (unreleased)
 ----------------------
+* Bug fix: use folder_listing and atct_topic_view macros to avoid errors when
+  using the map on non Topic content types
+  [ichimdav #3353]
 * Feature: added rdf adapter for geotag field
   [tiberich, demarant, #3425]
 
