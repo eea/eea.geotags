@@ -16,14 +16,34 @@ class GeotagsField2Surf(ATField2Surf):
     adapts(GeotagsFieldMixin, Interface, ISurfSession)
 
     def value(self):
-        """ Value of geotags field """
-                
+        """desired output is:
+        <document:Document 
+        rdf:about="
+        http://www.eea.europa.eu/data-and-maps/daviz/learn-more/prepare-data">
+        ...
+        <dct:spatial>
+            <geo:Point>
+            <rdfs:label>Rome</rdfs:label>
+            <geo:lat>41.901514</geo:lat>
+            <geo:long>12.460774</geo:long>
+            </geo:Point>
+        </dct:spatial>
+        <dct:spatial>
+            <geo:Point>
+            <rdfs:label>Bucharest</rdfs:label>
+            <geo:lat>44.437711</geo:lat>
+            <geo:long>26.097367</geo:long>
+            </geo:Point>
+        </dct:spatial>
+        ...
+        </document:Document>
+        """
         # create a GeoPoint Class
         GeoPoint = self.session.get_class(surf.ns.GEO.Point)
         GeoLat = self.session.get_class(surf.ns.GEO.Lat)
         GeoLong = self.session.get_class(surf.ns.GEO.Long)
         
-        value = self.field.getAccessor(self.context)()
+        #value = self.field.getAccessor(self.context)()
         
         geo = getAdapter(self.context, IGeoTags)
 
@@ -45,24 +65,3 @@ class GeotagsField2Surf(ATField2Surf):
 
         return output
 
-"""desired output is:
-<document:Document 
-rdf:about="http://www.eea.europa.eu/data-and-maps/daviz/learn-more/prepare-data">
-...
-<dct:spatial>
-    <geo:Point>
-     <rdfs:label>Rome</rdfs:label>
-     <geo:lat>41.901514</geo:lat>
-     <geo:long>12.460774</geo:long>
-    </geo:Point>
- </dct:spatial>
-<dct:spatial>
-    <geo:Point>
-     <rdfs:label>Bucharest</rdfs:label>
-     <geo:lat>44.437711</geo:lat>
-     <geo:long>26.097367</geo:long>
-    </geo:Point>
- </dct:spatial>
-...
-</document:Document>
-"""

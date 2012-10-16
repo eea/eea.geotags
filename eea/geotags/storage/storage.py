@@ -47,7 +47,7 @@ class GeoTags(object):
         #import pdb; pdb.set_trace()
         #WIP: please finish this
         try:
-            points = [self.tags['features'][0]['properties']['center'],]
+            points = [self.tags['features'][0]['properties']['center']]
         except KeyError:
             return []
         
