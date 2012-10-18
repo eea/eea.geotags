@@ -16,7 +16,8 @@ class GeotagsField2Surf(ATField2Surf):
     adapts(GeotagsFieldMixin, Interface, ISurfSession)
 
     def value(self):
-        """desired output is:
+        """desired RDF output is like:
+        
         <document:Document 
         rdf:about="
         http://www.eea.europa.eu/data-and-maps/daviz/learn-more/prepare-data">
@@ -35,25 +36,23 @@ class GeotagsField2Surf(ATField2Surf):
             <geo:long>26.097367</geo:long>
             </geo:Point>
         </dct:spatial>
+        <dct:spatial rdf:resource="http://sws.geonames.org/2985244/">
         ...
         </document:Document>
+        
         """
         # create a GeoPoint Class
         GeoPoint = self.session.get_class(surf.ns.GEO.Point)
-        GeoLat = self.session.get_class(surf.ns.GEO.Lat)
-        GeoLong = self.session.get_class(surf.ns.GEO.Long)
-        
-        #value = self.field.getAccessor(self.context)()
         
         geo = getAdapter(self.context, IGeoTags)
 
         output = []
         i = 0
         for point in geo.getPoints():
-            rdfp = self.session.get_resource("geotag%s" % i, GeoPoint)
-            rdfp[surf.ns.GEO['lat']] = GeoLat(point[0])
-            rdfp[surf.ns.GEO['long']] = GeoLong(point[1])
-            rdfp[surf.ns.RDFS['label']] = 'Rome'
+            rdfp = self.session.get_resource("#geotag%s" % i, GeoPoint)
+            rdfp[surf.ns.GEO['lat']] = float(point[0])
+            rdfp[surf.ns.GEO['long']] = float(point[1])
+            #rdfp[surf.ns.RDFS['label']] = 'Rome'
 
             rdfp.update()
             output.append(rdfp)

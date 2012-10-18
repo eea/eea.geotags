@@ -3,6 +3,8 @@ Changelog
 
 5.1-dev - (unreleased)
 ----------------------
+* Bug fix: corrected export of points according to wgs84 rdf vocabulary.
+  [demarant refs #3425]
 * Bug fix: use folder_listing and atct_topic_view macros to avoid errors when
   using the map on non Topic content types
   [ichimdav #3353]
