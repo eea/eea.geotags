@@ -41,14 +41,8 @@ class GeoTags(object):
         anno[ANNO_TAGS] = PersistentDict(value)
         
         
-    def getPoints(self):
-        """ get a list of points: lat,long pairs in WGS 84 reference.
+    def getFeatures(self):
+        """ returns a list of features from the geotags annotation.
         """
-        #import pdb; pdb.set_trace()
-        #WIP: please finish this
-        try:
-            points = [self.tags['features'][0]['properties']['center']]
-        except KeyError:
-            return []
-        
-        return points
+        return self.tags['features']
+    

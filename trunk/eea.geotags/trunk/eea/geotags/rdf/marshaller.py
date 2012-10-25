@@ -15,6 +15,9 @@ class GeotagsField2Surf(ATField2Surf):
     implements(IATField2Surf)
     adapts(GeotagsFieldMixin, Interface, ISurfSession)
 
+    prefix = "dcterms"
+    name = "spatial"
+
     def value(self):
         """desired RDF output is like:
         
@@ -48,12 +51,22 @@ class GeotagsField2Surf(ATField2Surf):
 
         output = []
         i = 0
-        for point in geo.getPoints():
-            rdfp = self.session.get_resource("#geotag%s" % i, GeoPoint)
-            rdfp[surf.ns.GEO['lat']] = float(point[0])
-            rdfp[surf.ns.GEO['long']] = float(point[1])
-            #rdfp[surf.ns.RDFS['label']] = 'Rome'
 
+        for feature in geo.getFeatures():
+            rdfp = self.session.get_resource("#geotag%s" % i, GeoPoint)
+            
+            label = feature['properties']['title']
+            rdfp[surf.ns.RDFS['label']] = label
+            
+            latitude = feature['properties']['center'][0]
+            rdfp[surf.ns.GEO['lat']] = latitude
+
+            longitude = feature['properties']['center'][1]
+            rdfp[surf.ns.GEO['long']] = longitude
+            
+            if feature['properties']['other'].has_key('geonameId'):
+                geonameId = feature['properties']['other']['geonameId']
+                                        
             rdfp.update()
             output.append(rdfp)
 
