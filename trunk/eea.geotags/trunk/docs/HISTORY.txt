@@ -3,7 +3,7 @@ Changelog
 
 5.1-dev - (unreleased)
 ----------------------
-* Feature: Now we export all tags as geo:Point incluse locations labels.
+* Feature: Now we export all tags as geo:Point including locations labels.
   [demarant refs #3425]
 * Bug fix: corrected export of points according to wgs84 rdf vocabulary.
   [demarant refs #3425]
