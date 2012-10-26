@@ -64,8 +64,11 @@ class GeotagsField2Surf(ATField2Surf):
             longitude = feature['properties']['center'][1]
             rdfp[surf.ns.GEO['long']] = longitude
             
-            if feature['properties']['other'].has_key('geonameId'):
-                geonameId = feature['properties']['other']['geonameId']
+            #this code was commented to avoid pyflakes errors
+            #please enable back the code when continuing work on this
+            
+            #if feature['properties']['other'].has_key('geonameId'):
+                #geonameId = feature['properties']['other']['geonameId']
                                         
             rdfp.update()
             output.append(rdfp)
