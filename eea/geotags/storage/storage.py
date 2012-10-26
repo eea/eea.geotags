@@ -18,19 +18,7 @@ class GeoTags(object):
     def __init__(self, context):
         self.context = context
 
-    @property
-    def tags(self):
-        """ Get tags
-        """
-        anno = queryAdapter(self.context, IAnnotations)
-        if anno is None:
-            logger.exception('%s is not Annotable',
-                             self.context.absolute_url())
-            return {}
-        return dict(anno.get(ANNO_TAGS, {}))
-
-    @tags.setter
-    def tags(self, value):
+    def _set_tags(self, value):
         """ Set tags
         """
         anno = queryAdapter(self.context, IAnnotations)
@@ -39,7 +27,18 @@ class GeoTags(object):
                              self.context.absolute_url())
             return
         anno[ANNO_TAGS] = PersistentDict(value)
+
+    def _get_tags(self):
+        """ Get tags
+        """
+        anno = queryAdapter(self.context, IAnnotations)
+        if anno is None:
+            logger.exception('%s is not Annotable',
+                             self.context.absolute_url())
+            return {}
+        return dict(anno.get(ANNO_TAGS, {}))
         
+    tags = property(_get_tags, _set_tags)
         
     def getFeatures(self):
         """ returns a list of features from the geotags annotation.
