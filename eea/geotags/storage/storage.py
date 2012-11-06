@@ -36,15 +36,16 @@ class GeoTags(object):
             logger.exception('%s is not Annotable',
                              self.context.absolute_url())
             return {}
-        res = dict(anno.get(ANNO_TAGS, {}))
-        if res == {}:
-            res = {"type": "FeatureCollection", "features": []}
-        return res
+        return dict(anno.get(ANNO_TAGS, {}))
         
     tags = property(_get_tags, _set_tags)
         
     def getFeatures(self):
         """ returns a list of features from the geotags annotation.
         """
-        return self.tags['features']
+        try:
+            res = self.tags['features']
+        except (KeyError, IndexError):
+            res = []
+        return res 
     
