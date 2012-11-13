@@ -59,10 +59,10 @@ class GeotagsField2Surf(ATField2Surf):
             rdfp[surf.ns.RDFS['label']] = label
             
             latitude = feature['properties']['center'][0]
-            rdfp[surf.ns.GEO['lat']] = latitude
+            rdfp[surf.ns.GEO['lat']] = float(latitude)
 
             longitude = feature['properties']['center'][1]
-            rdfp[surf.ns.GEO['long']] = longitude
+            rdfp[surf.ns.GEO['long']] = float(longitude)
             
             #this code was commented to avoid pyflakes errors
             #please enable back the code when continuing work on this
