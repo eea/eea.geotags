@@ -3,6 +3,8 @@ Changelog
 
 5.1-dev - (unreleased)
 ----------------------
+* Feature: rdf export of geotags now includes geonames URI with owl:sameAs.
+  [demarant refs #7409]
 * Bug fix: fix issue with map view crashing when urllib got a Description
   that couldn't quote because of unicode characters
   [ichimdav #10006]
