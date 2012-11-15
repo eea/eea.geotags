@@ -29,8 +29,8 @@ class MapView(BrowserView):
                     except KeyError:
                         desc = brain.Description.encode('utf-8')
                         desc = urllib.quote(desc)
-                    # title and adminName also need to be escaped otherwise
-                    # jquery will find the json invalid
+                    # title, adminName and name, also need to be escaped 
+                    #otherwise jquery will find the json invalid
                     title = feature['properties']['title']
                     feature['properties']['title'] = urllib.quote(
                                         title.encode('utf-8'))
@@ -38,6 +38,9 @@ class MapView(BrowserView):
                     if adminName:
                         feature['properties']['adminName1'] = urllib.quote(
                                 adminName.encode('utf-8'))
+                    name = feature['properties'].get('name')
+                    if name:
+                        feature['properties']['name'] = urllib.quote(name)
 
                     feature.update({"itemDescription": desc}) 
                     feature.update({"itemUrl": brain.getURL()})
