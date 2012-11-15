@@ -3,6 +3,9 @@ Changelog
 
 5.1-dev - (unreleased)
 ----------------------
+* Bug fix: fix issue with map view crashing when urllib got a Description
+  that couldn't quote because of unicode characters
+  [ichimdav #10006]
 * Feature: Now we export all tags as geo:Point including locations labels.
   [demarant refs #3425]
 * Bug fix: corrected export of points according to wgs84 rdf vocabulary.

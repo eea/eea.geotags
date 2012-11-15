@@ -23,8 +23,13 @@ class MapView(BrowserView):
                     location = feature['properties']['description']
                     feature['properties']['description'] = urllib.quote(
                                         location.encode('utf-8'))
-                    feature.update({"itemDescription":
-                                        urllib.quote(brain.Description)})
+                    # #10006 don't fail when urllib can't quote Description
+                    try:
+                        desc = urllib.quote(brain.Description)
+                    except KeyError:
+                        desc = brain.Description.encode('utf-8')
+                        desc = urllib.quote(desc)
+                    feature.update({"itemDescription": desc})
                     feature.update({"itemUrl": brain.getURL()})
                     feature.update({"itemTitle":
                                         urllib.quote(brain.Title)})
