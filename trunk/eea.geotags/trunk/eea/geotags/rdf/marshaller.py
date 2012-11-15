@@ -9,6 +9,7 @@ from zope.component import adapts, getAdapter
 from zope.interface import implements, Interface
 
 import surf
+import rdflib
 
 class GeotagsField2Surf(ATField2Surf):
     """Adapter to express geotags field with RDF using Surf."""
@@ -64,19 +65,13 @@ class GeotagsField2Surf(ATField2Surf):
             longitude = feature['properties']['center'][1]
             rdfp[surf.ns.GEO['long']] = float(longitude)
             
-            #this code was commented to avoid pyflakes errors
-            #please enable back the code when continuing work on this
-            
-            #if feature['properties']['other'].has_key('geonameId'):
-                #geonameId = feature['properties']['other']['geonameId']
-                                        
+            if feature['properties']['other'].has_key('geonameId'):
+               geonamesURI = 'http://sws.geonames.org/%s/' % str(feature['properties']['other']['geonameId'])
+               rdfp[surf.ns.OWL['sameAs']] = rdflib.URIRef(geonamesURI)                       
             rdfp.update()
             output.append(rdfp)
 
             i += 1
-
-        #this is like example 2 in #3425
-        #output.append((rdfp, None, surf.ns.GEO))   
 
         return output
 
