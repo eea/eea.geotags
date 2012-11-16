@@ -15,14 +15,14 @@
         contentFilter contentFilter|request/contentFilter|nothing;
         contentFilter python:contentFilter and dict(contentFilter) or {};
         isAnon context/@@plone_portal_state/anonymous;
-        limit_display limit_display|request/limit_display|nothing;
-        limit_display python:limit_display and int(limit_display) or None;
+        b_size b_size|request/b_size|nothing;
+        b_size python:b_size and int(b_size) or None;
         contentFilter python: { 'review_state' : 'published' } if isAnon else contentFilter;
         is_a_topic python:context.portal_type in ['Topic', 'Collection'];
-        folderContents folderContents|nothing; folderContents python:folderContents or is_a_topic and context.queryCatalog(batch=True, **contentFilter) or context.getFolderContents(contentFilter, batch=True, b_size=limit_display or 100);
+        folderContents folderContents|nothing; folderContents python:folderContents or is_a_topic and context.queryCatalog(batch=True, b_size=b_size or 100,  **contentFilter) or context.getFolderContents(contentFilter, batch=True, b_size=b_size or 100);
         Batch python:modules['Products.CMFPlone'].Batch;
         b_start python:request.get('b_start', 0);
-        batch python:isinstance(folderContents, Batch) and folderContents or Batch(folderContents, limit_display or 100, int(b_start), orphan=1);
+        batch python:isinstance(folderContents, Batch) and folderContents or Batch(folderContents, b_size or 100, int(b_start), orphan=1);
         self nocall:context/@@faceted-map-view;
         res python:self.map_points(batch);
         portal_url context/@@plone_portal_state/portal_url;
@@ -38,8 +38,6 @@
                 <metal:folder_listing metal:use-macro="context/folder_listing/macros/content-core" />
             </tal:folder_listing>
         </div>
-
-        <div class="listingBar" style="display: none"></div>
 
       </div>
     </metal:block>
