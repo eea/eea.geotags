@@ -21,8 +21,8 @@ class GeotagsField2Surf(ATField2Surf):
 
     def value(self):
         """desired RDF output is like:
-        
-        <document:Document 
+
+        <document:Document
         rdf:about="
         http://www.eea.europa.eu/data-and-maps/daviz/learn-more/prepare-data">
         ...
@@ -43,11 +43,11 @@ class GeotagsField2Surf(ATField2Surf):
         <dct:spatial rdf:resource="http://sws.geonames.org/2985244/">
         ...
         </document:Document>
-        
+
         """
         # create a GeoPoint Class
         GeoPoint = self.session.get_class(surf.ns.GEO.Point)
-        
+
         geo = getAdapter(self.context, IGeoTags)
 
         output = []
@@ -55,19 +55,20 @@ class GeotagsField2Surf(ATField2Surf):
 
         for feature in geo.getFeatures():
             rdfp = self.session.get_resource("#geotag%s" % i, GeoPoint)
-            
+
             label = feature['properties']['title']
             rdfp[surf.ns.RDFS['label']] = label
-            
+
             latitude = feature['properties']['center'][0]
             rdfp[surf.ns.GEO['lat']] = float(latitude)
 
             longitude = feature['properties']['center'][1]
             rdfp[surf.ns.GEO['long']] = float(longitude)
-            
+
             if feature['properties']['other'].has_key('geonameId'):
-               geonamesURI = 'http://sws.geonames.org/%s/' % str(feature['properties']['other']['geonameId'])
-               rdfp[surf.ns.OWL['sameAs']] = rdflib.URIRef(geonamesURI)                       
+                geonamesURI = 'http://sws.geonames.org/%s/' % (
+                            str(feature['properties']['other']['geonameId']))
+                rdfp[surf.ns.OWL['sameAs']] = rdflib.URIRef(geonamesURI)
             rdfp.update()
             output.append(rdfp)
 
