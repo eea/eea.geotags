@@ -1617,7 +1617,7 @@ EEAGeotags.View.prototype = {
     context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
 
     infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
-    var infotemplate = map_points.length ? '<h3>${Title}</h3><img src="${Url}/image_thumb" class="esriInfoImg" /><p><strong>Location: </strong>${Addr}</p><p><strong>Period: </strong>${Period}</p> <p>${Desc}</p>': '${Addr}';
+    var infotemplate = map_points.length ? '<h3>${Title}</h3><img src="${Url}/image_thumb" class="esriInfoImg" />': '${Addr}';
     infoTemplate = new esri.InfoTemplate('${Name}', infotemplate);
     EEAGeotags.map.infoWindow.hide();
     var featureCollection = {
@@ -1721,24 +1721,45 @@ EEAGeotags.View.prototype = {
         });
 
         var features = [];
+        var initialTemplate = infoTemplate.content,
+            tempTemplate = infoTemplate.content;
+        
         jQuery.each(results, function (i, item) {
             var geometry, mapPoint, attributes;
             geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
             geometry = esri.geometry.geographicToWebMercator(geometry);
-            var name = item.itemType || 'Location';
-            var itemUrl = item.itemUrl || context_url;
-            var icon = item.itemIcon || itemUrl + '/image_listing';
-            mapPoint = new esri.Graphic({'geometry': geometry,
-                                        'attributes': {'Name': name,
-                                                    'Addr': decodeURIComponent(item.properties.description),
-                                                    'Desc': decodeURIComponent(item.itemDescription),
-                                                    'Title': decodeURIComponent(item.itemTitle),
-                                                    'Period': item.itemDate,
-                                                    'Url' : item.itemUrl }});
+            var name = item.itemType || 'Location',
+                itemUrl = item.itemUrl || context_url,
+                icon = item.itemIcon || itemUrl + '/image_listing',
+                addr = decodeURIComponent(item.properties.description),
+                itemDate = item.itemDate,
+                itemDescription = decodeURIComponent(item.itemDescription),
+                mapOptions = {'Name' : name,
+                              'Url' : item.itemUrl,
+                              'Title': decodeURIComponent(item.itemTitle)};
+
+            // add extra template information only if it's available from the catalog search
+            tempTemplate = initialTemplate;
+
+            if (addr) {
+                tempTemplate = tempTemplate + '<p><strong>Location: </strong>${Addr}</p>';
+                mapOptions.Addr = addr;
+            }
+            if (itemDate && parseInt(itemDate, 10)) {
+                tempTemplate = tempTemplate + '<p><strong>Period: </strong>${Period}</p>';
+                mapOptions.Period = itemDate;
+            }
+            if (itemDescription && itemDescription.length > 5) {
+                tempTemplate = tempTemplate + '<p><strong>Description: </strong>${Desc}</p>';
+                mapOptions.Desc = itemDescription;
+            }
+
+            infoTemplate.setContent(tempTemplate);
+            mapPoint = new esri.Graphic({'geometry': geometry, 'attributes': mapOptions });
+            mapPoint.setInfoTemplate(infoTemplate);
             if(!EEAGeotags.settings.generalIcon) {
                 mapPoint.setSymbol(new esri.symbol.PictureMarkerSymbol(icon, 20, 20));
             }
-            mapPoint.setInfoTemplate(infoTemplate);
             features.push(mapPoint);
             // set latitude and longitude on each tag as data attribute
             if(locationTagsLen) {
