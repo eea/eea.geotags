@@ -40,7 +40,8 @@ class MapView(BrowserView):
                                 adminName.encode('utf-8'))
                     name = feature['properties'].get('name')
                     if name:
-                        feature['properties']['name'] = urllib.quote(name)
+                        feature['properties']['name'] = urllib.quote(
+                                        name.encode('utf-8'))
 
                     feature.update({"itemDescription": desc}) 
                     feature.update({"itemUrl": brain.getURL()})
