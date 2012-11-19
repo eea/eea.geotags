@@ -1722,8 +1722,7 @@ EEAGeotags.View.prototype = {
 
         var features = [];
         var initialTemplate = infoTemplate.content,
-            tempTemplate = infoTemplate.content;
-        
+            tempTemplate = "";
         jQuery.each(results, function (i, item) {
             var geometry, mapPoint, attributes;
             geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
@@ -1753,8 +1752,9 @@ EEAGeotags.View.prototype = {
                 tempTemplate = tempTemplate + '<p><strong>Description: </strong>${Desc}</p>';
                 mapOptions.Desc = itemDescription;
             }
-
-            infoTemplate.setContent(tempTemplate);
+            // we need to recreate the infoTemplate otherwise all features will use the 
+            // same infoTemplate which will have it's content changed along the way
+            infoTemplate = new esri.InfoTemplate('${Name}', tempTemplate);
             mapPoint = new esri.Graphic({'geometry': geometry, 'attributes': mapOptions });
             mapPoint.setInfoTemplate(infoTemplate);
             if(!EEAGeotags.settings.generalIcon) {
