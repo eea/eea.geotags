@@ -3,6 +3,9 @@ Changelog
 
 5.1-dev - (unreleased)
 ----------------------
+* Bug fix: map infoTemplate template is constructed only the information that 
+  is available for that object
+  [ichimdav #7337]
 * Feature: rdf export of geotags now includes geonames URI with owl:sameAs.
   [demarant refs #7409]
 * Bug fix: fix issue with map view crashing when urllib got a Description
