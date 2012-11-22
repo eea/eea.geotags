@@ -1,8 +1,8 @@
 Changelog
 =========
 
-5.1-dev - (unreleased)
-----------------------
+5.1 - (2012-11-22)
+------------------
 * Bug fix: map infoTemplate template is constructed only the information that 
   is available for that object
   [ichimdav #7337]
