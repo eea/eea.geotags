@@ -27,26 +27,26 @@ class GeotagsField2Surf(ATField2Surf):
         http://www.eea.europa.eu/data-and-maps/daviz/learn-more/prepare-data">
         ...
         <dct:spatial>
-            <geo:Point>
+            <geo:SpatialThing>
             <rdfs:label>Rome</rdfs:label>
             <geo:lat>41.901514</geo:lat>
             <geo:long>12.460774</geo:long>
-            </geo:Point>
+            </geo:SpatialThing>
         </dct:spatial>
         <dct:spatial>
-            <geo:Point>
+            <geo:SpatialThing>
             <rdfs:label>Bucharest</rdfs:label>
             <geo:lat>44.437711</geo:lat>
             <geo:long>26.097367</geo:long>
-            </geo:Point>
+            <owl:sameAs rdf:resource="http://sws.geonames.org/683506/">
+            </geo:SpatialThing>
         </dct:spatial>
-        <dct:spatial rdf:resource="http://sws.geonames.org/2985244/">
         ...
         </document:Document>
 
         """
         # create a GeoPoint Class
-        GeoPoint = self.session.get_class(surf.ns.GEO.Point)
+        SpatialThing = self.session.get_class(surf.ns.GEO.SpatialThing)
 
         geo = getAdapter(self.context, IGeoTags)
 
@@ -54,7 +54,7 @@ class GeotagsField2Surf(ATField2Surf):
         i = 0
 
         for feature in geo.getFeatures():
-            rdfp = self.session.get_resource("#geotag%s" % i, GeoPoint)
+            rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
 
             label = feature['properties']['title']
             rdfp[surf.ns.RDFS['label']] = label

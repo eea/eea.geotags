@@ -3,6 +3,9 @@ Changelog
 
 5.2-dev - (unreleased)
 ----------------------
+* Bug fix: rdfencode geotags as geo:SpatialThing to stay generic, 
+  since not all geotags are points, can also be Features/Polygons etc.
+  [demarant refs #7409]
 
 5.1 - (2012-11-22)
 ------------------
