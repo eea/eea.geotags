@@ -1,6 +1,9 @@
 Changelog
 =========
 
+5.3-dev - (unreleased)
+----------------------
+
 5.2 - (2012-11-26)
 ------------------
 * Bug fix: rdfencode geotags as geo:SpatialThing to stay generic, 
