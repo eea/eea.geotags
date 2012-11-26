@@ -15,7 +15,7 @@ jQuery(document).ready(function(){
         };
     map_options = {'infoWindowSize' : [350, 200], 'portalUrl': portal_url, 'featureCollectionRenderer': feature_collection_renderer};
     if(jQuery('#faceted-form').length) {
-        jQuery(Faceted.Events).one('FACETED-AJAX-QUERY-SUCCESS', function(){
+        jQuery(window.Faceted.Events).one('FACETED-AJAX-QUERY-SUCCESS', function(){
              if (jQuery("#map_points").length) {
                 var portal_url = jQuery("#portal_url").html();
                 map_options.featureCollectionRenderer.symbol.url = portal_url + "/event_icon.gif";
@@ -26,8 +26,8 @@ jQuery(document).ready(function(){
                         map.EEAGeotagsView(map_options);
                     });
                 });
-                jQuery(Faceted.Events).bind('FACETED-AJAX-QUERY-SUCCESS', function(){
-                    EEAGeotags.View.prototype.drawPoints();
+                jQuery(window.Faceted.Events).bind('FACETED-AJAX-QUERY-SUCCESS', function(){
+                    window.EEAGeotags.View.prototype.drawPoints();
                 });
             }
         });

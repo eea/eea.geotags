@@ -51,7 +51,7 @@ jQuery.google2geojson = function(googlejson){
 
   var ne = bounds.getNorthEast();
   var sw = bounds.getSouthWest();
-  if(type == 'Polygon'){
+  if(type === 'Polygon'){
     feature.geometry.coordinates = [
       [sw.lat(), sw.lng()],
       [sw.lat(), ne.lng()],
@@ -863,7 +863,7 @@ jQuery.fn.geosearchtab = function(settings){
       self.searchbutton.removeClass('submitting');
 
       var value = self.searchtext.val();
-      if(!value || (value == self.options.query.address)){
+      if(!value || (value === self.options.query.address)){
         return;
       }
 
@@ -1034,7 +1034,7 @@ jQuery.fn.geoadvancedtab = function(settings){
 
       var value_json = {};
       jQuery.each(self.biogroups.geojson.features, function(){
-        if(this.properties.name == value){
+        if(this.properties.name === value){
           value_json = this;
           return false;
         }
@@ -1064,7 +1064,7 @@ jQuery.fn.geoadvancedtab = function(settings){
 
       var value_json = {};
       jQuery.each(self.data.features, function(){
-        if(this.properties.name == value){
+        if(this.properties.name === value){
           value_json = this;
           return false;
         }
@@ -1628,7 +1628,7 @@ EEAGeotags.View.prototype = {
         }
     };
     var renderer;
-    var portal = portal_url + "/" || "/";
+    var portal = EEAGeotags.settings.portal_url + "/" || "/";
     if(self.modal === "Events") {
        renderer =
         {

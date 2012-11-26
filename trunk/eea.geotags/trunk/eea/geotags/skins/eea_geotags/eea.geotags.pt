@@ -68,17 +68,17 @@ Usage with hidden map:
     </div>
   <metal:map define-slot="map">
     <link rel="stylesheet" type="text/css"
-          href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/dojo/dijit/themes/claro/claro.css"
+          href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/claro/claro.css"
           tal:condition="not:hideMap" />
     <link rel="stylesheet" type="text/css" 
-          href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.7/js/esri/dijit/css/Popup.css" 
+          href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/esri/dijit/css/Popup.css" 
           tal:condition="not:hideMap" />
 
     <script type="text/javascript"
             tal:content="string:(function(){var djConfig = {parseOnLoad: true};})"
             tal:condition="not:hideMap"></script>
     <script type="text/javascript"
-            src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.7"
+            src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"
             tal:condition="not:hideMap"></script>
     <script type="text/javascript"
             tal:condition="not:hideMap"
