@@ -1,9 +1,10 @@
 // original code comes from Arcgis samples http://www.arcgis.com/home/item.html?id=4174dcae65bf42e1b776c17da4b279c1
 // this code is slightly modified to cleanup jslint warnings
-/*global jQuery, $, dojo, esri, console */
-dojo.provide("geotagsClusterLayer");
+/*global dojo, esri, console */
 
-dojo.declare("geotagsClusterLayer", esri.layers.GraphicsLayer, {
+dojo.provide("GeotagsClusterLayer");
+
+dojo.declare("GeotagsClusterLayer", esri.layers.GraphicsLayer, {
   constructor: function(options) {
     this._clusterTolerance = options.distance || 50;
     this._clusterData = options.data || [];
@@ -263,8 +264,7 @@ dojo.declare("geotagsClusterLayer", esri.layers.GraphicsLayer, {
         new esri.geometry.Point(p.x, p.y, this._sr),
         this._singleSym,
         p.attributes,
-        // new esri.InfoTemplate("", "${*}")
-        this._singleTemplate
+        p.template
       );
       this._singles.push(g);
       if ( this._showSingles ) {

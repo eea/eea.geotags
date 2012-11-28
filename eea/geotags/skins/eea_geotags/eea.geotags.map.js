@@ -22,8 +22,10 @@ jQuery(document).ready(function(){
                 map = jQuery('#eeaEsriMap');
                 map.insertBefore("#content-core");
                 jQuery.getScript(url, function () {
-                    dojo.ready(function () {
-                        map.EEAGeotagsView(map_options);
+                    window.dojo.ready(function () {
+                        $.getScript('geotagsClusterLayer.js', function() {
+                            map.EEAGeotagsView(map_options);
+                        });
                     });
                 });
                 jQuery(window.Faceted.Events).bind('FACETED-AJAX-QUERY-SUCCESS', function(){
@@ -36,8 +38,10 @@ jQuery(document).ready(function(){
         if (jQuery("#map_points").length) {
             map = jQuery("#eeaEsriMap");
             jQuery.getScript(url, function () {
-                dojo.ready(function () {
-                    map.EEAGeotagsView(map_options);
+                window.dojo.ready(function () {
+                    $.getScript('geotagsClusterLayer.js', function() {
+                        map.EEAGeotagsView(map_options);
+                    });
                 });
             });
         }

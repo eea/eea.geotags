@@ -1549,7 +1549,6 @@ EEAGeotags.View.prototype = {
         eea_location_links = eea_location.find('a'),
         eea_location_links_length = eea_location_links.length;
         self.modal = eea_location_links_length  ? eea_location.data().modal : "Events";
-
         self.map_div = jQuery("#eeaEsriMap");
     if( (self.modal !== "False" && self.modal !== "Events") || (eea_location_links_length < 4 && self.modal !== "Events")){
         var dialogBox,
@@ -1681,14 +1680,6 @@ EEAGeotags.View.prototype = {
           infoTemplate: popupTemplate
         });
 
-        // add 1 of message if we have more than one feature
-        dojo.connect(popup,"onShow",function(){
-            var flength = popup.features.length;
-            if (flength > 1){
-                popup.setTitle("(1 of " + flength + ")");
-            }
-            popup.resize(EEAGeotags.settings.infoWindowSize[0], EEAGeotags.settings.infoWindowSize[1]);
-        });
 
         // add or change read more link for pop-up
         dojo.connect(popup,"onSelectionChange",function(){
@@ -1723,9 +1714,10 @@ EEAGeotags.View.prototype = {
         var features = [];
         var initialTemplate = infoTemplate.content,
             tempTemplate = "";
+        var wgs = new esri.SpatialReference({ "wkid": 102100 });
         jQuery.each(results, function (i, item) {
             var geometry, mapPoint, attributes;
-            geometry = new esri.geometry.Point(item.properties.center[1], item.properties.center[0]);
+            geometry = new esri.geometry.Point(parseFloat(item.properties.center[1]), parseFloat(item.properties.center[0]), wgs);
             geometry = esri.geometry.geographicToWebMercator(geometry);
             var name = item.itemType || 'Location',
                 itemUrl = item.itemUrl || context_url,
@@ -1772,6 +1764,33 @@ EEAGeotags.View.prototype = {
 
         EEAGeotags.map.addLayers([featureLayer]);
         EEAGeotags.featureLayer = featureLayer;
+
+        // cluster points 
+        var cluster = dojo.map(features, function(item) {
+          return { "x": item.geometry.x, "y": item.geometry.y, "attributes": item.attributes, 'template' : item.infoTemplate };
+        });
+
+         var clusterLayer = new window.GeotagsClusterLayer({
+          "data": cluster,
+          "distance": 100,
+          "id": "clusters", 
+          "labelColor": "#fff",
+          "labelOffset": 10,
+          "resolution": EEAGeotags.map.extent.getWidth() / EEAGeotags.map.width,
+          "singleColor": "#888"
+        });
+        var defaultSym = new esri.symbol.SimpleMarkerSymbol().setSize(4);
+        var renderer = new esri.renderer.ClassBreaksRenderer(
+          defaultSym, 
+          "clusterCount"
+        );
+        var greenSymbol = new esri.symbol.PictureMarkerSymbol("http://static.arcgis.com/images/Symbols/Shapes/GreenPin1LargeB.png", 64, 64).setOffset(0, 15);
+        var redSymbol = new esri.symbol.PictureMarkerSymbol("http://static.arcgis.com/images/Symbols/Shapes/RedPin1LargeB.png", 72, 72).setOffset(0, 15);
+        renderer.addBreak(2, 200, greenSymbol);
+        renderer.addBreak(200, 1001, redSymbol);
+
+        clusterLayer.setRenderer(renderer);
+        EEAGeotags.map.addLayer(clusterLayer);
     };
 
     if(map_points.length) {
@@ -1847,7 +1866,7 @@ EEAGeotags.View.prototype = {
             self.map.onMouseWheel = function () {};
         });
     });
-  }
+  } 
 };
 
 // jQuery plugin for EEAGeotags.View

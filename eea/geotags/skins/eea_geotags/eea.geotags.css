@@ -435,3 +435,7 @@ div .esriScalebar {
     float: left;
     margin: 5px;
 }
+
+.esriPopup .contentPane {
+    max-height: 200px !important;
+}
