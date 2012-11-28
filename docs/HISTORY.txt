@@ -5,9 +5,6 @@ Changelog
 ----------------------
 * WIP: added clustering support to map view
   [ichimdav #7337]
-* Upgrade step: Within "Plone > Site setup > Add-ons" click on
-  upgrade button available for eea.geotags
-  [ichimdav #7337]
 * Change: switched to version 2.8 of the arcgis Dojo library in order to have
   clustering support
   [ichimdav #7337]
