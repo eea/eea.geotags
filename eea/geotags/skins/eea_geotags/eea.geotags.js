@@ -575,12 +575,34 @@ jQuery.fn.geobasket = function(settings){
     },
 
     handle_select: function(point){
+      var i, initialData = window.EEAGeotags.initialCountryData,
+           initialData_length, names, features_length;
       if(!self.options.multiline){
         self.options.geojson.features = [];
       }else{
         self.options.handle_delete(point);
       }
-      self.options.geojson.features.unshift(point);
+
+      if (initialData) {
+        self.options.geojson.features.unshift(point);
+        names = [];
+        // add also the individual countries that are part of this country group
+        initialData_length = initialData.features.length;
+        features_length = self.options.geojson.features.length; 
+        for (i = 0; i < features_length; i += 1) {
+            names.push(self.options.geojson.features[i].properties.name);
+        }
+        for (i = 0; i < initialData_length; i += 1) {
+            // add only the countries that are not already in the list by checking
+            // their geotags name
+            if (jQuery.inArray(initialData.features[i].properties.name, names) === -1) {
+                self.options.geojson.features.unshift(initialData.features[i]);
+            }
+        }
+      }
+      else {
+        self.options.geojson.features.unshift(point);
+      }
       self.options.redraw(true);
     },
 
@@ -1075,6 +1097,11 @@ jQuery.fn.geoadvancedtab = function(settings){
       // Get countries
       jQuery.getJSON(self.options.json, {
         type: 'countries', group: value}, function(data){
+        // save initial country data to be used when adding country groups
+        if ($("#expand_countries").is(':checked')) {
+            window.EEAGeotags.initialCountryData = data;
+        }
+
         self.countries.empty();
         var option = jQuery('<option>').val('').text('');
         self.countries.append(option);
