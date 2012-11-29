@@ -1765,32 +1765,38 @@ EEAGeotags.View.prototype = {
         EEAGeotags.map.addLayers([featureLayer]);
         EEAGeotags.featureLayer = featureLayer;
 
-        // cluster points 
-        var cluster = dojo.map(features, function(item) {
-          return { "x": item.geometry.x, "y": item.geometry.y, "attributes": item.attributes, 'template' : item.infoTemplate };
-        });
+        var enableClusterLayer = function() {
+            // cluster points 
+            var cluster = dojo.map(features, function(item) {
+            return { "x": item.geometry.x, "y": item.geometry.y, "attributes": item.attributes, 'template' : item.infoTemplate };
+            });
 
-         var clusterLayer = new window.GeotagsClusterLayer({
-          "data": cluster,
-          "distance": 100,
-          "id": "clusters", 
-          "labelColor": "#fff",
-          "labelOffset": 10,
-          "resolution": EEAGeotags.map.extent.getWidth() / EEAGeotags.map.width,
-          "singleColor": "#888"
-        });
-        var defaultSym = new esri.symbol.SimpleMarkerSymbol().setSize(4);
-        var renderer = new esri.renderer.ClassBreaksRenderer(
-          defaultSym, 
-          "clusterCount"
-        );
-        var greenSymbol = new esri.symbol.PictureMarkerSymbol("http://static.arcgis.com/images/Symbols/Shapes/GreenPin1LargeB.png", 64, 64).setOffset(0, 15);
-        var redSymbol = new esri.symbol.PictureMarkerSymbol("http://static.arcgis.com/images/Symbols/Shapes/RedPin1LargeB.png", 72, 72).setOffset(0, 15);
-        renderer.addBreak(2, 200, greenSymbol);
-        renderer.addBreak(200, 1001, redSymbol);
+            var clusterLayer = new window.GeotagsClusterLayer({
+            "data": cluster,
+            "distance": 100,
+            "id": "clusters", 
+            "labelColor": "#fff",
+            "labelOffset": 10,
+            "resolution": EEAGeotags.map.extent.getWidth() / EEAGeotags.map.width,
+            "singleColor": "#888"
+            });
+            var defaultSym = new esri.symbol.SimpleMarkerSymbol().setSize(4);
+            var renderer = new esri.renderer.ClassBreaksRenderer(
+            defaultSym, 
+            "clusterCount"
+            );
+            var greenSymbol = new esri.symbol.PictureMarkerSymbol("http://static.arcgis.com/images/Symbols/Shapes/GreenPin1LargeB.png", 64, 64).setOffset(0, 15);
+            var redSymbol = new esri.symbol.PictureMarkerSymbol("http://static.arcgis.com/images/Symbols/Shapes/RedPin1LargeB.png", 72, 72).setOffset(0, 15);
+            renderer.addBreak(2, 200, greenSymbol);
+            renderer.addBreak(200, 1001, redSymbol);
 
-        clusterLayer.setRenderer(renderer);
-        EEAGeotags.map.addLayer(clusterLayer);
+            clusterLayer.setRenderer(renderer);
+            EEAGeotags.map.addLayer(clusterLayer); 
+        };
+        if (window.GeotagsClusterLayer) {
+            enableClusterLayer();
+        }
+
     };
 
     if(map_points.length) {
