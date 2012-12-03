@@ -1751,7 +1751,6 @@ EEAGeotags.View.prototype = {
                 icon = item.itemIcon || itemUrl + '/image_listing',
                 addr = decodeURIComponent(item.properties.description) || decodeURIComponent(item.properties.title),
                 itemDate = item.itemDate,
-                itemDescription = decodeURIComponent(item.itemDescription),
                 mapOptions = {'Name' : name,
                               'Url' : item.itemUrl,
                               'Title': decodeURIComponent(item.itemTitle)};
@@ -1769,7 +1768,7 @@ EEAGeotags.View.prototype = {
             }
             if (itemDescription && itemDescription.length > 5) {
                 tempTemplate = tempTemplate + '<p><strong>Description: </strong>${Desc}</p>';
-                mapOptions.Desc = itemDescription;
+                mapOptions.Desc = decodeURIComponent(item.itemDescription);
             }
             // we need to recreate the infoTemplate otherwise all features will use the 
             // same infoTemplate which will have it's content changed along the way
