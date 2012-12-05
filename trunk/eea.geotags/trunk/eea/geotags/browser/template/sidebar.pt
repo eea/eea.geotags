@@ -41,7 +41,7 @@
       <div tal:attributes="for string:$fieldName-groups"
           i18n:translate="" class='formHelp'>
         <input type="checkbox" checked="checked" id="expand_countries" />
-          If this checkbox is selected then the country group will auto expand to add each Country as a geotag</div>
+          Add all sub-items belonging to this group?</div>
       <div class="formHelp" i18n:translate="">Select countries group</div>
       <select name="groups" tal:attributes="id string:$fieldName-groups">
       </select>
