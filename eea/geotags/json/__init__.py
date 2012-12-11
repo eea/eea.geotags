@@ -73,7 +73,7 @@ class GeoNamesJsonProvider(object):
               ', '.join((country.title for country in countries(term.value)))
 
             json['features'].append(feature)
-
+        json['features'].sort(key=lambda k: k['properties']['title'])
         return json
 
     def biogroups(self, **kwargs):
@@ -128,7 +128,7 @@ class GeoNamesJsonProvider(object):
             feature['properties']['center'] = [latitude, longitude]
 
             json['features'].append(feature)
-
+        json['features'].sort(key=lambda k: k['properties']['title'])
         return json
 
     def countries(self, **kwargs):
@@ -159,6 +159,7 @@ class GeoNamesJsonProvider(object):
             if title:
                 feature['properties']['title'] = title
 
+        json['features'].sort(key=lambda k: k['properties']['title'])
         return json
 
     def nuts(self, **kwargs):
@@ -252,4 +253,5 @@ class GeoNamesJsonProvider(object):
 
             feature['properties']['other'] = item.copy()
             template['features'].append(feature)
+        template['features'].sort(key=lambda k: k['properties']['title'])
         return template
