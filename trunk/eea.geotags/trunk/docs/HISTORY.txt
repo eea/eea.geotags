@@ -3,6 +3,9 @@ Changelog
 
 5.3-dev - (unreleased)
 ----------------------
+* Bug fix: drill down geotags categories now return alphabetically sorted
+  results
+  [ichimdav #9989]
 * Feature: added a checkbox enabled by default that will add also the 
   individual countries that are part of a country group
   [ichimdav #9998]
