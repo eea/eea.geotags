@@ -168,23 +168,23 @@ class GeoNamesJsonProvider(object):
         query = kwargs.copy()
         query['featureClass'] = 'A'
         query['featureCode'] = 'ADM1'
-        return self.search(**query)
+        return self.search(sort = True, **query)
 
     def cities(self, **kwargs):
         """ Cities
         """
         query = kwargs.copy()
         query['featureClass'] = 'P'
-        return self.search(**query)
+        return self.search(sort=True, **query)
 
     def natural_features(self, **kwargs):
         """ Natural features
         """
         query = kwargs.copy()
         query['featureClass'] = ['H', 'T']
-        return self.search(**query)
+        return self.search(sort = True, **query)
 
-    def search(self, **kwargs):
+    def search(self, sort = False, **kwargs):
         """ Search using geonames webservice
         """
         template = { # ichimdav was = GEOJSON = ### not used
@@ -244,7 +244,7 @@ class GeoNamesJsonProvider(object):
 
             feature['properties']['title'] = item.get('name')
             feature['properties']['description'] = ', '.join(x
-                for x in (item.get('adminName1'), item.get('countryName')) if x)
+              for x in (item.get('adminName1'), item.get('countryName')) if x)
 
             feature['properties']['tags'] = item.get('fcodeName')
             feature['properties']['country'] = item.get('countryCode')
@@ -253,5 +253,6 @@ class GeoNamesJsonProvider(object):
 
             feature['properties']['other'] = item.copy()
             template['features'].append(feature)
-        template['features'].sort(key=lambda k: k['properties']['title'])
+        if sort:
+            template['features'].sort(key=lambda k: k['properties']['title'])
         return template
