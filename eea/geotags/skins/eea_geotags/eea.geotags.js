@@ -570,7 +570,7 @@ jQuery.fn.geobasket = function(settings){
           center = center[0] + '-' + center[1];
           if(pcenter !== center){
             return feature;
-        }
+          }
       });
     },
 
@@ -584,7 +584,6 @@ jQuery.fn.geobasket = function(settings){
       }
 
       if (initialData) {
-        self.options.geojson.features.unshift(point);
         names = [];
         // add also the individual countries that are part of this country group
         initialData_length = initialData.features.length;
