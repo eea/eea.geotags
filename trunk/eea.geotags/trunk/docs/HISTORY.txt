@@ -6,8 +6,8 @@ Changelog
 * Bug fix: drill down geotags categories now return alphabetically sorted
   results
   [ichimdav #9989]
-* Feature: added a checkbox enabled by default that will add also the 
-  individual countries that are part of a country group
+* Feature: added a checkbox enabled by default that will add  individual
+  countries that are part of a country group instead of the group itself
   [ichimdav #9998]
 * Feature: added point clustering support to map view
   [ichimdav #7337]

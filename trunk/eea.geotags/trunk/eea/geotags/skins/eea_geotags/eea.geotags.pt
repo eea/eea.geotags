@@ -122,7 +122,7 @@ Usage with hidden map:
       tal:content="geojson"></textarea>
     <div tal:attributes="id string:$fieldName-geopreview"></div>
     <input type="button" name="edit" i18n:attributes="value" value="Edit"
-    tal:attributes="id string:$fieldName-edit" />
+    tal:attributes="id string:$fieldName-edit; class string:standardButton" />
     <script type="text/javascript" tal:content="string:
       (function(){
         var name = '$fieldName';
