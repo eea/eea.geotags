@@ -65,7 +65,8 @@ class GeotagsField2Surf(ATField2Surf):
             longitude = feature['properties']['center'][1]
             rdfp[surf.ns.GEO['long']] = float(longitude)
 
-            if feature['properties']['other'].has_key('geonameId'):
+            other = feature['properties'].get('other', {})
+            if other.has_key('geonameId'):
                 geonamesURI = 'http://sws.geonames.org/%s/' % (
                             str(feature['properties']['other']['geonameId']))
                 rdfp[surf.ns.OWL['sameAs']] = rdflib.URIRef(geonamesURI)
