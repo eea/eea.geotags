@@ -12,10 +12,4 @@
   position-after="eea.geotags.js"
   />
 
- <javascript id="geotagsClusterLayer.js"
-  cacheable="True" compression="none" cookable="True" enabled="True" inline="False"
-  expression=""
-  position-after="eea.geotags.map.js"
-  />
-
 </object>
