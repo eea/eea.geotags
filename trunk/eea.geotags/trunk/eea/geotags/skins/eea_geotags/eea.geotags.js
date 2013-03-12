@@ -1566,6 +1566,7 @@ EEAGeotags.View.prototype = {
     dojo.require('esri.dijit.Scalebar');
     dojo.require("esri.layers.FeatureLayer");
     dojo.require("esri.dijit.Popup");
+    dojo.require("GeotagsClusterLayer");
     self.init();
   },
 
