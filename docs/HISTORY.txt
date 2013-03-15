@@ -1,8 +1,8 @@
 Changelog
 =========
 
-5.5-dev - (unreleased)
-----------------------
+5.5 - (2013-03-15)
+------------------
 * Bug fix: load geotagsClusterLayer using dojo.require instead of loading it 
   with portal_javascripts
   [ichimdav #14039]
