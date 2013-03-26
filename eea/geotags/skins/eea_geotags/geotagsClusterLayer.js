@@ -2,9 +2,9 @@
 // this code is slightly modified to cleanup jslint warnings
 /*global dojo, esri, console */
 
-dojo.provide("GeotagsClusterLayer");
+dojo.provide("EEAGeotags.GeotagsClusterLayer");
 
-dojo.declare("GeotagsClusterLayer", esri.layers.GraphicsLayer, {
+dojo.declare("EEAGeotags.GeotagsClusterLayer", esri.layers.GraphicsLayer, {
   constructor: function(options) {
     this._clusterTolerance = options.distance || 50;
     this._clusterData = options.data || [];

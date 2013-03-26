@@ -74,20 +74,19 @@ Usage with hidden map:
           href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/esri/dijit/css/Popup.css" 
           tal:condition="not:hideMap" />
 
-    <script type="text/javascript"
-            tal:content="string:(function(){var djConfig = {parseOnLoad: true};})"
-            tal:condition="not:hideMap"></script>
+    <script type="text/javascript" tal:condition="not:hideMap">
+            var djConfig = {parseOnLoad: true}
+    </script>
     <script type="text/javascript"
             src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"
             tal:condition="not:hideMap"></script>
     <script type="text/javascript"
             tal:condition="not:hideMap"
-            tal:content="structure string:(function () { dojo.ready( function() { 
+            tal:content="structure string:(function () { dojo.ready( function() {
             var map_options = {'infoWindowSize' : [400, 200], 'infoWindowImgName' : '${infoWindowImgName}'};
                 jQuery.extend(map_options, EEAGeotags.settings);
                 jQuery('#eeaEsriMap').EEAGeotagsView(map_options); }); })()">
     </script>
-
     <div id="eeaEsriMap" class="claro" tal:condition="not:hideMap" style="display:none;">
         <img id="eeaEsriMapLoadingImg"
              src="loading.gif"

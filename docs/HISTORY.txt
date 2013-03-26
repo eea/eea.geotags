@@ -3,6 +3,8 @@ Changelog
 
 5.6-dev - (unreleased)
 ----------------------
+* Bug fix: better fix for loading of geotagsClusterLayer.js
+  [ichimdav #8523]
 
 5.5 - (2013-03-15)
 ------------------
