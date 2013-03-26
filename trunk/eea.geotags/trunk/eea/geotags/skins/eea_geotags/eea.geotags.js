@@ -1566,7 +1566,6 @@ EEAGeotags.View.prototype = {
     dojo.require('esri.dijit.Scalebar');
     dojo.require("esri.layers.FeatureLayer");
     dojo.require("esri.dijit.Popup");
-    dojo.require("GeotagsClusterLayer");
     self.init();
   },
 
@@ -1798,7 +1797,7 @@ EEAGeotags.View.prototype = {
             return { "x": item.geometry.x, "y": item.geometry.y, "attributes": item.attributes, 'template' : item.infoTemplate };
             });
 
-            var clusterLayer = new window.GeotagsClusterLayer({
+            var clusterLayer = new window.EEAGeotags.GeotagsClusterLayer({
             "data": cluster,
             "distance": 100,
             "id": "clusters", 
@@ -1820,13 +1819,13 @@ EEAGeotags.View.prototype = {
             clusterLayer.setRenderer(renderer);
             EEAGeotags.map.addLayer(clusterLayer); 
         };
-        if (window.GeotagsClusterLayer) {
+        if (window.EEAGeotags.GeotagsClusterLayer) {
             enableClusterLayer();
         }
 
     };
 
-    if(map_points.length) {
+    if(map_points.length && map_points.html() !== "None") {
         var results = map_points.html();
         results = results.replace(/'/g, "");
 

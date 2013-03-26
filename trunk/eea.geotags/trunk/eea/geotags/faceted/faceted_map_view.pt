@@ -27,7 +27,8 @@
         res python:self.map_points(batch);
         portal_url context/@@plone_portal_state/portal_url;
         ">
-        <div id="map_points" tal:content="res" class="visualHidden" />
+        <div id="map_points" tal:content="python:res if res != [] else 'None'"
+             class="visualHidden" />
         <div id="portal_url" tal:content="portal_url" class="visualHidden" />
 
         <div tal:attributes="data-modal string:False">
