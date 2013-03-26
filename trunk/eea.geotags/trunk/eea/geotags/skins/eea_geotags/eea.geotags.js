@@ -1860,18 +1860,18 @@ EEAGeotags.View.prototype = {
 
   // Create map
   initMap: function(eea_location_links){
-    // To get initial coordonates, zoom to default location and run in debugger: dojo.toJson(map.extent.toJson());
+    // To get initial coordinates, zoom to default location and run in debugger: dojo.toJson(EEAGeotags.map.extent.toJson());
     var self = this;
-    var initExtent, basemap;
+    var initExtent, basemap, geometricExtent;
     initExtent = new esri.geometry.Extent({"xmin": -171, "ymin":-330, "xmax":240, "ymax":140, "spatialReference":{"wkid": 102100}});
+    geometricExtent = esri.geometry.geographicToWebMercator(initExtent);
     basemap = new esri.layers.ArcGISTiledMapServiceLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer');
-    self.map = new esri.Map('eeaEsriMap', {'extent': esri.geometry.geographicToWebMercator(initExtent),
+    self.map = new esri.Map('eeaEsriMap', {'extent': geometricExtent,
                                            'wrapAround180': true,
                                            'fadeOnZoom': true,
                                            'force3DTransforms': true,
                                            'isScrollWheelZoom': false,
                                            'navigationMode': 'css-transforms'});
-    /* self.map.setLevel(10); */
     self.map.addLayer(basemap);
     EEAGeotags.map = self.map;
     // Loading images
@@ -1880,7 +1880,10 @@ EEAGeotags.View.prototype = {
 
     dojo.connect(self.map, 'onLoad', function () {
         // Resize the map when the browser resizes
-        //
+
+        // zoom in by a factor of 2 in order to avoid having map smaller than container
+        EEAGeotags.map.centerAndZoom(EEAGeotags.map.extent.getCenter(), 2);
+
         dojo.ready(function(){
             dojo.connect(dijit.byId('map'), 'resize', self.map, self.map.resize);
             var resize = self.settings.infoWindowSize;
@@ -1899,7 +1902,7 @@ EEAGeotags.View.prototype = {
             self.map.onMouseWheel = function () {};
         });
     });
-  } 
+  }
 };
 
 // jQuery plugin for EEAGeotags.View
