@@ -1642,7 +1642,7 @@ EEAGeotags.View.prototype = {
     context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
 
     infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
-    var infotemplate = map_points.length ? '<h3>${Title}</h3><img src="${Url}/image_thumb" class="esriInfoImg" />': '${Addr}';
+    var infotemplate = map_points.length ? '${Title}<img src="${Url}/image_thumb" class="esriInfoImg" />': '${Addr}';
     infoTemplate = new esri.InfoTemplate('${Name}', infotemplate);
     EEAGeotags.map.infoWindow.hide();
     var featureCollection = {
@@ -1751,9 +1751,10 @@ EEAGeotags.View.prototype = {
                 addr = decodeURIComponent(item.properties.description) || decodeURIComponent(item.properties.title),
                 itemDate = item.itemDate,
                 itemDescription = item.itemDescription,
+                itemTitle = item.itemTitle ? '<h3>' + decodeURIComponent(item.itemTitle) + '</h3>' : '',
                 mapOptions = {'Name' : name,
-                              'Url' : item.itemUrl,
-                              'Title': decodeURIComponent(item.itemTitle)};
+                              'Url' :  itemUrl,
+                              'Title': itemTitle};
 
             // add extra template information only if it's available from the catalog search
             tempTemplate = initialTemplate;
