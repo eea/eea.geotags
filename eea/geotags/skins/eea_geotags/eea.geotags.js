@@ -1578,7 +1578,7 @@ EEAGeotags.View.prototype = {
         self.map_div = jQuery("#eeaEsriMap");
     if( (self.modal !== "False" && self.modal !== "Events") || (eea_location_links_length < 4 && self.modal !== "Events")){
         var dialogBox,
-            eea_location_offset = eea_location.offset(),
+            eea_location_offset = eea_location.is(':visible') ? eea_location.offset() : eea_location.closest(':visible').offset(),
             pos_top = eea_location_offset.top + eea_location.height(),
             pos_left = jQuery("#content").offset().left,
             body = jQuery('html, body'),
