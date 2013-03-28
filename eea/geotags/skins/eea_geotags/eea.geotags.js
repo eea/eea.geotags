@@ -1880,12 +1880,11 @@ EEAGeotags.View.prototype = {
 
     dojo.connect(self.map, 'onLoad', function () {
         // Resize the map when the browser resizes
-
         // zoom in by a factor of 2 in order to avoid having map smaller than container
         EEAGeotags.map.centerAndZoom(EEAGeotags.map.extent.getCenter(), 2);
 
         dojo.ready(function(){
-            dojo.connect(dijit.byId('map'), 'resize', self.map, self.map.resize);
+            dojo.connect(dijit.byId('eeaEsriMap'), 'resize', self.map, self.map.resize);
             var resize = self.settings.infoWindowSize;
                 resize = resize || [140, 100];
             self.map.infoWindow.resize(resize[0], resize[1]);
@@ -1901,6 +1900,8 @@ EEAGeotags.View.prototype = {
             // Hack to disable scroll wheel zooming, as map.disableScrollWheelZoom() has no effect
             self.map.onMouseWheel = function () {};
         });
+
+        jQuery('body').trigger('EEAGeotags.MapLoaded');
     });
   }
 };
