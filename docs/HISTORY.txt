@@ -3,6 +3,10 @@ Changelog
 
 5.6-dev - (unreleased)
 ----------------------
+* Bug fix: fixed issue where clicking on a geotags like Norway took you to 
+  Denmark since they have the same x coordinate and the check for geometry was 
+  only done on the x coordinate
+  [ichimdav #8523]
 * Bug fix: fixed issue where map infoTemplate displayed undefined as header
   text when itemTitle returned undefined
   [ichimdav refs #8523]
