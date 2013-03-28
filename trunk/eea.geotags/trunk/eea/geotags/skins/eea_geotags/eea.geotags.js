@@ -1589,7 +1589,6 @@ EEAGeotags.View.prototype = {
             self.map_div.hide();
         eea_location_links.click(function(e){
             if (!dialogBox) {
-                body.animate({scrollTop: pos_top - 80 }, 400);
                 // ie bug which fails if we have open and width and height in
                 // the dialog options so we add then with plain jquery css
                 dialogBox = self.map_div.dialog({autoOpen : false});
@@ -1600,7 +1599,6 @@ EEAGeotags.View.prototype = {
 
             }
             else {
-                body.animate({scrollTop: pos_top - 80 }, 400);
                 dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top, display: 'block'});
             }
             e.preventDefault();
@@ -1653,7 +1651,7 @@ EEAGeotags.View.prototype = {
         }
     };
     var renderer;
-    var portal = EEAGeotags.settings.portal_url + "/" || "/";
+    var portal = EEAGeotags.settings.portal_url ? EEAGeotags.settings.portal_url + "/" : "/";
     if(self.modal === "Events") {
        renderer =
         {
@@ -1729,7 +1727,8 @@ EEAGeotags.View.prototype = {
         dojo.connect(featureLayer,"onClick",function(evt){
             var features = [];
             dojo.forEach(featureLayer.graphics, function(item) {
-                if (evt.graphic.geometry.x === item.geometry.x) {
+                if (evt.graphic.geometry.x === item.geometry.x &&
+                    evt.graphic.geometry.y === item.geometry.y) {
                         features.push(item);
                 }
             });
@@ -1842,7 +1841,8 @@ EEAGeotags.View.prototype = {
                 geometryClick = new esri.geometry.Point(jQuery(this).data('latitude'), jQuery(this).data('longitude'));
                 geometryClick = esri.geometry.geographicToWebMercator(geometryClick);
                 // show infoWindow after clicking on tag name
-                var location = jQuery.grep(EEAGeotags.featureLayer.graphics, function(i){return i.geometry.x === geometryClick.x;})[0];
+                var location = jQuery.grep(EEAGeotags.featureLayer.graphics, function(i){
+                        return i.geometry.x === geometryClick.x && i.geometry.y === geometryClick.y;})[0];
                 var point = location.geometry;
                 EEAGeotags.map.infoWindow.setFeatures([location]);
                 EEAGeotags.map.infoWindow.show(point, self.map.getInfoWindowAnchor(point));
