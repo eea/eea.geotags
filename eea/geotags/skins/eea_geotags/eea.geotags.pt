@@ -82,10 +82,20 @@ Usage with hidden map:
             tal:condition="not:hideMap"></script>
     <script type="text/javascript"
             tal:condition="not:hideMap"
-            tal:content="structure string:(function () { dojo.ready( function() {
-            var map_options = {'infoWindowSize' : [400, 200], 'infoWindowImgName' : '${infoWindowImgName}'};
-                jQuery.extend(map_options, EEAGeotags.settings);
-                jQuery('#eeaEsriMap').EEAGeotagsView(map_options); }); })()">
+            tal:content="structure string:
+            jQuery(function () {
+                dojo.ready( function() {
+                    var map =  jQuery('#eeaEsriMap');
+                    if (!map.length) {
+                        return;
+                    }
+                    var map_options = {'infoWindowSize' : [400, 200], 'infoWindowImgName' : 'event_icon.gif'};
+                        jQuery.extend(map_options, EEAGeotags.settings);
+                    if (!map.data() || jQuery.isEmptyObject(map.data())){
+                        map.EEAGeotagsView(map_options);
+                    }
+                });
+            });">
     </script>
     <div id="eeaEsriMap" class="claro" tal:condition="not:hideMap" style="display:none;">
         <img id="eeaEsriMapLoadingImg"
@@ -93,7 +103,6 @@ Usage with hidden map:
              tal:attributes="src string:$portal_url/loading.gif" />
     </div>
 
-    <br class="visualClear" />
   </metal:map>
   </tal:view_macro>
   </metal:view_macro>

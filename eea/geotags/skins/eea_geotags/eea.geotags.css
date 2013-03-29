@@ -381,6 +381,7 @@
   -webkit-box-shadow: 2px 2px 4px #ADADAD;
      -moz-box-shadow: 2px 2px 4px #ADADAD;
           box-shadow: 2px 2px 4px #ADADAD;
+  margin: 1em 0;
 }
 
 #eeaEsriMap table{
@@ -388,7 +389,7 @@
 }
 
 .eea-location-listing {
-  text-align: right;
+  text-align: left;
   color: #666;
   line-height: 2em;
 }
