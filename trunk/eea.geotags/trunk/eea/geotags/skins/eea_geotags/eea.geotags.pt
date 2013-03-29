@@ -31,6 +31,14 @@ minimum number of geotags:
         </metal:field>
     </tal:hideMap>
 
+Usage with map visible as modal pop-up set explicitly and with specification of
+ modal width and height
+    <tal:hideMap define="hideMap python:False; modal python:True; modal_dimensions python:[800, 600]">
+       <metal:field use-macro="python:context.widget('location', mode='view')">
+            Location field view macro
+        </metal:field>
+    </tal:hideMap>
+
 Usage with map visible and no automatic modal map if less than 4 geotags:
     <tal:hideMap define="hideMap python:False; events python:True">
        <metal:field use-macro="python:context.widget('location', mode='view')">
@@ -50,11 +58,13 @@ Usage with hidden map:
   <tal:view_macro define="geotags python:field.getAccessor(here)();
                           hideMap hideMap|python:True;
                           modal modal|python:False;
+                          modal_dimensions modal_dimensions|nothing;
                           data_modal python: 'True' if modal else 'False';
                           events events|python:False;
                           infoWindowImgName infoWindowImgName|python:'event_icon.gif'"
                   condition="geotags">
-                  <div tal:attributes="data-modal python:'Events' if events else data_modal; 
+                  <div tal:attributes="data-modal python:'Events' if events else data_modal;
+                                       data-modal_dimensions python: modal_dimensions if modal_dimensions else [600, 450];
                                        class python:'eea-location-listing events' if events else 'eea-location-listing'" 
                                                                                     metal:define-slot="location-listing">
       <span i18n:translate="" metal:define-slot="geotags">Geotags:</span>

@@ -3,6 +3,9 @@ Changelog
 
 5.6-dev - (unreleased)
 ----------------------
+* Feature: Added possibility to specify dimensions of map modal popup when 
+  adding geotags macro to any template
+  [ichimdav #8523]
 * Bug fix: fixed issue where clicking on a geotags like Norway took you to 
   Denmark since they have the same x coordinate and the check for geometry was 
   only done on the x coordinate

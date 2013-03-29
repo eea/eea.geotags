@@ -1573,16 +1573,16 @@ EEAGeotags.View.prototype = {
     var self = this,
         eea_location = jQuery('.eea-location-listing'),
         eea_location_links = eea_location.find('a'),
-        eea_location_links_length = eea_location_links.length;
-        self.modal = eea_location_links_length  ? eea_location.data().modal : "Events";
+        eea_location_links_length = eea_location_links.length,
+        eea_location_data = eea_location.data();
+        self.modal = eea_location_links_length  ? eea_location_data.modal : "Events";
         self.map_div = jQuery("#eeaEsriMap");
     if( (self.modal !== "False" && self.modal !== "Events") || (eea_location_links_length < 4 && self.modal !== "Events")){
         var dialogBox,
             eea_location_offset = eea_location.is(':visible') ? eea_location.offset() : eea_location.closest(':visible').offset(),
             pos_top = eea_location_offset.top + eea_location.height(),
-            pos_left = jQuery("#content").offset().left,
-            body = jQuery('html, body'),
-            content_width = jQuery("#content").width();
+            pos_left = eea_location_offset.left,
+            body = jQuery('html, body');
             // CREATE MAP
             self.map_div.show();
             self.initMap(eea_location_links);
@@ -1591,8 +1591,14 @@ EEAGeotags.View.prototype = {
             if (!dialogBox) {
                 // ie bug which fails if we have open and width and height in
                 // the dialog options so we add then with plain jquery css
-                dialogBox = self.map_div.dialog({autoOpen : false});
-                dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top, display: 'block', width: content_width - 6, height: 450});
+                dialogBox = self.map_div.dialog({
+                    closeOnEscape: true,
+                    autoOpen: false,
+                    resize: true
+                });
+                dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top, display: 'block',
+                                                    width: eea_location_data.modal_dimensions[0],
+                                                    height: eea_location_data.modal_dimensions[1]});
                 // resize map root to fit the designated space of #content
                 // without scrollbars
                 self.map_div.find('#eeaEsriMap_root').css({width: '100%', height: '100%'});
@@ -1605,7 +1611,7 @@ EEAGeotags.View.prototype = {
         });
     }
     else {
-        self.map_div.show(); //.css('opacity', 0);
+        self.map_div.show();
         self.initMap(eea_location_links);
     }
   },
