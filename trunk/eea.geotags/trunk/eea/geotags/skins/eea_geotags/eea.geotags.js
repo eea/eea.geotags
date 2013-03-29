@@ -1854,6 +1854,7 @@ EEAGeotags.View.prototype = {
                 EEAGeotags.map.infoWindow.show(point, self.map.getInfoWindowAnchor(point));
                 self.map.infoWindow.resize(250, 150);
                 EEAGeotags.map.centerAndZoom(point, 6);
+                EEAGeotags.map.resize();
                 e.preventDefault();
             });
 
