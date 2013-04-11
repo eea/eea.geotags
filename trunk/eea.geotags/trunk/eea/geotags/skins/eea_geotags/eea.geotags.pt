@@ -64,7 +64,7 @@ Usage with hidden map:
                           infoWindowImgName infoWindowImgName|python:'event_icon.gif'"
                   condition="geotags">
                   <div tal:attributes="data-modal python:'Events' if events else data_modal;
-                                       data-modal_dimensions python: modal_dimensions if modal_dimensions else [600, 450];
+                                       data-modal_dimensions python: modal_dimensions if modal_dimensions else [600, 425];
                                        class python:'eea-location-listing events' if events else 'eea-location-listing'" 
                                                                                     metal:define-slot="location-listing">
       <span i18n:translate="" metal:define-slot="geotags">Geotags:</span>
