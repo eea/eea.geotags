@@ -384,6 +384,12 @@
   margin: 1em 0;
 }
 
+.ui-dialog #eeaEsriMap{
+    border: 0;
+    margin: 0;
+    overflow: hidden;
+}
+
 #eeaEsriMap table{
     display: table;
 }
