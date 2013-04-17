@@ -1,8 +1,8 @@
 Changelog
 =========
 
-5.6-dev - (unreleased)
-----------------------
+5.6 - (2013-04-17)
+------------------
 * Feature: Added possibility to specify dimensions of map modal popup when 
   adding geotags macro to any template
   [ichimdav #8523]
