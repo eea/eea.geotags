@@ -3,14 +3,16 @@ Changelog
 
 5.7-dev - (unreleased)
 ----------------------
+* Feature: Removed lovely.memcached dependency
+  [voineali refs #14343]
 
 5.6 - (2013-04-17)
 ------------------
-* Feature: Added possibility to specify dimensions of map modal popup when 
+* Feature: Added possibility to specify dimensions of map modal popup when
   adding geotags macro to any template
   [ichimdav #8523]
-* Bug fix: fixed issue where clicking on a geotags like Norway took you to 
-  Denmark since they have the same x coordinate and the check for geometry was 
+* Bug fix: fixed issue where clicking on a geotags like Norway took you to
+  Denmark since they have the same x coordinate and the check for geometry was
   only done on the x coordinate
   [ichimdav #8523]
 * Bug fix: fixed issue where map infoTemplate displayed undefined as header
@@ -21,7 +23,7 @@ Changelog
 
 5.5 - (2013-03-15)
 ------------------
-* Bug fix: load geotagsClusterLayer using dojo.require instead of loading it 
+* Bug fix: load geotagsClusterLayer using dojo.require instead of loading it
   with portal_javascripts
   [ichimdav #14039]
 
@@ -46,13 +48,13 @@ Changelog
 
 5.2 - (2012-11-26)
 ------------------
-* Bug fix: rdfencode geotags as geo:SpatialThing to stay generic, 
+* Bug fix: rdfencode geotags as geo:SpatialThing to stay generic,
   since not all geotags are points, can also be Features/Polygons etc.
   [demarant refs #7409]
 
 5.1 - (2012-11-22)
 ------------------
-* Bug fix: map infoTemplate template is constructed only the information that 
+* Bug fix: map infoTemplate template is constructed only the information that
   is available for that object
   [ichimdav #7337]
 * Feature: rdf export of geotags now includes geonames URI with owl:sameAs.
