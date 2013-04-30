@@ -3,6 +3,10 @@ Changelog
 
 5.7-dev - (unreleased)
 ----------------------
+* Bug fix: add also countries from Asia for the Pan-Europe group when using 
+  the geotags edit widget since the search was restricted to the Europe 
+  Continent
+  [ichimdav #14329]
 * Feature: Removed lovely.memcached dependency
   [voineali refs #14343]
 
