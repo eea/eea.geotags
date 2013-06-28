@@ -3,6 +3,11 @@ Changelog
 
 5.8-dev - (unreleased)
 ----------------------
+* Feature: modified loading of map data so that you could load more than one
+  map widget in the page
+  [ichimdav]
+* Bug fix: properly load eea.geotags.jsondata when viewing the page with /view
+  [ichimdav #14592]
 
 5.7 - (2013-05-20)
 ------------------
