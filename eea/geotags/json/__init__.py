@@ -10,6 +10,7 @@ from eea.geotags.config import WEBSERVICE
 from eea.geotags.interfaces import IGeoGroups
 from eea.geotags.interfaces import IBioGroups
 from eea.geotags.interfaces import IGeoCountries
+from eea.geotags.json.interfaces import IJsonProviderSearchMutator
 
 logger = logging.getLogger('eea.geotags.json')
 
@@ -206,10 +207,10 @@ class GeoNamesJsonProvider(object):
         query['featureClass'] = ['H', 'T']
         return self.search(sort = True, **query)
 
-    def search(self, sort = False, **kwargs):
+    def search(self, sort=False, **kwargs):
         """ Search using geonames webservice
         """
-        template = { # ichimdav was = GEOJSON = ### not used
+        template = {
             'type': 'FeatureCollection',
             'features': []
         }
@@ -265,7 +266,7 @@ class GeoNamesJsonProvider(object):
 
             feature['properties']['title'] = item.get('name')
             feature['properties']['description'] = ', '.join(x
-              for x in (item.get('adminName1'), item.get('countryName')) if x)
+                for x in (item.get('adminName1'), item.get('countryName')) if x)
 
             feature['properties']['tags'] = item.get('fcodeName')
             feature['properties']['country'] = item.get('countryCode')
@@ -276,4 +277,8 @@ class GeoNamesJsonProvider(object):
             template['features'].append(feature)
         if sort:
             template['features'].sort(key=lambda k: k['properties']['title'])
-        return template
+
+        mutator = queryAdapter(self.context, IJsonProviderSearchMutator)
+        mutated_results = mutator(template)
+
+        return mutated_results or template

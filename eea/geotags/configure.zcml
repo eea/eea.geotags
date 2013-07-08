@@ -6,8 +6,6 @@
   <include package="eea.jquery" />
   <include package="eea.alchemy" />
 
-  <include file="profiles.zcml" />
-  <include file="skins.zcml" />
 
   <include package=".browser" />
   <include package=".storage" />
@@ -19,9 +17,15 @@
   <include package=".upgrades" />
 
   <include package=".faceted" />
-  
+
+  <include file="profiles.zcml" />
+
+  <include file="overrides.zcml" />
+
+  <include file="skins.zcml" />
+
   <!-- include the specific rdf marshaller for geotags   -->
-  <configure zcml:condition="installed eea.rdfmarshaller"> 
+  <configure zcml:condition="installed eea.rdfmarshaller">
     <include package=".rdf" />
   </configure>
 
