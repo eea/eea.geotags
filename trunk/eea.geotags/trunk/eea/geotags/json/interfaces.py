@@ -3,7 +3,7 @@
 from zope.interface import Interface
 
 class IJsonProvider(Interface):
-    """ Get a JSON from extenral webservice and return it following the
+    """ Get a JSON from external webservice and return it following the
         geojson specifications. See http://geojson.org
     """
 
@@ -34,4 +34,12 @@ class IJsonProvider(Interface):
 
     def search(**kwargs):
         """ Free search
+        """
+
+
+class IJsonProviderSearchMutator(Interface):
+    """ Adapter to mutate JsonProvider searches
+    """
+    def __call__(**kwargs):
+        """ Return a dict with modified search results
         """

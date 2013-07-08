@@ -5,4 +5,8 @@
            provides=".interfaces.IJsonProvider"
            factory="..json.GeoNamesJsonProvider" />
 
+    <adapter for="eea.geotags.interfaces.IGeoTaggable"
+             provides=".interfaces.IJsonProviderSearchMutator"
+             factory=".adapter.JSONProviderSearchMutator" />
+
 </configure>
