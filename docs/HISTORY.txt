@@ -1,6 +1,9 @@
 Changelog
 =========
 
+5.9-dev - (unreleased)
+----------------------
+
 5.8 - (2013-07-08)
 ------------------
 * Feature: modified loading of map data so that you could load more than one
