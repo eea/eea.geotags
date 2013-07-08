@@ -3,7 +3,7 @@
 
     <adapter
             zcml:condition="installed eea.design"
-            for="Products.Archetypes.interfaces.IBaseContent"
+            for="eea.geotags.storage.interfaces.IGeoTaggable"
             provides="eea.geotags.json.interfaces.IJsonProviderSearchMutator"
             factory="eea.geotags.json.adapter.EEAJSONProviderSearchMutator" />
 
