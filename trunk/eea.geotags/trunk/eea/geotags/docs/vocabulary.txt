@@ -5,7 +5,7 @@ to easily override them.
 
 eea.geotags.interfaces.IGeoGroups
 ---------------------------------
-Returns a SimpleVocabulary instance with Contry Groups
+Returns a SimpleVocabulary instance with Country Groups
 
     >>> from zope.component import queryAdapter
     >>> from eea.geotags.interfaces import IGeoGroups

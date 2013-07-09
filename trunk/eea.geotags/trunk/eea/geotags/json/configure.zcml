@@ -5,7 +5,7 @@
            provides=".interfaces.IJsonProvider"
            factory="..json.GeoNamesJsonProvider" />
 
-    <adapter for="Products.Archetypes.interfaces.IBaseContent"
+    <adapter for="Products.Archetypes.interfaces.base.IBaseObject"
              provides=".interfaces.IJsonProviderSearchMutator"
              factory=".adapter.JSONProviderSearchMutator" />
 

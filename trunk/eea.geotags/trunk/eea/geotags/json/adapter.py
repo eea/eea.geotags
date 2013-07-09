@@ -12,10 +12,10 @@ class JSONProviderSearchMutator(object):
     def __init__(self, context):
         self.context = context
 
-    def __call__(self, template, **kwargs):
+    def __call__(self, template):
         """ Return a dict of geonames search results
         """
-        return {}
+        return template
 
 
 class EEAJSONProviderSearchMutator(object):
@@ -31,7 +31,7 @@ class EEAJSONProviderSearchMutator(object):
             "Kosovo": "Kosovo (UNSCR 1244/99)"
         }
 
-    def __call__(self, template, **kwargs):
+    def __call__(self, template):
         """ Return a dict of geonames search with mutated results
         """
         features = template.get('features')
