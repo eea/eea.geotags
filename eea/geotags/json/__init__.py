@@ -283,4 +283,4 @@ class GeoNamesJsonProvider(object):
         mutator = queryAdapter(self.context, IJsonProviderSearchMutator)
         mutated_results = mutator(template)
 
-        return mutated_results or template
+        return mutated_results
