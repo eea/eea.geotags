@@ -3,6 +3,12 @@ Changelog
 
 5.9-dev - (unreleased)
 ----------------------
+* Upgrade step: ONLY in EEA context  Within "Plone > Site setup > Add-ons" 
+  click on button available for eea.geotags available 
+  [ichimdav #14667]
+* Feature: Added search results mutator with implementation for EEA in order
+  to allow mutation of search results
+  [ichimdav #14667]
 
 5.8 - (2013-07-08)
 ------------------
