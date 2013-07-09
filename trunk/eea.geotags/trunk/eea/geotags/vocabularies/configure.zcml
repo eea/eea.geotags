@@ -10,4 +10,7 @@
   <adapter for="eea.geotags.interfaces.IGeoTaggable"
            factory=".countries.Countries" />
 
+  <adapter for="eea.geotags.interfaces.IGeoTaggable"
+           factory=".countries_mapping.Countries_Mapping" />
+
 </configure>
