@@ -278,6 +278,8 @@ class GeoNamesJsonProvider(object):
         if sort:
             template['features'].sort(key=lambda k: k['properties']['title'])
 
+        # Search mutator see json/adapter.py for example on how you can register
+        # your own
         mutator = queryAdapter(self.context, IJsonProviderSearchMutator)
         mutated_results = mutator(template)
 
