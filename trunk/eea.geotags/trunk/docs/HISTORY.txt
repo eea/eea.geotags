@@ -1,8 +1,8 @@
 Changelog
 =========
 
-5.9-dev - (unreleased)
-----------------------
+5.9 - (2013-07-10)
+------------------
 * Upgrade step: ONLY in EEA context  Within "Plone > Site setup > Add-ons" 
   click on button available for eea.geotags available 
   [ichimdav #14667]
