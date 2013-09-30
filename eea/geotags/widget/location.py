@@ -6,7 +6,7 @@ from zope.app.form.browser.interfaces import IBrowserWidget
 from zope.app.form.interfaces import IInputWidget
 from zope.schema import Field
 from zope.schema.interfaces import IField
-from zope.app.pagetemplate import ViewPageTemplateFile
+from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
 from eea.geotags.field.location import GeotagsFieldMixin
 
 class GeotagsWidget(StringWidget):
