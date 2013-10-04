@@ -9,8 +9,8 @@ Changelog
 
 5.9 - (2013-07-10)
 ------------------
-* Upgrade step: ONLY in EEA context  Within "Plone > Site setup > Add-ons" 
-  click on button available for eea.geotags available 
+* Upgrade step: ONLY in EEA context  Within "Plone > Site setup > Add-ons"
+  click on button available for eea.geotags available
   [ichimdav #14667]
 * Feature: Added search results mutator with implementation for EEA in order
   to allow mutation of search results
@@ -26,8 +26,8 @@ Changelog
 
 5.7 - (2013-05-20)
 ------------------
-* Bug fix: add also countries from Asia for the Pan-Europe group when using 
-  the geotags edit widget since the search was restricted to the Europe 
+* Bug fix: add also countries from Asia for the Pan-Europe group when using
+  the geotags edit widget since the search was restricted to the Europe
   Continent
   [ichimdav #14329]
 * Feature: Removed lovely.memcached dependency
