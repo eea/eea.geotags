@@ -1,6 +1,11 @@
 Changelog
 =========
 
+6.1 - (2013-10-04)
+------------------
+* Change: made a new egg since previous egg release was broken
+  [ichimdav]
+
 6.0 - (2013-10-04)
 ------------------
 * Change: updated zope imports with the versions that require minimum Plone 4.1
