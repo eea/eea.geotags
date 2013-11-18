@@ -3,6 +3,8 @@ Changelog
 
 6.2-dev - (unreleased)
 ----------------------
+* Bug fix: define portal_url within geotags.pt
+  [ichimdav]
 
 6.1 - (2013-10-04)
 ------------------

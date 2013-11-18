@@ -60,6 +60,8 @@ Usage with hidden map:
                           modal modal|python:False;
                           modal_dimensions modal_dimensions|nothing;
                           data_modal python: 'True' if modal else 'False';
+                          portal_state context/@@plone_portal_state;
+                          portal_url portal_state/portal_url;
                           events events|python:False;
                           infoWindowImgName infoWindowImgName|python:'event_icon.gif'"
                   condition="geotags">
