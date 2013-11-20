@@ -407,9 +407,6 @@
   color: black;
   display: inline-block;
   background: #ECECEC;
-  border-radius: 0.5em;
-  -webkit-border-radius: 0.5em;
-  -moz-border-radius: 0.5em;
   padding: 0 5px;
   margin: 2px 0;
   font-size: 10px;
