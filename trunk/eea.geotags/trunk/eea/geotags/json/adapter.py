@@ -32,21 +32,23 @@ class EEAJSONProviderSearchMutator(object):
         """ Return a dict of geonames search with mutated results
         """
         features = template.get('features')
-        if features:
-            first_result = features[0]
-            is_matchable = hasattr(self.country_mapping, 'get')
-            if is_matchable:
+        is_matchable = hasattr(self.country_mapping, 'get')
+        if features and is_matchable:
+            for entry in features:
                 match = self.country_mapping.get(
-                    first_result['properties'].get('title'))
+                    entry['properties'].get('title'))
 
                 # check also description for country matching as some matches
                 # might be triggered while checking for description
                 if not match:
                     match = self.country_mapping.get(
-                        first_result['properties'].get('description'))
+                        entry['properties'].get('description'))
+
                 if match:
                     title = match.title
-                    first_result['properties']['title'] = title
-                    first_result['properties']['description'] = title
+                    entry['properties']['title'] = title
+                    entry['properties']['description'] = title
+                    entry['properties']['other']['countryName'] = title
+                    entry['properties']['other']['name'] = title
         return template
 

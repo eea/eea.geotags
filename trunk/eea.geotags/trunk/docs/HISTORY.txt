@@ -3,6 +3,9 @@ Changelog
 
 6.3-dev - (unreleased)
 ----------------------
+* Bug fix: fixed country names when selected via country groups, now
+  the names are checked on country_mapping for the correct name
+  [ghicaale refs #17583]
 
 6.2 - (2013-11-20)
 ------------------
