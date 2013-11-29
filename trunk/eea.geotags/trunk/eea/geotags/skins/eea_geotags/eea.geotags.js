@@ -216,8 +216,7 @@ jQuery.fn.geodialog = function(settings){
     handle_save: function(data){
       var fieldName = self.attr('id');
       var json = self.basket.options.geojson;
-      // sort the geotags by name before sending it to object
-      // annotation
+      // sort the geotags by name before sending it to object annotation
       json.features = json.features.sort(function(a,b){
         var aName = a.properties.title.toLowerCase();
         var bName = b.properties.title.toLowerCase();
@@ -587,7 +586,7 @@ jQuery.fn.geobasket = function(settings){
         names = [];
         // add also the individual countries that are part of this country group
         initialData_length = initialData.features.length;
-        features_length = self.options.geojson.features.length; 
+        features_length = self.options.geojson.features.length;
         for (i = 0; i < features_length; i += 1) {
             names.push(self.options.geojson.features[i].properties.name);
         }
@@ -1549,14 +1548,6 @@ EEAGeotags.View = function(context, options){
   self.context.parent().addClass('eea-geotags-view');
   self.settings = {};
 
-  if(!self.context.attr('id')){
-      self.context.attr({id: self.context.attr('id') + self.id});
-      self.id = '#' + self.context.attr('id') + self.count;
-  }
-  else {
-      self.id = '#' + self.context.attr('id');
-  }
-
   if(options){
     jQuery.extend(self.settings, options);
   }
@@ -1584,7 +1575,7 @@ EEAGeotags.View.prototype = {
         eea_location_links_length = eea_location_links.length,
         eea_location_data = eea_location.data();
         self.modal = eea_location_links_length  ? eea_location_data.modal : "Events";
-        self.map_div = jQuery(self.id);
+        self.map_div = jQuery("#eeaEsriMap");
     if( (self.modal !== "False" && self.modal !== "Events") || (eea_location_links_length < 4 && self.modal !== "Events")){
         var dialogBox,
             eea_location_offset = eea_location.is(':visible') ? eea_location.offset() : eea_location.closest(':visible').offset(),
@@ -1609,7 +1600,7 @@ EEAGeotags.View.prototype = {
                                                     height: eea_location_data.modal_dimensions[1]});
                 // resize map root to fit the designated space of #content
                 // without scrollbars
-                self.map_div.find(self.id +'_root').css({width: '100%', height: '100%'});
+                self.map_div.find('#eeaEsriMap_root').css({width: '100%', height: '100%'});
 
             }
             else {
@@ -1627,7 +1618,7 @@ EEAGeotags.View.prototype = {
   showLoading: function(){
     var loading;
     var self = this;
-    loading = jQuery('#' + self.id + 'LoadingImg')[0];
+    loading = jQuery('#eeaEsriMapLoadingImg')[0];
     esri.show(loading);
     self.disableMapNavigation();
     self.hideZoomSlider();
@@ -1637,7 +1628,7 @@ EEAGeotags.View.prototype = {
   hideLoading: function(){
     var loading;
     var self = this;
-    loading = jQuery('#' + self.id + 'LoadingImg')[0];
+    loading = jQuery('#eeaEsriMapLoadingImg')[0];
     esri.hide(loading);
     self.enableMapNavigation();
     self.showZoomSlider();
@@ -1764,7 +1755,7 @@ EEAGeotags.View.prototype = {
             geometry = esri.geometry.geographicToWebMercator(geometry);
             var name = item.itemType || 'Location',
                 itemUrl = item.itemUrl || context_url,
-                icon = item.itemIcon || itemUrl + "/image_listing",
+                icon = item.itemIcon || portal_url + "/red_pin.png",
                 addr = decodeURIComponent(item.properties.description) || decodeURIComponent(item.properties.title),
                 itemDate = item.itemDate,
                 itemDescription = item.itemDescription,
@@ -1788,13 +1779,13 @@ EEAGeotags.View.prototype = {
                 tempTemplate = tempTemplate + '<p><strong>Description: </strong>${Desc}</p>';
                 mapOptions.Desc = decodeURIComponent(itemDescription);
             }
-            // we need to recreate the infoTemplate otherwise all features will use the 
+            // we need to recreate the infoTemplate otherwise all features will use the
             // same infoTemplate which will have it's content changed along the way
             infoTemplate = new esri.InfoTemplate('${Name}', tempTemplate);
             mapPoint = new esri.Graphic({'geometry': geometry, 'attributes': mapOptions });
             mapPoint.setInfoTemplate(infoTemplate);
             if(!EEAGeotags.settings.generalIcon) {
-                mapPoint.setSymbol(new esri.symbol.PictureMarkerSymbol(icon, 20, 20));
+                mapPoint.setSymbol(new esri.symbol.PictureMarkerSymbol(icon, 30, 30));
             }
             features.push(mapPoint);
             // set latitude and longitude on each tag as data attribute
@@ -1810,7 +1801,7 @@ EEAGeotags.View.prototype = {
         EEAGeotags.featureLayer = featureLayer;
 
         var enableClusterLayer = function() {
-            // cluster points 
+            // cluster points
             var cluster = dojo.map(features, function(item) {
             return { "x": item.geometry.x, "y": item.geometry.y, "attributes": item.attributes, 'template' : item.infoTemplate };
             });
@@ -1818,7 +1809,7 @@ EEAGeotags.View.prototype = {
             var clusterLayer = new window.EEAGeotags.GeotagsClusterLayer({
             "data": cluster,
             "distance": 100,
-            "id": "clusters", 
+            "id": "clusters",
             "labelColor": "#fff",
             "labelOffset": 10,
             "resolution": EEAGeotags.map.extent.getWidth() / EEAGeotags.map.width,
@@ -1826,7 +1817,7 @@ EEAGeotags.View.prototype = {
             });
             var defaultSym = new esri.symbol.SimpleMarkerSymbol().setSize(4);
             var renderer = new esri.renderer.ClassBreaksRenderer(
-            defaultSym, 
+            defaultSym,
             "clusterCount"
             );
             var greenSymbol = new esri.symbol.PictureMarkerSymbol("http://static.arcgis.com/images/Symbols/Shapes/GreenPin1LargeB.png", 64, 64).setOffset(0, 15);
@@ -1835,7 +1826,7 @@ EEAGeotags.View.prototype = {
             renderer.addBreak(200, 1001, redSymbol);
 
             clusterLayer.setRenderer(renderer);
-            EEAGeotags.map.addLayer(clusterLayer); 
+            EEAGeotags.map.addLayer(clusterLayer);
         };
         if (window.EEAGeotags.GeotagsClusterLayer) {
             enableClusterLayer();
@@ -1884,9 +1875,8 @@ EEAGeotags.View.prototype = {
     var initExtent, basemap, geometricExtent;
     initExtent = new esri.geometry.Extent({"xmin": -171, "ymin":-330, "xmax":240, "ymax":140, "spatialReference":{"wkid": 102100}});
     geometricExtent = esri.geometry.geographicToWebMercator(initExtent);
-    basemap = new esri.layers.ArcGISTiledMapServiceLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer');
-    var map_id = self.id.substr(1, self.id.length);
-    self.map = new esri.Map(map_id, {'extent': geometricExtent,
+    basemap = new esri.layers.ArcGISTiledMapServiceLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer');
+    self.map = new esri.Map('eeaEsriMap', {'extent': geometricExtent,
                                            'wrapAround180': true,
                                            'fadeOnZoom': true,
                                            'force3DTransforms': true,
@@ -1904,7 +1894,7 @@ EEAGeotags.View.prototype = {
         EEAGeotags.map.centerAndZoom(EEAGeotags.map.extent.getCenter(), 2);
 
         dojo.ready(function(){
-            dojo.connect(dijit.byId(self.id), 'resize', self.map, self.map.resize);
+            dojo.connect(dijit.byId('eeaEsriMap'), 'resize', self.map, self.map.resize);
             var resize = self.settings.infoWindowSize;
                 resize = resize || [140, 100];
             self.map.infoWindow.resize(resize[0], resize[1]);
@@ -1930,7 +1920,6 @@ EEAGeotags.View.prototype = {
 jQuery.fn.EEAGeotagsView = function(options){
   return this.each(function(i){
     var context = jQuery(this).addClass('eea-ajax');
-        context.count = i;
     var geoview = new EEAGeotags.View(context, options);
     context.data('EEAGeotagsView', geoview);
   });
