@@ -1584,6 +1584,7 @@ EEAGeotags.View.prototype = {
         self.map_div = jQuery(self.id);
     if( (self.modal !== "False" && self.modal !== "Events") || (eea_location_links_length < 4 && self.modal !== "Events")){
         var dialogBox,
+            ui_dialog,
             eea_location_offset = eea_location.is(':visible') ? eea_location.offset() : eea_location.closest(':visible').offset(),
             pos_top = eea_location_offset.top + eea_location.height(),
             pos_left = eea_location_offset.left,
@@ -1595,22 +1596,29 @@ EEAGeotags.View.prototype = {
         eea_location_links.click(function(e){
             if (!dialogBox) {
                 // ie bug which fails if we have open and width and height in
-                // the dialog options so we add then with plain jquery css
+                // the dialog options so we add them with plain jquery instead
+                // of using dialog with open parameter
                 dialogBox = self.map_div.dialog({
                     closeOnEscape: true,
                     autoOpen: false,
                     resize: true
                 });
-                dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top, display: 'block',
+                ui_dialog = dialogBox.closest('.ui-dialog');
+                ui_dialog.css({left: pos_left, top: pos_top,
                                                     width: eea_location_data.modal_dimensions[0],
-                                                    height: eea_location_data.modal_dimensions[1]});
+                                                    height: eea_location_data.modal_dimensions[1]}).show();
+                // register our own close since dialog.open isn't triggered
+                ui_dialog.find('.ui-dialog-titlebar-close').click(function(e){
+                    ui_dialog.hide();
+                    e.preventDefault();
+                });
                 // resize map root to fit the designated space of #content
                 // without scrollbars
                 self.map_div.find(self.id +'_root').css({width: '100%', height: '100%'});
 
             }
             else {
-                dialogBox.closest('.ui-dialog').css({left: pos_left, top: pos_top, display: 'block'});
+                ui_dialog.css({left: pos_left, top: pos_top}).show();
             }
             e.preventDefault();
         });
