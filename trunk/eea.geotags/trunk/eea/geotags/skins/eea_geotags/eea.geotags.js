@@ -1547,7 +1547,13 @@ EEAGeotags.View = function(context, options){
   self.context = context;
   self.context.parent().addClass('eea-geotags-view');
   self.settings = {};
-
+  if(!self.context.attr('id')){
+      self.context.attr({id: self.context.attr('id') + self.id});
+      self.id = '#' + self.context.attr('id') + self.count;
+  }
+  else {
+      self.id = '#' + self.context.attr('id');
+  }
   if(options){
     jQuery.extend(self.settings, options);
   }
@@ -1575,7 +1581,7 @@ EEAGeotags.View.prototype = {
         eea_location_links_length = eea_location_links.length,
         eea_location_data = eea_location.data();
         self.modal = eea_location_links_length  ? eea_location_data.modal : "Events";
-        self.map_div = jQuery("#eeaEsriMap");
+        self.map_div = jQuery(self.id);
     if( (self.modal !== "False" && self.modal !== "Events") || (eea_location_links_length < 4 && self.modal !== "Events")){
         var dialogBox,
             eea_location_offset = eea_location.is(':visible') ? eea_location.offset() : eea_location.closest(':visible').offset(),
@@ -1600,7 +1606,7 @@ EEAGeotags.View.prototype = {
                                                     height: eea_location_data.modal_dimensions[1]});
                 // resize map root to fit the designated space of #content
                 // without scrollbars
-                self.map_div.find('#eeaEsriMap_root').css({width: '100%', height: '100%'});
+                self.map_div.find(self.id +'_root').css({width: '100%', height: '100%'});
 
             }
             else {
@@ -1618,7 +1624,7 @@ EEAGeotags.View.prototype = {
   showLoading: function(){
     var loading;
     var self = this;
-    loading = jQuery('#eeaEsriMapLoadingImg')[0];
+    loading = jQuery('#' + self.id + 'LoadingImg')[0];
     esri.show(loading);
     self.disableMapNavigation();
     self.hideZoomSlider();
@@ -1628,7 +1634,7 @@ EEAGeotags.View.prototype = {
   hideLoading: function(){
     var loading;
     var self = this;
-    loading = jQuery('#eeaEsriMapLoadingImg')[0];
+    loading = jQuery('#' + self.id + 'LoadingImg')[0];
     esri.hide(loading);
     self.enableMapNavigation();
     self.showZoomSlider();
@@ -1755,7 +1761,7 @@ EEAGeotags.View.prototype = {
             geometry = esri.geometry.geographicToWebMercator(geometry);
             var name = item.itemType || 'Location',
                 itemUrl = item.itemUrl || context_url,
-                icon = item.itemIcon || portal_url + "/red_pin.png",
+                icon = item.itemIcon || context_url + "/red_pin.png",
                 addr = decodeURIComponent(item.properties.description) || decodeURIComponent(item.properties.title),
                 itemDate = item.itemDate,
                 itemDescription = item.itemDescription,
@@ -1876,7 +1882,8 @@ EEAGeotags.View.prototype = {
     initExtent = new esri.geometry.Extent({"xmin": -171, "ymin":-330, "xmax":240, "ymax":140, "spatialReference":{"wkid": 102100}});
     geometricExtent = esri.geometry.geographicToWebMercator(initExtent);
     basemap = new esri.layers.ArcGISTiledMapServiceLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer');
-    self.map = new esri.Map('eeaEsriMap', {'extent': geometricExtent,
+    var map_id = self.id.substr(1, self.id.length);
+    self.map = new esri.Map(map_id, {'extent': geometricExtent,
                                            'wrapAround180': true,
                                            'fadeOnZoom': true,
                                            'force3DTransforms': true,
@@ -1894,7 +1901,7 @@ EEAGeotags.View.prototype = {
         EEAGeotags.map.centerAndZoom(EEAGeotags.map.extent.getCenter(), 2);
 
         dojo.ready(function(){
-            dojo.connect(dijit.byId('eeaEsriMap'), 'resize', self.map, self.map.resize);
+            dojo.connect(dijit.byId(self.id), 'resize', self.map, self.map.resize);
             var resize = self.settings.infoWindowSize;
                 resize = resize || [140, 100];
             self.map.infoWindow.resize(resize[0], resize[1]);
@@ -1920,6 +1927,7 @@ EEAGeotags.View.prototype = {
 jQuery.fn.EEAGeotagsView = function(options){
   return this.each(function(i){
     var context = jQuery(this).addClass('eea-ajax');
+        context.count = i;
     var geoview = new EEAGeotags.View(context, options);
     context.data('EEAGeotagsView', geoview);
   });
