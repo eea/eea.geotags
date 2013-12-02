@@ -13,6 +13,10 @@
 Macro parameters:
 
   @@param hideMap
+  @@param modal
+  @@param modal_dimensions
+  @@param events
+  @@param map_service
 
 Usage with map visible:
 By default if there are less than 4 geotags the map will be displayed as a modal
@@ -51,6 +55,13 @@ Usage with hidden map:
         Location field view macro
     </metal:field>
 
+Usage with a different map tile or service
+    <tal:hideMap define="hideMap python:False; map_service python:'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer'">
+       <metal:field use-macro="python:context.widget('location', mode='view')">
+            Location field view macro
+        </metal:field>
+    </tal:hideMap>
+
 -->
   </tal:comment>
 
@@ -60,6 +71,7 @@ Usage with hidden map:
                           modal modal|python:False;
                           modal_dimensions modal_dimensions|nothing;
                           data_modal python: 'True' if modal else 'False';
+                          map_service map_service|nothing;
                           portal_state context/@@plone_portal_state;
                           portal_url portal_state/portal_url;
                           events events|python:False;
@@ -103,13 +115,17 @@ Usage with hidden map:
                     }
                     var map_options = {'infoWindowSize' : [400, 200], 'infoWindowImgName' : 'event_icon.gif'};
                         jQuery.extend(map_options, EEAGeotags.settings);
-                    if (!map.data() || jQuery.isEmptyObject(map.data())){
-                        map.EEAGeotagsView(map_options);
+                    var default_map_options = map.data();
+                    if (default_map_options.length) {
+                        jQuery.extend(map_options, EEAGeotags.settings);
                     }
+                    map.EEAGeotagsView(map_options);
                 });
             });">
     </script>
-    <div id="eeaEsriMap" class="claro" tal:condition="not:hideMap" style="display:none;">
+    <div id="eeaEsriMap" class="claro"  style="display:none;"
+         tal:attributes="data-map_service python:map_service if map_service else '';"
+         tal:condition="not:hideMap">
         <img id="eeaEsriMapLoadingImg"
              src="loading.gif"
              tal:attributes="src string:$portal_url/loading.gif" />

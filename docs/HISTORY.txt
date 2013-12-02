@@ -3,6 +3,15 @@ Changelog
 
 6.3-dev - (unreleased)
 ----------------------
+* Feature: read the data properties set on the map layer if they exist
+  [ichimdav #17618]
+* Change: changed default map_service to World_Light_Gray_Base
+  [ichimdav #17618]
+* Feature: added possibility to change the map_service. See eea.geotags.pt
+  comments for example
+  [ichimdav #17618]
+* Bug fix: no longer show map as an modal if modal was set to False
+  [ichimdav #17618]
 * Bug fix: fixed country names when selected via country groups, now
   the names are checked on country_mapping for the correct name
   [ghicaale refs #17583]

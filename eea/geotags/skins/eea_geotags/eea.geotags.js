@@ -1582,7 +1582,7 @@ EEAGeotags.View.prototype = {
         eea_location_data = eea_location.data();
         self.modal = eea_location_links_length  ? eea_location_data.modal : "Events";
         self.map_div = jQuery(self.id);
-    if( (self.modal !== "False" && self.modal !== "Events") || (eea_location_links_length < 4 && self.modal !== "Events")){
+    if( (self.modal !== "False" && self.modal !== "Events") || (eea_location_links_length < 4 && (self.modal !== "Events" && self.modal !=="False"))){
         var dialogBox,
             ui_dialog,
             eea_location_offset = eea_location.is(':visible') ? eea_location.offset() : eea_location.closest(':visible').offset(),
@@ -1889,7 +1889,9 @@ EEAGeotags.View.prototype = {
     var initExtent, basemap, geometricExtent;
     initExtent = new esri.geometry.Extent({"xmin": -171, "ymin":-330, "xmax":240, "ymax":140, "spatialReference":{"wkid": 102100}});
     geometricExtent = esri.geometry.geographicToWebMercator(initExtent);
-    basemap = new esri.layers.ArcGISTiledMapServiceLayer('http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer');
+    // load a different map service if the #eeaEsriMap div has a data property called map_service
+    var map_service = self.map_div.data('map_service') || 'http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer';
+    basemap = new esri.layers.ArcGISTiledMapServiceLayer(map_service);
     var map_id = self.id.substr(1, self.id.length);
     self.map = new esri.Map(map_id, {'extent': geometricExtent,
                                            'wrapAround180': true,
