@@ -17,6 +17,8 @@ Changelog
   [ghicaale refs #17583]
 * Change: merged code from custom into eea.geotags.js
   [ghicaale refs #17583]
+* Bug fix: countries from groups outside Europe are now found and mapped properly
+  [ghicaale refs #17628]
 
 6.2 - (2013-11-20)
 ------------------

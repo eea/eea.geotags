@@ -143,36 +143,30 @@ class GeoNamesJsonProvider(object):
                        term in voc(group=group)]
 
         continentCode = kwargs.get('continentCode', 'EU')
-
-        # #14329 pan europe has countries also from Asia so we do a double
-        # search in order to get those countries as well
-        if group == 'pan-europe':
-            json_europe = self.search(continentCode='EU',
+        json = self.search(continentCode=continentCode,
                            featureClass='A',
                            featureCode='PCLI')
-            features_europe = json_europe['features']
-            json_europe['features'] = [feature for feature in features_europe
+        if filters:
+            features = json['features']
+            json['features'] = [feature for feature in features
                                 if feature['properties']['name'] in filters]
+
+            # decide if we should extend search in Asia
+            extend_asia = False
+            filters_asia = []
+            for feature in features:
+                if not(feature['properties']['name'] in filters):
+                    extend_asia = True
+                    filters_asia.append(feature['properties']['name'])
+
+        # add/map countries from Asia
+        if extend_asia:
             json_asia = self.search(continentCode='AS',
                                       featureClass='A',
                                       featureCode='PCLI')
             features_asia = json_asia['features']
-            json_asia['features'] = [feature for feature in features_asia
-                                   if feature['properties']['name'] in filters]
-
-            # extend json_europe with features from asia
-            json_europe['features'].extend(json_asia['features'])
-            json = json_europe
-
-        else:
-            json = self.search(continentCode=continentCode,
-                               featureClass='A',
-                               featureCode='PCLI')
-
-            if filters:
-                features = json['features']
-                json['features'] = [feature for feature in features
-                                    if feature['properties']['name'] in filters]
+            json['features'].extend([feature for feature in features_asia
+                                 if feature['properties']['name'] in filters])
 
         # Fix country title
         for feature in json['features']:
