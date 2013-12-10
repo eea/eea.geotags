@@ -1,8 +1,8 @@
 Changelog
 =========
 
-6.3-dev - (unreleased)
-----------------------
+6.3 - (2013-12-10)
+------------------
 * Feature: read the data properties set on the map layer if they exist
   [ichimdav #17618]
 * Change: changed default map_service to World_Light_Gray_Base
