@@ -1656,7 +1656,7 @@ EEAGeotags.View.prototype = {
     locationTags = eea_location_links;
     locationTagsLen = locationTags ? locationTags.length : 0;
 
-    context_url = window.location.protocol + '//' + window.location.host + window.location.pathname;
+    context_url = $("base").attr('href');
     // remove /view if page is called with it
     if(context_url.endswith('/view')){
         context_url = context_url.replace(/\/view$/g, '');
