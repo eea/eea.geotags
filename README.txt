@@ -34,7 +34,7 @@ Also read README.txt under eea.alchemy.
 
 More details about how to use this package can be found at the following link:
 
-  1. https://svn.eionet.europa.eu/projects/Zope/wiki/HowToGeotag
+  1. http://taskman.eionet.europa.eu/projects/zope/wiki/HowToGeotag
 
 
 Installation
@@ -94,7 +94,7 @@ More details under docs/License.txt
 Links
 =====
 
-  1. EEA Geotags wiki page: https://svn.eionet.europa.eu/projects/Zope/wiki/HowToGeotag
+  1. EEA Geotags wiki page: http://taskman.eionet.europa.eu/projects/zope/wiki/HowToGeotag
 
 
 Funding
