@@ -6,6 +6,8 @@ Changelog
 * Bug fix: context_url is retrieved from the base tag instead of the window
   location to avoid geotags loading of parent when there is a default page
   [ichimdav refs #17747]
+* Bug fix: Updated old URLs pointing Trac
+  [ghicaale refs #18003]
 
 6.3 - (2013-12-10)
 ------------------
