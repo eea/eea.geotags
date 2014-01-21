@@ -3,6 +3,8 @@ Changelog
 
 6.4-dev - (unreleased)
 ----------------------
+* Feature: adding Sphinx-generated documentation in Page Template format
+  [batradav refs #9502]
 * Bug fix: removed wrongly added blockquotes within README.rst
   [ichim-david refs #18064]
 * Bug fix: context_url is retrieved from the base tag instead of the window
