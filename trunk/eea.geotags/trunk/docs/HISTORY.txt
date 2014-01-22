@@ -3,6 +3,8 @@ Changelog
 
 6.5-dev - (unreleased)
 ----------------------
+* Bug fix: no longer store current locations when closing the geotags dialog
+  [ichimdav fixes #17620]
 
 6.4 - (2014-01-22)
 ------------------
