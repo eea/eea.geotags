@@ -8,6 +8,8 @@ jQuery.geoevents = {
   map_loaded: 'geo-events-map-loaded',
   basket_delete: 'geo-events-basket-delete',
   basket_save: 'geo-events-basket-save',
+  basket_update: 'geo-events-basket-update',
+  basket_cancel: 'geo-events-basket-cancel',
   ajax_start: 'geo-events-ajax-start',
   ajax_stop: 'geo-events-ajax-stop'
 };
@@ -76,7 +78,8 @@ jQuery.fn.geodialog = function(settings){
   self.initialized = false;
   self.events = {
     initialize: 'geo-dialog-initialize',
-    save: 'geo-dialog-save'
+    save: 'geo-dialog-save',
+    cancel: 'geo-dialog-cancel'
   };
 
   self.options = {
@@ -201,7 +204,9 @@ jQuery.fn.geodialog = function(settings){
 
         // Basket
         self.basket = jQuery('.geo-basket', self);
+        self.options.basket['origJSON'] = jQuery.extend({}, self.options.basket.geojson);
         self.basket.geobasket(self.options.basket);
+        
       });
 
       // Plugin initialized
@@ -224,6 +229,7 @@ jQuery.fn.geodialog = function(settings){
       });
 
       self.trigger(jQuery.geoevents.basket_save, {json: json});
+      self.trigger(jQuery.geoevents.basket_update, {json: json});
       json = JSON.stringify(json);
       jQuery('[name=' + fieldName + ']').text(json);
     },
@@ -245,9 +251,13 @@ jQuery.fn.geodialog = function(settings){
           },
           'Cancel': function(){
             self.dialog('close');
+            self.trigger(self.events.cancel);
           }
         },
-        close: function(){
+        close: function(e, data){
+          if(e.currentTarget){
+            self.trigger(self.events.cancel)
+          }
         },
         open: function(){
           self.trigger(self.events.initialize);
@@ -261,6 +271,10 @@ jQuery.fn.geodialog = function(settings){
 
       self.bind(self.events.save, function(evt, data){
         self.options.handle_save(data);
+      });
+
+      self.bind(self.events.cancel, function(evt, data){
+        jQuery(self).trigger(jQuery.geoevents.basket_cancel);
       });
 
       jQuery(self).bind(jQuery.geoevents.map_loaded, function(data){
@@ -551,6 +565,14 @@ jQuery.fn.geobasket = function(settings){
           self.options.handle_select(data.point);
         });
       });
+      
+      jQuery(context).bind(jQuery.geoevents.basket_cancel, function(evt){
+        self.options.handle_cancel(evt);
+      });
+
+      jQuery(context).bind(jQuery.geoevents.basket_update, function(evt, data){
+        self.options.handle_update(data);
+      });
 
       jQuery(context).bind(jQuery.geoevents.basket_delete, function(evt, data){
         data.element.slideUp(function(){
@@ -571,6 +593,15 @@ jQuery.fn.geobasket = function(settings){
             return feature;
           }
       });
+    },
+
+    handle_cancel: function(evt){
+      self.options.geojson = jQuery.extend({}, self.options.origJSON);
+      self.options.redraw();
+    },
+
+    handle_update: function(data){
+      self.options.origJSON = jQuery.extend({}, data.json);
     },
 
     handle_select: function(point){
