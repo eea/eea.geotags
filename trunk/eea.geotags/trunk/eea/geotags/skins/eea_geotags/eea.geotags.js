@@ -204,9 +204,9 @@ jQuery.fn.geodialog = function(settings){
 
         // Basket
         self.basket = jQuery('.geo-basket', self);
-        self.options.basket['origJSON'] = jQuery.extend({}, self.options.basket.geojson);
+        self.options.basket.origJSON = jQuery.extend({}, self.options.basket.geojson);
         self.basket.geobasket(self.options.basket);
-        
+
       });
 
       // Plugin initialized
@@ -256,7 +256,7 @@ jQuery.fn.geodialog = function(settings){
         },
         close: function(e, data){
           if(e.currentTarget){
-            self.trigger(self.events.cancel)
+            self.trigger(self.events.cancel);
           }
         },
         open: function(){
@@ -565,7 +565,7 @@ jQuery.fn.geobasket = function(settings){
           self.options.handle_select(data.point);
         });
       });
-      
+
       jQuery(context).bind(jQuery.geoevents.basket_cancel, function(evt){
         self.options.handle_cancel(evt);
       });
