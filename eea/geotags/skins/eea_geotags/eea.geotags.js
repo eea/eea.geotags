@@ -585,14 +585,16 @@ jQuery.fn.geobasket = function(settings){
     handle_delete: function(point){
       var pcenter = point.properties.center;
       pcenter = pcenter[0] + '-' + pcenter[1];
-      self.options.geojson.features = jQuery.map(self.options.geojson.features,
-        function(feature, index){
-          var center = feature.properties.center;
-          center = center[0] + '-' + center[1];
-          if(pcenter !== center){
-            return feature;
-          }
+      if (self.options.geojson.features) {
+       self.options.geojson.features = jQuery.map(self.options.geojson.features,
+         function(feature, index){
+           var center = feature.properties.center;
+           center = center[0] + '-' + center[1];
+           if(pcenter !== center){
+             return feature;
+           }
       });
+     }
     },
 
     handle_cancel: function(evt){
@@ -617,15 +619,25 @@ jQuery.fn.geobasket = function(settings){
         names = [];
         // add also the individual countries that are part of this country group
         initialData_length = initialData.features.length;
+        if (!self.options.geojson.features) {
+         return;
+        }
+
         features_length = self.options.geojson.features.length;
         for (i = 0; i < features_length; i += 1) {
             names.push(self.options.geojson.features[i].properties.name);
         }
-        for (i = 0; i < initialData_length; i += 1) {
-            // add only the countries that are not already in the list by checking
-            // their geotags name
-            if (jQuery.inArray(initialData.features[i].properties.name, names) === -1) {
-                self.options.geojson.features.unshift(initialData.features[i]);
+        //it's only one country to add
+        if (!point.properties.countries) {
+         self.options.geojson.features.unshift(point);
+        }
+        else {
+            for (i = 0; i < initialData_length; i += 1) {
+                // add only the countries that are not already in the list by checking
+                // their geotags name
+                if(jQuery.inArray(initialData.features[i].properties.name, names) === -1) {
+                    self.options.geojson.features.unshift(initialData.features[i]);
+                }
             }
         }
       }
@@ -639,14 +651,17 @@ jQuery.fn.geobasket = function(settings){
       var items = jQuery('.geo-basket-items', self);
       items.empty();
 
-      jQuery.each(self.options.geojson.features, function(){
-        var div = jQuery('<div>');
-        items.append(div);
-        div.geobasketitem({
-          fieldName: self.options.fieldName,
-          point: this
+      if (self.options.geojson.features) {
+        jQuery.each(self.options.geojson.features, function(){
+            var div = jQuery('<div>');
+            items.append(div);
+            div.geobasketitem({
+            fieldName: self.options.fieldName,
+            point: this
+            });
         });
-      });
+      }
+       
       if(highlight){
         var first = jQuery('.geo-point-view:first', items);
         first.addClass('ui-pulsate-item');
