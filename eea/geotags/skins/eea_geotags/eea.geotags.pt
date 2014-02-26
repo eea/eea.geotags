@@ -185,7 +185,11 @@ Usage with a different map tile or service
             json: json,
             template: basket,
             fieldName: name,
-            multiline: multiline
+            multiline: multiline,
+            geojson: {
+              type: 'FeatureCollection',
+              features: []
+            }
           }
         };
 
