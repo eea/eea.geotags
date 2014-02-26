@@ -3,6 +3,8 @@ Changelog
 
 6.6-dev - (unreleased)
 ----------------------
+* Bug fix: basket is now fixed to handle properly the geotags
+  [mironovi fixes #17626]
 
 6.5 - (2014-01-22)
 ------------------

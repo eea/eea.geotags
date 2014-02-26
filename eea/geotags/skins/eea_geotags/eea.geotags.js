@@ -624,7 +624,7 @@ jQuery.fn.geobasket = function(settings){
         // add also the individual countries that are part of this country group
         initialData_length = initialData.features.length;
         //use it only for one country
-        descriptions = []
+        descriptions = [];
 
         features_length = self.options.geojson.features.length;
         for (i = 0; i < features_length; i += 1) {
