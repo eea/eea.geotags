@@ -973,7 +973,7 @@ jQuery.fn.geosearchtab = function(settings){
 
     handle_query: function(data, reset){
       self.results = data;
-      self.fclasses = [['All', 'All feature classes'],];
+      self.fclasses = [['All', 'all feature classes'],];
       if(reset){
         self.resultsarea.empty();
 
