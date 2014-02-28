@@ -3,6 +3,8 @@ Changelog
 
 6.6-dev - (unreleased)
 ----------------------
+* Feature: added filters for returned results from geotags search
+  [olimpiurob #refs #18559]
 * Bug fix: basket is now fixed to handle properly the geotags
   [mironovi fixes #17626]
 

@@ -75,6 +75,8 @@
   height: 100%;
   border: none;
   min-width: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .geo-sidebar-button {
@@ -442,4 +444,13 @@ div .esriScalebar {
 
 .esriPopup .contentPane {
     max-height: 200px !important;
+}
+
+#toggle-fcl-filters {
+  text-align: center;
+}
+
+.filters-ctl {
+  padding: 1em;
+  border-bottom: 1px solid #ccc;
 }

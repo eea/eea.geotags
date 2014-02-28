@@ -973,6 +973,7 @@ jQuery.fn.geosearchtab = function(settings){
 
     handle_query: function(data, reset){
       self.results = data;
+      self.fclasses = [['All', 'All feature classes'],];
       if(reset){
         self.resultsarea.empty();
 
@@ -985,14 +986,95 @@ jQuery.fn.geosearchtab = function(settings){
         }
       }
 
+      self.filters_area = jQuery('<div />', {
+        'class':'filters-area'
+      });
+      
+      slide_icon = jQuery('<span />', {
+        'class': 'eea-icon eea-icon-chevron-right'
+      });
+
+      toggle_filters = jQuery('<div />', {
+        'id':'toggle-fcl-filters',
+        'text': 'filter results'
+      });
+
+      toggle_filters.append(slide_icon);
+
+      self.filters_ctl = jQuery('<div />', {
+        'class':'filters-ctl'
+      });
+
+      self.resultsarea.append(self.filters_area);
+      self.filters_area.append(toggle_filters);
+      self.filters_area.append(self.filters_ctl);
+
+      self.filters_ctl.slideUp('fast');
+
+      self.filters_area.hover(function () {
+          self.filters_ctl.stop().slideDown('fast');
+          slide_icon.removeClass('eea-icon-chevron-right');
+          slide_icon.addClass('eea-icon-chevron-down');
+      }, function() {
+          self.filters_ctl.stop().slideUp('fast');
+          slide_icon.removeClass('eea-icon-chevron-down');
+          slide_icon.addClass('eea-icon-chevron-right');
+      });
+
+      // Add filter checkbox
+      function addCheckbox(filter) {
+         var container = self.filters_ctl;
+         var checkbox = jQuery('<input />', {type: 'checkbox', id: 'fcl-'+filter[0],
+                                             value: filter[1],
+                                             checked: 'checked' ? filter[0] === 'All' : ''
+                                            }).appendTo(container);
+         jQuery('<label />', {'for': 'fcl-'+filter[0], text: filter[1]}).appendTo(container);
+         jQuery('<br />').appendTo(container);
+         
+         checkbox.on('change', function() {
+          jQuery('[fclass]').hide();
+
+          container.find('input:checked').each(function () {
+            var fcl_id = jQuery(this).attr('id');
+            var fcl = fcl_id.split('-')[fcl_id.split('-').length - 1];
+            if (fcl === 'All') {
+              jQuery('[fclass]').show();
+            } else {
+              jQuery('[fclass=' + fcl + ']').show();
+            }
+          });
+
+         });
+      }
+
       jQuery.each(self.results.features, function(){
-        var div = jQuery('<div>');
+        var div = jQuery('<div>', {'fclass': this.properties.other.fcl});
         div.geopointview({
           fieldName: self.options.fieldName,
           point: this
         });
         self.resultsarea.append(div);
+
+        var fcl = this.properties.other.fcl;
+        var fclName = this.properties.other.fclName;
+        var filter = [fcl, fclName];
+        var unique = true;
+
+        for (var i=0; i<self.fclasses.length; i++) {
+          if (self.fclasses[i].toString() === filter.toString()) {
+            unique = false;
+          }
+        }
+
+        if (unique === true){
+          self.fclasses.push(filter);
+        }
       });
+
+      jQuery.each(self.fclasses, function() {
+        addCheckbox(this);
+      });
+
     },
 
     // Initialize
