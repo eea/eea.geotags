@@ -3,6 +3,8 @@ Changelog
 
 6.6-dev - (unreleased)
 ----------------------
+* Bug fix: Geotags view display only secondary information
+  [voineali refs #18096]
 * Bug fix: basket is now fixed to handle properly the geotags
   [mironovi fixes #17626]
 

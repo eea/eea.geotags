@@ -67,6 +67,8 @@ Usage with a different map tile or service
 
   <metal:view_macro define-macro="view">
   <tal:view_macro define="geotags python:field.getAccessor(here)();
+                          geojson python:field.getJSON(here);
+                          geoitems python:field.json2items(geojson);
                           hideMap hideMap|python:True;
                           modal modal|python:False;
                           modal_dimensions modal_dimensions|nothing;
@@ -82,12 +84,12 @@ Usage with a different map tile or service
                                        class python:'eea-location-listing events' if events else 'eea-location-listing'"
                                                                                     metal:define-slot="location-listing">
       <span i18n:translate="" metal:define-slot="geotags">Geotags:</span>
-      <span tal:repeat="tag geotags">
+      <span tal:repeat="tag geoitems">
           <a href="#eeaEsriMap"
              title=""
-             tal:content="tag"
-             tal:attributes="title tag;
-                             href python:context.absolute_url() + '#eeaEsriMap'" />
+             tal:content="python:tag[0]" tal:attributes="
+                  title python:tag[1];
+                  href python:context.absolute_url() + '#eeaEsriMap'">Location</a>
       </span>
     </div>
   <metal:map define-slot="map">
