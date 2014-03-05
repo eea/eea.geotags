@@ -67,8 +67,8 @@ Usage with a different map tile or service
 
   <metal:view_macro define-macro="view">
   <tal:view_macro define="geotags python:field.getAccessor(here)();
-                          geojson python:field.getJSON(here);
-                          geoitems python:field.json2items(geojson);
+                          geojson python:field.getJSON(here) if field.getJSON else {};
+                          geoitems python:field.json2items(geojson) if field.json2items else ((tag, tag) for tag in geotags);
                           hideMap hideMap|python:True;
                           modal modal|python:False;
                           modal_dimensions modal_dimensions|nothing;
