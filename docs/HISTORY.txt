@@ -3,6 +3,8 @@ Changelog
 
 6.6-dev - (unreleased)
 ----------------------
+* Feature: WIP remove X-close and rename the button "done" with "Save geotags"
+  [mironovi refs #9037]
 * Bug fix: Geotags view display only secondary information
   [voineali refs #18096]
 * Bug fix: basket is now fixed to handle properly the geotags

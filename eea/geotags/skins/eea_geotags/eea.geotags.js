@@ -245,7 +245,7 @@ jQuery.fn.geodialog = function(settings){
         resize: false,
         dialogClass: 'eea-geotags-popup',
         buttons: {
-          'Done': function(){
+          'Save geotags': function(){
             self.trigger(self.events.save);
             self.dialog('close');
           },
