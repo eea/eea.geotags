@@ -447,3 +447,8 @@ div .esriScalebar {
 .esriPopup .contentPane {
     max-height: 200px !important;
 }
+
+.input-block {
+    display: block;
+    width: 100%;
+}
