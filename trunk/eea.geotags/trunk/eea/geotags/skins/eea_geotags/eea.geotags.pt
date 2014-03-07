@@ -160,7 +160,8 @@ Usage with a different map tile or service
       tal:content="geojson"></textarea>
     <div tal:attributes="id string:$fieldName-geopreview"></div>
     <input type="button" name="edit" i18n:attributes="value" value="Edit"
-    tal:attributes="id string:$fieldName-edit; class string:standardButton" />
+    tal:attributes="id string:$fieldName-edit; class string:standardButton
+    input-block" />
     <script type="text/javascript" tal:content="string:
       (function(){
         var name = '$fieldName';
