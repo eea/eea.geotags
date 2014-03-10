@@ -1,8 +1,8 @@
 Changelog
 =========
 
-6.6-dev - (unreleased)
-----------------------
+6.6 - (2014-03-10)
+------------------
 * Change: increase the width of the Edit button Geotag/Location widgit to make
 * it more visible
   [mironovi refs #9037]
