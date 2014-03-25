@@ -612,7 +612,7 @@ jQuery.fn.geobasket = function(settings){
 
     handle_select: function(point){
       var i, initialData = window.EEAGeotags.initialCountryData,
-           initialData_length, names, features_length;
+           initialData_length, names, features_length, descriptions;
       if(!self.options.multiline){
         self.options.geojson.features = [];
       }else{
@@ -634,7 +634,7 @@ jQuery.fn.geobasket = function(settings){
 
         //it's only one country to add
         if (!point.properties.countries) {
-            if (jQuery.inArray(point.properties.description, descriptions) == -1) {
+            if (jQuery.inArray(point.properties.description, descriptions) === -1) {
                 self.options.geojson.features.unshift(point);
             }
         }
@@ -973,7 +973,7 @@ jQuery.fn.geosearchtab = function(settings){
 
     handle_query: function(data, reset){
       self.results = data;
-      self.fclasses = [['All', 'all feature classes'],];
+      self.fclasses = [['All', 'all feature classes']];
       if(reset){
         self.resultsarea.empty();
 
@@ -1005,7 +1005,6 @@ jQuery.fn.geosearchtab = function(settings){
         'class':'filters-ctl'
       });
 
-      self.resultsarea.append(self.filters_area);
       self.filters_area.append(toggle_filters);
       self.filters_area.append(self.filters_ctl);
 
@@ -1021,12 +1020,15 @@ jQuery.fn.geosearchtab = function(settings){
         slide_icon.addClass('eea-icon-chevron-right');
       });
 
+      self.resultsarea.append(self.filters_area);
+
       // Add filter checkbox
       function addCheckbox(filter) {
         var container = self.filters_ctl;
         var checkbox = jQuery('<input />', {
-          type: 'checkbox', id: 'fcl-'+filter[0],
+          type: 'radio', id: 'fcl-'+filter[0],
           value: filter[1],
+          name: 'feature-class',
           checked: 'checked' ? filter[0] === 'All' : ''
         }).appendTo(container);
         jQuery('<label />', {'for': 'fcl-'+filter[0], text: filter[1]}).appendTo(container);
@@ -1921,16 +1923,16 @@ EEAGeotags.View.prototype = {
             }
 
             if (addrDescription) {
-              tempTemplate = tempTemplate + '<p><strong>Location: </strong>${AddrDesc}</p>';
+              tempTemplate += '<p><strong>Location: </strong>${AddrDesc}</p>';
               mapOptions.AddrDesc = addrDescription;
             }
 
             if (itemDate && parseInt(itemDate, 10)) {
-                tempTemplate = tempTemplate + '<p><strong>Period: </strong>${Period}</p>';
+                tempTemplate += '<p><strong>Period: </strong>${Period}</p>';
                 mapOptions.Period = itemDate;
             }
             if (itemDescription && itemDescription.length > 5) {
-                tempTemplate = tempTemplate + '<p><strong>Description: </strong>${Desc}</p>';
+                tempTemplate += '<p><strong>Description: </strong>${Desc}</p>';
                 mapOptions.Desc = decodeURIComponent(itemDescription);
             }
             // we need to recreate the infoTemplate otherwise all features will use the
