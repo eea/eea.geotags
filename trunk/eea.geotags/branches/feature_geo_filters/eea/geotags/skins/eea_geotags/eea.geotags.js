@@ -989,13 +989,13 @@ jQuery.fn.geosearchtab = function(settings){
       self.filters_area = jQuery('<div />', {
         'class':'filters-area'
       });
-      
-      slide_icon = jQuery('<span />', {
+
+      var slide_icon = jQuery('<span />', {
         'class': 'eea-icon eea-icon-chevron-right'
       });
 
-      toggle_filters = jQuery('<div />', {
-        'id':'toggle-fcl-filters',
+      var toggle_filters = jQuery('<div />', {
+        'id': 'toggle-fcl-filters',
         'text': 'filter results'
       });
 
@@ -1012,26 +1012,27 @@ jQuery.fn.geosearchtab = function(settings){
       self.filters_ctl.slideUp('fast');
 
       self.filters_area.hover(function () {
-          self.filters_ctl.stop().slideDown('fast');
-          slide_icon.removeClass('eea-icon-chevron-right');
-          slide_icon.addClass('eea-icon-chevron-down');
+        self.filters_ctl.stop().slideDown('fast');
+        slide_icon.removeClass('eea-icon-chevron-right');
+        slide_icon.addClass('eea-icon-chevron-down');
       }, function() {
-          self.filters_ctl.stop().slideUp('fast');
-          slide_icon.removeClass('eea-icon-chevron-down');
-          slide_icon.addClass('eea-icon-chevron-right');
+        self.filters_ctl.stop().slideUp('fast');
+        slide_icon.removeClass('eea-icon-chevron-down');
+        slide_icon.addClass('eea-icon-chevron-right');
       });
 
       // Add filter checkbox
       function addCheckbox(filter) {
-         var container = self.filters_ctl;
-         var checkbox = jQuery('<input />', {type: 'checkbox', id: 'fcl-'+filter[0],
-                                             value: filter[1],
-                                             checked: 'checked' ? filter[0] === 'All' : ''
-                                            }).appendTo(container);
-         jQuery('<label />', {'for': 'fcl-'+filter[0], text: filter[1]}).appendTo(container);
-         jQuery('<br />').appendTo(container);
-         
-         checkbox.on('change', function() {
+        var container = self.filters_ctl;
+        var checkbox = jQuery('<input />', {
+          type: 'checkbox', id: 'fcl-'+filter[0],
+          value: filter[1],
+          checked: 'checked' ? filter[0] === 'All' : ''
+        }).appendTo(container);
+        jQuery('<label />', {'for': 'fcl-'+filter[0], text: filter[1]}).appendTo(container);
+        jQuery('<br />').appendTo(container);
+
+        checkbox.on('change', function() {
           jQuery('[fclass]').hide();
 
           container.find('input:checked').each(function () {
@@ -1044,7 +1045,7 @@ jQuery.fn.geosearchtab = function(settings){
             }
           });
 
-         });
+        });
       }
 
       jQuery.each(self.results.features, function(){
