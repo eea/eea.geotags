@@ -1,10 +1,18 @@
 Changelog
 =========
 
-6.6-dev - (unreleased)
+6.7-dev - (unreleased)
 ----------------------
-* Feature: added filters for returned results from geotags search
-  [olimpiurob #refs #18559]
+
+6.6 - (2014-03-10)
+------------------
+* Change: increase the width of the Edit button Geotag/Location widgit to make
+* it more visible
+  [mironovi refs #9037]
+* Feature: remove X-close and rename the button "done" with "Save geotags"
+  [mironovi refs #9037]
+* Bug fix: Geotags view display only secondary information
+  [voineali refs #18096]
 * Bug fix: basket is now fixed to handle properly the geotags
   [mironovi fixes #17626]
 

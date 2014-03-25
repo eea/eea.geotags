@@ -245,7 +245,7 @@ jQuery.fn.geodialog = function(settings){
         resize: false,
         dialogClass: 'eea-geotags-popup',
         buttons: {
-          'Done': function(){
+          'Save geotags': function(){
             self.trigger(self.events.save);
             self.dialog('close');
           },
@@ -666,7 +666,7 @@ jQuery.fn.geobasket = function(settings){
           point: this
           });
       });
-       
+
       if(highlight){
         var first = jQuery('.geo-point-view:first', items);
         first.addClass('ui-pulsate-item');
@@ -1904,7 +1904,8 @@ EEAGeotags.View.prototype = {
             var name = item.itemType || 'Location',
                 itemUrl = item.itemUrl || context_url,
                 icon = item.itemIcon || context_url + "/red_pin.png",
-                addr = decodeURIComponent(item.properties.description) || decodeURIComponent(item.properties.title),
+                addr = decodeURIComponent(item.properties.title) || decodeURIComponent(item.properties.description),
+                addrDescription = decodeURIComponent(item.properties.description) || decodeURIComponent(item.properties.title),
                 itemDate = item.itemDate,
                 itemDescription = item.itemDescription,
                 itemTitle = item.itemTitle ? '<h3>' + decodeURIComponent(item.itemTitle) + '</h3>' : '',
@@ -1916,9 +1917,14 @@ EEAGeotags.View.prototype = {
             tempTemplate = initialTemplate;
 
             if (addr) {
-                tempTemplate = tempTemplate + '<p><strong>Location: </strong>${Addr}</p>';
                 mapOptions.Addr = addr;
             }
+
+            if (addrDescription) {
+              tempTemplate = tempTemplate + '<p><strong>Location: </strong>${AddrDesc}</p>';
+              mapOptions.AddrDesc = addrDescription;
+            }
+
             if (itemDate && parseInt(itemDate, 10)) {
                 tempTemplate = tempTemplate + '<p><strong>Period: </strong>${Period}</p>';
                 mapOptions.Period = itemDate;

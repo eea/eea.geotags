@@ -58,6 +58,37 @@ class GeotagsFieldMixin(object):
                 alsoProvides(instance, IGeoTagged)
         geo.tags = value
 
+    def json2items(self, geojson, key="title", val="description"):
+        """ Util method to extract dict like items geo tags from geojson struct
+        """
+        if not geojson:
+            return
+
+        if not isinstance(geojson, dict):
+            try:
+                value = json.loads(geojson)
+            except Exception, err:
+                logger.exception(err)
+                return
+        else:
+            value = geojson
+
+        features = value.get('features', [])
+        if not features:
+            return
+
+        for feature in features:
+            properties = feature.get('properties', {})
+            key = properties.get(key, properties.get('title', ''))
+            val = properties.get(val, properties.get('description', ''))
+            if key:
+                yield (key, val)
+            else:
+                yield (
+                    properties.get('title', ''),
+                    properties.get('description', '')
+                )
+
     def json2list(self, geojson, attr='description'):
         """ Util method to extract human readable geo tags from geojson struct
         """

@@ -16,6 +16,10 @@
   height: 100%;
 }
 
+.eea-geotags-popup .ui-dialog-titlebar-close {
+  visibility: hidden;
+}
+
 .geo-splitter {
   border: 1px solid #8CACBB;
   width: 100%;
