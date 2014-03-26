@@ -1035,23 +1035,23 @@ jQuery.fn.geosearchtab = function(settings){
         jQuery('<br />').appendTo(container);
 
         checkbox.on('change', function() {
-          jQuery('[fclass]').hide();
+          self.resultsarea.geo_points_divs.hide();
 
-          container.find('input:checked').each(function () {
-            var fcl_id = jQuery(this).attr('id');
-            var fcl = fcl_id.split('-')[fcl_id.split('-').length - 1];
+            var fcl_id = this.id;
+            var fcl = fcl_id.substr(4);
             if (fcl === 'All') {
-              jQuery('[fclass]').show();
+              self.resultsarea.geo_points_divs.show();
             } else {
-              jQuery('[fclass=' + fcl + ']').show();
+              self.resultsarea.geo_points_divs.filter(function(){
+                return this.getAttribute('data-fclass') === fcl;
+              }).show();
             }
-          });
 
         });
       }
 
       jQuery.each(self.results.features, function(){
-        var div = jQuery('<div>', {'fclass': this.properties.other.fcl});
+        var div = jQuery('<div>', {'data-fclass': this.properties.other.fcl});
         div.geopointview({
           fieldName: self.options.fieldName,
           point: this
@@ -1074,6 +1074,7 @@ jQuery.fn.geosearchtab = function(settings){
         }
       });
 
+      self.resultsarea.geo_points_divs = self.resultsarea.find(".geo-point-view");
       jQuery.each(self.fclasses, function() {
         addCheckbox(this);
       });
