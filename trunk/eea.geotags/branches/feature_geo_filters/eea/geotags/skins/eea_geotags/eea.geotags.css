@@ -83,6 +83,11 @@
   overflow-x: hidden;
 }
 
+.geo-sidebar-area label {
+    display: block;
+    line-height: 2em;
+    margin: 1em 0;
+}
 .geo-sidebar-button {
   height: 100%;
   font-size: 18px;

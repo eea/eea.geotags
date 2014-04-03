@@ -893,6 +893,9 @@ jQuery.fn.geosearchtab = function(settings){
     query: {
       address: '',
       q: '',
+      country: '',
+      featureClass: '',
+      continentCode: '',
       maxRows: 10
     },
 
@@ -940,6 +943,9 @@ jQuery.fn.geosearchtab = function(settings){
 
       self.options.query.address = value;
       self.options.query.q = value;
+      self.options.query.country = self.search_country.val();
+      self.options.query.featureClass = self.search_feature_class.val();
+      self.options.query.continentCode = self.search_continent_code.val();
       var query = self.options.query;
 
       var context = jQuery('#' + self.options.fieldName);
@@ -1086,6 +1092,9 @@ jQuery.fn.geosearchtab = function(settings){
       self.searchform = jQuery('form', self);
       self.searchbutton = jQuery('input[type=submit]', self.searchform);
       self.searchtext = jQuery('input[type=text]', self.searchform);
+      self.search_country = jQuery('[name="country"]', self.searchform);
+      self.search_feature_class = jQuery('[name="featureClass"]', self.searchform);
+      self.search_continent_code = jQuery('[name="continentCode"]', self.searchform);
       self.resultsarea = jQuery('.geo-results-area', self);
 
       self.Geocoder = new google.maps.Geocoder();
@@ -1097,7 +1106,7 @@ jQuery.fn.geosearchtab = function(settings){
         });
       }
 
-      self.searchform.submit(function(){
+      self.searchform.submit(function(ev, val){
         self.options.handle_submit();
         return false;
       });

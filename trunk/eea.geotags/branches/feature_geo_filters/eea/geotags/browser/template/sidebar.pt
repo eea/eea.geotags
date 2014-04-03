@@ -9,8 +9,53 @@
   <div class="geo-panes">
   <div tal:attributes="id string:$fieldName-geo-results" class="geo-results">
     <form action="#">
-      <input type="text" value="" name="search" />
-      <input type="submit" value="Search" i18n:attributes="value"
+        <label for="search">
+            <input type="text" value="" name="search"/>
+        </label>
+        <label for="country">
+            Country:
+            <select name="country">
+                <option value=""> all countries</option>
+                <option value="CS"></option>
+                <option value="AF"> Afghanistan</option>
+                <option value="AL"> Albania</option>
+                <option value="DZ"> Algeria</option>
+                <option value="AS"> American Samoa</option>
+                <option value="AD"> Andorra</option>
+                <option value="AO"> Angola</option>
+            </select>
+        </label>
+
+        <label for="featureClass">
+            Feature Class:
+            <select name="featureClass">
+                <option value="">all</option>
+                <option value="A" selected="selected">country, state, region, ...</option>
+                <option value="H">stream, lake, ...</option>
+                <option value="L">parks, area, ...</option>
+                <option value="P">city, village, ...</option>
+                <option value="R">road, railroad </option>
+                <option value="S">spot, building, farm</option>
+                <option value="T">mountain, hill, rock, ... </option>
+                <option value="U">undersea</option>
+                <option value="V">forest, heath, ...</option>
+            </select>
+        </label>
+
+        <label for="continentCode">
+            Continent:
+            <select name="continentCode">
+                <option value="" selected="selected">all</option>
+                <option value="EU">Europe</option>
+                <option value="AF">Africa</option>
+                <option value="AS">Asia</option>
+                <option value="OC">Oceania</option>
+                <option value="NA">North America</option>
+                <option value="SA">South America</option>
+            </select>
+        </label>
+
+        <input type="submit" value="Search" i18n:attributes="value"
         name="submit" />
     </form>
     <div tal:attributes="id string:$fieldName-geo-results-area" class="geo-results-area">
