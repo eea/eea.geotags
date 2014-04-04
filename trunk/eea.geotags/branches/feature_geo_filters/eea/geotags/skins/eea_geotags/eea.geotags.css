@@ -83,15 +83,14 @@
   overflow-x: hidden;
 }
 
-.geo-sidebar-area label {
+.geo-results-search label {
     display: block;
     line-height: 2em;
     margin: 1em 0;
     text-align: left;
-    /*width: 90%;*/
 }
 
-.geo-sidebar-area label > span {
+.geo-results-search > label > span {
     width: 33%;
     display: inline-block;
 }
