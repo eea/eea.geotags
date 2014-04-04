@@ -11,9 +11,13 @@
     <form action="#">
         <label for="search">
             <input type="text" value="" name="search"/>
+            <input type="submit" value="Search" i18n:attributes="value"
+                   name="submit" />
         </label>
         <label for="country">
+            <span>
             Country:
+            </span>
             <select name="country">
                 <option value=""> all countries</option>
                 <option value="CS"></option>
@@ -27,10 +31,10 @@
         </label>
 
         <label for="featureClass">
-            Feature Class:
+            <span>Feature Class:</span>
             <select name="featureClass">
                 <option value="">all</option>
-                <option value="A" selected="selected">country, state, region, ...</option>
+                <option value="A">country, state, region, ...</option>
                 <option value="H">stream, lake, ...</option>
                 <option value="L">parks, area, ...</option>
                 <option value="P">city, village, ...</option>
@@ -43,7 +47,7 @@
         </label>
 
         <label for="continentCode">
-            Continent:
+            <span>Continent:</span>
             <select name="continentCode">
                 <option value="" selected="selected">all</option>
                 <option value="EU">Europe</option>
@@ -55,8 +59,6 @@
             </select>
         </label>
 
-        <input type="submit" value="Search" i18n:attributes="value"
-        name="submit" />
     </form>
     <div tal:attributes="id string:$fieldName-geo-results-area" class="geo-results-area">
       <fieldset class="geo-hints">

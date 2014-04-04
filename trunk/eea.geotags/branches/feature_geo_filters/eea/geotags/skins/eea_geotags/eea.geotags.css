@@ -87,6 +87,13 @@
     display: block;
     line-height: 2em;
     margin: 1em 0;
+    text-align: left;
+    /*width: 90%;*/
+}
+
+.geo-sidebar-area label > span {
+    width: 33%;
+    display: inline-block;
 }
 .geo-sidebar-button {
   height: 100%;
@@ -126,12 +133,16 @@
 ------------------------------ */
 .geo-results {
   height: 88%;
-  padding: 0px;
+  padding: 0;
 }
 
 .geo-results form {
   padding: 1em;
   width: 100%;
+}
+
+.geo-results select {
+    width: 60%;
 }
 
 .geo-results input[type=text] {
@@ -148,7 +159,7 @@
 }
 
 .geo-results-area h3, .geo-results-area h4 {
-  margin: 0px;
+  margin: 0;
 }
 
 .geo-results-area .geo-point-view {
