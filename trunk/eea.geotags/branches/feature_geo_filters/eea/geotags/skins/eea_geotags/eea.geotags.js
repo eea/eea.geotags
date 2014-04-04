@@ -993,41 +993,23 @@ jQuery.fn.geosearchtab = function(settings){
         }
       }
 
-      self.filters_area = jQuery('<div />', {
-        'class':'filters-area'
-      });
+      self.filters_area = jQuery('.filters-area');
 
-      var slide_icon = jQuery('<span />', {
-        'class': 'eea-icon eea-icon-chevron-right'
-      });
+      var toggle_filters = self.filters_area.find('#toggle-fcl-filters');
 
-      var toggle_filters = jQuery('<div />', {
-        'id': 'toggle-fcl-filters',
-        'text': 'filter results'
-      });
+      self.filters_ctl =  self.filters_area.find('.filters-ctl');
+      self.slide_icon = self.filters_area.find('.eea-icon');
 
-      toggle_filters.append(slide_icon);
 
-      self.filters_ctl = jQuery('<div />', {
-        'class':'filters-ctl'
-      });
-
-      self.filters_area.append(toggle_filters);
-      self.filters_area.append(self.filters_ctl);
-
-      self.filters_ctl.slideUp('fast');
-
-      self.filters_area.hover(function () {
+      self.filters_area.find('.toggle-fcl-target').toggle(function () {
         self.filters_ctl.stop().slideDown('fast');
-        slide_icon.removeClass('eea-icon-chevron-right');
-        slide_icon.addClass('eea-icon-chevron-down');
+        self.slide_icon.removeClass('eea-icon-chevron-right');
+        self.slide_icon.addClass('eea-icon-chevron-down');
       }, function() {
         self.filters_ctl.stop().slideUp('fast');
-        slide_icon.removeClass('eea-icon-chevron-down');
-        slide_icon.addClass('eea-icon-chevron-right');
+        self.slide_icon.removeClass('eea-icon-chevron-down');
+        self.slide_icon.addClass('eea-icon-chevron-right');
       });
-
-      self.resultsarea.append(self.filters_area);
 
       // Add filter checkbox
       function addCheckbox(filter) {
@@ -1085,6 +1067,8 @@ jQuery.fn.geosearchtab = function(settings){
       jQuery.each(self.fclasses, function() {
         addCheckbox(this);
       });
+
+      toggle_filters.show();
 
     },
 

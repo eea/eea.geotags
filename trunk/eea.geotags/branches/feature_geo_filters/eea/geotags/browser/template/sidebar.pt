@@ -62,7 +62,16 @@
           </div>
 
       </form>
+    <div class="filters-area pointer">
+          <div id="toggle-fcl-filters" style="display: none;">
+              <span i18n:translate="" class="toggle-fcl-target">filter results</span>
+              <span class="eea-icon eea-icon-chevron-right"></span>
+          </div>
+          <div class="filters-ctl" style="display: none;"></div>
+      </div>
     <div tal:attributes="id string:$fieldName-geo-results-area" class="geo-results-area">
+
+
       <fieldset class="geo-hints">
         <legend i18n:translate="">Hints</legend>
         <ol>
