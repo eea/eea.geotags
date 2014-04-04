@@ -199,7 +199,7 @@ class GeoNamesJsonProvider(object):
         """
         query = kwargs.copy()
         query['featureClass'] = ['H', 'T']
-        return self.search(sort = True, **query)
+        return self.search(sort=True, **query)
 
     def search(self, sort=False, **kwargs):
         """ Search using geonames webservice
@@ -208,8 +208,11 @@ class GeoNamesJsonProvider(object):
             'type': 'FeatureCollection',
             'features': []
         }
-
         query = kwargs.copy()
+        # remove featureClass as a way to say search for all classes if the
+        # value is falsy
+        if not query['featureClass']:
+            del(query['featureClass'])
         query.setdefault('lang', 'en')
         query.setdefault('username', self.username)
         query = urllib.urlencode(query, doseq=1)
