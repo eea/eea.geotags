@@ -149,9 +149,9 @@ jQuery.fn.geodialog = function(settings){
 
       // Splitter
       jQuery.get(self.options.template, function(data){
-        data = jQuery(data);
+        var $data = jQuery(data);
         self.empty();
-        self.append(data);
+        self.append($data);
 
         // Left splitter
         var left = jQuery('.geo-leftside', self);
@@ -409,12 +409,12 @@ jQuery.fn.geomap = function(settings){
             features.push(jQuery.google2geojson(this));
           });
 
-          results = {
+          var results_obj = {
             type: 'FeatureCollection',
             features: features
           };
 
-          self.options.handle_rightclick(results, center);
+          self.options.handle_rightclick(results_obj, center);
           jQuery(context).trigger(jQuery.geoevents.ajax_stop);
         });
       });
@@ -498,7 +498,8 @@ jQuery.geomarker = function(settings){
 
         self.info.open(self.options.map, self.marker);
         google.maps.event.addListener(self.info, 'domready', function(){
-          jQuery('.geo-marker').click(function(){
+          var $geo_marker = jQuery('.geo-marker');
+          $geo_marker.click(function(){
             var _self = jQuery(this);
             jQuery(context).trigger(jQuery.geoevents.select_marker, {
               point: self.mappoints[_self.attr('id')],
@@ -508,7 +509,7 @@ jQuery.geomarker = function(settings){
 
           // Autoclick
           if(self.options.autoclick){
-            jQuery('.geo-marker').click();
+            $geo_marker.click();
           }
         });
 
@@ -965,12 +966,12 @@ jQuery.fn.geosearchtab = function(settings){
               features.push(jQuery.google2geojson(this));
             });
 
-            data = {
+            var data_obj = {
               type: 'FeatureCollection',
               features: features
             };
 
-            self.options.handle_query(data, true);
+            self.options.handle_query(data_obj, true);
             jQuery(context).trigger(jQuery.geoevents.ajax_stop);
           });
         }
@@ -1204,6 +1205,7 @@ jQuery.fn.geoadvancedtab = function(settings){
           value_json = this;
           return false;
         }
+        return true;
       });
 
       var context = jQuery('#' + self.options.fieldName);
@@ -1234,6 +1236,7 @@ jQuery.fn.geoadvancedtab = function(settings){
           value_json = this;
           return false;
         }
+        return true;
       });
 
       var context = jQuery('#' + self.options.fieldName);
@@ -1303,9 +1306,9 @@ jQuery.fn.geoadvancedtab = function(settings){
           return;
         }
 
-        data = jQuery.google2geojson(data[0]);
+        var data_point = jQuery.google2geojson(data[0]);
         jQuery(context).trigger(jQuery.geoevents.select_point, {
-          point: data,
+          point: data_point,
           target: self.countries
         });
       });
@@ -1368,9 +1371,9 @@ jQuery.fn.geoadvancedtab = function(settings){
           return;
         }
 
-        data = jQuery.google2geojson(data[0]);
+        var data_point = jQuery.google2geojson(data[0]);
         jQuery(context).trigger(jQuery.geoevents.select_point, {
-          point: data,
+          point: data_point,
           target: self.nuts
         });
       });
@@ -1438,9 +1441,9 @@ jQuery.fn.geoadvancedtab = function(settings){
           return;
         }
 
-        data = jQuery.google2geojson(data[0]);
+        var data_point = jQuery.google2geojson(data[0]);
         jQuery(context).trigger(jQuery.geoevents.select_point, {
-          point: data,
+          point: data_point,
           target: self.cities
         });
       });
@@ -1465,9 +1468,9 @@ jQuery.fn.geoadvancedtab = function(settings){
           return;
         }
 
-        data = jQuery.google2geojson(data[0]);
+        var data_point = jQuery.google2geojson(data[0]);
         jQuery(context).trigger(jQuery.geoevents.select_point, {
-          point: data,
+          point: data_point,
           target: self.naturalfeatures
         });
       });
@@ -1797,7 +1800,7 @@ EEAGeotags.View.prototype = {
   // Draw points on map
   drawPoints: function(eea_location_links){
     var self = this,
-        context_url, infoSymbol, infoTemplate, map_points, locationTags, locationTagsLen;
+        context_url, infoTemplate, map_points, locationTags, locationTagsLen;
     map_points = jQuery('#map_points');
     locationTags = eea_location_links;
     locationTagsLen = locationTags ? locationTags.length : 0;
@@ -1808,7 +1811,6 @@ EEAGeotags.View.prototype = {
         context_url = context_url.replace(/\/view$/g, '');
     }
 
-    infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
     var infotemplate = map_points.length ? '${Title}<img src="${Url}/image_thumb" class="esriInfoImg" />': '${Addr}';
     infoTemplate = new esri.InfoTemplate('${Name}', infotemplate);
     EEAGeotags.map.infoWindow.hide();
@@ -1910,7 +1912,7 @@ EEAGeotags.View.prototype = {
             tempTemplate = "";
         var wgs = new esri.SpatialReference({ "wkid": 102100 });
         jQuery.each(results, function (i, item) {
-            var geometry, mapPoint, attributes;
+            var geometry, mapPoint;
             geometry = new esri.geometry.Point(parseFloat(item.properties.center[1]), parseFloat(item.properties.center[0]), wgs);
             geometry = esri.geometry.geographicToWebMercator(geometry);
             var name = item.itemType || 'Location',
@@ -2072,9 +2074,9 @@ EEAGeotags.View.prototype = {
             self.drawPoints(eea_location_links);
 
             // Scalebar
-              var scalebar = new esri.dijit.Scalebar({ map: self.map,
-                                                      scalebarUnit: 'metric', // Use 'english' for miles
-                                                      attachTo: 'bottom-left' });
+            var scalebar = new esri.dijit.Scalebar({ map: self.map,
+                scalebarUnit: 'metric', // Use 'english' for miles
+                attachTo: 'bottom-left' });
 
             // Hack to disable scroll wheel zooming, as map.disableScrollWheelZoom() has no effect
             self.map.onMouseWheel = function () {};
