@@ -1060,7 +1060,12 @@ jQuery.fn.geosearchtab = function(settings){
           }
         }
 
-        if (unique === true){
+        // the results are from google and we don't have any fcl or fclName property
+        if (!fcl || !fclName) {
+          unique = false;
+        }
+
+        if (unique === true) {
           self.fclasses.push(filter);
         }
       });
