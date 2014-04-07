@@ -470,11 +470,20 @@ div .esriScalebar {
     max-height: 200px !important;
 }
 
-#toggle-fcl-filters {
-  text-align: center;
-}
 
 .filters-ctl {
-  padding: 1em;
+  padding: 1em 0;
   border-bottom: 1px solid #ccc;
 }
+
+.filters-area {
+    margin: 0 1em 2em 1em;
+    font-weight: bold;
+}
+.filters-area label {
+    display: inline-block;
+    width: 93%;
+    padding-left: 0.4em;
+    cursor: pointer;
+}
+

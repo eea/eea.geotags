@@ -50,9 +50,9 @@
           </div>
 
       </form>
-    <div class="filters-area pointer">
-          <div id="toggle-fcl-filters" style="display: none;">
-              <span i18n:translate="" class="toggle-fcl-target">filter results</span>
+    <div class="filters-area">
+          <div id="toggle-fcl-filters" class="pointer" style="display: none;">
+              <span i18n:translate="" class="toggle-fcl-target">Filter results</span>
               <span class="eea-icon eea-icon-chevron-right"></span>
           </div>
           <div class="filters-ctl" style="display: none;"></div>

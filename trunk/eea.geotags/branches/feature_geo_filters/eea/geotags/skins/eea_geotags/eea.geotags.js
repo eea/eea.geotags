@@ -1013,7 +1013,8 @@ jQuery.fn.geosearchtab = function(settings){
 
       // Add filter checkbox
       function addCheckbox(filter) {
-        var container = self.filters_ctl;
+        var parent_container = self.filters_ctl;
+        var container = jQuery('<p></p>');
         var checkbox = jQuery('<input />', {
           type: 'radio', id: 'fcl-'+filter[0],
           value: filter[1],
@@ -1021,7 +1022,7 @@ jQuery.fn.geosearchtab = function(settings){
           checked: 'checked' ? filter[0] === 'All' : ''
         }).appendTo(container);
         jQuery('<label />', {'for': 'fcl-'+filter[0], text: filter[1]}).appendTo(container);
-        jQuery('<br />').appendTo(container);
+        container.appendTo(parent_container);
 
         checkbox.on('change', function() {
           self.resultsarea.geo_points_divs.hide();
