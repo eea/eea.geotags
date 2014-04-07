@@ -1001,7 +1001,7 @@ jQuery.fn.geosearchtab = function(settings){
       self.slide_icon = self.filters_area.find('.eea-icon');
 
 
-      self.filters_area.find('.toggle-fcl-target').toggle(function () {
+      self.filters_area.find('#toggle-fcl-filters').toggle(function () {
         self.filters_ctl.stop().slideDown('fast');
         self.slide_icon.removeClass('eea-icon-chevron-right');
         self.slide_icon.addClass('eea-icon-chevron-down');

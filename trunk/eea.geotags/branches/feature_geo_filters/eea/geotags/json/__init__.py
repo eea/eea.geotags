@@ -185,7 +185,7 @@ class GeoNamesJsonProvider(object):
         query = kwargs.copy()
         query['featureClass'] = 'A'
         query['featureCode'] = 'ADM1'
-        return self.search(sort = True, **query)
+        return self.search(sort=True, **query)
 
     def cities(self, **kwargs):
         """ Cities
@@ -211,7 +211,7 @@ class GeoNamesJsonProvider(object):
         query = kwargs.copy()
         # remove featureClass as a way to say search for all classes if the
         # value is falsy
-        if not query['featureClass']:
+        if 'featureClass' in query and not query.get('featureClass'):
             del(query['featureClass'])
         query.setdefault('lang', 'en')
         query.setdefault('username', self.username)

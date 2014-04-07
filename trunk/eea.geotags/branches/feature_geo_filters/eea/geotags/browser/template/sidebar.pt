@@ -15,22 +15,10 @@
                   <input type="submit" value="Search" i18n:attributes="value"
                          name="submit" />
               </label>
-              <label for="country">
-            <span>
-            Country:
-            </span>
-                  <select name="country">
-                      <option value=""> all</option>
-                      <option value="CS"></option>
-                      <option value="AF"> Afghanistan</option>
-                      <option value="AL"> Albania</option>
-                      <option value="DZ"> Algeria</option>
-                      <option value="AS"> American Samoa</option>
-                      <option value="AD"> Andorra</option>
-                      <option value="AO"> Angola</option>
-                  </select>
-              </label>
 
+               <metal:countries metal:use-macro="context/sidebar_macros/macros/sidebar-countries">
+                   Sidebar Country Macro
+               </metal:countries>
               <label for="featureClass">
                   <span>Feature Class:</span>
                   <select name="featureClass">
