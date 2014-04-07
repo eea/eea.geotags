@@ -998,6 +998,7 @@ jQuery.fn.geosearchtab = function(settings){
       var toggle_filters = self.filters_area.find('#toggle-fcl-filters');
 
       self.filters_ctl =  self.filters_area.find('.filters-ctl');
+      self.filters_ctl.empty();
       self.slide_icon = self.filters_area.find('.eea-icon');
 
 
