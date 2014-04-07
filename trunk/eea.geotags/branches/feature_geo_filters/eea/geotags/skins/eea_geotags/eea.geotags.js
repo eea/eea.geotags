@@ -242,7 +242,7 @@ jQuery.fn.geodialog = function(settings){
         autoOpen: false,
         width: self.options.width,
         height: self.options.height,
-        resize: false,
+        resize: true,
         dialogClass: 'eea-geotags-popup',
         buttons: {
           'Save geotags': function(){
@@ -938,7 +938,7 @@ jQuery.fn.geosearchtab = function(settings){
       self.searchbutton.removeClass('submitting');
 
       var value = self.searchtext.val();
-      if(!value || (value === self.options.query.address)){
+      if(!value){
         return;
       }
 
