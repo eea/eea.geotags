@@ -1004,12 +1004,12 @@ jQuery.fn.geosearchtab = function(settings){
 
       self.filters_area.find('#toggle-fcl-filters').toggle(function () {
         self.filters_ctl.slideDown('fast');
-        self.slide_icon.removeClass('eea-icon-chevron-right');
-        self.slide_icon.addClass('eea-icon-chevron-down');
+        self.slide_icon.removeClass('eea-icon-chevron-right')
+                       .addClass('eea-icon-chevron-down');
       }, function() {
         self.filters_ctl.slideUp('fast');
-        self.slide_icon.removeClass('eea-icon-chevron-down');
-        self.slide_icon.addClass('eea-icon-chevron-right');
+        self.slide_icon.removeClass('eea-icon-chevron-down')
+                       .addClass('eea-icon-chevron-right');
       });
 
       // Add filter checkbox

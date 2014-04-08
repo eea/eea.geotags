@@ -759,4 +759,9 @@
         </option>
     </select>
 </label>
+<script type="text/javascript">
+    $("#location-geo-results").find('select').select2({
+        width: 'element'
+    });
+</script>
 </metal:country>
