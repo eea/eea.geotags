@@ -361,6 +361,9 @@
   -moz-border-radius-topright: 0.5em;
 }
 
+.geo-sidebar-area li {
+    display: list-item;
+}
 .geo-sidebar-area li.formTab {
     display: inline;
     margin-right:0.25em;
