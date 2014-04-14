@@ -149,9 +149,9 @@ jQuery.fn.geodialog = function(settings){
 
       // Splitter
       jQuery.get(self.options.template, function(data){
-        data = jQuery(data);
+        var $data = jQuery(data);
         self.empty();
-        self.append(data);
+        self.append($data);
 
         // Left splitter
         var left = jQuery('.geo-leftside', self);
@@ -242,7 +242,7 @@ jQuery.fn.geodialog = function(settings){
         autoOpen: false,
         width: self.options.width,
         height: self.options.height,
-        resize: false,
+        resize: true,
         dialogClass: 'eea-geotags-popup',
         buttons: {
           'Save geotags': function(){
@@ -409,12 +409,12 @@ jQuery.fn.geomap = function(settings){
             features.push(jQuery.google2geojson(this));
           });
 
-          results = {
+          var results_obj = {
             type: 'FeatureCollection',
             features: features
           };
 
-          self.options.handle_rightclick(results, center);
+          self.options.handle_rightclick(results_obj, center);
           jQuery(context).trigger(jQuery.geoevents.ajax_stop);
         });
       });
@@ -498,7 +498,8 @@ jQuery.geomarker = function(settings){
 
         self.info.open(self.options.map, self.marker);
         google.maps.event.addListener(self.info, 'domready', function(){
-          jQuery('.geo-marker').click(function(){
+          var $geo_marker = jQuery('.geo-marker');
+          $geo_marker.click(function(){
             var _self = jQuery(this);
             jQuery(context).trigger(jQuery.geoevents.select_marker, {
               point: self.mappoints[_self.attr('id')],
@@ -508,7 +509,7 @@ jQuery.geomarker = function(settings){
 
           // Autoclick
           if(self.options.autoclick){
-            jQuery('.geo-marker').click();
+            $geo_marker.click();
           }
         });
 
@@ -612,7 +613,7 @@ jQuery.fn.geobasket = function(settings){
 
     handle_select: function(point){
       var i, initialData = window.EEAGeotags.initialCountryData,
-           initialData_length, names, features_length;
+           initialData_length, names, features_length, descriptions;
       if(!self.options.multiline){
         self.options.geojson.features = [];
       }else{
@@ -634,7 +635,7 @@ jQuery.fn.geobasket = function(settings){
 
         //it's only one country to add
         if (!point.properties.countries) {
-            if (jQuery.inArray(point.properties.description, descriptions) == -1) {
+            if (jQuery.inArray(point.properties.description, descriptions) === -1) {
                 self.options.geojson.features.unshift(point);
             }
         }
@@ -893,6 +894,9 @@ jQuery.fn.geosearchtab = function(settings){
     query: {
       address: '',
       q: '',
+      country: '',
+      featureClass: '',
+      continentCode: '',
       maxRows: 10
     },
 
@@ -934,12 +938,15 @@ jQuery.fn.geosearchtab = function(settings){
       self.searchbutton.removeClass('submitting');
 
       var value = self.searchtext.val();
-      if(!value || (value === self.options.query.address)){
+      if(!value){
         return;
       }
 
       self.options.query.address = value;
       self.options.query.q = value;
+      self.options.query.country = self.search_country.val();
+      self.options.query.featureClass = self.search_feature_class.val();
+      self.options.query.continentCode = self.search_continent_code.val();
       var query = self.options.query;
 
       var context = jQuery('#' + self.options.fieldName);
@@ -950,6 +957,7 @@ jQuery.fn.geosearchtab = function(settings){
         if(data.features.length){
           self.options.handle_query(data, true);
           jQuery(context).trigger(jQuery.geoevents.ajax_stop);
+          jQuery(".missing-geonames-results").addClass('visualHidden');
         }else{
         // Search with Google
           var xquery = {address: query.address};
@@ -959,13 +967,14 @@ jQuery.fn.geosearchtab = function(settings){
               features.push(jQuery.google2geojson(this));
             });
 
-            data = {
+            var data_obj = {
               type: 'FeatureCollection',
               features: features
             };
 
-            self.options.handle_query(data, true);
+            self.options.handle_query(data_obj, true);
             jQuery(context).trigger(jQuery.geoevents.ajax_stop);
+            jQuery(".missing-geonames-results").removeClass('visualHidden');
           });
         }
       });
@@ -973,6 +982,7 @@ jQuery.fn.geosearchtab = function(settings){
 
     handle_query: function(data, reset){
       self.results = data;
+      self.fclasses = [['All', 'all feature classes']];
       if(reset){
         self.resultsarea.empty();
 
@@ -985,14 +995,90 @@ jQuery.fn.geosearchtab = function(settings){
         }
       }
 
+      self.filters_area = jQuery('.filters-area');
+
+      var toggle_filters = self.filters_area.find('#toggle-fcl-filters');
+
+      self.filters_ctl =  self.filters_area.find('.filters-ctl');
+      self.filters_ctl.empty();
+      self.slide_icon = self.filters_area.find('.eea-icon');
+
+
+      self.filters_area.find('#toggle-fcl-filters').toggle(function () {
+        self.filters_ctl.slideDown('fast');
+        self.slide_icon.removeClass('eea-icon-chevron-right')
+                       .addClass('eea-icon-chevron-down');
+      }, function() {
+        self.filters_ctl.slideUp('fast');
+        self.slide_icon.removeClass('eea-icon-chevron-down')
+                       .addClass('eea-icon-chevron-right');
+      });
+
+      // Add filter checkbox
+      function addCheckbox(filter) {
+        var parent_container = self.filters_ctl;
+        var container = jQuery('<p></p>');
+        var checkbox = jQuery('<input />', {
+          type: 'radio', id: 'fcl-'+filter[0],
+          value: filter[1],
+          name: 'feature-class',
+          checked: 'checked' ? filter[0] === 'All' : ''
+        }).appendTo(container);
+        jQuery('<label />', {'for': 'fcl-'+filter[0], text: filter[1]}).appendTo(container);
+        container.appendTo(parent_container);
+
+        checkbox.on('change', function() {
+          self.resultsarea.geo_points_divs.hide();
+
+            var fcl_id = this.id;
+            var fcl = fcl_id.substr(4);
+            if (fcl === 'All') {
+              self.resultsarea.geo_points_divs.show();
+            } else {
+              self.resultsarea.geo_points_divs.filter(function(){
+                return this.getAttribute('data-fclass') === fcl;
+              }).show();
+            }
+
+        });
+      }
+
       jQuery.each(self.results.features, function(){
-        var div = jQuery('<div>');
+        var div = jQuery('<div>', {'data-fclass': this.properties.other.fcl});
         div.geopointview({
           fieldName: self.options.fieldName,
           point: this
         });
         self.resultsarea.append(div);
+
+        var fcl = this.properties.other.fcl;
+        var fclName = this.properties.other.fclName;
+        var filter = [fcl, fclName];
+        var unique = true;
+
+        for (var i=0; i<self.fclasses.length; i++) {
+          if (self.fclasses[i].toString() === filter.toString()) {
+            unique = false;
+          }
+        }
+
+        // the results are from google and we don't have any fcl or fclName property
+        if (!fcl || !fclName) {
+          unique = false;
+        }
+
+        if (unique === true) {
+          self.fclasses.push(filter);
+        }
       });
+
+      self.resultsarea.geo_points_divs = self.resultsarea.find(".geo-point-view");
+      jQuery.each(self.fclasses, function() {
+        addCheckbox(this);
+      });
+
+      toggle_filters.show();
+
     },
 
     // Initialize
@@ -1000,6 +1086,9 @@ jQuery.fn.geosearchtab = function(settings){
       self.searchform = jQuery('form', self);
       self.searchbutton = jQuery('input[type=submit]', self.searchform);
       self.searchtext = jQuery('input[type=text]', self.searchform);
+      self.search_country = jQuery('[name="country"]', self.searchform);
+      self.search_feature_class = jQuery('[name="featureClass"]', self.searchform);
+      self.search_continent_code = jQuery('[name="continentCode"]', self.searchform);
       self.resultsarea = jQuery('.geo-results-area', self);
 
       self.Geocoder = new google.maps.Geocoder();
@@ -1011,7 +1100,7 @@ jQuery.fn.geosearchtab = function(settings){
         });
       }
 
-      self.searchform.submit(function(){
+      self.searchform.submit(function(ev, val){
         self.options.handle_submit();
         return false;
       });
@@ -1109,6 +1198,7 @@ jQuery.fn.geoadvancedtab = function(settings){
           value_json = this;
           return false;
         }
+        return true;
       });
 
       var context = jQuery('#' + self.options.fieldName);
@@ -1139,6 +1229,7 @@ jQuery.fn.geoadvancedtab = function(settings){
           value_json = this;
           return false;
         }
+        return true;
       });
 
       var context = jQuery('#' + self.options.fieldName);
@@ -1208,9 +1299,9 @@ jQuery.fn.geoadvancedtab = function(settings){
           return;
         }
 
-        data = jQuery.google2geojson(data[0]);
+        var data_point = jQuery.google2geojson(data[0]);
         jQuery(context).trigger(jQuery.geoevents.select_point, {
-          point: data,
+          point: data_point,
           target: self.countries
         });
       });
@@ -1273,9 +1364,9 @@ jQuery.fn.geoadvancedtab = function(settings){
           return;
         }
 
-        data = jQuery.google2geojson(data[0]);
+        var data_point = jQuery.google2geojson(data[0]);
         jQuery(context).trigger(jQuery.geoevents.select_point, {
-          point: data,
+          point: data_point,
           target: self.nuts
         });
       });
@@ -1343,9 +1434,9 @@ jQuery.fn.geoadvancedtab = function(settings){
           return;
         }
 
-        data = jQuery.google2geojson(data[0]);
+        var data_point = jQuery.google2geojson(data[0]);
         jQuery(context).trigger(jQuery.geoevents.select_point, {
-          point: data,
+          point: data_point,
           target: self.cities
         });
       });
@@ -1370,9 +1461,9 @@ jQuery.fn.geoadvancedtab = function(settings){
           return;
         }
 
-        data = jQuery.google2geojson(data[0]);
+        var data_point = jQuery.google2geojson(data[0]);
         jQuery(context).trigger(jQuery.geoevents.select_point, {
-          point: data,
+          point: data_point,
           target: self.naturalfeatures
         });
       });
@@ -1702,7 +1793,7 @@ EEAGeotags.View.prototype = {
   // Draw points on map
   drawPoints: function(eea_location_links){
     var self = this,
-        context_url, infoSymbol, infoTemplate, map_points, locationTags, locationTagsLen;
+        context_url, infoTemplate, map_points, locationTags, locationTagsLen;
     map_points = jQuery('#map_points');
     locationTags = eea_location_links;
     locationTagsLen = locationTags ? locationTags.length : 0;
@@ -1713,7 +1804,6 @@ EEAGeotags.View.prototype = {
         context_url = context_url.replace(/\/view$/g, '');
     }
 
-    infoSymbol = new esri.symbol.SimpleMarkerSymbol().setSize(10).setColor(new dojo.Color('#B1C748'));
     var infotemplate = map_points.length ? '${Title}<img src="${Url}/image_thumb" class="esriInfoImg" />': '${Addr}';
     infoTemplate = new esri.InfoTemplate('${Name}', infotemplate);
     EEAGeotags.map.infoWindow.hide();
@@ -1815,7 +1905,7 @@ EEAGeotags.View.prototype = {
             tempTemplate = "";
         var wgs = new esri.SpatialReference({ "wkid": 102100 });
         jQuery.each(results, function (i, item) {
-            var geometry, mapPoint, attributes;
+            var geometry, mapPoint;
             geometry = new esri.geometry.Point(parseFloat(item.properties.center[1]), parseFloat(item.properties.center[0]), wgs);
             geometry = esri.geometry.geographicToWebMercator(geometry);
             var name = item.itemType || 'Location',
@@ -1838,16 +1928,16 @@ EEAGeotags.View.prototype = {
             }
 
             if (addrDescription) {
-              tempTemplate = tempTemplate + '<p><strong>Location: </strong>${AddrDesc}</p>';
+              tempTemplate += '<p><strong>Location: </strong>${AddrDesc}</p>';
               mapOptions.AddrDesc = addrDescription;
             }
 
             if (itemDate && parseInt(itemDate, 10)) {
-                tempTemplate = tempTemplate + '<p><strong>Period: </strong>${Period}</p>';
+                tempTemplate += '<p><strong>Period: </strong>${Period}</p>';
                 mapOptions.Period = itemDate;
             }
             if (itemDescription && itemDescription.length > 5) {
-                tempTemplate = tempTemplate + '<p><strong>Description: </strong>${Desc}</p>';
+                tempTemplate += '<p><strong>Description: </strong>${Desc}</p>';
                 mapOptions.Desc = decodeURIComponent(itemDescription);
             }
             // we need to recreate the infoTemplate otherwise all features will use the
@@ -1977,9 +2067,9 @@ EEAGeotags.View.prototype = {
             self.drawPoints(eea_location_links);
 
             // Scalebar
-              var scalebar = new esri.dijit.Scalebar({ map: self.map,
-                                                      scalebarUnit: 'metric', // Use 'english' for miles
-                                                      attachTo: 'bottom-left' });
+            var scalebar = new esri.dijit.Scalebar({ map: self.map,
+                scalebarUnit: 'metric', // Use 'english' for miles
+                attachTo: 'bottom-left' });
 
             // Hack to disable scroll wheel zooming, as map.disableScrollWheelZoom() has no effect
             self.map.onMouseWheel = function () {};
@@ -1999,3 +2089,4 @@ jQuery.fn.EEAGeotagsView = function(options){
     context.data('EEAGeotagsView', geoview);
   });
 };
+

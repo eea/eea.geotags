@@ -1,3 +1,8 @@
+/* =Helpers */
+.pointer {
+  cursor: pointer;
+}
+
 .eea-geotags-popup {
   box-shadow: 0px 0px 100px #000;
   border-radius: 0;
@@ -79,8 +84,21 @@
   height: 100%;
   border: none;
   min-width: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
+.geo-results-search label {
+  display: block;
+  line-height: 2em;
+  margin: 1em 0;
+  text-align: left;
+}
+
+.geo-results-search > label > span {
+  width: 33%;
+  display: inline-block;
+}
 .geo-sidebar-button {
   height: 100%;
   font-size: 18px;
@@ -119,12 +137,16 @@
 ------------------------------ */
 .geo-results {
   height: 88%;
-  padding: 0px;
+  padding: 0;
 }
 
 .geo-results form {
   padding: 1em;
   width: 100%;
+}
+
+.geo-results select {
+  width: 60%;
 }
 
 .geo-results input[type=text] {
@@ -141,7 +163,7 @@
 }
 
 .geo-results-area h3, .geo-results-area h4 {
-  margin: 0px;
+  margin: 0;
 }
 
 .geo-results-area .geo-point-view {
@@ -339,32 +361,35 @@
   -moz-border-radius-topright: 0.5em;
 }
 
+.geo-sidebar-area li {
+  display: list-item;
+}
 .geo-sidebar-area li.formTab {
-    display: inline;
-    margin-right:0.25em;
+  display: inline;
+  margin-right:0.25em;
 }
 
 .geo-sidebar-area li.formTab a {
-    /* this isn't supported by all browsers, so we keep it in a separate rule */
-    display: inline-block;
+  /* this isn't supported by all browsers, so we keep it in a separate rule */
+  display: inline-block;
 }
 
 .geo-sidebar-area li.formTab a {
-    line-height: 2em;
-    padding: 0 0.75em;
-    text-decoration: none;
-    border: none;
-    margin: 0 ;
+  line-height: 2em;
+  padding: 0 0.75em;
+  text-decoration: none;
+  border: none;
+  margin: 0 ;
 }
 
 .geo-sidebar-area li.formTab a.current {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .geo-sidebar-area li.formTab a.current,
 .geo-sidebar-area li.formTab a:hover {
-    background: White;
-    color: Black;
+  background: White;
+  color: Black;
 }
 
 .geo-sidebar-area .panes {
@@ -380,22 +405,22 @@
   width: 100%;
   border: 2px solid black;
   -webkit-border-radius: 4px;
-     -moz-border-radius: 4px;
-          border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
   -webkit-box-shadow: 2px 2px 4px #ADADAD;
-     -moz-box-shadow: 2px 2px 4px #ADADAD;
-          box-shadow: 2px 2px 4px #ADADAD;
+  -moz-box-shadow: 2px 2px 4px #ADADAD;
+  box-shadow: 2px 2px 4px #ADADAD;
   margin: 1em 0;
 }
 
 .ui-dialog #eeaEsriMap{
-    border: 0;
-    margin: 0;
-    overflow: hidden;
+  border: 0;
+  margin: 0;
+  overflow: hidden;
 }
 
 #eeaEsriMap table{
-    display: table;
+  display: table;
 }
 
 .eea-location-listing {
@@ -404,7 +429,7 @@
   line-height: 2em;
 }
 .eea-location-listing.events {
-    text-align: left;
+  text-align: left;
 }
 
 .eea-location-listing a {
@@ -436,19 +461,37 @@ div .esriScalebar {
 }
 
 .visualHidden {
-    display: none;
+  display: none;
 }
 
 .esriInfoImg {
-    float: left;
-    margin: 5px;
+  float: left;
+  margin: 5px;
 }
 
 .esriPopup .contentPane {
-    max-height: 200px !important;
+  max-height: 200px !important;
+}
+
+
+.filters-ctl {
+  padding: 1em 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.filters-area {
+  margin: 0 1em 2em 1em;
+  font-weight: bold;
+}
+.filters-area label {
+  display: inline-block;
+  width: 93%;
+  padding-left: 0.4em;
+  cursor: pointer;
 }
 
 .input-block {
-    display: block;
-    width: 100%;
+  display: block;
+  width: 100%;
 }
+

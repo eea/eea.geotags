@@ -3,6 +3,13 @@ Changelog
 
 6.7-dev - (unreleased)
 ----------------------
+* Feature: added search by country, feature class and continent besides the
+  freeform search useful when needing to find for instance the Po river from
+  Italy
+  [ichimdav refs #18559]
+* Feature: added ability to filter the results by feature class with added
+  dependency on Select2 jQuery plugin from eea.jquery
+  [ichimdav refs #18559]
 
 6.6 - (2014-03-10)
 ------------------
