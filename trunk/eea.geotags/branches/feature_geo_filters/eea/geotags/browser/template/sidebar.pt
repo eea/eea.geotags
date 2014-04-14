@@ -51,7 +51,7 @@
 
       </form>
 
-      <div class="portalMessage noMessage visualHidden" id="missing-geonames-results">
+      <div class="portalMessage noMessage visualHidden missing-geonames-results">
          <span i18n:translate=""> We got no results from  Geonames for the term "search terms". You may try one of the following:</span>
           <ul>
               <li i18n:translate="">Use less filters</li>
@@ -69,6 +69,7 @@
           </div>
           <div class="filters-ctl" style="display: none;"></div>
       </div>
+      <h3 class="missing-geonames-results visualHidden">Other results from Google Maps</h3>
     <div tal:attributes="id string:$fieldName-geo-results-area" class="geo-results-area">
 
 

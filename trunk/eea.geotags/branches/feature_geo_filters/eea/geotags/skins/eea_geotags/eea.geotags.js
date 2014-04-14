@@ -957,7 +957,7 @@ jQuery.fn.geosearchtab = function(settings){
         if(data.features.length){
           self.options.handle_query(data, true);
           jQuery(context).trigger(jQuery.geoevents.ajax_stop);
-          jQuery("#missing-geonames-results").addClass('visualHidden');
+          jQuery(".missing-geonames-results").addClass('visualHidden');
         }else{
         // Search with Google
           var xquery = {address: query.address};
@@ -974,7 +974,7 @@ jQuery.fn.geosearchtab = function(settings){
 
             self.options.handle_query(data_obj, true);
             jQuery(context).trigger(jQuery.geoevents.ajax_stop);
-            jQuery("#missing-geonames-results").removeClass('visualHidden');
+            jQuery(".missing-geonames-results").removeClass('visualHidden');
           });
         }
       });
