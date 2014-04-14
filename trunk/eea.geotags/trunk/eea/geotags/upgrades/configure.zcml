@@ -49,4 +49,17 @@
 
         </genericsetup:upgradeSteps>
     </configure>
+
+    <genericsetup:upgradeSteps
+            source="5.3"
+            destination="6.7"
+            profile="eea.geotags:default">
+
+        <genericsetup:upgradeDepends
+                title="Add Select2 jQuery plugin"
+                import_profile="eea.jquery:23-select2"
+                />
+
+
+    </genericsetup:upgradeSteps>
 </configure>
