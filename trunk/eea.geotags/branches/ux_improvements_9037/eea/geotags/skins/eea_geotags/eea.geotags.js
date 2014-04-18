@@ -370,6 +370,7 @@ jQuery.fn.geomap = function(settings){
       }
 
       self.Map = new google.maps.Map(self[0], options);
+
       self.Geocoder = new google.maps.Geocoder();
 
       // Handle events
@@ -1562,10 +1563,10 @@ jQuery.fn.geopreview = function(settings){
                 '<h5 class="tags"></h5>' +
               '</div></div>',
     map_options : {
-      latitude: 55,
-      longitude: 35,
+      latitude: 0,
+      longitude: 0,
       center: null,
-      zoom: 3,
+      zoom: 2,
       navigationControl: true,
       navigationControlOptions: {
         style: google.maps.NavigationControlStyle.ZOOM_PAN
@@ -1649,6 +1650,21 @@ jQuery.fn.geopreview = function(settings){
 
       self.options.handle_points(self.options.json);
       var context = jQuery('#' + self.options.fieldName);
+
+        var latlngbounds = new google.maps.LatLngBounds();
+			for (var i = 0, length = self.markers.length; i < length; i++) {
+				latlngbounds.extend(self.markers[i].position);
+			}
+
+            self.Map.setCenter(latlngbounds.getCenter());
+			self.Map.fitBounds(latlngbounds);
+       new google.maps.Rectangle({
+				bounds: latlngbounds,
+				map: self.Map,
+				fillColor: "#000000",
+				fillOpacity: 0.2,
+				strokeWeight: 0
+			});
       context.bind(jQuery.geoevents.basket_save, function(evt, data){
         self.options.handle_points(data.json);
       });
