@@ -1656,15 +1656,8 @@ jQuery.fn.geopreview = function(settings){
 				latlngbounds.extend(self.markers[i].position);
 			}
 
-            self.Map.setCenter(latlngbounds.getCenter());
-			self.Map.fitBounds(latlngbounds);
-       new google.maps.Rectangle({
-				bounds: latlngbounds,
-				map: self.Map,
-				fillColor: "#000000",
-				fillOpacity: 0.2,
-				strokeWeight: 0
-			});
+            options.center = latlngbounds.getCenter();
+            options.latlngbounds = latlngbounds;
       context.bind(jQuery.geoevents.basket_save, function(evt, data){
         self.options.handle_points(data.json);
       });
@@ -1674,8 +1667,7 @@ jQuery.fn.geopreview = function(settings){
         // #5339 fix preview map also when using eea.forms
         if(jQuery(this).closest('form').find('.formPanel:visible').find('#location-geopreview').length){
             google.maps.event.trigger(self.Map, 'resize');
-            self.Map.setCenter(options.center);
-            self.Map.setZoom(options.zoom);
+            self.Map.fitBounds(options.latlngbounds);
         }
       });
     }
