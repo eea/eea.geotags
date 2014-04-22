@@ -859,7 +859,8 @@ jQuery.fn.geotabs = function(settings){
 
     // Methods
     initialize: function(){
-      jQuery('ul.geo-tabs', self).tabs('div.geo-panes > div');
+//      jQuery('.geo-panes', self).tabs('.geo-pane', {tabs: 'h2', effect: 'slide'});
+      window.EEA.eea_accordion(jQuery('.eea-accordion-panels', self));
       var options = self.options.search;
       options.json = self.options.json;
       options.fieldName = self.options.fieldName;

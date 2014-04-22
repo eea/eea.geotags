@@ -6,8 +6,11 @@
   </ul>
 
   <!-- Free search -->
-  <div class="geo-panes">
-  <div tal:attributes="id string:$fieldName-geo-results" class="geo-results">
+  <div class="geo-panes eea-accordion-panels non-exclusive">
+      <div  class="eea-accordion-panel">
+      <h2 class="eea-accordion-title">Free search <span class="eea-icon eea-icon-right"></span></h2>
+  <div tal:attributes="id string:$fieldName-geo-results" class="geo-results
+  geo-pane pane">
       <form action="#">
           <div class="geo-results-search">
               <label for="search">
@@ -85,9 +88,12 @@
       </fieldset>
     </div>
   </div>
-
+    </div>
   <!-- Advanced drill down -->
-  <div tal:attributes="id string:$fieldName-geo-advanced" class="geo-advanced">
+      <div class="eea-accordion-panel">
+      <h2 class="eea-accordion-title">Biogeographical region<span class="eea-icon eea-icon-right"></span></h2>
+  <div tal:attributes="id string:$fieldName-geo-advanced" class="geo-advanced
+   geo-pane pane">
     <div class="field">
       <label tal:attributes="for string:$fieldName-biogroups"
         i18n:translate="">Biogeographical region</label>
@@ -135,7 +141,7 @@
       </select>
     </div>
   </div>
-
+</div>
   </div>
 
 </div>
