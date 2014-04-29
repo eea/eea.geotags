@@ -943,7 +943,6 @@ jQuery.fn.geosearchtab = function(settings){
       if(!value){
         return;
       }
-
       self.options.query.address = value;
       self.options.query.q = value;
       self.options.query.country = self.search_country.val();
@@ -1473,12 +1472,15 @@ jQuery.fn.geoadvancedtab = function(settings){
 
     // Initialize
     initialize: function(){
-      self.biogroups = jQuery('select[name=biogroups]', self);
-      self.groups = jQuery('select[name=groups]', self);
-      self.countries = jQuery('select[name=countries]', self);
-      self.nuts = jQuery('select[name=nuts]', self);
-      self.cities = jQuery('select[name=cities]', self);
-      self.naturalfeatures = jQuery('select[name=naturalfeature]', self);
+      var context = self.closest(
+         '.eea-accordion-panels'
+      );
+      self.biogroups = jQuery('select[name=biogroups]', context);
+      self.groups = jQuery('select[name=groups]', context);
+      self.countries = jQuery('select[name=countries]', context);
+      self.nuts = jQuery('select[name=nuts]', context);
+      self.cities = jQuery('select[name=cities]', context);
+      self.naturalfeatures = jQuery('select[name=naturalfeature]', context);
       self.data = {};
 
       self.Geocoder = new google.maps.Geocoder();
@@ -1567,7 +1569,7 @@ jQuery.fn.geopreview = function(settings){
       latitude: 0,
       longitude: 0,
       center: null,
-      zoom: 2,
+      zoom: 3,
       navigationControl: true,
       navigationControlOptions: {
         style: google.maps.NavigationControlStyle.ZOOM_PAN
@@ -1652,13 +1654,21 @@ jQuery.fn.geopreview = function(settings){
       self.options.handle_points(self.options.json);
       var context = jQuery('#' + self.options.fieldName);
 
-        var latlngbounds = new google.maps.LatLngBounds();
-			for (var i = 0, length = self.markers.length; i < length; i++) {
-				latlngbounds.extend(self.markers[i].position);
-			}
+      var latlngbounds = new google.maps.LatLngBounds();
+      var markers_length = self.markers.length;
 
-            options.center = latlngbounds.getCenter();
-            options.latlngbounds = latlngbounds;
+      if (markers_length) {
+        for (var i = 0, length = markers_length; i < length; i++) {
+          latlngbounds.extend(self.markers[i].position);
+          options.center = latlngbounds.getCenter();
+        }
+      }
+      else {
+        latlngbounds = null;
+        options.center = new google.maps.LatLng(55, 35);
+      }
+      options.latlngbounds = latlngbounds;
+
       context.bind(jQuery.geoevents.basket_save, function(evt, data){
         self.options.handle_points(data.json);
       });
@@ -1668,7 +1678,13 @@ jQuery.fn.geopreview = function(settings){
         // #5339 fix preview map also when using eea.forms
         if(jQuery(this).closest('form').find('.formPanel:visible').find('#location-geopreview').length){
             google.maps.event.trigger(self.Map, 'resize');
-            self.Map.fitBounds(options.latlngbounds);
+            // fit bounds if we have markers otherwise center map on Europe
+            if (options.latlngbounds) {
+                          self.Map.fitBounds(options.latlngbounds);
+            }
+            else {
+              self.Map.setCenter(options.center);
+            }
         }
       });
     }
@@ -1808,7 +1824,7 @@ EEAGeotags.View.prototype = {
     locationTagsLen = locationTags ? locationTags.length : 0;
 
     context_url = $("base").attr('href');
-    // remove /view if page is called with it
+    //    remove /view if page is called with it
     if(context_url.endswith('/view')){
         context_url = context_url.replace(/\/view$/g, '');
     }
