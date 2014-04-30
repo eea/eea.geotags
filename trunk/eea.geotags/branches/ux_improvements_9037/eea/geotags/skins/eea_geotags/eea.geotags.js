@@ -859,8 +859,14 @@ jQuery.fn.geotabs = function(settings){
 
     // Methods
     initialize: function(){
-//      jQuery('.geo-panes', self).tabs('.geo-pane', {tabs: 'h2', effect: 'slide'});
-      window.EEA.eea_accordion(jQuery('.eea-accordion-panels', self));
+      if (window.EEA) {
+        if (window.EEA.eea_accordion) {
+          window.EEA.eea_accordion(jQuery('.eea-accordion-panels', self));
+        }
+      }
+      else {
+        jQuery('.geo-panes', self).tabs('.geo-pane', {tabs: 'h2', effect: 'slide'});
+      }
       var options = self.options.search;
       options.json = self.options.json;
       options.fieldName = self.options.fieldName;

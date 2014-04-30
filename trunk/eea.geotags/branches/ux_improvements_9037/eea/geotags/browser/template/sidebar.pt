@@ -90,7 +90,7 @@
                 <h2 tal:attributes="for string:$fieldName-groups"
                         i18n:translate="">Countries group <span class="eea-icon eea-icon-right"></span></h2>
 
-                <div class="pane">
+                <div class="geo-pane pane">
                     <div class="field">
                         <label tal:attributes="for string:$fieldName-groups"
                                 i18n:translate="">Countries group</label>
@@ -160,7 +160,7 @@
                         i18n:translate="">Pick directly from map <span
                         class="eea-icon eea-icon-right"></span></h2>
 
-                <div class="pane">
+                <div class="geo-pane pane">
                     <fieldset class="geo-hints">
 
                         <legend i18n:translate="">Hints</legend>
