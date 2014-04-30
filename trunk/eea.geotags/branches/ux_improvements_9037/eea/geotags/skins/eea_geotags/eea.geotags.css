@@ -87,6 +87,13 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
+.geo-sidebar-area li {
+  display: list-item;
+}
+.geo-sidebar-area .panes {
+    border: 1px solid #DDDDDD;
+    border-top-width: 0;
+}
 
 .geo-results-search label {
   display: block;
@@ -96,7 +103,7 @@
 }
 
 .geo-results-search > label > span {
-  width: 33%;
+  width: 35%;
   display: inline-block;
 }
 .geo-sidebar-button {
@@ -340,61 +347,6 @@
 
 .geo-basket-items .ui-pulsate-item {
   background-color: #e9efcd;
-}
-
-/* Tabs */
-.geo-sidebar-area ul.formTabs {
-  background-color: #ddd;
-  border: 0.3em solid #ddd;
-}
-
-.geo-sidebar-area ul.formTabs {
-  display: block;
-  border-style: solid solid none solid;
-  margin-left: 0;
-  border-top-right-radius: 0.5em;
-  border-top-left-radius: 0.5em;
-  -webkit-border-top-right-radius: 0.5em;
-  -webkit-border-top-left-radius: 0.5em;
-  -moz-border-radius-topleft: 0.5em;
-  -moz-border-radius-topright: 0.5em;
-}
-
-.geo-sidebar-area li {
-  display: list-item;
-}
-.geo-sidebar-area li.formTab {
-  display: inline;
-  margin-right:0.25em;
-}
-
-.geo-sidebar-area li.formTab a {
-  /* this isn't supported by all browsers, so we keep it in a separate rule */
-  display: inline-block;
-}
-
-.geo-sidebar-area li.formTab a {
-  line-height: 2em;
-  padding: 0 0.75em;
-  text-decoration: none;
-  border: none;
-  margin: 0 ;
-}
-
-.geo-sidebar-area li.formTab a.current {
-  font-weight: bold;
-}
-
-.geo-sidebar-area li.formTab a.current,
-.geo-sidebar-area li.formTab a:hover {
-  background: White;
-  color: Black;
-}
-
-.geo-sidebar-area .panes {
-  border-width: 0px 1px 1px 1px;
-  border-style: solid;
-  border-color: #DDDDDD;
 }
 
 /* View macro */
