@@ -1472,15 +1472,12 @@ jQuery.fn.geoadvancedtab = function(settings){
 
     // Initialize
     initialize: function(){
-      var context = self.closest(
-         '.eea-accordion-panels'
-      );
-      self.biogroups = jQuery('select[name=biogroups]', context);
-      self.groups = jQuery('select[name=groups]', context);
-      self.countries = jQuery('select[name=countries]', context);
-      self.nuts = jQuery('select[name=nuts]', context);
-      self.cities = jQuery('select[name=cities]', context);
-      self.naturalfeatures = jQuery('select[name=naturalfeature]', context);
+      self.biogroups = jQuery('select[name=biogroups]', self);
+      self.groups = jQuery('select[name=groups]', self);
+      self.countries = jQuery('select[name=countries]', self);
+      self.nuts = jQuery('select[name=nuts]', self);
+      self.cities = jQuery('select[name=cities]', self);
+      self.naturalfeatures = jQuery('select[name=naturalfeature]', self);
       self.data = {};
 
       self.Geocoder = new google.maps.Geocoder();
