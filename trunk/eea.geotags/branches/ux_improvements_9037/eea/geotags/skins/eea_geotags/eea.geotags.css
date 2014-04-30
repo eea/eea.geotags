@@ -318,10 +318,11 @@
 }
 
 .geo-basket-area h2,
+.eea-accordion-panel > h2,
 .geo-basket-area h2.ui-state-default {
   padding: 0.5em;
   font-weight: normal;
-  margin: 0px;
+  margin: 0;
   font-size: 14px;
   background-color: #777c1f;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#b1c748), to(#777c1f));
@@ -436,7 +437,7 @@ div .esriScalebar {
 }
 .filters-area label {
   display: inline-block;
-  width: 93%;
+  width: 92%;
   padding-left: 0.4em;
   cursor: pointer;
 }

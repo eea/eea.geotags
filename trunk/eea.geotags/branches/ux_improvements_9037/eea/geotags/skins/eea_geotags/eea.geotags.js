@@ -1021,35 +1021,6 @@ jQuery.fn.geosearchtab = function(settings){
                        .addClass('eea-icon-chevron-right');
       });
 
-      // Add filter checkbox
-      function addCheckbox(filter) {
-        var parent_container = self.filters_ctl;
-        var container = jQuery('<p></p>');
-        var checkbox = jQuery('<input />', {
-          type: 'radio', id: 'fcl-'+filter[0],
-          value: filter[1],
-          name: 'feature-class',
-          checked: 'checked' ? filter[0] === 'All' : ''
-        }).appendTo(container);
-        jQuery('<label />', {'for': 'fcl-'+filter[0], text: filter[1]}).appendTo(container);
-        container.appendTo(parent_container);
-
-        checkbox.on('change', function() {
-          self.resultsarea.geo_points_divs.hide();
-
-            var fcl_id = this.id;
-            var fcl = fcl_id.substr(4);
-            if (fcl === 'All') {
-              self.resultsarea.geo_points_divs.show();
-            } else {
-              self.resultsarea.geo_points_divs.filter(function(){
-                return this.getAttribute('data-fclass') === fcl;
-              }).show();
-            }
-
-        });
-      }
-
       jQuery.each(self.results.features, function(){
         var div = jQuery('<div>', {'data-fclass': this.properties.other.fcl});
         div.geopointview({
@@ -1081,11 +1052,40 @@ jQuery.fn.geosearchtab = function(settings){
 
       self.resultsarea.geo_points_divs = self.resultsarea.find(".geo-point-view");
       jQuery.each(self.fclasses, function() {
-        addCheckbox(this);
+        self.options.addFilters(this);
       });
 
       toggle_filters.show();
 
+    },
+
+    // Add filter checkbox
+    addFilters: function(filter) {
+      var parent_container = self.filters_ctl;
+      var container = jQuery('<p></p>');
+      var checkbox = jQuery('<input />', {
+        type: 'radio', id: 'fcl-'+filter[0],
+        value: filter[1],
+        name: 'feature-class',
+        checked: 'checked' ? filter[0] === 'All' : ''
+      }).appendTo(container);
+      jQuery('<label />', {'for': 'fcl-'+filter[0], text: filter[1]}).appendTo(container);
+      container.appendTo(parent_container);
+
+      checkbox.on('change', function() {
+        self.resultsarea.geo_points_divs.hide();
+
+        var fcl_id = this.id;
+        var fcl = fcl_id.substr(4);
+        if (fcl === 'All') {
+          self.resultsarea.geo_points_divs.show();
+        } else {
+          self.resultsarea.geo_points_divs.filter(function(){
+            return this.getAttribute('data-fclass') === fcl;
+          }).show();
+        }
+
+      });
     },
 
     // Initialize
