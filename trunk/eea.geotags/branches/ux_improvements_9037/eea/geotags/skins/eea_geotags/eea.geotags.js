@@ -859,13 +859,33 @@ jQuery.fn.geotabs = function(settings){
 
     // Methods
     initialize: function(){
-      if (window.EEA) {
+      var $geo_panes, $icons;
+      if (window.EEAS) {
         if (window.EEA.eea_accordion) {
           window.EEA.eea_accordion(jQuery('.eea-accordion-panels', self));
         }
       }
       else {
-        jQuery('.geo-panes', self).tabs('.geo-pane', {tabs: 'h2', effect: 'slide'});
+        $geo_panes = jQuery('.geo-panes', self);
+        $icons = $geo_panes.find('.eea-icon').addClass('ui-icon ui-icon-carat-1-e');
+        $icons.eq(0).removeClass('ui-icon-carat-1-e')
+                    .addClass('ui-icon-carat-1-s');
+        $geo_panes.find('h2').click(function(){
+          var $this = $(this);
+          $icons.removeClass('ui-icon-carat-1-s ui-icon-carat-1-e')
+                .addClass('ui-icon-carat-1-e');
+          if (!$this.hasClass('current')) {
+             $this.find('.eea-icon')
+                  .removeClass('ui-icon-carat-1-s')
+                  .addClass('ui-icon-carat-1-s');
+          }
+//          else {
+//              $this.find('.eea-icon').addClass('ui-icon-carat-1-e');
+//          }
+
+
+        });
+        $geo_panes.tabs('.geo-pane', {tabs: 'h2', effect: 'slide'});
       }
       var options = self.options.search;
       options.json = self.options.json;

@@ -2,7 +2,7 @@
     <!-- Free search -->
     <div class="geo-panes eea-accordion-panels non-exclusive">
         <div class="eea-accordion-panel">
-            <h2 class="eea-accordion-title">Free search <span class="eea-icon eea-icon-right"></span></h2>
+            <h2 class="eea-accordion-title"><span i18n:translate="">Free search</span> <span class="eea-icon eea-icon-right"></span></h2>
 
             <div tal:attributes="id string:$fieldName-geo-results" class="geo-results geo-pane pane">
                 <form action="#">
@@ -17,31 +17,31 @@
                             Sidebar Country Macro
                         </metal:countries>
                         <label for="featureClass">
-                            <span>Feature Class:</span>
+                            <span i18n:translate="">Feature Class</span>
                             <select name="featureClass">
-                                <option value="">all</option>
-                                <option value="A">country, state, region, ...</option>
-                                <option value="H">stream, lake, ...</option>
-                                <option value="L">parks, area, ...</option>
-                                <option value="P">city, village, ...</option>
-                                <option value="R">road, railroad</option>
-                                <option value="S">spot, building, farm</option>
-                                <option value="T">mountain, hill, rock, ...</option>
-                                <option value="U">undersea</option>
-                                <option value="V">forest, heath, ...</option>
+                                <option value="" i18n:translate="">all</option>
+                                <option value="A" i18n:translate="">country, state, region, ...</option>
+                                <option value="H" i18n:translate="">stream, lake, ...</option>
+                                <option value="L" i18n:translate="">parks, area, ...</option>
+                                <option value="P" i18n:translate="">city, village, ...</option>
+                                <option value="R" i18n:translate="">road, railroad</option>
+                                <option value="S" i18n:translate="">spot, building, farm</option>
+                                <option value="T" i18n:translate="">mountain, hill, rock, ...</option>
+                                <option value="U" i18n:translate="">undersea</option>
+                                <option value="V" i18n:translate="">forest, heath, ...</option>
                             </select>
                         </label>
 
                         <label for="continentCode">
-                            <span>Continent:</span>
+                            <span i18n:translate="">Continent</span>
                             <select name="continentCode">
-                                <option value="">all</option>
-                                <option value="EU">Europe</option>
-                                <option value="AF">Africa</option>
-                                <option value="AS">Asia</option>
-                                <option value="OC">Oceania</option>
-                                <option value="NA">North America</option>
-                                <option value="SA">South America</option>
+                                <option value="" i18n:translate="">all</option>
+                                <option value="EU" i18n:translate="">Europe</option>
+                                <option value="AF" i18n:translate="">Africa</option>
+                                <option value="AS" i18n:translate="">Asia</option>
+                                <option value="OC" i18n:translate="">Oceania</option>
+                                <option value="NA" i18n:translate="">North America</option>
+                                <option value="SA" i18n:translate="">South America</option>
                             </select>
                         </label>
                     </div>
@@ -66,10 +66,9 @@
                     </div>
                     <div class="filters-ctl" style="display: none;"></div>
                 </div>
-                <h3 class="missing-geonames-results visualHidden">Other results from Google Maps</h3>
+                <h3 class="missing-geonames-results visualHidden" i18n:translate="">Other results from Google Maps</h3>
 
                 <div tal:attributes="id string:$fieldName-geo-results-area" class="geo-results-area">
-
 
                     <fieldset class="geo-hints">
 
@@ -88,7 +87,7 @@
 
             <div class="eea-accordion-panel">
                 <h2 tal:attributes="for string:$fieldName-groups"
-                        i18n:translate="">Countries group <span class="eea-icon eea-icon-right"></span></h2>
+                        i18n:translate="" class="eea-accordion-title">Countries group <span class="eea-icon eea-icon-right"></span></h2>
 
                 <div class="geo-pane pane">
                     <div class="field">
@@ -98,7 +97,7 @@
                         <div tal:attributes="for string:$fieldName-groups"
                                 i18n:translate="" class='formHelp'>
                             <input type="checkbox" checked="checked" id="expand_countries"/>
-                            Add all sub-items belonging to this group?
+                            <span i18n:translate="">Add all sub-items belonging to this group?</span>
                         </div>
                         <div class="formHelp" i18n:translate="">Select countries group</div>
                         <select name="groups" tal:attributes="id string:$fieldName-groups">
@@ -141,7 +140,7 @@
             </div>
 
             <div class="eea-accordion-panel">
-                <h2 class="eea-accordion-title">Biogeographical region<span class="eea-icon eea-icon-right"></span></h2>
+                <h2 class="eea-accordion-title"><span i18n:translate="">Biogeographical region</span><span class="eea-icon eea-icon-right"></span></h2>
 
                 <div tal:attributes="id string:$fieldName-geo-advanced" class="geo-pane pane">
                     <div class="field">
@@ -157,7 +156,7 @@
 
             <div class="eea-accordion-panel">
                 <h2 tal:attributes="for string:$fieldName-groups"
-                        i18n:translate="">Pick directly from map <span
+                        i18n:translate="" class="eea-accordion-title">Pick directly from map <span
                         class="eea-icon eea-icon-right"></span></h2>
 
                 <div class="geo-pane pane">

@@ -1,7 +1,7 @@
 <metal:country metal:define-macro="sidebar-countries">
 <label for="country">
-    <span>
-        Country:
+    <span i18n:translate="">
+        Country
     </span>
     <select name="country" class="sidebar-countries">
         <option value="">

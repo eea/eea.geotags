@@ -330,6 +330,12 @@
   background-image:    -moz-linear-gradient(center top , #b1c748, #777c1f);
   background-image:     -ms-linear-gradient(center top , #b1c748, #777c1f);
   background-image:      -o-linear-gradient(center top , #b1c748, #777c1f);
+  color: #FFF;
+}
+
+.eea-accordion-title .ui-icon {
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .geo-basket-area {
