@@ -442,6 +442,11 @@ div .esriScalebar {
   cursor: pointer;
 }
 
+.filters-area .ui-icon {
+  display: inline-block;
+  vertical-align: bottom;
+}
+
 .input-block {
   display: block;
   width: 100%;

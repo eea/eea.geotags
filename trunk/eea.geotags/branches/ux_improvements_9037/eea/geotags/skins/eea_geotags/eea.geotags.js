@@ -992,6 +992,7 @@ jQuery.fn.geosearchtab = function(settings){
       self.fclasses = [['All', 'all feature classes']];
       if(reset){
         self.resultsarea.empty();
+        self.filters_ctl.empty();
 
         if(!self.results.features.length){
           var div = jQuery('<div>').addClass('geo-hints');
@@ -1001,25 +1002,6 @@ jQuery.fn.geosearchtab = function(settings){
           return;
         }
       }
-
-      self.filters_area = jQuery('.filters-area');
-
-      var toggle_filters = self.filters_area.find('#toggle-fcl-filters');
-
-      self.filters_ctl =  self.filters_area.find('.filters-ctl');
-      self.filters_ctl.empty();
-      self.slide_icon = self.filters_area.find('.eea-icon');
-
-
-      self.filters_area.find('#toggle-fcl-filters').toggle(function () {
-        self.filters_ctl.slideDown('fast');
-        self.slide_icon.removeClass('eea-icon-chevron-right')
-                       .addClass('eea-icon-chevron-down');
-      }, function() {
-        self.filters_ctl.slideUp('fast');
-        self.slide_icon.removeClass('eea-icon-chevron-down')
-                       .addClass('eea-icon-chevron-right');
-      });
 
       jQuery.each(self.results.features, function(){
         var div = jQuery('<div>', {'data-fclass': this.properties.other.fcl});
@@ -1054,9 +1036,19 @@ jQuery.fn.geosearchtab = function(settings){
       jQuery.each(self.fclasses, function() {
         self.options.addFilters(this);
       });
+      self.options.toggle_filters_area_visibility();
+    },
 
-      toggle_filters.show();
+    toggle_filters_area_visibility: function() {
 
+      self.fcl_filters.toggle(function () {
+        self.filters_ctl.slideDown('fast');
+        self.slide_ui_icons("down");
+      }, function() {
+        self.filters_ctl.slideUp('fast');
+        self.slide_ui_icons("up");
+      });
+      self.fcl_filters.show();
     },
 
     // Add filter checkbox
@@ -1088,6 +1080,29 @@ jQuery.fn.geosearchtab = function(settings){
       });
     },
 
+    init_ui_icons: function (context) {
+      var icon_right, icon_down;
+      var slide_icon = $(context).find('.eea-icon');
+
+      if (window.EEA) {
+          icon_right = 'eea-icon eea-icon-chevron-right';
+          icon_down = 'eea-icon eea-icon-chevron-down';
+      }
+      else {
+          icon_right = 'ui-icon ui-icon-carat-1-e';
+          icon_down = 'ui-icon ui-icon-carat-1-s';
+          slide_icon.addClass(icon_right);
+      }
+
+      return function(direction) {
+        if (direction === "down") {
+          slide_icon.removeClass(icon_right).addClass(icon_down);
+        }
+        else {
+          slide_icon.removeClass(icon_down).addClass(icon_right);
+        }
+      }
+    },
     // Initialize
     initialize: function(){
       self.searchform = jQuery('form', self);
@@ -1097,7 +1112,10 @@ jQuery.fn.geosearchtab = function(settings){
       self.search_feature_class = jQuery('[name="featureClass"]', self.searchform);
       self.search_continent_code = jQuery('[name="continentCode"]', self.searchform);
       self.resultsarea = jQuery('.geo-results-area', self);
-
+      self.filters_area = jQuery('.filters-area', self);
+      self.filters_ctl =  self.filters_area.find('.filters-ctl');
+      self.fcl_filters = self.filters_area.find('#toggle-fcl-filters');
+      self.slide_ui_icons = self.options.init_ui_icons(self.filters_area);
       self.Geocoder = new google.maps.Geocoder();
 
       // Handle suggestions
