@@ -61,7 +61,7 @@
 
                 <div class="filters-area">
                     <div id="toggle-fcl-filters" class="pointer" style="display: none;">
-                        <span i18n:translate="" class="toggle-fcl-target">Filter results</span>
+                        <h3 i18n:translate="" class="toggle-fcl-target">Filter results</h3>
                         <span class="eea-icon eea-icon-chevron-right"></span>
                     </div>
                     <div class="filters-ctl" style="display: none;"></div>

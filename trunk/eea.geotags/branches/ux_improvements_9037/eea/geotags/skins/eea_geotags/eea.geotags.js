@@ -860,7 +860,7 @@ jQuery.fn.geotabs = function(settings){
     // Methods
     initialize: function(){
       var $geo_panes, $icons;
-      if (window.EEAS) {
+      if (window.EEA) {
         if (window.EEA.eea_accordion) {
           window.EEA.eea_accordion(jQuery('.eea-accordion-panels', self));
         }
@@ -874,16 +874,9 @@ jQuery.fn.geotabs = function(settings){
           var $this = $(this);
           $icons.removeClass('ui-icon-carat-1-s ui-icon-carat-1-e')
                 .addClass('ui-icon-carat-1-e');
-          if (!$this.hasClass('current')) {
-             $this.find('.eea-icon')
-                  .removeClass('ui-icon-carat-1-s')
-                  .addClass('ui-icon-carat-1-s');
-          }
-//          else {
-//              $this.find('.eea-icon').addClass('ui-icon-carat-1-e');
-//          }
-
-
+          $this.find('.eea-icon')
+               .removeClass('ui-icon-carat-1-e')
+               .addClass('ui-icon-carat-1-s');
         });
         $geo_panes.tabs('.geo-pane', {tabs: 'h2', effect: 'slide'});
       }
