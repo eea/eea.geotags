@@ -3,6 +3,15 @@ Changelog
 
 6.7-dev - (unreleased)
 ----------------------
+* Bug fix: pass componentRestriction option with the country code when picking
+  the nuts region in order to help Google maps find a better match result
+  [ichimdav refs #19495]
+* Change: on page load the edit widget will be zoomed to fit the bounds
+  of all of the geo markers
+  [ichimdav refs #9037]
+* Change: geotags edit form now use an accordion menu instead of tabs for
+  the basic and advanced search options
+  [ichimdav refs #9037]
 * Feature: added search by country, feature class and continent besides the
   freeform search useful when needing to find for instance the Po river from
   Italy

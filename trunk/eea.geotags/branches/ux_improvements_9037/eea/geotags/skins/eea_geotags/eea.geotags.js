@@ -1343,7 +1343,6 @@ jQuery.fn.geoadvancedtab = function(settings){
           target: self.countries
         });
       });
-
       // Get nut regions
       jQuery.getJSON(self.options.json, {
         type: 'nuts', country: query.region}, function(data){
@@ -1389,10 +1388,17 @@ jQuery.fn.geoadvancedtab = function(settings){
       if(!nut.length){
         return;
       }
-
+      var geoinfo = nut.data('geojson').properties;
       var query = {
-        address: nut.data('geojson').properties.adminName1,
-        region: nut.data('geojson').properties.country
+        address: geoinfo.adminName1,
+        region: geoinfo.country,
+        // #19495 we need to set a component restriction
+        // to the country of the point otherwise google
+        // maps will select Capital Region from Canada
+        // when we had Denmark selected
+        componentRestrictions: {
+          country: geoinfo.country
+        }
       };
 
       var context = jQuery('#' + self.options.fieldName);
