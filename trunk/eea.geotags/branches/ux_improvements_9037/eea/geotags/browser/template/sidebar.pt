@@ -91,8 +91,6 @@
 
                 <div class="geo-pane pane">
                     <div class="field">
-                        <label tal:attributes="for string:$fieldName-groups"
-                                i18n:translate="">Countries group</label>
 
                         <div tal:attributes="for string:$fieldName-groups"
                                 i18n:translate="" class='formHelp'>
@@ -144,9 +142,6 @@
 
                 <div tal:attributes="id string:$fieldName-geo-advanced" class="geo-pane pane">
                     <div class="field">
-                        <label tal:attributes="for string:$fieldName-biogroups"
-                                i18n:translate="">Biogeographical region</label>
-
                         <div class="formHelp" i18n:translate="">Select biogeographical region</div>
                         <select name="biogroups" tal:attributes="id string:$fieldName-biogroups">
                         </select>

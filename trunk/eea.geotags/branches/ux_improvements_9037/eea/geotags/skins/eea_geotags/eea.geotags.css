@@ -319,7 +319,7 @@
   padding: 0.5em;
   font-weight: normal;
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
   background-color: #777c1f;
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#b1c748), to(#777c1f));
   background-image: -webkit-linear-gradient(center top , #b1c748, #777c1f);
@@ -329,6 +329,9 @@
   color: #FFF;
 }
 
+.geo-sidebar-area .eea-accordion-panel > h2 {
+  font-size: 150%;
+}
 .eea-accordion-title .ui-icon {
   display: inline-block;
   vertical-align: middle;
