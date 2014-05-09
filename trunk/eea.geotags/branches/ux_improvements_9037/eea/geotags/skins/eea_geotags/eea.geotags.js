@@ -613,40 +613,31 @@ jQuery.fn.geobasket = function(settings){
     },
 
     handle_select: function(point){
-      var i, initialData = window.EEAGeotags.initialCountryData,
-           initialData_length, names, features_length, descriptions;
+      var i, eea_geotags = window.EEAGeotags,
+            initialData = eea_geotags.initialCountryData,
+            initialData_length, names, features_length;
       if(!self.options.multiline){
         self.options.geojson.features = [];
       }else{
         self.options.handle_delete(point);
       }
 
-      if (initialData) {
+      if (point.properties.countries && eea_geotags.shouldExpandCountryGroups) {
         names = [];
         // add also the individual countries that are part of this country group
         initialData_length = initialData.features.length;
-        //use it only for one country
-        descriptions = [];
 
         features_length = self.options.geojson.features.length;
+        // collect the names so that we can have a property to check upon for
+        // points that are already added
         for (i = 0; i < features_length; i += 1) {
             names.push(self.options.geojson.features[i].properties.name);
-            descriptions.push(self.options.geojson.features[i].properties.description);
         }
-
-        //it's only one country to add
-        if (!point.properties.countries) {
-            if (jQuery.inArray(point.properties.description, descriptions) === -1) {
-                self.options.geojson.features.unshift(point);
-            }
-        }
-        else {
-            for (i = 0; i < initialData_length; i += 1) {
-                // add only the countries that are not already in the list by checking
-                // their geotags name
-                if(jQuery.inArray(initialData.features[i].properties.name, names) === -1) {
-                    self.options.geojson.features.unshift(initialData.features[i]);
-                }
+        for (i = 0; i < initialData_length; i += 1) {
+            // add only the countries that are not already in the list by checking
+            // their geotags name
+            if(jQuery.inArray(initialData.features[i].properties.name, names) === -1) {
+                self.options.geojson.features.unshift(initialData.features[i]);
             }
         }
       }
@@ -1276,9 +1267,7 @@ jQuery.fn.geoadvancedtab = function(settings){
       jQuery.getJSON(self.options.json, {
         type: 'countries', group: value}, function(data){
         // save initial country data to be used when adding country groups
-        if ($("#expand_countries").is(':checked')) {
-            window.EEAGeotags.initialCountryData = data;
-        }
+        window.EEAGeotags.initialCountryData = data;
 
         self.countries.empty();
         var option = jQuery('<option>').val('').text('');
@@ -1517,6 +1506,10 @@ jQuery.fn.geoadvancedtab = function(settings){
     initialize: function(){
       self.biogroups = jQuery('select[name=biogroups]', self);
       self.groups = jQuery('select[name=groups]', self);
+      self.countries_expand = jQuery('#expand_countries', self);
+      // by default expand country checkbox is selected so we set
+      // the expand property to true by default
+      window.EEAGeotags.shouldExpandCountryGroups = true;
       self.countries = jQuery('select[name=countries]', self);
       self.nuts = jQuery('select[name=nuts]', self);
       self.cities = jQuery('select[name=cities]', self);
@@ -1571,6 +1564,10 @@ jQuery.fn.geoadvancedtab = function(settings){
       self.countries.change(function(){
         self.options.handle_countries_change();
       });
+      self.countries_expand.change(function(){
+        window.EEAGeotags.shouldExpandCountryGroups = $(this).is(':checked') ? true : false;
+      });
+
 
       self.nuts.change(function(){
         self.options.handle_nuts_change();
