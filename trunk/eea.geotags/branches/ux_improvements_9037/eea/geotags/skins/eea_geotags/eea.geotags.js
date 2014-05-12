@@ -1731,7 +1731,7 @@ jQuery.fn.geopreview = function(settings){
         if(jQuery(this).closest('form').find('.formPanel:visible').find('#location-geopreview').length){
             google.maps.event.trigger(self.Map, 'resize');
             // fit bounds if we have markers otherwise center map on Europe
-            if (options.latlngbounds) {
+            if (options.latlngbounds && self.markers.length > 1) {
                           self.Map.fitBounds(options.latlngbounds);
             }
             else {
