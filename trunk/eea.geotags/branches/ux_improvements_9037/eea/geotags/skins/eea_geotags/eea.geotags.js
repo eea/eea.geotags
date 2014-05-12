@@ -247,8 +247,8 @@
           dialogClass: 'eea-geotags-popup',
           buttons: {
             'Save geotags': function() {
-              self.trigger(self.events.save);
               self.dialog('close');
+              self.trigger(self.events.save);
             },
             'Cancel': function() {
               self.dialog('close');
@@ -1687,6 +1687,29 @@
         }
       },
 
+      set_map_bounds: function(markers) {
+        if (!markers.length) {
+          return;
+        }
+        var latlngbounds = new google.maps.LatLngBounds();
+        var markers_length = markers.length;
+        for (var i = 0, length = markers_length; i < length; i++) {
+          latlngbounds.extend(markers[i].position);
+        }
+        self.options.map_options.center = latlngbounds.getCenter();
+        return latlngbounds;
+      },
+
+      fit_map_points: function(map_bounds) {
+        // fit bounds if we have markers otherwise center map on Europe
+        if (map_bounds && self.markers.length > 1) {
+          self.Map.fitBounds(map_bounds);
+        }
+        else {
+          self.Map.setCenter(self.options.map_options.center);
+        }
+
+      },
       initialize: function() {
         self.markers = [];
         self.info = new google.maps.InfoWindow({
@@ -1707,15 +1730,11 @@
 
         self.options.handle_points(self.options.json);
         var context = jQuery('#' + self.options.fieldName);
-
-        var latlngbounds = new google.maps.LatLngBounds();
+        var latlngbounds;
         var markers_length = self.markers.length;
 
-        if (markers_length) {
-          for (var i = 0, length = markers_length; i < length; i++) {
-            latlngbounds.extend(self.markers[i].position);
-            options.center = latlngbounds.getCenter();
-          }
+        if (markers_length > 1) {
+          latlngbounds = self.options.set_map_bounds(markers);
         }
         else {
           latlngbounds = null;
@@ -1724,7 +1743,13 @@
         options.latlngbounds = latlngbounds;
 
         context.bind(jQuery.geoevents.basket_save, function(evt, data) {
-          self.options.handle_points(data.json);
+          var options = self.options;
+          var map_options =  options.map_options;
+
+          options.handle_points(data.json);
+
+          map_options.latlngbounds = self.options.set_map_bounds(self.markers);
+          options.fit_map_points(map_options.latlngbounds);
         });
 
         // Fix preview map
@@ -1732,13 +1757,7 @@
           // #5339 fix preview map also when using eea.forms
           if (jQuery(this).closest('form').find('.formPanel:visible').find('#location-geopreview').length) {
             google.maps.event.trigger(self.Map, 'resize');
-            // fit bounds if we have markers otherwise center map on Europe
-            if (options.latlngbounds && self.markers.length > 1) {
-              self.Map.fitBounds(options.latlngbounds);
-            }
-            else {
-              self.Map.setCenter(options.center);
-            }
+            self.options.fit_map_points(options.latlngbounds);
           }
         });
       }

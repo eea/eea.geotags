@@ -321,7 +321,8 @@
 .geo-basket .geo-hints {
   margin: 0.5em 0.5em 1.5em 0.5em;
 }
-.geo-basket .ui-icon {
+.geo-basket .ui-icon,
+.geo-point-view .ui-icon {
   float: right;
   cursor: pointer;
 }
