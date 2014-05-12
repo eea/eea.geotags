@@ -3,6 +3,9 @@ Changelog
 
 6.7-dev - (unreleased)
 ----------------------
+* Feature: added clear all geo points functionality when editing the current
+  location list
+  [ichimdav refs #9037]
 * Bug fix: pass componentRestriction option with the country code when picking
   the nuts region in order to help Google maps find a better match result
   [ichimdav refs #19495]

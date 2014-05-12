@@ -3,6 +3,17 @@
   cursor: pointer;
 }
 
+.formHelp {
+  font-size: 90%;
+  color: #808285;
+  margin: 0 0 0.2em 0;
+  display: block;
+}
+
+.pull-left {
+  float: left;
+}
+
 .eea-geotags-popup {
   box-shadow: 0 0 100px #000;
   border-radius: 0;
@@ -197,11 +208,6 @@
   font-weight: normal;
 }
 
-.geo-point-view .ui-icon {
-  float: right;
-  cursor: pointer;
-}
-
 .geo-point-view:hover {
   background: #FBF9EE;
   border: 1px dotted #95b229;
@@ -311,6 +317,13 @@
 .geo-basket {
   height: 100%;
   overflow: hidden;
+}
+.geo-basket .geo-hints {
+  margin: 0.5em 0.5em 1.5em 0.5em;
+}
+.geo-basket .ui-icon {
+  float: right;
+  cursor: pointer;
 }
 
 .geo-basket-area h2,

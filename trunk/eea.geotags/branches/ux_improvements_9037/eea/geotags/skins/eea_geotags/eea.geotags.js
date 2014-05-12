@@ -6,6 +6,7 @@ jQuery.geoevents = {
   select_point: 'geo-event-select-point',
   select_marker: 'geo-event-select-marker',
   map_loaded: 'geo-events-map-loaded',
+  basket_loaded: 'geo-events-basket-loaded',
   basket_delete: 'geo-events-basket-delete',
   basket_save: 'geo-events-basket-save',
   basket_update: 'geo-events-basket-update',
@@ -141,7 +142,7 @@ jQuery.fn.geodialog = function(settings){
       }
     },
 
-    handle_initialize: function(data){
+    handle_initialize: function () {
       if(self.initialized){
         // Already initialized
         return;
@@ -213,12 +214,12 @@ jQuery.fn.geodialog = function(settings){
       self.initialized = true;
     },
 
-    handle_map_loaded: function(data){
+    handle_map_loaded: function () {
       jQuery('a', self.leftbutton).click();
       jQuery('a', self.rightbutton).click();
     },
 
-    handle_save: function(data){
+    handle_save: function(){
       var fieldName = self.attr('id');
       var json = self.basket.options.geojson;
       // sort the geotags by name before sending it to object annotation
@@ -254,7 +255,7 @@ jQuery.fn.geodialog = function(settings){
             self.trigger(self.events.cancel);
           }
         },
-        close: function(e, data){
+        close: function(e){
           if(e.currentTarget){
             self.trigger(self.events.cancel);
           }
@@ -273,7 +274,7 @@ jQuery.fn.geodialog = function(settings){
         self.options.handle_save(data);
       });
 
-      self.bind(self.events.cancel, function(evt, data){
+      self.bind(self.events.cancel, function(){
         jQuery(self).trigger(jQuery.geoevents.basket_cancel);
       });
 
@@ -559,6 +560,8 @@ jQuery.fn.geobasket = function(settings){
       jQuery.get(self.options.template, query, function(data){
         self.html(data);
         self.options.redraw(false);
+        jQuery(context).trigger(jQuery.geoevents.basket_loaded, self);
+
       });
 
       var context = jQuery('#' + self.options.fieldName);
@@ -566,6 +569,10 @@ jQuery.fn.geobasket = function(settings){
         data.button.effect('transfer', {to: self}, 'slow', function(){
           self.options.handle_select(data.point);
         });
+      });
+
+      jQuery(context).bind(jQuery.geoevents.basket_loaded, function(evt){
+        self.options.handle_loaded(evt);
       });
 
       jQuery(context).bind(jQuery.geoevents.basket_cancel, function(evt){
@@ -584,11 +591,19 @@ jQuery.fn.geobasket = function(settings){
       });
     },
 
+    handle_loaded: function() {
+      var geobasket_clear = jQuery('.geo-basket-clear', self);
+      geobasket_clear.find('.ui-icon-trash').click(function(){
+        var items = jQuery('.geo-basket-items', self);
+        items.find('.ui-icon-trash').click();
+      });
+    },
+
     handle_delete: function(point){
       var pcenter = point.properties.center;
       pcenter = pcenter[0] + '-' + pcenter[1];
       self.options.geojson.features = jQuery.map(self.options.geojson.features,
-        function(feature, index){
+        function(feature){
           var center = feature.properties.center;
           center = center[0] + '-' + center[1];
           if(pcenter !== center){
@@ -597,7 +612,7 @@ jQuery.fn.geobasket = function(settings){
      });
     },
 
-    handle_cancel: function(evt){
+    handle_cancel: function () {
       if (self.options.origJSON.features) {
         self.options.geojson = jQuery.extend({}, self.options.origJSON);
         self.options.redraw();
@@ -667,7 +682,7 @@ jQuery.fn.geobasket = function(settings){
           first.removeClass('ui-pulsate-item');
         });
       }
-    }
+    },
   };
 
   if(settings){
@@ -1105,7 +1120,7 @@ jQuery.fn.geosearchtab = function(settings){
         else {
           slide_icon.removeClass(icon_down).addClass(icon_right);
         }
-      }
+      };
     },
     // Initialize
     initialize: function(){
@@ -1129,9 +1144,9 @@ jQuery.fn.geosearchtab = function(settings){
         });
       }
 
-      self.searchform.submit(function(ev, val){
+      self.searchform.submit(function(ev){
         self.options.handle_submit();
-        return false;
+        ev.preventDefault();
       });
 
     }
@@ -1791,8 +1806,7 @@ EEAGeotags.View.prototype = {
             ui_dialog,
             eea_location_offset = eea_location.is(':visible') ? eea_location.offset() : eea_location.closest(':visible').offset(),
             pos_top = eea_location_offset.top + eea_location.height(),
-            pos_left = eea_location_offset.left,
-            body = jQuery('html, body');
+            pos_left = eea_location_offset.left;
             // CREATE MAP
             self.map_div.show();
             self.initMap(eea_location_links);
@@ -1809,8 +1823,8 @@ EEAGeotags.View.prototype = {
                 });
                 ui_dialog = dialogBox.closest('.ui-dialog');
                 ui_dialog.css({left: pos_left, top: pos_top,
-                                                    width: eea_location_data.modal_dimensions[0],
-                                                    height: eea_location_data.modal_dimensions[1]}).show();
+                                                    width: eea_location_data['modal_dimensions'][0],
+                                                    height: eea_location_data['modal_dimensions'][1]}).show();
                 // register our own close since dialog.open isn't triggered
                 ui_dialog.find('.ui-dialog-titlebar-close').click(function(e){
                     ui_dialog.hide();
@@ -2129,7 +2143,7 @@ EEAGeotags.View.prototype = {
             self.drawPoints(eea_location_links);
 
             // Scalebar
-            var scalebar = new esri.dijit.Scalebar({ map: self.map,
+            self.scalebar = new esri.dijit.Scalebar({ map: self.map,
                 scalebarUnit: 'metric', // Use 'english' for miles
                 attachTo: 'bottom-left' });
 
