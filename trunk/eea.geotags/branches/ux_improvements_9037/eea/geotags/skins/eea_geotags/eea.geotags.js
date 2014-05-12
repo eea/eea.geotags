@@ -1700,7 +1700,7 @@
         return latlngbounds;
       },
 
-      fit_map_points: function(map_bounds) {
+      fit_map_bounds: function(map_bounds) {
         // fit bounds if we have markers otherwise center map on Europe
         if (map_bounds && self.markers.length > 1) {
           self.Map.fitBounds(map_bounds);
@@ -1749,7 +1749,7 @@
           options.handle_points(data.json);
 
           map_options.latlngbounds = self.options.set_map_bounds(self.markers);
-          options.fit_map_points(map_options.latlngbounds);
+          options.fit_map_bounds(map_options.latlngbounds);
         });
 
         // Fix preview map
@@ -1757,7 +1757,7 @@
           // #5339 fix preview map also when using eea.forms
           if (jQuery(this).closest('form').find('.formPanel:visible').find('#location-geopreview').length) {
             google.maps.event.trigger(self.Map, 'resize');
-            self.options.fit_map_points(options.latlngbounds);
+            self.options.fit_map_bounds(options.latlngbounds);
           }
         });
       }
