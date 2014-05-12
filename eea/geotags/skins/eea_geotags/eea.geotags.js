@@ -1734,7 +1734,7 @@
         var markers_length = self.markers.length;
 
         if (markers_length > 1) {
-          latlngbounds = self.options.set_map_bounds(markers);
+          latlngbounds = self.options.set_map_bounds(self.markers);
         }
         else {
           latlngbounds = null;
