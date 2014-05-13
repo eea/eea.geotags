@@ -1,6 +1,9 @@
 Changelog
 =========
 
+6.8-dev - (unreleased)
+----------------------
+
 6.7 - (2014-05-13)
 ------------------
 * Feature: added clear all geo points functionality when editing the current
