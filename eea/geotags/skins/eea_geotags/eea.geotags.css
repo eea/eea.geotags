@@ -137,6 +137,11 @@
 .geo-hints {
   background: #FBF9EE;
   border: 1px dotted #95b229;
+
+}
+.geo-hints ol,
+.geo-hints ul {
+    list-style-type: square;
 }
 
 .geo-hints legend {

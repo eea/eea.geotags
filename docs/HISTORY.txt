@@ -3,6 +3,8 @@ Changelog
 
 6.8-dev - (unreleased)
 ----------------------
+* Bug fix: fixed various CSS for displaing hints
+  [ghicaale refs #21458]
 
 6.7 - (2014-05-13)
 ------------------
