@@ -74,8 +74,8 @@
 
                         <legend i18n:translate="">Hints</legend>
                         <ol>
-                            <li i18n:translate="">Use the search box above to find locations</li>
-                            <li i18n:translate="">Click one to view it on the map</li>
+                            <li i18n:translate="">Use the search box above to find locations.</li>
+                            <li i18n:translate="">Click one to view it on the map.</li>
                         </ol>
                     </fieldset>
                 </div>
@@ -159,10 +159,8 @@
 
                         <legend i18n:translate="">Hints</legend>
                         <ol>
-                            <li i18n:translate="">Right click on map to see possible locations around selected point</li>
-                            <li i18n:translate="">A list of locations will appear on the map. Select the most relevant for this
-                                context
-                            </li>
+                            <li i18n:translate="">Right click on map to see possible locations around selected point.</li>
+                            <li i18n:translate="">A list of locations will appear on the map. Select the most relevant for this context.</li>
                         </ol>
                     </fieldset>
                 </div>
