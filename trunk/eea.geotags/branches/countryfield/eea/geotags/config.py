@@ -6,3 +6,5 @@ ADD_CONTENT_PERMISSION = "Add portal content"
 # See http://geonames.org
 WEBSERVICE = 'http://api.geonames.org/searchJSON'
 ANNO_TAGS = 'eea.geotags.tags'
+ANNO_COUNTRY_TAGS = 'eea.geotags.countries.tags'
+

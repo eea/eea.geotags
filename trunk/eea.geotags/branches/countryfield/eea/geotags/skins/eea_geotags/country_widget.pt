@@ -10,6 +10,7 @@
 
 
 <div metal:define-macro="country" tal:define="
+        fieldName python:'countriesInvolved';
         base_url python: request.URL1.split('portal_factory')[0] if 'portal_factory' in request.URL1 else request.URL1 + '/';
         dialog python:base_url + widget.dialog;
         sidebar python:base_url + widget.sidebar;
@@ -20,9 +21,6 @@
         geojson python:field.getJSON(here);
         geojson python:widget.postback and request.get(fieldName, geojson) or geojson;
         ">
-    <tal:google condition="python:'schemata_edit' not in context.REQUEST.URL" >
-        <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-    </tal:google>
     <div tal:define="label python:widget and widget.Label(here) or ''"
             tal:attributes="
                     id fieldName;

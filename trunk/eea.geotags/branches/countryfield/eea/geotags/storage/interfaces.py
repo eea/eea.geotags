@@ -21,4 +21,8 @@ class IGeoTags(Interface):
         """ Returns a list of points as lat,long pairs in 
         WGS 84 reference coordinate system.
         """
-        
+
+
+class ICountryTags(Interface):
+    """ Accessor/Mutator for country tags annotations
+    """

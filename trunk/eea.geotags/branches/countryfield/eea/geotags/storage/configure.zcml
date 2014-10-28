@@ -17,4 +17,8 @@
            provides=".interfaces.IGeoTags"
            factory=".storage.GeoTags" />
 
+    <adapter for="eea.geotags.interfaces.IGeoTaggable"
+        provides=".interfaces.ICountryTags"
+        factory=".storage.CountriesTags" />
+
 </configure>

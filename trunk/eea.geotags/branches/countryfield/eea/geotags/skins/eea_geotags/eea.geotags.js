@@ -1262,7 +1262,7 @@
       },
 
       handle_groups_change: function() {
-        self.options.handle_groups_change_reset();
+        this.handle_groups_change_reset();
 
         var value = self.groups.val();
         if (!value) {

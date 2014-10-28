@@ -3,12 +3,13 @@
 import logging
 from zope.annotation.interfaces import IAnnotations
 from persistent.dict import PersistentDict
-from zope.interface import implements
+from zope.interface import implements, classImplementsOnly
 from zope.component import queryAdapter
-from eea.geotags.config import ANNO_TAGS
-from eea.geotags.storage.interfaces import IGeoTags
+from eea.geotags.config import ANNO_TAGS, ANNO_COUNTRY_TAGS
+from eea.geotags.storage.interfaces import IGeoTags, ICountryTags
 
 logger = logging.getLogger('eea.geotags.storage')
+
 
 class GeoTags(object):
     """ Geo tags storage
@@ -47,5 +48,33 @@ class GeoTags(object):
             res = self.tags['features']
         except (KeyError, IndexError):
             res = []
-        return res 
-    
+        return res
+
+
+class CountriesTags(GeoTags):
+    """ Countries Tags
+    """
+
+    def _set_tags(self, value):
+        """ Set tags
+        """
+        anno = queryAdapter(self.context, IAnnotations)
+        if anno is None:
+            logger.exception('%s is not Annotable',
+                             self.context.absolute_url())
+            return
+        anno[ANNO_COUNTRY_TAGS] = PersistentDict(value)
+
+    def _get_tags(self):
+        """ Get tags
+        """
+        anno = queryAdapter(self.context, IAnnotations)
+        if anno is None:
+            logger.exception('%s is not Annotable',
+                             self.context.absolute_url())
+            return {}
+        return dict(anno.get(ANNO_COUNTRY_TAGS, {}))
+
+    tags = property(_get_tags, _set_tags)
+
+classImplementsOnly(CountriesTags, ICountryTags)
