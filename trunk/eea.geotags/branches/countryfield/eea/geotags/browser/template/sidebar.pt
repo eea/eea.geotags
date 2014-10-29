@@ -1,23 +1,25 @@
 <div class="geo-sidebar-area" tal:define="fieldName python:view.fieldName;
-                                          countryField python:fieldName == 'countriesInvolved';">
+                                          countryField python:fieldName == 'location';">
     <!-- Free search -->
     <div class="geo-panes eea-accordion-panels non-exclusive">
         <div class="eea-accordion-panel">
-            <h2 class="eea-accordion-title"><span i18n:translate="">Free search</span> <span class="eea-icon eea-icon-right"></span></h2>
+            <h2 class="eea-accordion-title">
+                <span i18n:translate="" tal:condition="not:countryField">Free search</span>
+                <span i18n:translate="" tal:condition="countryField">Countries</span>
+                <span class="eea-icon eea-icon-right"></span>
+            </h2>
 
             <div tal:attributes="id string:$fieldName-geo-results" class="geo-results geo-pane pane">
                 <form action="#">
                     <div class="geo-results-search">
-                        <label for="search">
+                        <label for="search" tal:condition="not:countryField">
                             <input type="text" value="" name="search"/>
                             <input type="submit" value="Search" i18n:attributes="value"
                                    name="submit"/>
                         </label>
-                        <tal:countries tal:condition="not:countryField">
                             <metal:countries metal:use-macro="context/sidebar_macros/macros/sidebar-countries" >
                                 Sidebar Country Macro
                             </metal:countries>
-                        </tal:countries>
                         <label for="featureClass" tal:condition="not:countryField">
                             <span i18n:translate="">Feature Class</span>
                             <select name="featureClass">
