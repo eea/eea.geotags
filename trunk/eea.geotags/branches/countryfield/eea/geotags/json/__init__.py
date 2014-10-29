@@ -135,6 +135,7 @@ class GeoNamesJsonProvider(object):
     def countries(self, **kwargs):
         """ Countries
         """
+        extend_asia = False
         group = kwargs.get('group', '')
         filters = []
         if group:
@@ -152,7 +153,6 @@ class GeoNamesJsonProvider(object):
                                 if feature['properties']['name'] in filters]
 
             # decide if we should extend search in Asia
-            extend_asia = False
             filters_asia = []
             for feature in features:
                 if not(feature['properties']['name'] in filters):
