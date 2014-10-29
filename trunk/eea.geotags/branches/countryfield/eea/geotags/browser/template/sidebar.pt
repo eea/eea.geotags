@@ -1,5 +1,5 @@
 <div class="geo-sidebar-area" tal:define="fieldName python:view.fieldName;
-                                          countryField python:fieldName == 'location';">
+                                          countryField python:fieldName != 'location';">
     <!-- Free search -->
     <div class="geo-panes eea-accordion-panels non-exclusive">
         <div class="eea-accordion-panel">
