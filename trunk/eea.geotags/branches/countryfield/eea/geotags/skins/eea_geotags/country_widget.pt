@@ -10,7 +10,7 @@
 
 
 <div metal:define-macro="country" tal:define="
-        fieldName python:'countriesInvolved';
+        fieldName fieldName|string:countriesInvolved;
         base_url python: request.URL1.split('portal_factory')[0] if 'portal_factory' in request.URL1 else request.URL1 + '/';
         dialog python:base_url + widget.dialog;
         sidebar python:base_url + widget.sidebar;
