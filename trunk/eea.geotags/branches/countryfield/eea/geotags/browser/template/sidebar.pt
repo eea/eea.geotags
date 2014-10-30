@@ -22,9 +22,12 @@
                             <input type="text" value="PCLI" name="featureCode" class="visualHidden" />
                         </tal:countries>
 
-                        <metal:countries metal:use-macro="context/sidebar_macros/macros/sidebar-countries" >
-                            Sidebar Country Macro
-                        </metal:countries>
+                        <tal:noncountries tal:condition="not:countryField">
+                            <metal:countries metal:use-macro="context/sidebar_macros/macros/sidebar-countries" >
+                                Sidebar Country Macro
+                            </metal:countries>
+                        </tal:noncountries>
+
                         <label for="featureClass" tal:condition="not:countryField">
                             <span i18n:translate="">Feature Class</span>
                             <select name="featureClass">

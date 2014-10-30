@@ -987,6 +987,7 @@
           } else {
             // #21459 do not show google results for the country field
             if (self.options.query.featureCode) {
+              self.resultsarea.empty();
               jQuery(".missing-geonames-results").filter(function() {
                 return $(this).hasClass('portalMessage');
               }).removeClass('visualHidden');

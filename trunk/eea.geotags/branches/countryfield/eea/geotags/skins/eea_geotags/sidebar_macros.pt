@@ -763,23 +763,5 @@
     $(".geo-results").find('select').select2({
         width: 'element'
     });
-    var google_geocoder = new google.maps.Geocoder();
-    $(".sidebar-countries").change(function(ev) {
-        var context = $(this).closest('.ui-dialog-content');
-        var data = ev.added;
-        var query = {'address': data.text.trim(), 'region': data.id};
-        var self = $(this);
-        google_geocoder.geocode(query, function(data) {
-            if (!data.length) {
-                return;
-            }
-            var data_point = jQuery.google2geojson(data[0]);
-            jQuery(context).trigger(jQuery.geoevents.select_point, {
-                point: data_point,
-                target: self,
-                autoclick: true
-            });
-        });
-    });
 </script>
 </metal:country>
