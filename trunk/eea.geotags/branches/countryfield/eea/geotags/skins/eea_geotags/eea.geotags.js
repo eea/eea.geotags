@@ -891,7 +891,6 @@
         options.fieldName = self.options.fieldName;
         options.suggestions = self.options.suggestions;
         jQuery('.geo-results', self).geosearchtab(options);
-
         options = self.options.advanced;
         options.json = self.options.json;
         options.fieldName = self.options.fieldName;
@@ -972,6 +971,7 @@
         self.options.query.q = value;
         self.options.query.country = self.search_country.val();
         self.options.query.featureClass = self.search_feature_class.val();
+        self.options.query.featureCode = self.search_feature_code.val();
         self.options.query.continentCode = self.search_continent_code.val();
         var query = self.options.query;
 
@@ -985,6 +985,13 @@
             jQuery(context).trigger(jQuery.geoevents.ajax_stop);
             jQuery(".missing-geonames-results").addClass('visualHidden');
           } else {
+            // #21459 do not show google results for the country field
+            if (self.options.query.featureCode) {
+              jQuery(".missing-geonames-results").filter(function() {
+                return $(this).hasClass('portalMessage');
+              }).removeClass('visualHidden');
+              return false;
+            }
             // Search with Google
             var xquery = {address: query.address};
             self.Geocoder.geocode(xquery, function(data) {
@@ -1131,6 +1138,7 @@
         self.searchtext = jQuery('input[type=text]', self.searchform);
         self.search_country = jQuery('[name="country"]', self.searchform);
         self.search_feature_class = jQuery('[name="featureClass"]', self.searchform);
+        self.search_feature_code = jQuery('[name="featureCode"]', self.searchform);
         self.search_continent_code = jQuery('[name="continentCode"]', self.searchform);
         self.resultsarea = jQuery('.geo-results-area', self);
         self.filters_area = jQuery('.filters-area', self);

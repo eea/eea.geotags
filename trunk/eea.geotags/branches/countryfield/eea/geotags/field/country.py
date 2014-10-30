@@ -16,12 +16,10 @@ class CountryFieldMixin(GeotagsFieldMixin):
 
     def getJSON(self, instance, **kwargs):
         """
-        :param instance:
-        :type instance:
-        :param kwargs:
-        :type kwargs:
-        :return:
-        :rtype:
+        :param instance: context object
+        :type instance: object
+        :return: json string dump
+        :rtype: string
         """
         geo = queryAdapter(instance, ICountryTags)
         if not geo:
@@ -34,8 +32,6 @@ class CountryFieldMixin(GeotagsFieldMixin):
         :type instance:
         :param value:
         :type value:
-        :param kwargs:
-        :type kwargs:
         :return:
         :rtype:
         """
@@ -56,7 +52,7 @@ class CountryFieldMixin(GeotagsFieldMixin):
 
 
 class CountriesLinesField(CountryFieldMixin, atapi.LinesField):
-    """ Multiple geotags field
+    """ Multiple countries field
     """
     def set(self, instance, value, **kwargs):
         """ Set
