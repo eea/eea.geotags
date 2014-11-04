@@ -1,7 +1,9 @@
 """ RDF Marshaller module for geotags """
+from eea.geotags.field.country import CountryFieldMixin
 
 from eea.geotags.field.location import GeotagsFieldMixin
 from eea.geotags.interfaces import IGeoTags
+from eea.geotags.storage.interfaces import ICountryTags
 from eea.rdfmarshaller.archetypes.fields import ATField2Surf
 from eea.rdfmarshaller.archetypes.interfaces import IATField2Surf
 from eea.rdfmarshaller.interfaces import ISurfSession
@@ -18,6 +20,20 @@ class GeotagsField2Surf(ATField2Surf):
 
     prefix = "dcterms"
     name = "spatial"
+
+    def get_adapter(self):
+        """
+        :return: GeotagsField Adapter
+        :rtype:  object
+        """
+        return getAdapter(self.context, IGeoTags)
+
+    def get_resource_name(self):
+        """
+        :return: resource name
+        :rtype:  string
+        """
+        return "#geotags"
 
     def value(self):
         """desired RDF output is like:
@@ -48,13 +64,14 @@ class GeotagsField2Surf(ATField2Surf):
         # create a GeoPoint Class
         SpatialThing = self.session.get_class(surf.ns.GEO.SpatialThing)
 
-        geo = getAdapter(self.context, IGeoTags)
+        geo = self.get_adapter()
 
         output = []
         i = 0
 
         for feature in geo.getFeatures():
-            rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
+            name = self.get_resource_name() + "%s" % i
+            rdfp = self.session.get_resource(name, SpatialThing)
 
             label = feature['properties']['title']
             rdfp[surf.ns.RDFS['label']] = label
@@ -77,3 +94,22 @@ class GeotagsField2Surf(ATField2Surf):
 
         return output
 
+
+class CountryField2Surf(GeotagsField2Surf):
+    """Adapter to express geotags field with RDF using Surf."""
+    implements(IATField2Surf)
+    adapts(CountryFieldMixin, Interface, ISurfSession)
+
+    def get_adapter(self):
+        """
+        :return: CountriesField Adapter
+        :rtype:  object
+        """
+        return getAdapter(self.context, ICountryTags)
+
+    def get_resource_name(self):
+        """
+        :return: resource name
+        :rtype:  string
+        """
+        return "#countrytags"
