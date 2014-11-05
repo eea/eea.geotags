@@ -22,18 +22,40 @@ class GeotagsFieldMixin(object):
         """
         return isinstance(self, atapi.LinesField)
 
+    def get_adapter(self, instance):
+        """
+        :return: GeotagsField Adapter
+        :rtype:  object
+        """
+        return queryAdapter(instance, IGeoTags)
+
     def getJSON(self, instance, **kwargs):
         """ Get GeoJSON tags from instance annotations using IGeoTags adapter
         """
-        geo = queryAdapter(instance, IGeoTags)
+        geo = self.get_adapter(instance)
         if not geo:
             return ''
         return json.dumps(geo.tags)
 
+    def remove_interface(self, instance, value):
+        """
+        :param instance: instance for which the interface will be removed
+        :type instance: object
+        :param value: json values
+        :type value:  object
+        """
+        value_len = len(value.get('features'))
+        if not value_len:
+            if IGeoTagged.providedBy(instance):
+                noLongerProvides(instance, IGeoTagged)
+        else:
+            if not IGeoTagged.providedBy(instance):
+                alsoProvides(instance, IGeoTagged)
+
     def setJSON(self, instance, value, **kwargs):
         """ Set GeoJSON tags to instance annotations using IGeoTags adapter
         """
-        geo = queryAdapter(instance, IGeoTags)
+        geo = self.get_adapter(instance)
         if not geo:
             return
 
@@ -44,18 +66,12 @@ class GeotagsFieldMixin(object):
                 logger.exception(err)
                 return
 
-        # remove IGeoTagged if all geotags are removed or provide it
-        # if geotags are added
         if not value:
             return
 
-        value_len = len(value.get('features'))
-        if not value_len:
-            if IGeoTagged.providedBy(instance):
-                noLongerProvides(instance, IGeoTagged)
-        else:
-            if not IGeoTagged.providedBy(instance):
-                alsoProvides(instance, IGeoTagged)
+        # remove IGeoTagged if all geotags are removed or provide it
+        # if geotags are added
+        self.remove_interface(instance, value)
         geo.tags = value
 
     def json2items(self, geojson, key="title", val="description"):
@@ -228,6 +244,7 @@ class GeotagsStringField(GeotagsFieldMixin, atapi.StringField):
             return
         tag = self.json2string(new_value)
         return atapi.StringField.set(self, instance, tag, **kwargs)
+
 
 class GeotagsLinesField(GeotagsFieldMixin, atapi.LinesField):
     """ Multiple geotags field

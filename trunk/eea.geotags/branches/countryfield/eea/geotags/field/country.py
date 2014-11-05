@@ -1,6 +1,5 @@
 """ Country Field
 """
-import json
 import logging
 from Products.Archetypes import atapi
 from zope.component import queryAdapter
@@ -14,41 +13,19 @@ class CountryFieldMixin(GeotagsFieldMixin):
     """ Country Field Mixin
     """
 
-    def getJSON(self, instance, **kwargs):
+    def get_adapter(self, instance):
         """
-        :param instance: context object
+        :param instance: field instance
         :type instance: object
-        :return: json string dump
-        :rtype: string
+        :return: adapted object
+        :rtype:  object
         """
-        geo = queryAdapter(instance, ICountryTags)
-        if not geo:
-            return ''
-        return json.dumps(geo.tags)
+        return queryAdapter(instance, ICountryTags)
 
-    def setJSON(self, instance, value, **kwargs):
+    def remove_interface(self, instance, value):
+        """ There is no interface to remove for the CountryField
         """
-        :param instance:
-        :type instance:
-        :param value:
-        :type value:
-        :return:
-        :rtype:
-        """
-        geo = queryAdapter(instance, ICountryTags)
-        if not geo:
-            return
-
-        if not isinstance(value, dict) and value:
-            try:
-                value = json.loads(value)
-            except Exception, err:
-                logger.exception(err)
-                return
-
-        if not value:
-            return
-        geo.tags = value
+        pass
 
 
 class CountriesLinesField(CountryFieldMixin, atapi.LinesField):
@@ -64,3 +41,4 @@ class CountriesLinesField(CountryFieldMixin, atapi.LinesField):
             return
         tags = [tag for tag in self.json2list(new_value)]
         return atapi.LinesField.set(self, instance, tags, **kwargs)
+
