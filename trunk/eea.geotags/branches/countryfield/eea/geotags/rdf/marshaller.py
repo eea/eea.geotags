@@ -100,6 +100,8 @@ class CountryField2Surf(GeotagsField2Surf):
     implements(IATField2Surf)
     adapts(CountryFieldMixin, Interface, ISurfSession)
 
+    name = "coverage"
+
     def get_adapter(self):
         """
         :return: CountriesField Adapter
