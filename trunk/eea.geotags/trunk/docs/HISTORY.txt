@@ -3,6 +3,9 @@ Changelog
 
 6.8-dev - (unreleased)
 ----------------------
+* Change: disabled geotags arcgis map, due to
+  performance issues.
+  [demarant refs #21121]
 * Bug fix: fixed various CSS for displaing hints
   [ghicaale refs #21458]
 
