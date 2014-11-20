@@ -1,8 +1,8 @@
 Changelog
 =========
 
-6.8-dev - (unreleased)
-----------------------
+6.8 - (2014-11-20)
+------------------
 * Change: disabled geotags arcgis map, due to
   performance issues.
   [demarant refs #21121]
