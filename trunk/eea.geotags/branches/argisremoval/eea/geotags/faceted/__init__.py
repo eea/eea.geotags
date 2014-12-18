@@ -1,2 +1,0 @@
-""" Faceted map package
-"""

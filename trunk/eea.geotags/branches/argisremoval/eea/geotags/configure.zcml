@@ -16,7 +16,6 @@
 
   <include package=".upgrades" />
 
-  <include package=".faceted" />
 
   <include file="profiles.zcml" />
 
