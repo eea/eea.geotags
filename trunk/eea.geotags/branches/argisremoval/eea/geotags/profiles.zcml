@@ -28,4 +28,11 @@
         handler="eea.geotags.setuphandlers.importVarious">
   </genericsetup:importStep>
 
+  <genericsetup:registerProfile
+      name="upgrade70"
+      title="EEA Geotags upgrade profile for v7.0"
+      directory="profiles/upgrade/to_70"
+      description='EEA Geotags upgrade profile for v7.0'
+      provides="Products.GenericSetup.interfaces.EXTENSION" />
+
 </configure>
