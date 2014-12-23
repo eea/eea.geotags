@@ -10,57 +10,11 @@
 
   <tal:comment condition="nothing">
 <!--
-Macro parameters:
 
-  @@param hideMap
-  @@param modal
-  @@param modal_dimensions
-  @@param events
-  @@param map_service
-
-Usage with map visible:
-By default if there are less than 4 geotags the map will be displayed as a modal
-map which appears after you've clicked on a geotag
-    <tal:hideMap define="hideMap python:False">
-       <metal:field use-macro="python:context.widget('location', mode='view')">
-            Location field view macro
-        </metal:field>
-    </tal:hideMap>
-
-Usage with map visible as modal pop-up set explicitly with disregards to the
-minimum number of geotags:
-    <tal:hideMap define="hideMap python:False; modal python:True">
-       <metal:field use-macro="python:context.widget('location', mode='view')">
-            Location field view macro
-        </metal:field>
-    </tal:hideMap>
-
-Usage with map visible as modal pop-up set explicitly and with specification of
- modal width and height
-    <tal:hideMap define="hideMap python:False; modal python:True; modal_dimensions python:[800, 600]">
-       <metal:field use-macro="python:context.widget('location', mode='view')">
-            Location field view macro
-        </metal:field>
-    </tal:hideMap>
-
-Usage with map visible and no automatic modal map if less than 4 geotags:
-    <tal:hideMap define="hideMap python:False; events python:True">
-       <metal:field use-macro="python:context.widget('location', mode='view')">
-            Location field view macro
-        </metal:field>
-    </tal:hideMap>
-
-Usage with hidden map:
+Usage:
    <metal:field use-macro="python:context.widget('location', mode='view')">
         Location field view macro
     </metal:field>
-
-Usage with a different map tile or service
-    <tal:hideMap define="hideMap python:False; map_service python:'http://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer'">
-       <metal:field use-macro="python:context.widget('location', mode='view')">
-            Location field view macro
-        </metal:field>
-    </tal:hideMap>
 
 -->
   </tal:comment>
@@ -69,65 +23,13 @@ Usage with a different map tile or service
   <tal:view_macro define="geotags python:field.getAccessor(here)();
                           geojson python:field.getJSON(here) if field.getJSON else {};
                           geoitems python:field.json2items(geojson) if field.json2items else ((tag, tag) for tag in geotags);
-                          hideMap hideMap|python:True;
-                          modal modal|python:False;
-                          modal_dimensions modal_dimensions|nothing;
-                          data_modal python: 'True' if modal else 'False';
-                          map_service map_service|nothing;
                           portal_state context/@@plone_portal_state;
-                          portal_url portal_state/portal_url;
-                          events events|python:False;
-                          infoWindowImgName infoWindowImgName|python:'event_icon.gif'"
+                          portal_url portal_state/portal_url;"
                   condition="geotags">
-                  <div tal:attributes="data-modal python:'Events' if events else data_modal;
-                                       data-modal_dimensions python: modal_dimensions if modal_dimensions else [600, 425];
-                                       class python:'eea-location-listing events' if events else 'eea-location-listing'"
-                                                                                    metal:define-slot="location-listing">
+                  <div tal:attributes="class string:eea-location-listing" metal:define-slot="location-listing">
       <span i18n:translate="" metal:define-slot="geotags">Geotags:</span>
       <span tal:repeat="tag geoitems" class="geotag" tal:content="python:tag[0]"></span>
     </div>
-  <metal:map define-slot="map">
-    <link rel="stylesheet" type="text/css"
-          href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/dojo/dijit/themes/claro/claro.css"
-          tal:condition="not:hideMap" />
-    <link rel="stylesheet" type="text/css"
-          href="http://serverapi.arcgisonline.com/jsapi/arcgis/2.8/js/esri/dijit/css/Popup.css"
-          tal:condition="not:hideMap" />
-
-    <script type="text/javascript" tal:condition="not:hideMap">
-            var djConfig = {parseOnLoad: true}
-    </script>
-    <script type="text/javascript"
-            src="http://serverapi.arcgisonline.com/jsapi/arcgis/?v=2.8"
-            tal:condition="not:hideMap"></script>
-    <script type="text/javascript"
-            tal:condition="not:hideMap"
-            tal:content="structure string:
-            jQuery(function () {
-                dojo.ready( function() {
-                    var map =  jQuery('#eeaEsriMap');
-                    if (!map.length) {
-                        return;
-                    }
-                    var map_options = {'infoWindowSize' : [400, 200], 'infoWindowImgName' : 'event_icon.gif'};
-                        jQuery.extend(map_options, EEAGeotags.settings);
-                    var default_map_options = map.data();
-                    if (default_map_options.length) {
-                        jQuery.extend(map_options, EEAGeotags.settings);
-                    }
-                    map.EEAGeotagsView(map_options);
-                });
-            });">
-    </script>
-    <div id="eeaEsriMap" class="claro"  style="display:none;"
-         tal:attributes="data-map_service python:map_service if map_service else '';"
-         tal:condition="not:hideMap">
-        <img id="eeaEsriMapLoadingImg"
-             src="loading.gif"
-             tal:attributes="src string:$portal_url/loading.gif" />
-    </div>
-
-  </metal:map>
   </tal:view_macro>
   </metal:view_macro>
 
@@ -154,8 +56,7 @@ Usage with a different map tile or service
       tal:content="geojson"></textarea>
     <div tal:attributes="id string:$fieldName-geopreview"></div>
     <input type="button" name="edit" i18n:attributes="value" value="Edit"
-    tal:attributes="id string:$fieldName-edit; class string:standardButton
-    input-block" />
+    tal:attributes="id string:$fieldName-edit; class string:standardButton input-block" />
     <script type="text/javascript" tal:content="string:
       (function(){
         var name = '$fieldName';
