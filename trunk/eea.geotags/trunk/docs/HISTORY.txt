@@ -3,6 +3,9 @@ Changelog
 
 7.0-dev - (unreleased)
 ----------------------
+* Change: removed arcgis related code from package that was leftover
+  after the disabling of map from the previous egg release
+  [ichimdav refs #21121]
 
 6.8 - (2014-11-20)
 ------------------
