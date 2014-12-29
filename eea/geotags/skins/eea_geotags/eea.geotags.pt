@@ -28,7 +28,10 @@ Usage:
                   condition="geotags">
                   <div tal:attributes="class string:eea-location-listing" metal:define-slot="location-listing">
       <span i18n:translate="" metal:define-slot="geotags">Geotags:</span>
-      <span tal:repeat="tag geoitems" class="geotag" tal:content="python:tag[0]"></span>
+          <tal:tags tal:repeat="tag geoitems">
+              <span  class="geotag" tal:content="python:tag[0] + ',' if not repeat['tag'].end else tag[0]">
+              </span>
+          </tal:tags>
     </div>
   </tal:view_macro>
   </metal:view_macro>
