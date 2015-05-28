@@ -3,6 +3,9 @@ Changelog
 
 6.8-dev - (unreleased)
 ----------------------
+* Change: geotags view widget now works without json data. Initial support
+  was already in place which needed tweaking.
+  [ichimdav refs #22232]
 * Bug fix: fixed various CSS for displaing hints
   [ghicaale refs #21458]
 

@@ -67,8 +67,10 @@ Usage with a different map tile or service
 
   <metal:view_macro define-macro="view">
   <tal:view_macro define="geotags python:field.getAccessor(here)();
-                          geojson python:field.getJSON(here) if field.getJSON else {};
-                          geoitems python:field.json2items(geojson) if field.json2items else ((tag, tag) for tag in geotags);
+                          getJSON field/getJSON|nothing;
+                          json2items field/json2items|nothing;
+                          geojson python:getJSON(here) if getJSON else {};
+                          geoitems python:json2items(geojson) if json2items else ((tag, tag) for tag in geotags);
                           hideMap hideMap|python:True;
                           modal modal|python:False;
                           modal_dimensions modal_dimensions|nothing;
@@ -79,11 +81,12 @@ Usage with a different map tile or service
                           events events|python:False;
                           infoWindowImgName infoWindowImgName|python:'event_icon.gif'"
                   condition="geotags">
-                  <div tal:attributes="data-modal python:'Events' if events else data_modal;
-                                       data-modal_dimensions python: modal_dimensions if modal_dimensions else [600, 425];
-                                       class python:'eea-location-listing events' if events else 'eea-location-listing'"
-                                                                                    metal:define-slot="location-listing">
+    <div tal:attributes="data-modal python:'Events' if events else data_modal;
+                           data-modal_dimensions python: modal_dimensions if modal_dimensions else [600, 425];
+                           class python:'eea-location-listing events' if events else 'eea-location-listing'"
+                                                                        metal:define-slot="location-listing">
       <span i18n:translate="" metal:define-slot="geotags">Geotags:</span>
+
       <span tal:repeat="tag geoitems">
           <a href="#eeaEsriMap"
              title=""
