@@ -3,6 +3,9 @@ Changelog
 
 7.2.dev0 - (unreleased)
 -----------------------
+* Change: geotags view widget now works without json data. Initial support
+  was already in place which needed tweaking.
+  [ichimdav refs #22232]
 
 7.1 - (2015-03-17)
 ------------------

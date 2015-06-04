@@ -21,8 +21,10 @@ Usage:
 
   <metal:view_macro define-macro="view">
   <tal:view_macro define="geotags python:field.getAccessor(here)();
-                          geojson python:field.getJSON(here) if field.getJSON else {};
-                          geoitems python:field.json2items(geojson) if field.json2items else ((tag, tag) for tag in geotags);
+                          getJSON field/getJSON|nothing;
+                          json2items field/json2items|nothing;
+                          geojson python:getJSON(here) if getJSON else {};
+                          geoitems python:json2items(geojson) if json2items else ((tag, tag) for tag in geotags);
                           portal_state context/@@plone_portal_state;
                           portal_url portal_state/portal_url;"
                   condition="geotags">
