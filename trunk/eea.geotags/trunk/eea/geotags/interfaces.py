@@ -11,10 +11,10 @@ from eea.geotags.storage.interfaces import IGeoTaggable
 from eea.geotags.storage.interfaces import IGeoTagged
 from eea.geotags.storage.interfaces import IGeoTags
 
-__all__ = [ IGeoGroups.__name__,
-            IBioGroups.__name__,
-            IGeoCountries.__name__,
-            IJsonProvider.__name__,
-            IGeoTaggable.__name__,
-            IGeoTagged.__name__,
-            IGeoTags.__name__ ]
+__all__ = [IGeoGroups.__name__,
+           IBioGroups.__name__,
+           IGeoCountries.__name__,
+           IJsonProvider.__name__,
+           IGeoTaggable.__name__,
+           IGeoTagged.__name__,
+           IGeoTags.__name__]

@@ -37,9 +37,9 @@ class GeoTags(object):
                              self.context.absolute_url())
             return {}
         return dict(anno.get(ANNO_TAGS, {}))
-        
+
     tags = property(_get_tags, _set_tags)
-        
+
     def getFeatures(self):
         """ returns a list of features from the geotags annotation.
         """
@@ -47,5 +47,4 @@ class GeoTags(object):
             res = self.tags['features']
         except (KeyError, IndexError):
             res = []
-        return res 
-    
+        return res

@@ -9,5 +9,5 @@ def initialize(context):
     """
     content.initialize(context)
 
-__all__ = [ field.__name__,
-            widget.__name__ ]
+__all__ = [field.__name__,
+           widget.__name__]

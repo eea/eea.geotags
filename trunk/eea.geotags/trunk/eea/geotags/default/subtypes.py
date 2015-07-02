@@ -14,7 +14,7 @@ class GeotagsFieldExtender(object):
     To be used for base content class. """
     implements(ISchemaExtender)
 
-    fields =  [
+    fields = [
             ExtensionGeotagsSinglefield(
                 name='location',
                 schemata='categorization',
