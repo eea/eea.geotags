@@ -155,7 +155,7 @@ class GeoNamesJsonProvider(object):
             extend_asia = False
             filters_asia = []
             for feature in features:
-                if not(feature['properties']['name'] in filters):
+                if not feature['properties']['name'] in filters:
                     extend_asia = True
                     filters_asia.append(feature['properties']['name'])
 
@@ -212,7 +212,7 @@ class GeoNamesJsonProvider(object):
         # remove featureClass as a way to say search for all classes if the
         # value is falsy
         if 'featureClass' in query and not query.get('featureClass'):
-            del(query['featureClass'])
+            del query['featureClass']
         query.setdefault('lang', 'en')
         query.setdefault('username', self.username)
         query = urllib.urlencode(query, doseq=1)
