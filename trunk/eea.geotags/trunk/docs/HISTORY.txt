@@ -1,8 +1,8 @@
 Changelog
 =========
 
-7.4.dev0 - (unreleased)
------------------------
+7.4 - (2015-09-10)
+------------------
 * Change: cleaned eea.geotags.css of esri map view removed in egg 6.8
   [ichimdav refs #27220]
 
