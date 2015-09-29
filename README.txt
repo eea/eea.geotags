@@ -65,6 +65,7 @@ Dependecies
 3. archetypes.schemaextender
 4. eea.jquery
 5. eea.alchemy
+6. eventlet
 
 
 Source code
