@@ -1,7 +1,8 @@
 """ JSON Components
 """
 import logging
-import urllib, urllib2
+import urllib
+from eventlet.green import urllib2
 import json as simplejson
 import operator
 from zope.component import queryAdapter

@@ -2,7 +2,7 @@
 """
 import json as simplejson
 import urllib
-import urllib2
+from eventlet.green import urllib2
 from datetime import datetime
 from pprint import pformat
 
