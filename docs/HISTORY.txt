@@ -1,11 +1,11 @@
 Changelog
 =========
 
-7.5.dev0 - (unreleased)
------------------------
+7.5 - (2015-10-05)
+------------------
 * Bug fix: use evnetlet to prevent hanging out connection
   [lucas refs #29063]
-  
+
 7.4 - (2015-09-10)
 ------------------
 * Change: cleaned eea.geotags.css of esri map view removed in egg 6.8
