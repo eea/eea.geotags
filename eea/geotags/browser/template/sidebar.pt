@@ -14,7 +14,7 @@
                         </label>
 
                         <metal:countries metal:use-macro="context/sidebar_macros/macros/sidebar-countries">
-                            Sidebar Country Macro
+                            <span i18n:translate="" tal:omit-tag="">Sidebar Country Macro</span>
                         </metal:countries>
                         <label for="featureClass">
                             <span i18n:translate="">Feature Class</span>

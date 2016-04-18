@@ -1,6 +1,6 @@
-<metal:country metal:define-macro="sidebar-countries">
+<metal:country metal:define-macro="sidebar-countries" i18n:domain="eea.notranslation">
 <label for="country">
-    <span i18n:translate="">
+    <span>
         Country
     </span>
     <select name="country" class="sidebar-countries">
