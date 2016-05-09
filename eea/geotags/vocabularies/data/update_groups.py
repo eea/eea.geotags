@@ -118,8 +118,8 @@ class Updater(object):
                     'lang': 'en',
                     'style': 'full',
                 }
-                query = urllib.urlencode(query)
-                con = urllib2.urlopen(self.info, query)
+                url_query = urllib.urlencode(query)
+                con = urllib2.urlopen(self.info, url_query)
                 json = con.read()
                 data = simplejson.loads(json)
                 data = data.get('geonames')[0]

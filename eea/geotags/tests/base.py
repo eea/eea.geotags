@@ -1,7 +1,7 @@
 """ Base test cases
 """
-import eea.geotags
 import logging
+import eea.geotags
 from Products.Five import zcml
 from Products.Five import fiveconfigure
 from Products.PloneTestCase import PloneTestCase

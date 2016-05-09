@@ -125,8 +125,8 @@ class GeoNamesJsonProvider(object):
             except Exception, err:
                 logger.exception(err)
                 # Fallback to center of Europe
-                latitude = 55
-                longitude = 35
+                latitude = 55.0
+                longitude = 35.0
             feature['properties']['center'] = [latitude, longitude]
 
             json['features'].append(feature)
