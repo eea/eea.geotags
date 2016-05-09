@@ -1,11 +1,11 @@
 """ Base test cases
 """
+import eea.geotags
+import logging
 from Products.Five import zcml
 from Products.Five import fiveconfigure
 from Products.PloneTestCase import PloneTestCase
 from Products.PloneTestCase.layer import onsetup
-import eea.geotags
-import logging
 
 logger = logging.getLogger('eea.geotags.tests.base')
 
