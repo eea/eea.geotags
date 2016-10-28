@@ -14,7 +14,7 @@ setup(name=NAME,
           "Right now in Plone location field is a free text field. "
           "EEA Geotags lets you easy define locations using a map picker "
           "and http://geonames.org geographical database."),
-      long_description=open("README.txt").read() + "\n" +
+      long_description=open("README.rst").read() + "\n" +
                        open(os.path.join("docs", "HISTORY.txt")).read(),
       classifiers=[
           "Framework :: Plone",
