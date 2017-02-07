@@ -20,22 +20,26 @@ Usage:
   </tal:comment>
 
   <metal:view_macro define-macro="view">
-  <tal:view_macro define="geotags python:field.getAccessor(here)();
-                          getJSON field/getJSON|nothing;
-                          json2items field/json2items|nothing;
-                          geojson python:getJSON(here) if getJSON else {};
-                          geoitems python:json2items(geojson) if json2items else ((tag, tag) for tag in geotags);
-                          portal_state context/@@plone_portal_state;
-                          portal_url portal_state/portal_url;"
-                  condition="geotags">
-                  <div tal:attributes="class string:eea-location-listing" metal:define-slot="location-listing">
-      <span i18n:translate="" metal:define-slot="geotags">Geotags:</span>
-          <tal:tags tal:repeat="tag geoitems">
-              <span  class="geotag" tal:content="python:tag[0] + ',' if not repeat['tag'].end else tag[0]">
-              </span>
-          </tal:tags>
-    </div>
-  </tal:view_macro>
+    <tal:view_macro define="geotags python:field.getAccessor(here)();
+                            getJSON field/getJSON|nothing;
+                            json2items field/json2items|nothing;
+                            geojson python:getJSON(here) if getJSON else {};
+                            geoitems python:json2items(geojson) if json2items else ((tag, tag) for tag in geotags);
+                            portal_state context/@@plone_portal_state;
+                            portal_url portal_state/portal_url;"
+                    condition="geotags">
+      <div tal:attributes="class string:eea-location-listing" metal:define-slot="location-listing">
+        <span i18n:translate="" metal:define-slot="geotags">Geotags:</span>
+        <tal:tags tal:repeat="tag geoitems">
+          <span>
+            <a class="link-category" rel="tag"
+               tal:attributes="href python:portal_url + '/@@search?getGeographicCoverage%3Alist=' + tag[0]"
+               tal:content="python:tag[0]"></a>
+            <span class="separator" tal:condition="python:not repeat['tag'].end">,</span>
+          </span>
+        </tal:tags>
+      </div>
+    </tal:view_macro>
   </metal:view_macro>
 
   <div metal:define-macro="location" tal:define="
