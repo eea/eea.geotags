@@ -34,7 +34,7 @@ Usage:
           <span>
             <a class="link-category" rel="tag"
                tal:attributes="href python:portal_url + '/@@search?getGeographicCoverage%3Alist=' + tag[0]"
-               tal:content="python:tag[0] + ' (' + tag[1] + ')'"></a>
+               tal:content="python:tag[0] + ' (' + tag[1] + ')' if tag[1] != tag[0] else tag[0]"></a>
             <span class="separator" tal:condition="python:not repeat['tag'].end">,</span>
           </span>
         </tal:tags>
