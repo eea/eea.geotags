@@ -3,6 +3,8 @@ Changelog
 
 7.9.dev0 - (unreleased)
 -----------------------
+* Bug fix: fixed typo
+  [alecghica refs #81054]
 
 7.8 - (2017-02-14)
 ------------------
