@@ -1,6 +1,9 @@
 Changelog
 =========
 
+7.9.dev0 - (unreleased)
+-----------------------
+
 7.8 - (2017-02-14)
 ------------------
 * Feature: geotags and themes display alligned with tags style
