@@ -61,6 +61,12 @@ class GeotagsField2Surf(ATField2Surf):
             
             description = feature['properties']['description']
             rdfp[surf.ns.RDFS['comment']] = description
+            
+            if label == description:
+                friendly_name = label
+            else:
+                friendly_name = label + '' (' + description + ')'
+            rdfp[surf.ns.DCTERMS['title']] = friendly_name
 
             tags = feature['properties']['tags']
             rdfp[surf.ns.DCTERMS['type']] = tags
