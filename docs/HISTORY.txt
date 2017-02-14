@@ -1,8 +1,8 @@
 Changelog
 =========
 
-7.8.dev0 - (unreleased)
------------------------
+7.8 - (2017-02-14)
+------------------
 * Feature: geotags and themes display alligned with tags style
   [alecghica refs #81054]
 * Bug fix: location view now display geo tag title and description instead of
