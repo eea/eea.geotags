@@ -8,6 +8,8 @@ Changelog
 * Bug fix: location view now display geo tag title and description instead of
   only geo tag description
   [alecghica refs #81054]
+* Feature: enhanced RDF output to include description and entity
+  [alecghica refs #81054]
 
 7.7 - (2016-05-19)
 ------------------

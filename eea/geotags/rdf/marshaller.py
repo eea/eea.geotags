@@ -58,6 +58,12 @@ class GeotagsField2Surf(ATField2Surf):
 
             label = feature['properties']['title']
             rdfp[surf.ns.RDFS['label']] = label
+            
+            description = feature['properties']['description']
+            rdfp[surf.ns.RDFS['comment']] = description
+
+            tags = feature['properties']['tags']
+            rdfp[surf.ns.DCTERMS['type']] = tags
 
             latitude = feature['properties']['center'][0]
             rdfp[surf.ns.GEO['lat']] = float(latitude)
@@ -76,4 +82,3 @@ class GeotagsField2Surf(ATField2Surf):
             i += 1
 
         return output
-
