@@ -25,16 +25,19 @@ Usage:
                             json2items nocall:field/json2items|nothing;
                             geojson python:getJSON(here) if getJSON else {};
                             geoitems python:json2items(geojson) if json2items else ((tag, tag) for tag in geotags);
+                            geoitems python:dict(geoitems);
                             portal_state context/@@plone_portal_state;
                             portal_url portal_state/portal_url;"
                     condition="geotags">
       <div tal:attributes="class string:eea-location-listing" metal:define-slot="location-listing">
         <span i18n:translate="" metal:define-slot="geotags">Geotags:</span>
-        <tal:tags tal:repeat="tag geoitems">
+        <tal:tags tal:repeat="tag python:sorted(geoitems)">
           <span>
-            <a class="link-category" rel="tag"
-               tal:attributes="href python:portal_url + '/@@search?getGeographicCoverage%3Alist=' + tag[0]"
-               tal:content="python:tag[0] + ' (' + tag[1] + ')' if tag[1] != tag[0] else tag[0]"></a>
+            <a class="link-category" rel="tag" tal:define="
+               title python:tag;
+               description python:geoitems[tag]"
+               tal:attributes="href python:portal_url + '/@@search?getGeographicCoverage%3Alist={title}'.format(title=title)"
+               tal:content="python:'{title} ({description})'.format(title=title, description=description) if (description and title != description) else title"></a>
             <span class="separator" tal:condition="python:not repeat['tag'].end">,</span>
           </span>
         </tal:tags>

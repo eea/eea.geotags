@@ -3,7 +3,7 @@ Changelog
 
 7.9.dev0 - (unreleased)
 -----------------------
-* Feature: Update `json2items` to also return tags
+* Feature: Sort geotags on view
   [avoinea refs #81054]
 * Bug fix: fixed typo
   [alecghica refs #81054]
