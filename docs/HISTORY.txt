@@ -7,6 +7,8 @@ Changelog
   [avoinea refs #81054]
 * Bug fix: fixed typo
   [alecghica refs #81054]
+* Bug fix: fixed geotags display and RDF export when no description
+  [alecghica refs #81054]
 
 7.8 - (2017-02-14)
 ------------------
