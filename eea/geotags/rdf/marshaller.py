@@ -58,10 +58,10 @@ class GeotagsField2Surf(ATField2Surf):
 
             label = feature['properties']['title']
             rdfp[surf.ns.RDFS['label']] = label
-            
+
             description = feature['properties']['description']
             rdfp[surf.ns.RDFS['comment']] = description
-            
+
             if label == description or not description:
                 friendly_name = label
             else:
