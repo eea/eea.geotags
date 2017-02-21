@@ -1,6 +1,9 @@
 Changelog
 =========
 
+8.0.dev0 - (unreleased)
+-----------------------
+
 7.9 - (2017-02-21)
 ------------------
 * Feature: Sort geotags on view
