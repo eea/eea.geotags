@@ -28,14 +28,21 @@ class GeotagsField2Surf(ATField2Surf):
         ...
         <dct:spatial>
             <geo:SpatialThing>
-            <rdfs:label>Rome</rdfs:label>
+            <rdfs:label>Rome (Latium, Italy)</rdfs:label>
+            <dcterms:title>Rome (Latium, Italy)</dcterms:title>
+            <rdfs:comment>Latium, Italy</rdfs:comment>
+            <dcterms:type>capital of a political entity</dcterms:type>
             <geo:lat>41.901514</geo:lat>
             <geo:long>12.460774</geo:long>
+            <owl:sameAs rdf:resource="http://sws.geonames.org/3169070/">
             </geo:SpatialThing>
         </dct:spatial>
         <dct:spatial>
             <geo:SpatialThing>
-            <rdfs:label>Bucharest</rdfs:label>
+            <rdfs:label>Bucharest (Bucureşti, Romania)</rdfs:label>
+            <dcterms:title>Bucharest (Bucureşti, Romania)</dcterms:title>
+            <rdfs:comment>Bucureşti, Romania</rdfs:comment>
+            <dcterms:type>capital of a political entity</dcterms:type>
             <geo:lat>44.437711</geo:lat>
             <geo:long>26.097367</geo:long>
             <owl:sameAs rdf:resource="http://sws.geonames.org/683506/">
@@ -57,8 +64,6 @@ class GeotagsField2Surf(ATField2Surf):
             rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
 
             label = feature['properties']['title']
-            rdfp[surf.ns.RDFS['label']] = label
-
             description = feature['properties']['description']
             rdfp[surf.ns.RDFS['comment']] = description
 
@@ -67,6 +72,7 @@ class GeotagsField2Surf(ATField2Surf):
             else:
                 friendly_name = label + ' (' + description + ')'
             rdfp[surf.ns.DCTERMS['title']] = friendly_name
+            rdfp[surf.ns.RDFS['label']] = friendly_name
 
             tags = feature['properties']['tags']
             rdfp[surf.ns.DCTERMS['type']] = tags
