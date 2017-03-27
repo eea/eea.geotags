@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """ RDF Marshaller module for geotags """
 
 from eea.geotags.field.location import GeotagsFieldMixin
@@ -39,8 +40,8 @@ class GeotagsField2Surf(ATField2Surf):
         </dct:spatial>
         <dct:spatial>
             <geo:SpatialThing>
-            <rdfs:label>Bucharest (Bucureşti, Romania)</rdfs:label>
-            <dcterms:title>Bucharest (Bucureşti, Romania)</dcterms:title>
+            <rdfs:label>Bucharest (București, Romania)</rdfs:label>
+            <dcterms:title>Bucharest (București, Romania)</dcterms:title>
             <rdfs:comment>Bucureşti, Romania</rdfs:comment>
             <dcterms:type>capital of a political entity</dcterms:type>
             <geo:lat>44.437711</geo:lat>
