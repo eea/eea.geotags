@@ -1,6 +1,9 @@
 Changelog
 =========
 
+8.2.dev0 - (unreleased)
+-----------------------
+
 8.1 - (2017-03-27)
 ------------------
 * Change: treat dcterms:title and rdfs:label with same value in rdf export.
