@@ -51,4 +51,3 @@ class EEAJSONProviderSearchMutator(object):
                     entry['properties']['other']['countryName'] = title
                     entry['properties']['other']['name'] = title
         return template
-

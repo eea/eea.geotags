@@ -2,10 +2,9 @@
 """
 from Products.CMFCore import utils as cmfutils
 from Products.Archetypes.atapi import process_types, listTypes
-from eea.geotags.config import PROJECTNAME, ADD_CONTENT_PERMISSION
-
 from Products.Archetypes.atapi import registerType
 from eea.geotags.content.demo import EEAGeotagsDemo, EEAGeotagsSimpleDemo
+from eea.geotags.config import PROJECTNAME, ADD_CONTENT_PERMISSION
 
 registerType(EEAGeotagsDemo, PROJECTNAME)
 registerType(EEAGeotagsSimpleDemo, PROJECTNAME)

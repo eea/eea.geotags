@@ -2,9 +2,9 @@
 """
 import logging
 import urllib
-from eventlet.green import urllib2
 import json as simplejson
 import operator
+from eventlet.green import urllib2
 from zope.component import queryAdapter
 from Products.CMFCore.utils import getToolByName
 from eea.geotags.config import WEBSERVICE

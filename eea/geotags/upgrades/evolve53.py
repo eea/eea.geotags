@@ -1,8 +1,8 @@
 """ Add countries_mapping vocabulary
 """
+import logging
 from Products.ATVocabularyManager.utils.vocabs import createSimpleVocabs
 from Products.CMFCore.utils import getToolByName
-import logging
 
 logger = logging.getLogger(__name__)
 

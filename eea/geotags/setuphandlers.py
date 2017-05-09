@@ -2,9 +2,9 @@
 """
 import logging
 from Products.CMFCore.utils import getToolByName
+from Products.ATVocabularyManager.utils.vocabs import createHierarchicalVocabs
 from eea.geotags.vocabularies.data.groups import VOC
 from eea.geotags.vocabularies.data.biogroups import VOC as BIOVOC
-from Products.ATVocabularyManager.utils.vocabs import createHierarchicalVocabs
 
 logger = logging.getLogger('eea.geotags.setuphandlers')
 

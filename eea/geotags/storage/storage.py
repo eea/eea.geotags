@@ -2,9 +2,9 @@
 """
 import logging
 from zope.annotation.interfaces import IAnnotations
-from persistent.dict import PersistentDict
 from zope.interface import implements
 from zope.component import queryAdapter
+from persistent.dict import PersistentDict
 from eea.geotags.config import ANNO_TAGS
 from eea.geotags.storage.interfaces import IGeoTags
 

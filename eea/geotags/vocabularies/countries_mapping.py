@@ -20,4 +20,3 @@ class Countries_Mapping(object):
         if not voc:
             return SimpleVocabulary([])
         return voc
-

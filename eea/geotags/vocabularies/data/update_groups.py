@@ -2,9 +2,9 @@
 """
 import json as simplejson
 import urllib
-from eventlet.green import urllib2
 from datetime import datetime
 from pprint import pformat
+from eventlet.green import urllib2
 
 COUNTRY_INFO = 'http://ws.geonames.org/countryInfoJSON'
 GROUPS = {
