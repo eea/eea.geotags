@@ -154,7 +154,7 @@ class GeotagsFieldMixin(object):
             }
             if isinstance(value, str):
                 value = service.search(**query)
-                if len(value['features']):
+                if value['features']:
                     match_value = value['features'][0]
                     value['features'] = []
                     value['features'].append(match_value)
@@ -164,9 +164,9 @@ class GeotagsFieldMixin(object):
                     query['q'] = tag
                     query['address'] = tag
                     match_value = service.search(**query)
-                    if len(match_value['features']):
+                    if match_value['features']:
                         agg_value['features'].append(
-                                              match_value['features'][0])
+                            match_value['features'][0])
                 value = agg_value
             else:
                 logger.warn(err)
@@ -222,6 +222,7 @@ class GeotagsStringField(GeotagsFieldMixin, atapi.StringField):
             return
         tag = self.json2string(new_value)
         return atapi.StringField.set(self, instance, tag, **kwargs)
+
 
 class GeotagsLinesField(GeotagsFieldMixin, atapi.LinesField):
     """ Multiple geotags field
