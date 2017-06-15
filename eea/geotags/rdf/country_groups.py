@@ -85,7 +85,8 @@ COUNTRY_GROUPS = {
          u'Italy',
          u'Greece',
          u'Finland'
-    ]
+    ],
+    
     'EU25': [
         u'Cyprus',
         u'Portugal',

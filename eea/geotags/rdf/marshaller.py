@@ -60,7 +60,7 @@ class GeotagsField2Surf(ATField2Surf):
 
         output = []
         i = 0
-
+        import pdb; pdb.set_trace()
         for feature in geo.getFeatures():
             rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
 
