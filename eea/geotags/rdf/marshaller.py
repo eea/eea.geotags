@@ -99,9 +99,21 @@ class GeotagsField2Surf(ATField2Surf):
         country_groups = COUNTRY_GROUPS
         found_groups = []
         location = set(self.context.location)
+        correct_country_names = [u'The former Yugoslav Republic of Macedonia',
+                                 u'Czech Republic',
+                                 u'Kosovo (under UNSCR 1244/99)']
+
         for k, v in country_groups.items():
-           if set(v).issubset(location):
+            differences = set(v).difference(location)
+            if differences:
+                for country_name in correct_country_names:
+                    if country_name in differences:
+                        differences.remove(country_name)
+                if not differences:
+                   found_groups.append(k)
+            else:
                found_groups.append(k)
+
         for group in found_groups:
             if group in location:
                 continue
