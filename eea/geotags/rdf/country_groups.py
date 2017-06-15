@@ -39,7 +39,8 @@ COUNTRY_GROUPS = {
         u'Ireland',
         u'France',
         u'Slovakia',
-        u'Czech Republic',
+        u'Czechia',
+        # u'Czech Republic',
         u'Italy',
         u'Slovenia',
         u'Greece',
@@ -86,7 +87,7 @@ COUNTRY_GROUPS = {
          u'Greece',
          u'Finland'
     ],
-    
+
     'EU25': [
         u'Cyprus',
         u'Portugal',
@@ -103,7 +104,8 @@ COUNTRY_GROUPS = {
         u'Ireland',
         u'France',
         u'Slovakia',
-        u'Czech Republic',
+        u'Czechia',
+        # u'Czech Republic',
         u'Italy',
         u'Slovenia',
         u'Greece',
@@ -114,7 +116,7 @@ COUNTRY_GROUPS = {
         u'Hungary',
         u'Poland'
     ],
-    
+
     'EU27': [
         u'Cyprus',
         u'Portugal',
@@ -131,7 +133,8 @@ COUNTRY_GROUPS = {
         u'Ireland',
         u'France',
         u'Slovakia',
-        u'Czech Republic',
+        u'Czechia',
+        # u'Czech Republic',
         u'Italy',
         u'Slovenia',
         u'Greece',
@@ -161,7 +164,8 @@ COUNTRY_GROUPS = {
         u'Ireland',
         u'France',
         u'Slovakia',
-        u'Czech Republic',
+        u'Czechia',
+        # u'Czech Republic',
         u'Italy',
         u'Slovenia',
         u'Greece',
@@ -206,7 +210,8 @@ COUNTRY_GROUPS = {
         u'Belgium',
         u'Bulgaria',
         u'Croatia',
-        u'Czech Republic',
+        u'Czechia',
+        # u'Czech Republic',
         u'Cyprus',
         u'Denmark',
         u'Estonia',
@@ -241,7 +246,8 @@ COUNTRY_GROUPS = {
         u'Austria',
         u'Belgium',
         u'Bulgaria',
-        u'Czech Republic',
+        u'Czechia',
+        # u'Czech Republic',
         u'Cyprus',
         u'Denmark',
         u'Estonia',
@@ -277,7 +283,8 @@ COUNTRY_GROUPS = {
         u'Belgium',
         u'Bulgaria',
         u'Croatia',
-        u'Czech Republic',
+        u'Czechia',
+        # u'Czech Republic',
         u'Cyprus',
         u'Denmark',
         u'Estonia',
@@ -315,7 +322,8 @@ COUNTRY_GROUPS = {
         u'Belgium',
         u'Bulgaria',
         u'Croatia',
-        u'Czech Republic',
+        u'Czechia',
+        # u'Czech Republic',
         u'Cyprus',
         u'Denmark',
         u'Estonia',
@@ -346,12 +354,14 @@ COUNTRY_GROUPS = {
         u'Switzerland',
         u'United Kingdom',
         u'Turkey',
-        u'The former Yugoslav Republic of Macedonia'
+        # u'The former Yugoslav Republic of Macedonia',
+        u'Macedonia'
     ],
 
     'NMS10': [
         u'Cyprus',
-        u'Czech Republic',
+        u'Czechia',
+        # u'Czech Republic',
         u'Estonia',
         u'Hungary',
         u'Lithuania',
@@ -365,7 +375,8 @@ COUNTRY_GROUPS = {
     'NMS12': [
         u'Bulgaria',
         u'Cyprus',
-        u'Czech Republic',
+        u'Czechia',
+        # u'Czech Republic',
         u'Estonia',
         u'Hungary',
         u'Lithuania',
@@ -381,7 +392,8 @@ COUNTRY_GROUPS = {
         u'Bulgaria',
         u'Croatia',
         u'Cyprus',
-        u'Czech Republic',
+        u'Czechia',
+        # u'Czech Republic',
         u'Estonia',
         u'Hungary',
         u'Lithuania',
@@ -411,7 +423,8 @@ COUNTRY_GROUPS = {
         u'Bosnia and Herzegovina',
         u'Croatia',
         u'Montenegro',
-        u'The former Yugoslav Republic of Macedonia',
+        # u'The former Yugoslav Republic of Macedonia',
+        u'Macedonia',
         u'Serbia'
     ],
 
@@ -420,8 +433,10 @@ COUNTRY_GROUPS = {
         u'Bosnia and Herzegovina',
         u'Croatia',
         u'Montenegro',
-        u'Kosovo (under UNSCR 1244/99)',
+        u'Kosovo',
+        # u'Kosovo (under UNSCR 1244/99)',
         u'The former Yugoslav Republic of Macedonia',
+        u'Macedonia',
         u'Serbia'
     ],
 
@@ -429,10 +444,12 @@ COUNTRY_GROUPS = {
         u'Bosnia and Herzegovina',
         u'Croatia',
         u'Montenegro',
-        u'The former Yugoslav Republic of Macedonia',
+        u'Macedonia',
+        # u'The former Yugoslav Republic of Macedonia',
         u'Serbia',
         u'Slovenia',
-        u'Kosovo (under UNSCR 1244/99)'
+        u'Kosovo',
+        # u'Kosovo (under UNSCR 1244/99)'
 
     ]
 }
