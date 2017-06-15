@@ -3,6 +3,7 @@
 
 from eea.geotags.field.location import GeotagsFieldMixin
 from eea.geotags.interfaces import IGeoTags
+from eea.geotags.rdf.country_groups import COUNTRY_GROUPS
 from eea.rdfmarshaller.archetypes.fields import ATField2Surf
 from eea.rdfmarshaller.archetypes.interfaces import IATField2Surf
 from eea.rdfmarshaller.interfaces import ISurfSession
@@ -11,6 +12,7 @@ from zope.interface import implements, Interface
 
 import surf
 import rdflib
+
 
 class GeotagsField2Surf(ATField2Surf):
     """Adapter to express geotags field with RDF using Surf."""
@@ -60,7 +62,7 @@ class GeotagsField2Surf(ATField2Surf):
 
         output = []
         i = 0
-        import pdb; pdb.set_trace()
+
         for feature in geo.getFeatures():
             rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
 
@@ -91,7 +93,22 @@ class GeotagsField2Surf(ATField2Surf):
                 rdfp[surf.ns.OWL['sameAs']] = rdflib.URIRef(geonamesURI)
             rdfp.update()
             output.append(rdfp)
-
             i += 1
+
+        # 85617 add country groups to rdf output
+        contry_groups = COUNTRY_GROUPS
+        found_groups = []
+        location = set(self.context.location)
+        for k, v in contry_groups.items():
+           if set(v).issubset(location):
+               found_groups.append(k)
+        for group in found_groups:
+            if group in location:
+                continue
+            rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
+            rdfp[surf.ns.DCTERMS['title']] = group
+            rdfp[surf.ns.RDFS['label']] = group
+            rdfp.update()
+            output.append(rdfp)
 
         return output
