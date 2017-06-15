@@ -96,10 +96,10 @@ class GeotagsField2Surf(ATField2Surf):
             i += 1
 
         # 85617 add country groups to rdf output
-        contry_groups = COUNTRY_GROUPS
+        country_groups = COUNTRY_GROUPS
         found_groups = []
         location = set(self.context.location)
-        for k, v in contry_groups.items():
+        for k, v in country_groups.items():
            if set(v).issubset(location):
                found_groups.append(k)
         for group in found_groups:
@@ -108,7 +108,9 @@ class GeotagsField2Surf(ATField2Surf):
             rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
             rdfp[surf.ns.DCTERMS['title']] = group
             rdfp[surf.ns.RDFS['label']] = group
+            rdfp[surf.ns.DCTERMS['type']] = 'countries_group'
             rdfp.update()
             output.append(rdfp)
+            i += 1
 
         return output

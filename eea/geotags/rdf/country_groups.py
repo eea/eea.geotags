@@ -114,6 +114,7 @@ COUNTRY_GROUPS = {
         u'Hungary',
         u'Poland'
     ],
+    
     'EU27': [
         u'Cyprus',
         u'Portugal',
@@ -226,14 +227,14 @@ COUNTRY_GROUPS = {
         u'Norway',
         u'Poland',
         u'Portugal',
-        u'Romania'
+        u'Romania',
         u'Slovakia',
         u'Slovenia',
         u'Spain',
         u'Sweden',
         u'Switzerland',
         u'United Kingdom',
-        u'Turkey',
+        u'Turkey'
     ],
 
     'EEA32': [
@@ -261,7 +262,7 @@ COUNTRY_GROUPS = {
         u'Norway',
         u'Poland',
         u'Portugal',
-        u'Romania'
+        u'Romania',
         u'Slovakia',
         u'Slovenia',
         u'Spain',
@@ -297,7 +298,7 @@ COUNTRY_GROUPS = {
         u'Norway',
         u'Poland',
         u'Portugal',
-        u'Romania'
+        u'Romania',
         u'Slovakia',
         u'Slovenia',
         u'Spain',
@@ -336,7 +337,7 @@ COUNTRY_GROUPS = {
         u'Norway',
         u'Poland',
         u'Portugal',
-        u'Romania'
+        u'Romania',
         u'Serbia',
         u'Slovakia',
         u'Slovenia',
@@ -435,4 +436,3 @@ COUNTRY_GROUPS = {
 
     ]
 }
-
