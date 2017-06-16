@@ -110,9 +110,9 @@ class GeotagsField2Surf(ATField2Surf):
                     if country_name in differences:
                         differences.remove(country_name)
                 if not differences:
-                   found_groups.append(k)
+                    found_groups.append(k)
             else:
-               found_groups.append(k)
+                found_groups.append(k)
 
         for group in found_groups:
             if group in location:
