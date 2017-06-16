@@ -63,11 +63,18 @@ class GeotagsField2Surf(ATField2Surf):
         output = []
         i = 0
 
+        cty_names = {u'Macedonia': u'The former Yugoslav Republic of Macedonia',
+                     u'Czechia': u'Czech Republic',
+                     u'Kosovo': u'Kosovo (under UNSCR 1244/99)'}
+        cty_names_keys = cty_names.keys()
         for feature in geo.getFeatures():
             rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
 
             label = feature['properties']['title']
             description = feature['properties']['description']
+            if label in cty_names_keys:
+                label = cty_names[label]
+                description = label
             rdfp[surf.ns.RDFS['comment']] = description
 
             if label == description or not description:
@@ -99,10 +106,7 @@ class GeotagsField2Surf(ATField2Surf):
         country_groups = COUNTRY_GROUPS
         found_groups = []
         location = set(self.context.location)
-        correct_country_names = [u'The former Yugoslav Republic of Macedonia',
-                                 u'Czech Republic',
-                                 u'Kosovo (under UNSCR 1244/99)']
-
+        correct_country_names = cty_names.values()
         for k, v in country_groups.items():
             differences = set(v).difference(location)
             if differences:
@@ -115,10 +119,10 @@ class GeotagsField2Surf(ATField2Surf):
                 found_groups.append(k)
 
         for group in found_groups:
-            if group in location:
+            label = group[0]
+            if label in location:
                 continue
             rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
-            label = group[0]
             rdfp[surf.ns.DCTERMS['title']] = group[1]
             rdfp[surf.ns.RDFS['label']] = label
             rdfp[surf.ns.DCTERMS['type']] = 'countries_group'
