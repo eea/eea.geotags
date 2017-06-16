@@ -1,7 +1,7 @@
 """ country groups vocabularies """
 
 COUNTRY_GROUPS = {
-    'CA5': [
+    ('CA5', 'Central Asia'): [
         u'Kyrgyzstan',
         u'Kazakhstan',
         u'Tajikistan',
@@ -9,7 +9,7 @@ COUNTRY_GROUPS = {
         u'Uzbekistan'
     ],
 
-    'EN7': [
+    ('EN7', 'Eastern neighbours'): [
         u'Armenia',
         u'Azerbaijan',
         u'Belarus',
@@ -19,11 +19,11 @@ COUNTRY_GROUPS = {
         u'Ukraine'
     ],
 
-    'EFTA4': [
+    ('EFTA4', 'European Free Trade Association'): [
       u'Switzerland', u'Iceland', u'Liechtenstein', u'Norway'
     ],
 
-    'EU': [
+    ('EU', 'European Union'): [
         u'Cyprus',
         u'Portugal',
         u'Spain',
@@ -54,7 +54,7 @@ COUNTRY_GROUPS = {
         u'Romania'
     ],
 
-    'EU12': [
+    ('EU12', 'EU12'): [
         u'Belgium',
         u'Denmark',
         u'France',
@@ -69,7 +69,7 @@ COUNTRY_GROUPS = {
         u'United Kingdom',
     ],
 
-    'EU15': [
+    ('EU15', 'EU15'): [
          u'Portugal',
          u'Spain',
          u'Denmark',
@@ -87,7 +87,7 @@ COUNTRY_GROUPS = {
          u'Finland'
     ],
 
-    'EU25': [
+    ('EU25', 'EU25'): [
         u'Cyprus',
         u'Portugal',
         u'Spain',
@@ -115,7 +115,7 @@ COUNTRY_GROUPS = {
         u'Poland'
     ],
 
-    'EU27': [
+    ('EU27', 'EU27'): [
         u'Cyprus',
         u'Portugal',
         u'Spain',
@@ -145,7 +145,7 @@ COUNTRY_GROUPS = {
         u'Romania'
     ],
 
-    'EU28': [
+    ('EU28', 'EU28'): [
         u'Cyprus',
         u'Portugal',
         u'Spain',
@@ -176,7 +176,7 @@ COUNTRY_GROUPS = {
         u'Romania'
     ],
 
-    'EUN22': [
+    ('EUN22', 'EU neighbours and their neighbours'): [
         u'Armenia',
         u'Azerbaijan',
         u'Belarus',
@@ -201,7 +201,7 @@ COUNTRY_GROUPS = {
         u'Uzbekistan'
     ],
 
-    'EEA': [
+    ('EEA', 'EEA Members'): [
         u'Austria',
         u'Belgium',
         u'Bulgaria',
@@ -237,7 +237,7 @@ COUNTRY_GROUPS = {
         u'Turkey'
     ],
 
-    'EEA32': [
+    ('EEA32', 'EEA-32 Members'): [
         u'Austria',
         u'Belgium',
         u'Bulgaria',
@@ -272,7 +272,7 @@ COUNTRY_GROUPS = {
         u'Turkey',
     ],
 
-    'EEA33': [
+    ('EEA33', 'EEA-33 Members'): [
         u'Austria',
         u'Belgium',
         u'Bulgaria',
@@ -308,7 +308,7 @@ COUNTRY_GROUPS = {
         u'Turkey',
     ],
 
-    'EIONET': [
+    ('EIONET', 'Eionet'): [
         u'Albania',
         u'Austria',
         u'Bosnia and Herzegovina',
@@ -349,7 +349,7 @@ COUNTRY_GROUPS = {
         u'The former Yugoslav Republic of Macedonia',
     ],
 
-    'NMS10': [
+    ('NMS10', 'New Member States (10 countries)'): [
         u'Cyprus',
         u'Czech Republic',
         u'Estonia',
@@ -362,7 +362,7 @@ COUNTRY_GROUPS = {
         u'Slovakia'
     ],
 
-    'NMS12': [
+    ('NMS12', 'New Member States (12 countries)'): [
         u'Bulgaria',
         u'Cyprus',
         u'Czech Republic',
@@ -377,7 +377,7 @@ COUNTRY_GROUPS = {
         u'Slovakia'
     ],
 
-    'NMS13': [
+    ('NMS13', 'New Member States (13 countries)'): [
         u'Bulgaria',
         u'Croatia',
         u'Cyprus',
@@ -393,7 +393,7 @@ COUNTRY_GROUPS = {
         u'Slovakia'
     ],
 
-    'SN10': [
+    ('SN10', 'Southern neighbours'): [
         u'Algeria',
         u'Egypt',
         u'Israel',
@@ -406,7 +406,7 @@ COUNTRY_GROUPS = {
         u'Tunisia'
     ],
 
-    'WB6': [
+    ('WB6', 'West Balkan 6'): [
         u'Albania',
         u'Bosnia and Herzegovina',
         u'Croatia',
@@ -415,7 +415,7 @@ COUNTRY_GROUPS = {
         u'Serbia'
     ],
 
-    'WB7': [
+    ('WB7', 'West Balkan 7'): [
         u'Albania',
         u'Bosnia and Herzegovina',
         u'Croatia',
@@ -425,7 +425,7 @@ COUNTRY_GROUPS = {
         u'Serbia'
     ],
 
-    'YU': [
+    ('YU', 'Former republics of Yugoslavia'): [
         u'Bosnia and Herzegovina',
         u'Croatia',
         u'Montenegro',

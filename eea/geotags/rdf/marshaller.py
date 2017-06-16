@@ -118,9 +118,13 @@ class GeotagsField2Surf(ATField2Surf):
             if group in location:
                 continue
             rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
-            rdfp[surf.ns.DCTERMS['title']] = group
-            rdfp[surf.ns.RDFS['label']] = group
+            label = group[0]
+            rdfp[surf.ns.DCTERMS['title']] = group[1]
+            rdfp[surf.ns.RDFS['label']] = label
             rdfp[surf.ns.DCTERMS['type']] = 'countries_group'
+            uri = 'http://semantic.eea.europa.eu/factsheet.action?uri=' \
+                  'http://rdfdata.eionet.europa.eu/eea/countries/%s' % label
+            rdfp[surf.ns.OWL['sameAs']] = rdflib.URIRef(uri)
             rdfp.update()
             output.append(rdfp)
             i += 1
