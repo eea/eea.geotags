@@ -63,9 +63,9 @@ class GeotagsField2Surf(ATField2Surf):
         output = []
         i = 0
 
-        cty_names = {u'Macedonia': u'The former Yugoslav Republic of Macedonia',
+        cty_names = {u'Macedonia': u'Former Yugoslav Republic of Macedonia, the',
                      u'Czechia': u'Czech Republic',
-                     u'Kosovo': u'Kosovo (under UNSCR 1244/99)'}
+                     u'Kosovo': u'Kosovo (UNSCR 1244/99)'}
         cty_names_keys = cty_names.keys()
         for feature in geo.getFeatures():
             rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
