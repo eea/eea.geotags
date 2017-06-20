@@ -63,7 +63,8 @@ class GeotagsField2Surf(ATField2Surf):
         output = []
         i = 0
 
-        cty_names = {u'Macedonia': u'Former Yugoslav Republic of Macedonia, the',
+        cty_names = {u'Macedonia': u'Former Yugoslav Republic of'
+                                   u' Macedonia, the',
                      u'Czechia': u'Czech Republic',
                      u'Kosovo': u'Kosovo (UNSCR 1244/99)'}
         cty_names_keys = cty_names.keys()
@@ -117,17 +118,20 @@ class GeotagsField2Surf(ATField2Surf):
                     found_groups.append(k)
             else:
                 found_groups.append(k)
-
         for group in found_groups:
             label = group[0]
             if label in location:
                 continue
             rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
-            rdfp[surf.ns.DCTERMS['title']] = group[1]
-            rdfp[surf.ns.RDFS['label']] = label
+            title = group[1]
+            full_title = label + ' (' + title + ')'
+            rdfp[surf.ns.DCTERMS['title']] = full_title
+            rdfp[surf.ns.RDFS['label']] = full_title
+            rdfp[surf.ns.RDFS['comment']] = title + ': ' + \
+                                    ', '.join(country_groups[(label, title)])
             rdfp[surf.ns.DCTERMS['type']] = 'countries_group'
-            uri = 'http://semantic.eea.europa.eu/factsheet.action?uri=' \
-                  'http://rdfdata.eionet.europa.eu/eea/countries/%s' % label
+            rdfp[surf.ns.SKOS['notation']] = label
+            uri = 'http://rdfdata.eionet.europa.eu/eea/countries/%s' % label
             rdfp[surf.ns.OWL['sameAs']] = rdflib.URIRef(uri)
             rdfp.update()
             output.append(rdfp)
