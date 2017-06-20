@@ -68,10 +68,18 @@ class GeotagsField2Surf(ATField2Surf):
                      u'Czechia': u'Czech Republic',
                      u'Kosovo': u'Kosovo (UNSCR 1244/99)'}
         cty_names_keys = cty_names.keys()
+
+        country_groups = COUNTRY_GROUPS
+        country_groups_keys = country_groups.keys()
+        country_groups_keys_index = [ki[0] for ki in country_groups_keys]
         for feature in geo.getFeatures():
             rdfp = self.session.get_resource("#geotag%s" % i, SpatialThing)
 
             label = feature['properties']['title']
+            # do not add current countries_group locations as they
+            # will be added on rdf export when adding all of the country groups
+            if label in country_groups_keys_index:
+                continue
             description = feature['properties']['description']
             if label in cty_names_keys:
                 label = cty_names[label]
@@ -104,7 +112,6 @@ class GeotagsField2Surf(ATField2Surf):
             i += 1
 
         # 85617 add country groups to rdf output
-        country_groups = COUNTRY_GROUPS
         found_groups = []
         location = set(self.context.location)
         correct_country_names = cty_names.values()
