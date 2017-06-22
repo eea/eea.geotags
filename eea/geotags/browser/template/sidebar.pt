@@ -93,7 +93,7 @@
                     <div class="field">
 
                         <div tal:attributes="for string:$fieldName-groups"
-                                i18n:translate="" class='formHelp'>
+                                i18n:translate="" class="visualHidden formHelp">
                             <input type="checkbox" checked="checked" id="expand_countries"/>
                             <span i18n:translate="">Add all sub-items belonging to this group?</span>
                         </div>

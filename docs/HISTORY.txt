@@ -5,6 +5,9 @@ Changelog
 -----------------------
 * Change: force gmaps api to use english as map language
   [ichim-david refs #85616]
+* Feature: country group checkbox removed, all countries are now added
+  by default when a country group is selected
+  [alecghica refs #85765]
 
 8.4 - (2017-05-22)
 ------------------

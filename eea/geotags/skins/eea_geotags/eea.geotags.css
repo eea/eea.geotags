@@ -15,7 +15,7 @@
 }
 
 .visualHidden {
-  display: none;
+  display: none !important;
 }
 
 .input-block {
