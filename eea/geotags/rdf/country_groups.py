@@ -434,7 +434,7 @@ COUNTRY_GROUPS = {
         u'Slovenia',
         u'Kosovo (UNSCR 1244/99)'
     ],
-    (u'Pan-Europe', u'Pan-Europe'): [
+    (u'PANE', u'Pan-Europe'): [
         u'Cyprus',
         u'Estonia',
         u'Poland',
