@@ -1,6 +1,9 @@
 Changelog
 =========
 
+8.6.dev0 - (unreleased)
+-----------------------
+
 8.5 - (2017-06-26)
 ------------------
 * Change: force gmaps api to use english as map language
