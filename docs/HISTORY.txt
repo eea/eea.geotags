@@ -1,8 +1,8 @@
 Changelog
 =========
 
-8.5.dev0 - (unreleased)
------------------------
+8.5 - (2017-06-26)
+------------------
 * Change: force gmaps api to use english as map language
   [ichim-david refs #85616]
 * Feature: country group checkbox removed, all countries are now added
