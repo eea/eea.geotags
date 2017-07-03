@@ -3,6 +3,9 @@ Changelog
 
 8.6.dev0 - (unreleased)
 -----------------------
+* Bug fix: allow removing values from location field when passing
+  an empty value
+  [ichim-david refs #85616]
 
 8.5 - (2017-06-26)
 ------------------

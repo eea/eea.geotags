@@ -218,7 +218,9 @@ class GeotagsStringField(GeotagsFieldMixin, atapi.StringField):
         new_value = self.setTranslationJSON(instance, value, **kwargs)
         if new_value is None:
             new_value = self.setCanonicalJSON(instance, value, **kwargs)
-        if not new_value:
+        if not value:
+            return atapi.LinesField.set(self, instance, [], **kwargs)
+        elif not new_value:
             return
         tag = self.json2string(new_value)
         return atapi.StringField.set(self, instance, tag, **kwargs)
@@ -233,7 +235,9 @@ class GeotagsLinesField(GeotagsFieldMixin, atapi.LinesField):
         new_value = self.setTranslationJSON(instance, value, **kwargs)
         if new_value is None:
             new_value = self.setCanonicalJSON(instance, value, **kwargs)
-        if not new_value:
+        if not value:
+            return atapi.LinesField.set(self, instance, [], **kwargs)
+        elif not new_value:
             return
         tags = [tag for tag in self.json2list(new_value)]
         return atapi.LinesField.set(self, instance, tags, **kwargs)
