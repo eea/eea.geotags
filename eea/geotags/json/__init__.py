@@ -279,6 +279,7 @@ class GeoNamesJsonProvider(object):
         # Search mutator see json/adapter.py for example on how you can register
         # your own
         mutator = queryAdapter(self.context, IJsonProviderSearchMutator)
-        mutated_results = mutator(template)
+        if mutator:
+            mutated_results = mutator(template)
 
         return mutated_results
