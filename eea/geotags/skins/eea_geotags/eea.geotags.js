@@ -1,4 +1,4 @@
-/*global window, jQuery, google*/
+/*global window, jQuery, $, google*/
 
 (function() {
 
@@ -1079,9 +1079,12 @@
         var checkbox = jQuery('<input />', {
           type: 'radio', id: 'fcl-' + filter[0],
           value: filter[1],
-          name: 'feature-class',
-          checked: 'checked' ? filter[0] === 'All' : ''
-        }).appendTo(container);
+          name: 'feature-class'
+        });
+        if (filter[0] === 'All') {
+          checkbox.attr('checkbox', 'checked');
+        }
+        checkbox.appendTo(container);
         jQuery('<label />', {'for': 'fcl-' + filter[0], text: filter[1]}).appendTo(container);
         container.appendTo(parent_container);
 
