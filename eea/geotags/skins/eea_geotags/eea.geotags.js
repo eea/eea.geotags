@@ -33,8 +33,19 @@
         other: googlejson
       }
     };
-    feature.properties.title = googlejson.address_components[0].long_name;
-    feature.properties.description = googlejson.formatted_address;
+    var title = googlejson.address_components[0].long_name;
+    var description = googlejson.formatted_address;
+    var country_mappings = $.geocountrymapping;
+    $.each(country_mappings, function(k,v){
+        if (title.indexOf(k) !== -1 || description.indexOf(k) !== -1) {
+           title = title.replace(k, v);
+           description = description.replace(k, v);
+           return false;
+        }
+        return true;
+    });
+    feature.properties.title = title;
+    feature.properties.description = description;
     feature.properties.tags = googlejson.types;
 
     // Geometry
@@ -208,10 +219,18 @@
           self.options.basket.origJSON = jQuery.extend({}, self.options.basket.geojson);
           self.basket.geobasket(self.options.basket);
 
+          self.options.set_country_mapping();
+
         });
 
         // Plugin initialized
         self.initialized = true;
+      },
+      set_country_mapping: function() {
+          var self = this;
+          jQuery.getJSON(self.map.mapping_url,  function(data) {
+              jQuery.geocountrymapping = data;
+          });
       },
 
       handle_map_loaded: function() {
@@ -1713,6 +1732,7 @@
         }
 
       },
+
       initialize: function() {
         self.markers = [];
         self.info = new google.maps.InfoWindow({
