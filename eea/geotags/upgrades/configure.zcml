@@ -62,4 +62,18 @@
 
 
     </genericsetup:upgradeSteps>
+
+    <configure zcml:condition="installed eea.design">
+        <genericsetup:upgradeSteps
+                source="6.7"
+                destination="6.8"
+                profile="eea.geotags:default">
+
+            <genericsetup:upgradeStep
+                    title="Update EEA Countries custom name mappings"
+                    handler="eea.geotags.upgrades.evolve53.install_countries_map_vocabulary"
+            />
+
+        </genericsetup:upgradeSteps>
+    </configure>
 </configure>

@@ -15,10 +15,16 @@ def install_countries_map_vocabulary(context):
     countries_id = "countries_mapping"
     countries = {countries_id: (
         ("Czechia", "Czech Republic"),
-        ("Macedonia", "Macedonia (FYR)"),
+        ("Macedonia (ARYM)", "Former Yugoslav Republic of Macedonia, the"),
+        ("Macedonia (FYR)", "Former Yugoslav Republic of Macedonia, the"),
+        ("Macedonia (FYROM)", "Former Yugoslav Republic of Macedonia, the"),
+        ("Macedonia", "Former Yugoslav Republic of Macedonia, the"),
+        ("Macedonia", "Former Yugoslav Republic of Macedonia, the"),
+        ("Kosova (Kosovo)", "Kosovo (UNSCR 1244/99)"),
         ("Kosovo", "Kosovo (UNSCR 1244/99)")
     )}
-
+    if atvm.get(countries_id):
+        context.manage_delObjects('countries_mapping')
     if not atvm.get(countries_id):
         createSimpleVocabs(atvm, countries)
         atvm[countries_id].setTitle("EEA Custom Country Name Mappings")

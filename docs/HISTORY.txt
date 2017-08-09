@@ -3,6 +3,13 @@ Changelog
 
 8.7.dev0 - (unreleased)
 -----------------------
+* Upgrade step: ONLY in EEA context  Within "Plone > Site setup > Add-ons"
+  click on button available for eea.geotags available
+  [ichimdav #85765]
+* Feature: mutate results also given by google search not just geonames,
+  while updating our countries_mapping vocabulary with values that need to
+  be changed
+  [ichimdav #85765]
 * Bug fix W3C compliance modifications
   [valipod refs #86295]
 * Upgrade step: Remove customized views at **ZMI > portal_skins/custom:
