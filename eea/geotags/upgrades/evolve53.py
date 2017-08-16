@@ -24,7 +24,7 @@ def install_countries_map_vocabulary(context):
         ("Kosovo", "Kosovo (UNSCR 1244/99)")
     )}
     if atvm.get(countries_id):
-        context.manage_delObjects('countries_mapping')
+        atvm.manage_delObjects('countries_mapping')
     if not atvm.get(countries_id):
         createSimpleVocabs(atvm, countries)
         atvm[countries_id].setTitle("EEA Custom Country Name Mappings")
