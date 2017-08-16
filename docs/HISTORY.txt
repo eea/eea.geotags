@@ -1,6 +1,9 @@
 Changelog
 =========
 
+8.8.dev0 - (unreleased)
+-----------------------
+
 8.7 - (2017-08-16)
 ------------------
 * Upgrade step: ONLY in EEA context  Within "Plone > Site setup > Add-ons"
