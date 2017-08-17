@@ -3,8 +3,11 @@ Changelog
 
 8.8.dev0 - (unreleased)
 -----------------------
+* Upgrade step: Remove customized view at **ZMI > portal_skins/custom:
+  eea.geotags
+  [valipod refs #87450]
 * Bugfix fix js syntax that broke the geotag widget
- [valipod refs #87450]
+  [valipod refs #87450]
 
 8.7 - (2017-08-16)
 ------------------
