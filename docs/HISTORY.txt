@@ -3,6 +3,8 @@ Changelog
 
 8.8.dev0 - (unreleased)
 -----------------------
+* Bugfix fix js syntax that broke the geotag widget
+ [valipod refs #87450]
 
 8.7 - (2017-08-16)
 ------------------

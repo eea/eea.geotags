@@ -93,7 +93,7 @@ Usage:
           },
           map: {
             json: json,
-            mapping_url: '$country_mapping';
+            mapping_url: '$country_mapping',
             fieldName: name
           },
           basket: {
