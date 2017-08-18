@@ -8,6 +8,8 @@ Changelog
   [valipod refs #87450]
 * Bug fix: fixed js syntax that broke the geotag widget
   [valipod refs #87450]
+* Feature: improved display of country names, especially for Czechia, Kosovo and Macedonia
+  [alecghica refs #85765]
 
 8.7 - (2017-08-16)
 ------------------

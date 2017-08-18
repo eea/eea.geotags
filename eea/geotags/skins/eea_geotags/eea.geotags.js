@@ -1217,6 +1217,22 @@
           });
         }
 
+        var country_mappings = $.geocountrymapping;
+        $.each(country_mappings, function(k,v){
+            if (title.indexOf(k) !== -1 || subtitle.indexOf(k) !== -1) {
+               if (k == 'Kosovo' && (title.indexOf('UNSCR 1244/99') !== -1 || subtitle.indexOf('UNSCR 1244/99') !== -1)) {
+                 return false;
+               } else {
+                 title = title.replace(k, v);
+                 subtitle = subtitle.replace(k, v);
+                 return false;
+               }
+            }
+            return true;
+        });
+        self.options.point.properties.title = title;
+        self.options.point.properties.description = subtitle;
+
         var template = jQuery(self.options.template);
         jQuery('.title', template).text(title);
         jQuery('.subtitle', template).text(subtitle);
@@ -1802,4 +1818,3 @@
 if (window.EEAGeotags === undefined) {
   window.EEAGeotags = {'version': '1.0'};
 }
-
