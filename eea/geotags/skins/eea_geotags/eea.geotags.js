@@ -1219,6 +1219,11 @@
 
         var country_mappings = $.geocountrymapping;
         $.each(country_mappings, function(k,v){
+            if (title == 'Macedonia' && subtitle == 'Macedonia') {
+               title = 'Former Yugoslav Republic of Macedonia, the';
+               subtitle = 'Former Yugoslav Republic of Macedonia, the';
+               return false;
+            };
             if (title.indexOf(k) !== -1 || subtitle.indexOf(k) !== -1) {
                if (k == 'Kosovo' && (title.indexOf('UNSCR 1244/99') !== -1 || subtitle.indexOf('UNSCR 1244/99') !== -1)) {
                  return false;
