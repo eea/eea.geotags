@@ -37,10 +37,13 @@
     var description = googlejson.formatted_address;
     var country_mappings = $.geocountrymapping;
     $.each(country_mappings, function(k,v){
+        if (k == 'Macedonia') {
+          return true;
+        }
         if (title.indexOf(k) !== -1 || description.indexOf(k) !== -1) {
-           title = title.replace(k, v);
-           description = description.replace(k, v);
-           return false;
+          title = title.replace(k, v);
+          description = description.replace(k, v);
+          return false;
         }
         return true;
     });
@@ -1219,18 +1222,15 @@
 
         var country_mappings = $.geocountrymapping;
         $.each(country_mappings, function(k,v){
-            if (title == 'Macedonia' && subtitle == 'Macedonia') {
-               title = 'Former Yugoslav Republic of Macedonia, the';
-               subtitle = 'Former Yugoslav Republic of Macedonia, the';
-               return false;
-            };
             if (title.indexOf(k) !== -1 || subtitle.indexOf(k) !== -1) {
                if (k == 'Kosovo' && (title.indexOf('UNSCR 1244/99') !== -1 || subtitle.indexOf('UNSCR 1244/99') !== -1)) {
-                 return false;
+                   return false;
+               } else if (k.indexOf('Macedonia') !== -1 && subtitle.indexOf('Greece') !== -1) {
+                   return false;
                } else {
-                 title = title.replace(k, v);
-                 subtitle = subtitle.replace(k, v);
-                 return false;
+                   title = title.replace(k, v);
+                   subtitle = subtitle.replace(k, v);
+                   return false;
                }
             }
             return true;

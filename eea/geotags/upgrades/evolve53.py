@@ -18,6 +18,7 @@ def install_countries_map_vocabulary(context):
         ("Macedonia (ARYM)", "Former Yugoslav Republic of Macedonia, the"),
         ("Macedonia (FYR)", "Former Yugoslav Republic of Macedonia, the"),
         ("Macedonia (FYROM)", "Former Yugoslav Republic of Macedonia, the"),
+        ("Macedonia", "Former Yugoslav Republic of Macedonia, the"),
         ("Kosova (Kosovo)", "Kosovo (UNSCR 1244/99)"),
         ("Kosovo", "Kosovo (UNSCR 1244/99)")
     )}
