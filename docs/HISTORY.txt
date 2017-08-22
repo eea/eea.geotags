@@ -1,6 +1,9 @@
 Changelog
 =========
 
+8.9.dev0 - (unreleased)
+-----------------------
+
 8.8 - (2017-08-22)
 ------------------
 * Upgrade step: Remove customized view at **ZMI > portal_skins/custom:
