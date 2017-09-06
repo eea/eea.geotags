@@ -15,7 +15,7 @@ COUNTRY_GROUPS = {
         u'Belarus',
         u'Georgia',
         u'Moldova',
-        u'Russian Federation',
+        u'Russia',
         u'Ukraine'
     ],
 
@@ -192,7 +192,7 @@ COUNTRY_GROUPS = {
         u'Morocco',
         u'Moldova',
         u'Palestine',
-        u'Russian Federation',
+        u'Russia',
         u'Syria',
         u'Tajikistan',
         u'Turkmenistan',
@@ -481,7 +481,7 @@ COUNTRY_GROUPS = {
         u'Monaco',
         u'Montenegro',
         u'Moldova',
-        u'Russian Federation',
+        u'Russia',
         u'San Marino',
         u'Serbia',
         u'Tajikistan',

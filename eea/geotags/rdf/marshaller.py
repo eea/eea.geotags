@@ -66,7 +66,6 @@ class GeotagsField2Surf(ATField2Surf):
         cty_names = {u'Macedonia': u'Former Yugoslav Republic of'
                                    u' Macedonia, the',
                      u'Czechia': u'Czech Republic',
-                     u'Russia': u'Russian Federation',
                      u'Kosovo': u'Kosovo (UNSCR 1244/99)'}
         cty_names_keys = cty_names.keys()
 

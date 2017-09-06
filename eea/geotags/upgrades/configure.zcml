@@ -1,7 +1,7 @@
-<configure
-        xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
-        xmlns:zcml="http://namespaces.zope.org/zcml"
-        i18n_domain="eea">
+<configure xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+           i18n_domain="eea">
 
     <genericsetup:upgradeSteps
             source="*"
@@ -48,6 +48,18 @@
                     />
 
         </genericsetup:upgradeSteps>
+
+        <genericsetup:upgradeSteps
+                source="6.8"
+                destination="6.9"
+                profile="eea.geotags:default">
+
+            <genericsetup:upgradeStep
+                    title="Migrate wrong country names and remove country groups"
+                    handler="eea.geotags.upgrades.evolve69.migrate_country_names"
+                    />
+
+        </genericsetup:upgradeSteps>
     </configure>
 
     <genericsetup:upgradeSteps
@@ -76,4 +88,10 @@
 
         </genericsetup:upgradeSteps>
     </configure>
+
+    <browser:page for="eea.geotags.interfaces.IGeoTaggable"
+                  name="eea.geotags.migrate_country_names"
+                  class=".evolve69.MigrateCountryNames"
+                  permission="cmf.ModifyPortalContent" />
+
 </configure>

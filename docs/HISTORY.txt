@@ -3,6 +3,16 @@ Changelog
 
 8.9.dev0 - (unreleased)
 -----------------------
+* Upgrade step: "Plone > Site setup > Add-ons" upgrade eea.geotags
+  [alecghica refs #87533]
+* Feature: added upgrade script to update wrong country names and to remove country groups stored under location field
+  [alecghica refs #87533]
+* Upgrade step: run upgrade country names script for each content type at a time, e.g. /www/@@eea.geotags.migrate_country_names?ctype=Highlight
+  [alecghica refs #87533]
+* Change: fixed country names under 'Pan-Europe' country groups
+  [alecghica refs #85765]
+* Change: removed normalization of "Russia" with "Russian Federation"
+  [alecghica refs #85765]
 
 8.8 - (2017-08-22)
 ------------------
