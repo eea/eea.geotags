@@ -7,9 +7,17 @@ from zope.component import queryMultiAdapter
 from Products.Five.browser import BrowserView
 from Products.CMFCore.utils import getToolByName
 from eea.geotags.rdf.country_groups import COUNTRY_GROUPS
-from Products.EEAPloneAdmin.browser.migration_helper_data import countryDicts
+try:
+    from Products.EEAPloneAdmin.browser.migration_helper_data import (
+        countryDicts,
+    )
+except ImportError:
+    def countryDicts():
+        """ EEAPloneAdmin not installed """
+        return {}
 
 logger = logging.getLogger(__name__)
+
 
 def create_obj_uri(obj):
     """ """
@@ -21,12 +29,14 @@ def create_obj_uri(obj):
         pub_url = portalUrl + obj_url[3:]
     return pub_url
 
+
 def set_location_field(obj, new_geotags, ping_cr_view):
     """ """
     loc_field = obj.getField('location')
     loc_field.set(obj, json.dumps(new_geotags))
     obj.reindexObject(idxs=['geotags', 'location'])
     ping_cr_view(create_obj_uri(obj))
+
 
 def check_countries_from_grp(grp, features, country_groups_data):
     """ """
@@ -42,6 +52,7 @@ def check_countries_from_grp(grp, features, country_groups_data):
                 break
             missing_countries[country] = True
     return missing_countries
+
 
 def migrate_country_names(context, content_type=None):
     """ migrate wrong country names and remove country groups
@@ -69,7 +80,7 @@ def migrate_country_names(context, content_type=None):
         'Kosovo': 'Kosovo (UNSCR 1244/99)'
     }
 
-    # create the country groups    
+    # create the country groups
     country_groups = COUNTRY_GROUPS
     country_groups_vocab = ['EEA32', 'EEA33', 'EFTA4', 'EU15',
         'EU25', 'EU27', 'EU28', 'Pan-Europe']
@@ -103,7 +114,7 @@ def migrate_country_names(context, content_type=None):
             continue
         features = geotags.get('features')
 
-        # detect country name containing "Russian Federation"        
+        # detect country name containing "Russian Federation"
         for feature in features:
             title = feature['properties']['title']
             description = feature['properties']['description']
@@ -168,7 +179,7 @@ def migrate_country_names(context, content_type=None):
                     update_detected = True
                     count_countries_detected += 1
                     obj_with_bad_country_name[obj_uri] = True
-        
+
         # detect country group assigned
         features_to_remove = []
         features_to_be_added = []
@@ -226,4 +237,4 @@ class MigrateCountryNames(BrowserView):
             return "Done!"
         else:
             return 'Please add "ctype" parameter!'
-        
+
