@@ -9,6 +9,8 @@ Changelog
   [alecghica refs #87533]
 * Upgrade step: run upgrade country names script for each content type at a time, e.g. /www/@@eea.geotags.migrate_country_names?ctype=Highlight
   [alecghica refs #87533]
+* Upgrade step: remove eea.geotags.js from custom
+  [alecghica refs #87533]
 * Change: fixed country names under 'Pan-Europe' country groups
   [alecghica refs #85765]
 * Change: removed normalization of "Russia" with "Russian Federation"
