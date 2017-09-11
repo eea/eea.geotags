@@ -1,8 +1,8 @@
 Changelog
 =========
 
-8.9.dev0 - (unreleased)
------------------------
+8.9 - (2017-09-11)
+------------------
 * Upgrade step: "Plone > Site setup > Add-ons" upgrade eea.geotags
   [alecghica refs #87533]
 * Feature: added upgrade script to update wrong country names and to remove country groups stored under location field
