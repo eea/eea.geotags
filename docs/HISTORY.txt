@@ -3,6 +3,8 @@ Changelog
 
 9.0.dev0 - (unreleased)
 -----------------------
+* Change: Remove Sphinx generated documentation
+  [petchesi-iulian refs #88212]
 
 8.9 - (2017-09-11)
 ------------------
