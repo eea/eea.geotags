@@ -34,7 +34,10 @@ def set_location_field(obj, new_geotags, ping_cr_view):
     """ """
     loc_field = obj.getField('location')
     loc_field.set(obj, json.dumps(new_geotags))
-    obj.reindexObject(idxs=['geotags', 'location'])
+    try:
+        obj.reindexObject(idxs=['geotags', 'location'])
+    except TypeError, err:
+        logger.info("Error reindex object: %s" % obj.absolute_url())
     ping_cr_view(create_obj_uri(obj))
 
 
@@ -91,7 +94,43 @@ def migrate_country_names(context, content_type=None):
             continue
         if gr[0] in country_groups_vocab:
             country_groups_data[gr[0]] = country_groups[gr]
-
+    country_groups_data[u'EU32'] = [
+        u'Cyprus',
+        u'Portugal',
+        u'Spain',
+        u'Malta',
+        u'Denmark',
+        u'United Kingdom',
+        u'Sweden',
+        u'Netherlands',
+        u'Austria',
+        u'Belgium',
+        u'Germany',
+        u'Luxembourg',
+        u'Ireland',
+        u'France',
+        u'Slovakia',
+        u'Czech Republic',
+        u'Italy',
+        u'Slovenia',
+        u'Greece',
+        u'Croatia',
+        u'Estonia',
+        u'Latvia',
+        u'Lithuania',
+        u'Finland',
+        u'Hungary',
+        u'Bulgaria',
+        u'Poland',
+        u'Romania',
+        u'Switzerland',
+        u'Iceland',
+        u'Liechtenstein',
+        u'Norway',
+        u'Turkey',
+    ]
+    
+    correct_macedonia = 'Former Yugoslav Republic of Macedonia, the'
     total_brains_number = len(brains)
     logger.info("Start checking %s objects." % total_brains_number)
     obj_with_groups = {}
@@ -105,9 +144,9 @@ def migrate_country_names(context, content_type=None):
     for brain in brains:
         count_progress += 1
         update_detected = False
+        
         obj = brain.getObject()
         obj_uri = obj.absolute_url()
-
         anno = getattr(obj, '__annotations__', {})
         geotags = anno.get('eea.geotags.tags')
         if not geotags:
@@ -144,8 +183,15 @@ def migrate_country_names(context, content_type=None):
                         continue
                     if country == "Macedonia" and 'Macedonia (FYROM)' in title:
                         continue
-                    if country == "Macedonia" and 'Former Yugoslav Republic of Macedonia, the' in title:
+                    if country == "Macedonia" and 'Former Yugoslav Republic of Macedonia, the' == title:
                         continue
+                    if country == "Macedonia" and 'Yugoslav' in title:
+                        if title != correct_macedonia:
+                            feature['properties']['title'] = correct_macedonia
+                            update_detected = True
+                            count_countries_detected += 1
+                            obj_with_bad_country_name[obj_uri] = True
+                            continue
                     if country == "Macedonia" and "Greece" in description:
                         continue
                     if country == "Kosovo" and 'Kosovo (UNSCR 1244/99)' in title:
@@ -166,8 +212,15 @@ def migrate_country_names(context, content_type=None):
                         continue
                     if country == "Macedonia" and 'Macedonia (FYROM)' in description:
                         continue
-                    if country == "Macedonia" and 'Former Yugoslav Republic of Macedonia, the' in description:
+                    if country == "Macedonia" and 'Former Yugoslav Republic of Macedonia, the' == description:
                         continue
+                    if country == "Macedonia" and 'Yugoslav' in description:
+                        if description != correct_macedonia:
+                            feature['properties']['description'] = correct_macedonia
+                            update_detected = True
+                            count_countries_detected += 1
+                            obj_with_bad_country_name[obj_uri] = True
+                            continue
                     if country == "Macedonia" and "Greece" in description:
                         continue
                     if country == "Kosovo" and 'Kosovo (UNSCR 1244/99)' in description:
@@ -185,7 +238,9 @@ def migrate_country_names(context, content_type=None):
         features_to_be_added = []
         for grp in country_groups_data.keys():
             for feature in features:
-                title = feature['properties']['title']
+                _u = lambda t: t.decode('UTF-8', 'replace') if isinstance(t, str) else t 
+                title = _u(feature['properties']['title'])
+
                 if grp in title:
                     update_detected = True
                     count_groups_detected += 1
@@ -197,6 +252,7 @@ def migrate_country_names(context, content_type=None):
                         features_to_be_added.append(countryDicts()[country])
                     # mark country group to be removed
                     features_to_remove.append(feature)
+                        
         for feature in features_to_remove:
             features.remove(feature)
         for feature in features_to_be_added:
@@ -237,4 +293,4 @@ class MigrateCountryNames(BrowserView):
             return "Done!"
         else:
             return 'Please add "ctype" parameter!'
-
+            
