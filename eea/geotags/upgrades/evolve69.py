@@ -38,6 +38,7 @@ def set_location_field(obj, new_geotags, ping_cr_view):
         obj.reindexObject(idxs=['geotags', 'location'])
     except TypeError, err:
         logger.info("Error reindex object: %s" % obj.absolute_url())
+        logger.error(err)
     ping_cr_view(create_obj_uri(obj))
 
 
