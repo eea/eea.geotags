@@ -145,7 +145,11 @@ def migrate_country_names(context, content_type=None):
         count_progress += 1
         update_detected = False
         
-        obj = brain.getObject()
+        try:
+            obj = brain.getObject()
+        except Exception as err:
+            logger.exception("%s - %s", brain.getURL(), err)
+            continue
         obj_uri = obj.absolute_url()
         anno = getattr(obj, '__annotations__', {})
         geotags = anno.get('eea.geotags.tags')
