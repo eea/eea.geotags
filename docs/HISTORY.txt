@@ -1,8 +1,13 @@
 Changelog
 =========
 
-9.1.dev0 - (unreleased)
------------------------
+9.2 - (2017-12-21)
+------------------
+* Bug fix: fixed the geotags upgrade script
+  [irina-botez refs #90606]
+
+9.1 - (2017-12-12)
+------------------
 * Change: Replace eeacms/zptlint with eeacms/plone-test:4 zptlint
   [avoinea refs #90415]
 
