@@ -123,22 +123,10 @@ Usage:
 
         // Display map
         jQuery(document).ready(function(){
-            useTimeout = false;
-            if (jQuery.browser.msie){
-                if (parseInt(jQuery.browser.version, 10) == 8){
-                    // If the browser is IE 8 we delay the init of the preview, otherwise we get an error from google maps main.js
-                    useTimeout = true;
-                }
-            }
-            if (useTimeout){
-                setTimeout(function(){jQuery('#' + name + '-geopreview').geopreview({fieldName: name,json: geojson})}, 10000);
-            }
-            else{
-                jQuery('#' + name + '-geopreview').geopreview({
-                    fieldName: name,
-                    json: geojson
-                });
-            }
+            jQuery('#' + name + '-geopreview').geopreview({
+                fieldName: name,
+                json: geojson
+            });
         });
       })();
     "></script>

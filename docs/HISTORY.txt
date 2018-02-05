@@ -3,6 +3,8 @@ Changelog
 
 9.2 - (2017-12-21)
 ------------------
+* Change: removed jQuery.browser usage as we no longer support IE 8
+  [ichim-david refs #91577]
 * Bug fix: fixed the geotags upgrade script
   [irina-botez refs #90606]
 
