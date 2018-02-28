@@ -1,12 +1,17 @@
 Changelog
 =========
 
-9.2 - (2017-12-21)
-------------------
+9.3.dev0 - (unreleased)
+-----------------------
+* Change: fixed issues reported for assessment edit pages
+  [ichim-david refs #91590]
 * Change: added jQuery clicktoggle method as toggle is deprecated
   [ichim-david refs #91577]
 * Change: removed jQuery.browser usage as we no longer support IE 8
   [ichim-david refs #91577]
+
+9.2 - (2017-12-21)
+------------------
 * Bug fix: fixed the geotags upgrade script
   [irina-botez refs #90606]
 
