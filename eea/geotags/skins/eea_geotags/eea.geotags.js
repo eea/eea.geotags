@@ -1,7 +1,19 @@
 /*global window, jQuery, $, google*/
 
 (function() {
-
+    $.fn.clicktoggle = function(a, b) {
+        return this.each(function() {
+            var clicked = false;
+            $(this).click(function() {
+                if (clicked) {
+                    clicked = false;
+                    return b.apply(this, arguments);
+                }
+                clicked = true;
+                return a.apply(this, arguments);
+            });
+        });
+    };
   jQuery.geoevents = {
     select_point: 'geo-event-select-point',
     select_marker: 'geo-event-select-marker',
@@ -1084,7 +1096,7 @@
 
       toggle_filters_area_visibility: function() {
 
-        self.fcl_filters.toggle(function() {
+        self.fcl_filters.clicktoggle(function() {
           self.filters_ctl.slideDown('fast');
           self.slide_ui_icons("down");
         }, function() {
