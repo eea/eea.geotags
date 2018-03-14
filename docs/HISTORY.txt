@@ -1,8 +1,8 @@
 Changelog
 =========
 
-9.3.dev0 - (unreleased)
------------------------
+9.3 - (2018-03-14)
+------------------
 * Change: fixed issues reported for assessment edit pages
   [ichim-david refs #91590]
 * Change: added jQuery clicktoggle method as toggle is deprecated
