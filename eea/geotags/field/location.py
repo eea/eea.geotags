@@ -8,8 +8,10 @@ from zope.i18n import translate
 from zope.component import queryAdapter
 from zope.interface import noLongerProvides, alsoProvides
 from Products.Archetypes import atapi
-from Products.Archetypes import PloneMessageFactory as _
+
 from eea.geotags.interfaces import IGeoTags, IGeoTagged, IJsonProvider
+from eea.geotags.config import _
+
 logger = logging.getLogger('eea.geotags.field')
 
 

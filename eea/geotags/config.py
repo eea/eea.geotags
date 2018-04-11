@@ -1,5 +1,7 @@
 """ Configure
 """
+from Products.CMFPlone import PloneMessageFactory as _
+
 PROJECTNAME = 'eea.geotags'
 ADD_CONTENT_PERMISSION = "Add portal content"
 

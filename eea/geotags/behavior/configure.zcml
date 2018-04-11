@@ -1,0 +1,19 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:z3c="http://namespaces.zope.org/z3c"
+  xmlns:plone="http://namespaces.plone.org/plone">
+
+  <plone:behavior
+    title="eea.geotags - Single field"
+    description="EEA Geotags"
+    provides=".geotags.ISingleGeoTag"
+  />
+
+  <z3c:widgetTemplate
+    mode="input"
+    widget="eea.geotags.widget.location.IGeotagSingleField"
+    layer="z3c.form.interfaces.IFormLayer"
+    template="input.pt"
+  />
+
+</configure>
