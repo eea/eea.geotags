@@ -85,6 +85,7 @@ Usage:
 
         var settings = {
           template: dialog,
+          fieldName: name,
           sidebar: {
             json: json,
             template: sidebar,

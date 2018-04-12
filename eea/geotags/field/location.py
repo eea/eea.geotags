@@ -15,6 +15,81 @@ from eea.geotags.config import _
 logger = logging.getLogger('eea.geotags.field')
 
 
+def json2list( geojson, attr='description'):
+    """ Util function to extract human readable geo tags from geojson struct
+    """
+    if not geojson:
+        return
+
+    if not isinstance(geojson, dict):
+        try:
+            value = json.loads(geojson)
+        except Exception, err:
+            logger.exception(err)
+            return
+    else:
+        value = geojson
+
+    features = value.get('features', [])
+    if not features:
+        return
+
+    for feature in features:
+        properties = feature.get('properties', {})
+        data = properties.get(attr, properties.get('description', ''))
+        if data:
+            yield data
+        else:
+            yield properties.get('title', '')
+
+
+def json2string(geojson, attr='description'):
+    """ Util method to extract human readable geo tag from geojson struct
+    """
+    items = json2list(geojson, attr)
+    for item in items:
+        return item
+    return ''
+
+
+def get_json(context):
+    """ Get GeoJSON tags from instance annotations using IGeoTags adapter
+    """
+    geo = queryAdapter(context, IGeoTags)
+    if not geo:
+        return ''
+    return json.dumps(geo.tags)
+
+
+def set_json(context, value):
+    """ Set GeoJSON tags to instance annotations using IGeoTags adapter
+    """
+    geo = queryAdapter(context, IGeoTags)
+    if not geo:
+        return
+
+    if not isinstance(value, dict) and value:
+        try:
+            value = json.loads(value)
+        except Exception, err:
+            logger.exception(err)
+            return
+
+    # remove IGeoTagged if all geotags are removed or provide it
+    # if geotags are added
+    if not value:
+        return
+
+    value_len = len(value.get('features'))
+    if not value_len:
+        if IGeoTagged.providedBy(context):
+            noLongerProvides(context, IGeoTagged)
+    else:
+        if not IGeoTagged.providedBy(context):
+            alsoProvides(context, IGeoTagged)
+    geo.tags = value
+
+
 class GeotagsFieldMixin(object):
     """ Add methods to get/set json tags
     """
@@ -24,43 +99,16 @@ class GeotagsFieldMixin(object):
         """
         return isinstance(self, atapi.LinesField)
 
-    def getJSON(self, instance, **kwargs):
-        """ Get GeoJSON tags from instance annotations using IGeoTags adapter
-        """
-        geo = queryAdapter(instance, IGeoTags)
-        if not geo:
-            return ''
-        return json.dumps(geo.tags)
+    @staticmethod
+    def getJSON(instance):
+        return get_json(instance)
 
-    def setJSON(self, instance, value, **kwargs):
-        """ Set GeoJSON tags to instance annotations using IGeoTags adapter
-        """
-        geo = queryAdapter(instance, IGeoTags)
-        if not geo:
-            return
+    @staticmethod
+    def setJSON(instance, value):
+        return set_json(instance, value)
 
-        if not isinstance(value, dict) and value:
-            try:
-                value = json.loads(value)
-            except Exception, err:
-                logger.exception(err)
-                return
-
-        # remove IGeoTagged if all geotags are removed or provide it
-        # if geotags are added
-        if not value:
-            return
-
-        value_len = len(value.get('features'))
-        if not value_len:
-            if IGeoTagged.providedBy(instance):
-                noLongerProvides(instance, IGeoTagged)
-        else:
-            if not IGeoTagged.providedBy(instance):
-                alsoProvides(instance, IGeoTagged)
-        geo.tags = value
-
-    def json2items(self, geojson, key="title", val="description"):
+    @staticmethod
+    def json2items( geojson, key="title", val="description"):
         """ Util method to extract dict like items geo tags from geojson struct
         """
         if not geojson:
@@ -85,45 +133,10 @@ class GeotagsFieldMixin(object):
             val = properties.get(val, properties.get('description', ''))
             yield (key, val)
 
-    def json2list(self, geojson, attr='description'):
-        """ Util method to extract human readable geo tags from geojson struct
-        """
-        if not geojson:
-            return
-
-        if not isinstance(geojson, dict):
-            try:
-                value = json.loads(geojson)
-            except Exception, err:
-                logger.exception(err)
-                return
-        else:
-            value = geojson
-
-        features = value.get('features', [])
-        if not features:
-            return
-
-        for feature in features:
-            properties = feature.get('properties', {})
-            data = properties.get(attr, properties.get('description', ''))
-            if data:
-                yield data
-            else:
-                yield properties.get('title', '')
-
-    def json2string(self, geojson, attr='description'):
-        """ Util method to extract human readable geo tag from geojson struct
-        """
-        items = self.json2list(geojson, attr)
-        for item in items:
-            return item
-        return ''
-
     def validate_required(self, instance, value, errors):
         """ Validate
         """
-        value = [item for item in self.json2list(value)]
+        value = [item for item in json2list(value)]
         if not value:
             request = aq_get(instance, 'REQUEST')
             label = self.widget.Label(instance)
@@ -137,7 +150,8 @@ class GeotagsFieldMixin(object):
             return error
         return None
 
-    def convert(self, instance, value):
+    @staticmethod
+    def convert(instance, value):
         """ Convert to a structure that can be deserialized to a dict
         """
         if isinstance(value, dict):
@@ -221,10 +235,10 @@ class GeotagsStringField(GeotagsFieldMixin, atapi.StringField):
         if new_value is None:
             new_value = self.setCanonicalJSON(instance, value, **kwargs)
         if not value:
-            return atapi.LinesField.set(self, instance, [], **kwargs)
+            return atapi.StringField.set(self, instance, [], **kwargs)
         elif not new_value:
             return
-        tag = self.json2string(new_value)
+        tag = json2string(new_value)
         return atapi.StringField.set(self, instance, tag, **kwargs)
 
 
@@ -241,5 +255,5 @@ class GeotagsLinesField(GeotagsFieldMixin, atapi.LinesField):
             return atapi.LinesField.set(self, instance, [], **kwargs)
         elif not new_value:
             return
-        tags = [tag for tag in self.json2list(new_value)]
+        tags = [tag for tag in json2list(new_value)]
         return atapi.LinesField.set(self, instance, tags, **kwargs)

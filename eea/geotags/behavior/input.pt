@@ -11,19 +11,21 @@
   id view/id;
   label view/label;
   fieldName view/name;
+  api_key view/api_key;
   ">
-
   <tal:google condition="python:'schemata_edit' not in context.REQUEST.URL">
-    <script type="text/javascript" src="https://maps.google.com/maps/api/js?key={api_key}&amp;sensor=true&amp;language=en"></script>
+    <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=${api_key}&amp;language=en"></script>
   </tal:google>
   <div id="${id}" title="Edit ${label}"></div>
   <textarea name="${fieldName}" style="display: none" rows="10" title="${label}">${geojson}</textarea>
   <div id="${id}-geopreview"></div>
   <input type="button" name="edit" i18n:attributes="value" value="Edit" id="${id}-edit" class="standardButton input-block" />
   <script type="text/javascript">
+
+    // TODO: CTRL + Scroll to zoom maps
     (function () {
       var id = '${id}';
-      var name = '${fieldName}';
+      var name = '${fieldName}'.replace(/\./gi, '\\.'); // escape dots
       var basket = '${basket}';
       var sidebar = '${sidebar}';
       var dialog = '${dialog}';
@@ -33,6 +35,7 @@
 
       var settings = {
         template: dialog,
+        fieldName: name,
         sidebar: {
           json: json,
           template: sidebar,
@@ -56,7 +59,7 @@
         }
       };
 
-      var geojson = ${geojson};
+      var geojson = ${python:geojson or '{}'};
       if (geojson.features) {
         settings.basket.geojson = geojson;
       }

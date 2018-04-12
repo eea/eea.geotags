@@ -49,7 +49,7 @@
     var description = googlejson.formatted_address;
     var country_mappings = $.geocountrymapping;
     $.each(country_mappings, function(k,v){
-        if (k == 'Macedonia') {
+        if (k === 'Macedonia') {
           return true;
         }
         if (title.indexOf(k) !== -1 || description.indexOf(k) !== -1) {
@@ -254,7 +254,7 @@
       },
 
       handle_save: function() {
-        var fieldName = self.attr('id');
+        var fieldName = self.options.fieldName;
         var json = self.basket.options.geojson;
         // sort the geotags by name before sending it to object annotation
         json.features = json.features.sort(function(a, b) {
@@ -1813,9 +1813,9 @@
         });
 
         // Fix preview map
-        jQuery('form[name=edit_form] .formTab, .wizard-left, .wizard-right').click(function() {
+        jQuery('form .formTab, .wizard-left, .wizard-right').click(function() {
           // #5339 fix preview map also when using eea.forms
-          if (jQuery(this).closest('form').find('.formPanel:visible').find('#location-geopreview').length) {
+          if (jQuery(this).closest('form').find('.formPanel:visible').find('#' + self.options.fieldName + '-geopreview').length) {
             google.maps.event.trigger(self.Map, 'resize');
             self.options.fit_map_bounds(options.latlngbounds);
           }

@@ -29,5 +29,6 @@
     <include package=".rdf" />
   </configure>
 
+  <include package=".default" />
   
 </configure>

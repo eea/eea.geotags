@@ -53,6 +53,24 @@
 
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeSteps
+    source="6.9"
+    destination="7.0"
+    profile="eea.geotags:default">
+
+    <genericsetup:upgradeDepends
+      title="Remove eea.geotags.map.js."
+      import_profile="eea.geotags:upgrade70"
+    />
+
+    <genericsetup:upgradeDepends
+      title="Add plone.app.registry entry for eea.geotags."
+      description="Currently a single entry for Google Maps API key."
+      import_steps="plone.app.registry"
+    />
+
+  </genericsetup:upgradeSteps>
+
   <browser:page
     for="eea.geotags.interfaces.IGeoTaggable"
     name="eea.geotags.migrate_country_names"

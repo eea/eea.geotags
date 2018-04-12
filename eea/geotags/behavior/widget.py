@@ -1,7 +1,10 @@
 from zope.component import adapter
+from zope.component import getUtility
 from zope.interface import implementer
 
 from zope.schema.interfaces import IField
+
+from plone.registry.interfaces import IRegistry
 
 from z3c.form.browser.textarea import TextAreaWidget
 from z3c.form.interfaces import IFieldWidget
@@ -9,9 +12,10 @@ from z3c.form.interfaces import IFormLayer
 from z3c.form.widget import FieldWidget
 
 from eea.geotags.widget.location import IGeotagSingleField
+from eea.geotags.controlpanel.interfaces import IGeotagsSettings
+
 
 STR_PF = 'portal_factory'
-
 
 URL_DIALOG = '@@eea.geotags.dialog'
 URL_SIDEBAR = '@@eea.geotags.sidebar'
@@ -39,6 +43,8 @@ class GeolocationWidget(TextAreaWidget):
 
     @property
     def dialog(self):
+        from eea.geotags.interfaces import IGeoTaggable
+        from eea.geotags.storage.interfaces import IGeoTags
         return self.base_url + URL_DIALOG
 
     @property
@@ -65,6 +71,14 @@ class GeolocationWidget(TextAreaWidget):
     def geojson(self):
         data = self.extract(dict())
         return data.get(self.name, self.field.getJSON(self.context))
+
+    @property
+    def api_key(self):
+        try:
+            settings = getUtility(IRegistry).forInterface(IGeotagsSettings)
+            return settings.maps_api_key
+        except KeyError:
+            return ''
 
 
 @adapter(IField, IFormLayer)
