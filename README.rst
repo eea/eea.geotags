@@ -1,8 +1,12 @@
 ===========
 EEA Geotags
 ===========
-.. image:: http://ci.eionet.europa.eu/job/eea/job/eea.geotags/job/master/badge/icon
-  :target: http://ci.eionet.europa.eu/job/eea/job/eea.geotags/job/master/display/redirect
+.. image:: https://ci.eionet.europa.eu/buildStatus/icon?job=eea/eea.geotags/develop
+  :target: https://ci.eionet.europa.eu/job/eea/job/eea.geotags/job/develop/display/redirect
+  :alt: develop
+.. image:: https://ci.eionet.europa.eu/buildStatus/icon?job=eea/eea.geotags/master
+  :target: https://ci.eionet.europa.eu/job/eea/job/eea.geotags/job/master/display/redirect
+  :alt: Master
 
 EEA Geotags package redefines the location field in Plone. Right now in Plone
 location field is a free text field. EEA Geotags lets you easy define locations
