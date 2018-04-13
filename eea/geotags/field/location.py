@@ -52,13 +52,16 @@ def json2string(geojson, attr='description'):
     return ''
 
 
+def get_tags(context):
+    geo = queryAdapter(context, IGeoTags)
+    return geo.tags if geo else ''
+
+
 def get_json(context):
     """ Get GeoJSON tags from instance annotations using IGeoTags adapter
     """
-    geo = queryAdapter(context, IGeoTags)
-    if not geo:
-        return ''
-    return json.dumps(geo.tags)
+    tags = get_tags(context)
+    return json.dumps(tags) if tags else tags
 
 
 def set_json(context, value):

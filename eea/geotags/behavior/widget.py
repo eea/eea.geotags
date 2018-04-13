@@ -1,3 +1,5 @@
+import json
+
 from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
@@ -11,9 +13,9 @@ from z3c.form.interfaces import IFieldWidget
 from z3c.form.interfaces import IFormLayer
 from z3c.form.widget import FieldWidget
 
+from eea.geotags.field.location import get_tags
 from eea.geotags.widget.location import IGeotagSingleField
 from eea.geotags.controlpanel.interfaces import IGeotagsSettings
-
 
 STR_PF = 'portal_factory'
 
@@ -79,6 +81,21 @@ class GeolocationWidget(TextAreaWidget):
             return settings.maps_api_key
         except KeyError:
             return ''
+
+    @property
+    def js_props(self):
+        return json.dumps(dict(
+            id=self.id,
+            name=self.name.replace('.', '\\.'),
+            basket=self.basket,
+            sidebar=self.sidebar,
+            dialog=self.dialog,
+            json=self.json,
+            geojson=get_tags(self.context),
+            multiline=self.multiline,
+            suggestions=self.suggestions,
+            country_mapping=self.country_mapping,
+        ))
 
 
 @adapter(IField, IFormLayer)

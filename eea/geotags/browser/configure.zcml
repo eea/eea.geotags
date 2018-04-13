@@ -38,4 +38,6 @@
   <browser:resourceDirectory name="geo-images"
                              directory="./images" />
 
+  <browser:resourceDirectory name="eea.geotags.static" directory="./static" />
+
 </configure>
