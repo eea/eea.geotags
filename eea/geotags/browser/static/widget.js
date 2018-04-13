@@ -11,7 +11,7 @@
       },
       map: {
         json: params.json,
-        mapping_url: params.country_mapping, // TODO: check this works for dx
+        mapping_url: params.country_mapping,
         fieldName: params.id
       },
       basket: {

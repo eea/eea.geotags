@@ -3,18 +3,23 @@ import json
 from zope.component import adapter
 from zope.component import getUtility
 from zope.interface import implementer
+from zope.interface import implementer_only
 
 from zope.schema.interfaces import IField
 
 from plone.registry.interfaces import IRegistry
 
 from z3c.form.browser.textarea import TextAreaWidget
+
 from z3c.form.interfaces import IFieldWidget
 from z3c.form.interfaces import IFormLayer
+from z3c.form.interfaces import IWidget
+
 from z3c.form.widget import FieldWidget
 
 from eea.geotags.field.location import get_tags
-from eea.geotags.widget.location import IGeotagSingleField
+from eea.geotags.field.location import get_json
+
 from eea.geotags.controlpanel.interfaces import IGeotagsSettings
 
 STR_PF = 'portal_factory'
@@ -33,8 +38,12 @@ def _base_url(request):
     return url1.split(STR_PF)[0] if portal_factory else url1 + '/'
 
 
-@implementer(IGeotagSingleField)
-class GeolocationWidget(TextAreaWidget):
+class IGeotagWidget(IWidget):
+    """ """
+
+
+@implementer_only(IGeotagWidget)
+class GeotagWidget(TextAreaWidget):
 
     klass = u'eea.geolocation.widget'
     multiline = 0
@@ -45,8 +54,6 @@ class GeolocationWidget(TextAreaWidget):
 
     @property
     def dialog(self):
-        from eea.geotags.interfaces import IGeoTaggable
-        from eea.geotags.storage.interfaces import IGeoTags
         return self.base_url + URL_DIALOG
 
     @property
@@ -72,7 +79,7 @@ class GeolocationWidget(TextAreaWidget):
     @property
     def geojson(self):
         data = self.extract(dict())
-        return data.get(self.name, self.field.getJSON(self.context))
+        return data.get(self.name, get_json(self.context))
 
     @property
     def api_key(self):
@@ -100,8 +107,8 @@ class GeolocationWidget(TextAreaWidget):
 
 @adapter(IField, IFormLayer)
 @implementer(IFieldWidget)
-def geotag_single_field_widget(field, request):
-    return FieldWidget(field, GeolocationWidget(request))
+def geotag_field_widget(field, request):
+    return FieldWidget(field, GeotagWidget(request))
 
 
-GeotagSingleFieldWidget = geotag_single_field_widget
+GeotagFieldWidget = geotag_field_widget

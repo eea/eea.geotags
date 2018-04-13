@@ -15,7 +15,7 @@ from eea.geotags.config import _
 logger = logging.getLogger('eea.geotags.field')
 
 
-def json2list( geojson, attr='description'):
+def json2list(geojson, attr='description'):
     """ Util function to extract human readable geo tags from geojson struct
     """
     if not geojson:

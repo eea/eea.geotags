@@ -4,18 +4,33 @@
   xmlns:plone="http://namespaces.plone.org/plone">
 
   <plone:behavior
-    title="eea.geotags - Single field"
+    title="eea.geotags - Single tag"
     description="EEA Geotags"
     provides=".geotags.ISingleGeoTag"
-    factory=".geotags.SingleGeoTag"
+    factory=".geotags.GeoTag"
+    marker="eea.geotags.interfaces.IGeoTaggable"
+  />
+
+  <plone:behavior
+    title="eea.geotags - Multiple tags"
+    description="EEA Geotags"
+    provides=".geotags.IMultiGeoTag"
+    factory=".geotags.GeoTag"
     marker="eea.geotags.interfaces.IGeoTaggable"
   />
 
   <z3c:widgetTemplate
     mode="input"
-    widget="eea.geotags.widget.location.IGeotagSingleField"
+    widget="eea.geotags.behavior.widget.IGeotagWidget"
     layer="z3c.form.interfaces.IFormLayer"
     template="input.pt"
+  />
+
+  <z3c:widgetTemplate
+    mode="display"
+    widget="eea.geotags.behavior.widget.IGeotagWidget"
+    layer="z3c.form.interfaces.IFormLayer"
+    template="display.pt"
   />
 
 </configure>
