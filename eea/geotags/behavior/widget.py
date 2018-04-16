@@ -78,8 +78,7 @@ class GeotagWidget(TextAreaWidget):
 
     @property
     def geojson(self):
-        data = self.extract(dict())
-        return data.get(self.name, get_json(self.context))
+        return self.extract(None) or get_json(self.context)
 
     @property
     def api_key(self):
@@ -98,7 +97,7 @@ class GeotagWidget(TextAreaWidget):
             sidebar=self.sidebar,
             dialog=self.dialog,
             json=self.json,
-            geojson=get_tags(self.context),
+            geojson=json.loads(self.geojson),
             multiline=self.multiline,
             suggestions=self.suggestions,
             country_mapping=self.country_mapping,

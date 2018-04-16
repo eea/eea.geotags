@@ -57,7 +57,8 @@ class GeoTag(object):
 
     @property
     def location(self):
-        return json2list(get_tags(self.context))
+        value = json2list(get_tags(self.context))
+        return '\n'.join(value) if value is not None else value
 
     @location.setter
     def location(self, value):

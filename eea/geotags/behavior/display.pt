@@ -1,3 +1,1 @@
-<div>
-  <pre>${python:view}</pre>
-</div>
+<div tal:repeat="loc python:view.value.split('\n')">${loc}</div>
