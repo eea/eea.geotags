@@ -1,16 +1,3 @@
-<div tal:define="geojson view/geojson; id view/id; label view/label">
-  <tal:google condition="python:'schemata_edit' not in context.REQUEST.URL">
-    <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=${view/api_key}&amp;language=en"></script>
-  </tal:google>
-  <div id="${id}" title="Edit ${label}"></div>
-  <textarea name="${view/name}" style="display: none" rows="10" title="${label}">${geojson}</textarea>
-  <div id="${id}-geopreview"></div>
-  <input type="button" name="edit" i18n:attributes="value" value="Edit" id="${id}-edit" class="standardButton input-block" />
-  <script src="${view/base_url}++resource++eea.geotags.static/widget.js"></script>
-  <script type="text/javascript">
-    (function() {
-      var widget = eea_geotags.init(${view/js_props});
-      window.addEventListener('load', widget);
-    })();
-  </script>
-</div>
+<tal:widget define="widget_params view/get_params">
+  <metal:macro use-macro="context/portal_skins/eea_geotags/eea.geotags/macros/location" />
+</tal:widget>

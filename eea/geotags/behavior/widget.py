@@ -1,13 +1,10 @@
 import json
 
 from zope.component import adapter
-from zope.component import getUtility
 from zope.interface import implementer
 from zope.interface import implementer_only
 
 from zope.schema.interfaces import IField
-
-from plone.registry.interfaces import IRegistry
 
 from z3c.form.browser.textarea import TextAreaWidget
 
@@ -17,12 +14,11 @@ from z3c.form.interfaces import IWidget
 
 from z3c.form.widget import FieldWidget
 
-from eea.geotags.field.location import get_tags
+from eea.geotags.widget.common import get_base_url
+from eea.geotags.widget.common import get_maps_api_key
+from eea.geotags.widget.common import get_js_props
 from eea.geotags.field.location import get_json
 
-from eea.geotags.controlpanel.interfaces import IGeotagsSettings
-
-STR_PF = 'portal_factory'
 
 URL_DIALOG = '@@eea.geotags.dialog'
 URL_SIDEBAR = '@@eea.geotags.sidebar'
@@ -30,12 +26,6 @@ URL_BASKET = '@@eea.geotags.basket'
 URL_JSON = '@@eea.geotags.json'
 URL_SUGGESTIONS = '@@eea.geotags.suggestions'
 URL_COUNTRY_MAPPING = '@@eea.geotags.mapping'
-
-
-def _base_url(request):
-    url1 = request.URL1
-    portal_factory = STR_PF in url1
-    return url1.split(STR_PF)[0] if portal_factory else url1 + '/'
 
 
 class IGeotagWidget(IWidget):
@@ -48,60 +38,26 @@ class GeotagWidget(TextAreaWidget):
     klass = u'eea.geolocation.widget'
     multiline = 0
 
-    @property
-    def base_url(self):
-        return _base_url(self.request)
+    def get_params(self):
+        geojson = self.extract(None) or get_json(self.context)  # type: str
+        base_url = get_base_url(self.request)
 
-    @property
-    def dialog(self):
-        return self.base_url + URL_DIALOG
+        w_id = self.id
+        w_name = self.name
 
-    @property
-    def sidebar(self):
-        return self.base_url + URL_SIDEBAR
+        js_props = get_js_props(
+            self.multiline, w_id, w_name, base_url, geojson)
 
-    @property
-    def basket(self):
-        return self.base_url + URL_BASKET
+        return dict(
+            id=w_id,
+            name=w_name,
+            base_url=base_url,
+            label=self.label,
+            geojson=geojson,
+            js_props=js_props,
+            api_key=get_maps_api_key(),
+        )
 
-    @property
-    def json(self):
-        return self.base_url + URL_JSON
-
-    @property
-    def suggestions(self):
-        return self.base_url + URL_SUGGESTIONS
-
-    @property
-    def country_mapping(self):
-        return self.base_url + URL_COUNTRY_MAPPING
-
-    @property
-    def geojson(self):
-        return self.extract(None) or get_json(self.context)
-
-    @property
-    def api_key(self):
-        try:
-            settings = getUtility(IRegistry).forInterface(IGeotagsSettings)
-            return settings.maps_api_key
-        except KeyError:
-            return ''
-
-    @property
-    def js_props(self):
-        return json.dumps(dict(
-            id=self.id,
-            name=self.name.replace('.', '\\.'),
-            basket=self.basket,
-            sidebar=self.sidebar,
-            dialog=self.dialog,
-            json=self.json,
-            geojson=json.loads(self.geojson),
-            multiline=self.multiline,
-            suggestions=self.suggestions,
-            country_mapping=self.country_mapping,
-        ))
 
 
 @adapter(IField, IFormLayer)

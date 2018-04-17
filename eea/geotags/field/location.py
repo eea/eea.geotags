@@ -2,95 +2,25 @@
 """
 import logging
 import json
-from Acquisition import aq_get
+
+from zope.component import queryAdapter
+
 from zope.i18nmessageid import Message
 from zope.i18n import translate
-from zope.component import queryAdapter
-from zope.interface import noLongerProvides, alsoProvides
+
+from Acquisition import aq_get
 from Products.Archetypes import atapi
 
-from eea.geotags.interfaces import IGeoTags, IGeoTagged, IJsonProvider
+from eea.geotags.interfaces import IJsonProvider
+from eea.geotags.field.common import get_json
+from eea.geotags.field.common import set_json
+from eea.geotags.field.common import json2list
+from eea.geotags.field.common import json2string
+from eea.geotags.field.common import json2items
 from eea.geotags.config import _
 
+
 logger = logging.getLogger('eea.geotags.field')
-
-
-def json2list(geojson, attr='description'):
-    """ Util function to extract human readable geo tags from geojson struct
-    """
-    if not geojson:
-        return
-
-    if not isinstance(geojson, dict):
-        try:
-            value = json.loads(geojson)
-        except Exception, err:
-            logger.exception(err)
-            return
-    else:
-        value = geojson
-
-    features = value.get('features', [])
-    if not features:
-        return
-
-    for feature in features:
-        properties = feature.get('properties', {})
-        data = properties.get(attr, properties.get('description', ''))
-        if data:
-            yield data
-        else:
-            yield properties.get('title', '')
-
-
-def json2string(geojson, attr='description'):
-    """ Util method to extract human readable geo tag from geojson struct
-    """
-    items = json2list(geojson, attr)
-    for item in items:
-        return item
-    return ''
-
-
-def get_tags(context):
-    geo = queryAdapter(context, IGeoTags)
-    return geo.tags if geo else ''
-
-
-def get_json(context):
-    """ Get GeoJSON tags from instance annotations using IGeoTags adapter
-    """
-    tags = get_tags(context)
-    return json.dumps(tags) if tags else tags
-
-
-def set_json(context, value):
-    """ Set GeoJSON tags to instance annotations using IGeoTags adapter
-    """
-    geo = queryAdapter(context, IGeoTags)
-    if not geo:
-        return
-
-    if not isinstance(value, dict) and value:
-        try:
-            value = json.loads(value)
-        except Exception, err:
-            logger.exception(err)
-            return
-
-    # remove IGeoTagged if all geotags are removed or provide it
-    # if geotags are added
-    if not value:
-        return
-
-    value_len = len(value.get('features'))
-    if not value_len:
-        if IGeoTagged.providedBy(context):
-            noLongerProvides(context, IGeoTagged)
-    else:
-        if not IGeoTagged.providedBy(context):
-            alsoProvides(context, IGeoTagged)
-    geo.tags = value
 
 
 class GeotagsFieldMixin(object):
@@ -103,38 +33,16 @@ class GeotagsFieldMixin(object):
         return isinstance(self, atapi.LinesField)
 
     @staticmethod
-    def getJSON(instance):
+    def getJSON(instance, **_):
         return get_json(instance)
 
     @staticmethod
-    def setJSON(instance, value):
+    def setJSON(instance, value, **_):
         return set_json(instance, value)
 
     @staticmethod
-    def json2items( geojson, key="title", val="description"):
-        """ Util method to extract dict like items geo tags from geojson struct
-        """
-        if not geojson:
-            return
-
-        if not isinstance(geojson, dict):
-            try:
-                value = json.loads(geojson)
-            except Exception, err:
-                logger.exception(err)
-                return
-        else:
-            value = geojson
-
-        features = value.get('features', [])
-        if not features:
-            return
-
-        for feature in features:
-            properties = feature.get('properties', {})
-            key = properties.get(key, properties.get('title', ''))
-            val = properties.get(val, properties.get('description', ''))
-            yield (key, val)
+    def json2items(*args, **kwargs):
+        return json2items(*args, **kwargs)
 
     def validate_required(self, instance, value, errors):
         """ Validate

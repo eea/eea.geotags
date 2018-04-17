@@ -13,10 +13,9 @@ from plone.autoform.interfaces import IFormFieldProvider
 from eea.geotags.behavior.widget import GeotagFieldWidget
 from eea.geotags.config import _
 
-from eea.geotags.field.location import json2string
-from eea.geotags.field.location import json2list
-from eea.geotags.field.location import set_json
-from eea.geotags.field.location import get_tags
+from eea.geotags.field.common import json2list
+from eea.geotags.field.common import set_json
+from eea.geotags.field.common import get_tags
 
 
 @provider(IFormFieldProvider)
