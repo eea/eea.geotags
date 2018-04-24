@@ -77,14 +77,14 @@ def json2items(geojson, key="title", val="description"):
 
 def get_tags(context):
     geo = queryAdapter(context, IGeoTags)
-    return geo.tags if geo else ''
+    return geo.tags if geo else dict()
 
 
 def get_json(context):
     """ Get GeoJSON tags from instance annotations using IGeoTags adapter
     """
     tags = get_tags(context)
-    return json.dumps(tags) if tags else tags
+    return json.dumps(tags)
 
 
 def set_json(context, value):
