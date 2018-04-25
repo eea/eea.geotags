@@ -2,7 +2,8 @@
 """ RDF Marshaller module for geotags """
 
 from eea.geotags.field.location import GeotagsFieldMixin
-from eea.geotags.behavior.geotags import GeoTag
+from eea.geotags.field.common import json2list
+from eea.geotags.field.common import get_tags
 from eea.geotags.interfaces import IGeoTags
 from eea.geotags.rdf.country_groups import COUNTRY_GROUPS
 from eea.geotags.storage.interfaces import IGeoTagged
@@ -12,7 +13,7 @@ from eea.rdfmarshaller.dexterity.fields import DXField2Surf
 from eea.rdfmarshaller.dexterity.interfaces import IDXField2Surf
 from eea.rdfmarshaller.interfaces import ISurfSession
 from zope.component import adapts, getAdapter
-from zope.interface import implements, Interface
+from zope.interface import implements
 from zope.schema import Field
 
 import rdflib
@@ -21,15 +22,20 @@ import surf
 
 class GeotagsField2Surf(object):
 
-    prefix = "dcterms"
-    name = "spatial"
+    def __init__(self, field, context, session):
+        # Override init for DXField2Surf and ATField2Surf here.
+        # Necessary because DXField2Surf.__init__ sets
+        # self.name = field.__name__ which overwrites the class level
+        # `name` property of any subclass. Making it impossible to set a
+        # name different from the field name.
+        super(GeotagsField2Surf, self).__init__(field, context, session)
+        self.prefix = 'dcterms'
+        self.name = 'spatial'
 
     def get_location(self):
         raise NotImplementedError('Subclassess must implement this!')
-        return set(GeoTag(self.context).location.split('\n'))
 
     def value(self):
-
         # create a GeoPoint Class
         SpatialThing = self.session.get_class(surf.ns.GEO.SpatialThing)
 
@@ -128,13 +134,19 @@ class GeotagsField2SurfDX(GeotagsField2Surf, DXField2Surf):
     adapts(Field, IGeoTagged, ISurfSession)
 
     def get_location(self):
-        return set(GeoTag(self.context).location.split('\n'))
+        return json2list(get_tags(self.context)) or []
 
 
 class GeotagsField2SurfAT(GeotagsField2Surf, ATField2Surf):
     """Adapter to express geotags field with RDF using Surf."""
     implements(IATField2Surf)
-    adapts(GeotagsFieldMixin, Interface, ISurfSession)
+    adapts(GeotagsFieldMixin, IGeoTagged, ISurfSession)
 
     def get_location(self):
-        return set(self.context.location.split('\n'))
+        location_value = self.context.location
+        try:
+            location = location_value.split('\n')
+        except AttributeError:
+            location = location_value
+
+        return set(location)

@@ -48,8 +48,8 @@ class IMultiGeoTag(model.Schema):
 class GeoTag(object):
 
     def __init__(self, context):
-        # dewrap context when a Dexterity object is added
-        # taken from collective.geo.behaviour
+        # De-wrap context when a Dexterity object is added
+        # (taken from collective.geo.behaviour).
         if isinstance(context, ImplicitAcquisitionWrapper):
             context = aq_self(context)
         self.context = context
