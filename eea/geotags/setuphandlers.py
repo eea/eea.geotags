@@ -1,24 +1,30 @@
 """ Setuphandlers
 """
 import logging
+import zope.deprecation
+
 from Products.CMFCore.utils import getToolByName
 from Products.ATVocabularyManager.utils.vocabs import createHierarchicalVocabs
+
 from eea.geotags.vocabularies.data.groups import VOC
 from eea.geotags.vocabularies.data.biogroups import VOC as BIOVOC
 
 logger = logging.getLogger('eea.geotags.setuphandlers')
 
 
-def setupGeonames(site):
-    """ Add geonames_key properties
+def setupGeonames(_):
+    """ portal_properties.geographical_properties has been moved to
+        plone.app.registry and is available in
+        eea.geotags.controlpanel.interfaces.IGeotagsSettings
     """
-    ptool = getToolByName(site, 'portal_properties')
-    if 'geographical_properties' not in ptool.objectIds():
-        ptool.addPropertySheet(id='geographical_properties',
-                               title='Geographical properties')
-    gprops = getattr(ptool, 'geographical_properties')
-    if not hasattr(gprops, 'geonames_key'):
-        gprops.manage_addProperty('geonames_key', '', 'string')
+    pass
+
+
+zope.deprecation.deprecated(
+    setupGeonames,
+    ('eea.geotags.setuphandlers.setupGeonames is no longer needed.'
+     + setupGeonames.__doc__)
+)
 
 
 def importVocabularies(context):

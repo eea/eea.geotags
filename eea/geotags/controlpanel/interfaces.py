@@ -22,3 +22,10 @@ class IGeotagsSettings(Interface):
         required=False,
         default=u''
     )
+
+    geonames_key = schema.TextLine(
+        title=_(u"Geonames key"),
+        description=_(u'http://www.geonames.org/'),
+        required=False,
+        default=u''
+    )

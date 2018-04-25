@@ -65,8 +65,14 @@
 
     <genericsetup:upgradeDepends
       title="Add plone.app.registry entry for eea.geotags."
-      description="Currently a single entry for Google Maps API key."
+      description="Google Maps API key and Geonames key."
       import_steps="plone.app.registry"
+    />
+
+    <genericsetup:upgradeStep
+      title="Copy geonames_key/google_key from portal_properties.geographical_properties"
+      description="If portal_properties.geographical_properties is defined, copy the keys to p.a.registry."
+      handler="eea.geotags.upgrades.evolve70.migrate_to_registry"
     />
 
   </genericsetup:upgradeSteps>

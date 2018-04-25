@@ -6,14 +6,19 @@ import json as simplejson
 import operator
 from eventlet.green import urllib2
 from zope.component import queryAdapter
+from zope.component import getUtility
 from Products.CMFCore.utils import getToolByName
+from plone.registry.interfaces import IRegistry
 from eea.geotags.config import WEBSERVICE
+from eea.geotags.controlpanel.interfaces import IGeotagsSettings
 from eea.geotags.interfaces import IGeoGroups
 from eea.geotags.interfaces import IBioGroups
 from eea.geotags.interfaces import IGeoCountries
 from eea.geotags.json.interfaces import IJsonProviderSearchMutator
 
+
 logger = logging.getLogger('eea.geotags.json')
+
 
 class GeoNamesJsonProvider(object):
     """ Get json from http://geonames.org and convert it to geojson
@@ -27,19 +32,27 @@ class GeoNamesJsonProvider(object):
         """ Geonames username
         """
         if self._username is None:
-            ptool = getToolByName(self.context, 'portal_properties')
-            gtool = getattr(ptool, 'geographical_properties', None)
-            self._username = getattr(gtool, 'geonames_key', '')
+            # Try to get key from registry
+            settings = getUtility(IRegistry).forInterface(IGeotagsSettings)
+            key = getattr(settings, 'geonames_key', '')
+            if key:
+                self._username = key
+            else:
+                # if that doesn't work or key is not set, fallback to
+                # portal_properties
+                ptool = getToolByName(self.context, 'portal_properties')
+                gtool = getattr(ptool, 'geographical_properties', None)
+                self._username = getattr(gtool, 'geonames_key', '')
         return self._username
 
     def groups(self, **kwargs):
         """ Groups
         """
         voc = queryAdapter(self.context, IGeoGroups)
-        json = {
-            'type': 'FeatureCollection',
-            'features': []
-        }
+        json = dict(
+            type='FeatureCollection',
+            features=[]
+        )
         json['features'] = []
 
         terms = [term for term in voc()]
