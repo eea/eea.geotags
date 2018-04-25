@@ -1,7 +1,7 @@
 """ Interfaces
 """
 
-from zope import schema
+from plone.registry import field
 from zope.interface import Interface
 
 from eea.geotags.config import _
@@ -11,7 +11,7 @@ class IGeotagsSettings(Interface):
     """ Geotags settings
     """
 
-    maps_api_key = schema.TextLine(
+    maps_api_key = field.TextLine(
         title=_(u"Google Maps API key"),
         description=_(
             u'This will be used to render the Google Maps widget'
@@ -23,9 +23,29 @@ class IGeotagsSettings(Interface):
         default=u''
     )
 
-    geonames_key = schema.TextLine(
+    geonames_key = field.TextLine(
         title=_(u"Geonames key"),
         description=_(u'http://www.geonames.org/'),
         required=False,
         default=u''
+    )
+
+
+class IGeoVocabularies(Interface):
+    geotags = field.Dict(
+        title=_(u'Geotags tree'),
+        key_type=field.TextLine(),
+        value_type=field.Dict(
+            key_type=field.TextLine(),
+            value_type=field.TextLine()
+        ),
+    )
+
+    biotags = field.Dict(
+        title=_(u'Biogeographical regions'),
+        key_type=field.TextLine(),
+        value_type=field.Dict(
+            key_type=field.TextLine(),
+            value_type=field.TextLine()
+        ),
     )

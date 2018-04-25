@@ -11,6 +11,7 @@ from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
 from eea.geotags.config import WEBSERVICE
 from eea.geotags.controlpanel.interfaces import IGeotagsSettings
+from eea.geotags.controlpanel.interfaces import IGeoVocabularies
 from eea.geotags.interfaces import IGeoGroups
 from eea.geotags.interfaces import IBioGroups
 from eea.geotags.interfaces import IGeoCountries
@@ -104,8 +105,7 @@ class GeoNamesJsonProvider(object):
         terms = [term for term in voc()]
         terms.sort(key=operator.attrgetter('title'))
 
-        atvm = getToolByName(self.context, 'portal_vocabularies')
-        avoc = atvm['biotags']
+        biotags = getUtility(IRegistry).forInterface(IGeoVocabularies).biotags
 
         for term in terms:
             feature = {
@@ -133,8 +133,8 @@ class GeoNamesJsonProvider(object):
             feature['properties']['description'] = term.title
 
             try:
-                latitude = float(avoc[term.value]['latitude'].title)
-                longitude = float(avoc[term.value]['longitude'].title)
+                latitude = float(biotags[term.value]['latitude'])
+                longitude = float(biotags[term.value]['longitude'])
             except Exception, err:
                 logger.exception(err)
                 # Fallback to center of Europe
