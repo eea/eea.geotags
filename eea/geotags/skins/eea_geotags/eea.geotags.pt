@@ -52,19 +52,20 @@ Usage:
      tal:define="widget_params widget_params|nothing; widget_params python: widget_params or widget.get_params(field, fieldName, context, request)">
 
     <tal:google condition="python:'schemata_edit' not in context.REQUEST.URL">
-      <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=${widget_params/api_key}&amp;language=en"></script>
+      <script type="text/javascript"
+         tal:attributes="src python:'https://maps.google.com/maps/api/js?key={api_key}&amp;language=en'.format(api_key=widget_params['api_key'])"></script>
     </tal:google>
-    <div id="${widget_params/id}" title="Edit ${widget_params/label}"></div>
-    <textarea name="${widget_params/name}" style="display: none" rows="10" title="${widget_params/label}">${widget_params/geojson}</textarea>
-    <div id="${widget_params/id}-geopreview"></div>
-    <input type="button" name="edit" i18n:attributes="value" value="Edit" id="${widget_params/id}-edit" class="standardButton input-block" />
-    <script src="${widget_params/base_url}++resource++eea.geotags.static/widget.js"></script>
-    <script type="text/javascript">
+    <div tal:attributes="id widget_params/id; title string:Edit ${widget_params/label}"></div>
+    <textarea style="display: none" rows="10" tal:attributes="name widget_params/name; title widget_params/label" tal:content="widget_params/geojson">{}</textarea>
+    <div tal:attributes="id string:${widget_params/id}-geopreview"></div>
+    <input type="button" name="edit" i18n:attributes="value" value="Edit" tal:attributes="id string:${widget_params/id}-edit" class="standardButton input-block" />
+    <script tal:attributes="src string:${widget_params/base_url}++resource++eea.geotags.static/widget.js"></script>
+    <script type="text/javascript" tal:content="string:
       (function() {
         var widget = eea_geotags.init(${widget_params/js_props});
         window.addEventListener('load', widget);
       })();
-    </script>
+    "></script>
 
   </div>
 
