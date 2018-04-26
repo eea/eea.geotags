@@ -1,5 +1,3 @@
-import json
-
 from zope.component import adapter
 from zope.interface import implementer
 from zope.interface import implementer_only
@@ -18,14 +16,6 @@ from eea.geotags.widget.common import get_base_url
 from eea.geotags.widget.common import get_maps_api_key
 from eea.geotags.widget.common import get_js_props
 from eea.geotags.field.location import get_json
-
-
-URL_DIALOG = '@@eea.geotags.dialog'
-URL_SIDEBAR = '@@eea.geotags.sidebar'
-URL_BASKET = '@@eea.geotags.basket'
-URL_JSON = '@@eea.geotags.json'
-URL_SUGGESTIONS = '@@eea.geotags.suggestions'
-URL_COUNTRY_MAPPING = '@@eea.geotags.mapping'
 
 
 class IGeotagWidget(IWidget):
@@ -57,7 +47,6 @@ class GeotagWidget(TextAreaWidget):
             js_props=js_props,
             api_key=get_maps_api_key(),
         )
-
 
 
 @adapter(IField, IFormLayer)
