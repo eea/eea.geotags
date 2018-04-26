@@ -188,4 +188,15 @@
       </element>
     </value>
   </record>
+  <record name="eea.geotags.controlpanel.interfaces.IGeoVocabularies.countries_mapping">
+    <value purge="True">
+      <element key="Czechia">Czech Republic</element>
+      <element key="Macedonia (ARYM)">Former Yugoslav Republic of Macedonia, the</element>
+      <element key="Macedonia (FYR)">Former Yugoslav Republic of Macedonia, the</element>
+      <element key="Macedonia (FYROM)">Former Yugoslav Republic of Macedonia, the</element>
+      <element key="Macedonia">Former Yugoslav Republic of Macedonia, the</element>
+      <element key="Kosova (Kosovo)">Kosovo (UNSCR 1244/99)</element>
+      <element key="Kosovo">Kosovo (UNSCR 1244/99)</element>
+    </value>
+  </record>
 </registry>

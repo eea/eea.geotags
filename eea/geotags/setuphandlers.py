@@ -3,12 +3,6 @@
 import logging
 import zope.deprecation
 
-from Products.CMFCore.utils import getToolByName
-from Products.ATVocabularyManager.utils.vocabs import createHierarchicalVocabs
-
-from eea.geotags.vocabularies.data.groups import VOC
-from eea.geotags.vocabularies.data.biogroups import VOC as BIOVOC
-
 logger = logging.getLogger('eea.geotags.setuphandlers')
 
 
@@ -27,17 +21,18 @@ zope.deprecation.deprecated(
 )
 
 
-def importVocabularies(context):
-    """ Import groups vocabulary
+def importVocabularies(_):
+    """ Vocabularies have been migrated to plone.app.registry
+        check eea.geotags.controlpanel.interfaces.IGeoVocabularies
     """
-    site = context.getSite()
-    atvm = getToolByName(site, 'portal_vocabularies', None)
+    pass
 
-    createHierarchicalVocabs(atvm, VOC)
-    logger.info("Added 'Geotags Tree' vocabulary")
 
-    createHierarchicalVocabs(atvm, BIOVOC)
-    logger.info('Added "Biogeographical regions" vocabulary')
+zope.deprecation.deprecated(
+    importVocabularies,
+    ('eea.geotags.setuphandlers.importVocabularies is no longer needed.'
+     + setupGeonames.__doc__)
+)
 
 
 def importVarious(context):
@@ -45,5 +40,3 @@ def importVarious(context):
     """
     if context.readDataFile('eea.geotags.txt') is None:
         return
-
-    importVocabularies(context)

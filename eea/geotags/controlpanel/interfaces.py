@@ -37,7 +37,7 @@ class IGeoVocabularies(Interface):
         key_type=field.TextLine(),
         value_type=field.Dict(
             key_type=field.TextLine(),
-            value_type=field.TextLine()
+            value_type=field.TextLine(),
         ),
     )
 
@@ -46,6 +46,12 @@ class IGeoVocabularies(Interface):
         key_type=field.TextLine(),
         value_type=field.Dict(
             key_type=field.TextLine(),
-            value_type=field.TextLine()
+            value_type=field.TextLine(),
         ),
+    )
+
+    countries_mapping = field.Dict(
+        title=_(u'EEA Custom Country Name Mappings'),
+        key_type=field.TextLine(),
+        value_type=field.TextLine(),
     )

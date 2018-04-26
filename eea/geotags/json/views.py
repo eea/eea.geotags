@@ -16,5 +16,5 @@ class CountryMappings(BrowserView):
         :rtype: dict
         """
         vocab = IGeoCountriesMapping(self.context)()
-        res = {term: term.title for term in vocab}
+        res = {term.value: term.title for term in vocab}
         return json.dumps(res)
