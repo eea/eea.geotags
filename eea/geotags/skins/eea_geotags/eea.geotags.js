@@ -180,46 +180,111 @@
           self.empty();
           self.append($data);
 
-          // Left splitter
-          var left = jQuery('.geo-leftside', self);
-          left.splitter({
-            type: 'v',
-            outline: true,
-            accessKey: "L"
+          var sizes_initial = [25, 50, 24];
+
+          var split = Split(
+            [
+              '.geo-left',
+              '.geo-center',
+              '.geo-right'
+            ],
+            {
+              sizes: sizes_initial
+            }
+          )
+
+          function toggleSplit(split, idx, initial) {
+            var sizes = split.getSizes();
+            if (sizes[idx] < 1) {
+              var new_sizes = [].slice.call(sizes);
+              new_sizes[idx] = initial[idx];
+              new_sizes[1] += sizes[idx] - initial[idx];
+              split.setSizes(new_sizes);
+            }
+            else {
+              split.collapse(idx);
+            }
+          }
+
+          var gutters = self.get(0).querySelectorAll('.gutter');
+          leftsplitter = gutters[0];
+          rightsplitter = gutters[1];
+
+          leftsplitter.addEventListener('dblclick', function(evt){
+            toggleSplit(split, 0, sizes_initial);
           });
+          //   var sizes = split.getSizes();
+          //   if (sizes[0] < 1) {
+          //     var new_sizes = [
+          //       sizes_initial[0],
+          //       sizes[1] + sizes[0] - sizes_initial[0],
+          //       sizes[2]
+          //     ]
+          //     split.setSizes(new_sizes);
+          //   }
+          //   else {
+          //     split.collapse(0);
+          //   }
+          // });
 
-          self.leftarea = jQuery('.geo-left', left);
-          self.leftbutton = jQuery('.vsplitbar', left);
-          jQuery('a', self.leftbutton).html('&raquo;');
 
-          jQuery('a', self.leftbutton).click(function() {
-            self.options.handle_leftbutton_dblclick(self.leftbutton, left);
+          rightsplitter.addEventListener('dblclick', function(evt){
+            toggleSplit(split, 2, sizes_initial);
           });
+          //   var sizes = split.getSizes();
+          //   if (sizes[2] < 1) {
+          //     var new_sizes = [
+          //       sizes[0],
+          //       sizes[1] + sizes[2] - sizes_initial[2],
+          //       sizes_initial[2],
+          //     ]
+          //     split.setSizes(new_sizes);
+          //   }
+          //   else {
+          //     split.collapse(2);
+          //   }
+          // });
 
-          self.leftbutton.dblclick(function() {
-            self.options.handle_leftbutton_dblclick(self.leftbutton, left);
-          });
-
-          // Right splitter
-          var right = jQuery('.geo-splitter', self);
-          right.splitter({
-            type: 'v',
-            outline: true,
-            sizeRight: 0,
-            accessKey: "R"
-          });
-
-          self.rightarea = jQuery('.geo-right', right);
-          self.rightbutton = jQuery(jQuery('.vsplitbar', right)[1]);
-          jQuery('a', self.rightbutton).html('&laquo;');
-
-          jQuery('a', self.rightbutton).click(function() {
-            self.options.handle_rightbutton_dblclick(self.rightbutton, right);
-          });
-
-          self.rightbutton.dblclick(function() {
-            self.options.handle_rightbutton_dblclick(self.rightbutton, right);
-          });
+          // // Left splitter
+          // var left = jQuery('.geo-leftside', self);
+          // left.splitter({
+          //   type: 'v',
+          //   outline: true,
+          //   accessKey: "L"
+          // });
+          //
+          // self.leftarea = jQuery('.geo-left', left);
+          // self.leftbutton = jQuery('.vsplitbar', left);
+          // jQuery('a', self.leftbutton).html('&raquo;');
+          //
+          // jQuery('a', self.leftbutton).click(function() {
+          //   self.options.handle_leftbutton_dblclick(self.leftbutton, left);
+          // });
+          //
+          // self.leftbutton.dblclick(function() {
+          //   self.options.handle_leftbutton_dblclick(self.leftbutton, left);
+          // });
+          //
+          // // Right splitter
+          // var right = jQuery('.geo-splitter', self);
+          // right.splitter({
+          //   type: 'v',
+          //   outline: true,
+          //   sizeRight: 0,
+          //   accessKey: "R"
+          // });
+          //
+          // self.rightarea = jQuery('.geo-right', right);
+          // self.rightbutton = jQuery(jQuery('.vsplitbar', right)[1]);
+          // jQuery('a', self.rightbutton).html('&laquo;');
+          //
+          // jQuery('a', self.rightbutton).click(function() {
+          //   self.options.handle_rightbutton_dblclick(self.rightbutton, right);
+          // });
+          //
+          // self.rightbutton.dblclick(function() {
+          //   self.options.handle_rightbutton_dblclick(self.rightbutton, right);
+          // });
 
           // Sidebar
           self.sidebar = jQuery('.geo-sidebar', self);
@@ -249,8 +314,8 @@
       },
 
       handle_map_loaded: function() {
-        jQuery('a', self.leftbutton).click();
-        jQuery('a', self.rightbutton).click();
+        // jQuery('a', self.leftbutton).click();
+        // jQuery('a', self.rightbutton).click();
       },
 
       handle_save: function() {

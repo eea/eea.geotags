@@ -31,7 +31,7 @@ def importVocabularies(_):
 zope.deprecation.deprecated(
     importVocabularies,
     ('eea.geotags.setuphandlers.importVocabularies is no longer needed.'
-     + setupGeonames.__doc__)
+     + importVocabularies.__doc__)
 )
 
 
