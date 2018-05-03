@@ -49,7 +49,7 @@
     var description = googlejson.formatted_address;
     var country_mappings = $.geocountrymapping;
     $.each(country_mappings, function(k,v){
-        if (k == 'Macedonia') {
+        if (k === 'Macedonia') {
           return true;
         }
         if (title.indexOf(k) !== -1 || description.indexOf(k) !== -1) {
@@ -180,46 +180,111 @@
           self.empty();
           self.append($data);
 
-          // Left splitter
-          var left = jQuery('.geo-leftside', self);
-          left.splitter({
-            type: 'v',
-            outline: true,
-            accessKey: "L"
+          var sizes_initial = [25, 50, 24];
+
+          var split = Split(
+            [
+              '.geo-left',
+              '.geo-center',
+              '.geo-right'
+            ],
+            {
+              sizes: sizes_initial
+            }
+          )
+
+          function toggleSplit(split, idx, initial) {
+            var sizes = split.getSizes();
+            if (sizes[idx] < 1) {
+              var new_sizes = [].slice.call(sizes);
+              new_sizes[idx] = initial[idx];
+              new_sizes[1] += sizes[idx] - initial[idx];
+              split.setSizes(new_sizes);
+            }
+            else {
+              split.collapse(idx);
+            }
+          }
+
+          var gutters = self.get(0).querySelectorAll('.gutter');
+          leftsplitter = gutters[0];
+          rightsplitter = gutters[1];
+
+          leftsplitter.addEventListener('dblclick', function(evt){
+            toggleSplit(split, 0, sizes_initial);
           });
+          //   var sizes = split.getSizes();
+          //   if (sizes[0] < 1) {
+          //     var new_sizes = [
+          //       sizes_initial[0],
+          //       sizes[1] + sizes[0] - sizes_initial[0],
+          //       sizes[2]
+          //     ]
+          //     split.setSizes(new_sizes);
+          //   }
+          //   else {
+          //     split.collapse(0);
+          //   }
+          // });
 
-          self.leftarea = jQuery('.geo-left', left);
-          self.leftbutton = jQuery('.vsplitbar', left);
-          jQuery('a', self.leftbutton).html('&raquo;');
 
-          jQuery('a', self.leftbutton).click(function() {
-            self.options.handle_leftbutton_dblclick(self.leftbutton, left);
+          rightsplitter.addEventListener('dblclick', function(evt){
+            toggleSplit(split, 2, sizes_initial);
           });
+          //   var sizes = split.getSizes();
+          //   if (sizes[2] < 1) {
+          //     var new_sizes = [
+          //       sizes[0],
+          //       sizes[1] + sizes[2] - sizes_initial[2],
+          //       sizes_initial[2],
+          //     ]
+          //     split.setSizes(new_sizes);
+          //   }
+          //   else {
+          //     split.collapse(2);
+          //   }
+          // });
 
-          self.leftbutton.dblclick(function() {
-            self.options.handle_leftbutton_dblclick(self.leftbutton, left);
-          });
-
-          // Right splitter
-          var right = jQuery('.geo-splitter', self);
-          right.splitter({
-            type: 'v',
-            outline: true,
-            sizeRight: 0,
-            accessKey: "R"
-          });
-
-          self.rightarea = jQuery('.geo-right', right);
-          self.rightbutton = jQuery(jQuery('.vsplitbar', right)[1]);
-          jQuery('a', self.rightbutton).html('&laquo;');
-
-          jQuery('a', self.rightbutton).click(function() {
-            self.options.handle_rightbutton_dblclick(self.rightbutton, right);
-          });
-
-          self.rightbutton.dblclick(function() {
-            self.options.handle_rightbutton_dblclick(self.rightbutton, right);
-          });
+          // // Left splitter
+          // var left = jQuery('.geo-leftside', self);
+          // left.splitter({
+          //   type: 'v',
+          //   outline: true,
+          //   accessKey: "L"
+          // });
+          //
+          // self.leftarea = jQuery('.geo-left', left);
+          // self.leftbutton = jQuery('.vsplitbar', left);
+          // jQuery('a', self.leftbutton).html('&raquo;');
+          //
+          // jQuery('a', self.leftbutton).click(function() {
+          //   self.options.handle_leftbutton_dblclick(self.leftbutton, left);
+          // });
+          //
+          // self.leftbutton.dblclick(function() {
+          //   self.options.handle_leftbutton_dblclick(self.leftbutton, left);
+          // });
+          //
+          // // Right splitter
+          // var right = jQuery('.geo-splitter', self);
+          // right.splitter({
+          //   type: 'v',
+          //   outline: true,
+          //   sizeRight: 0,
+          //   accessKey: "R"
+          // });
+          //
+          // self.rightarea = jQuery('.geo-right', right);
+          // self.rightbutton = jQuery(jQuery('.vsplitbar', right)[1]);
+          // jQuery('a', self.rightbutton).html('&laquo;');
+          //
+          // jQuery('a', self.rightbutton).click(function() {
+          //   self.options.handle_rightbutton_dblclick(self.rightbutton, right);
+          // });
+          //
+          // self.rightbutton.dblclick(function() {
+          //   self.options.handle_rightbutton_dblclick(self.rightbutton, right);
+          // });
 
           // Sidebar
           self.sidebar = jQuery('.geo-sidebar', self);
@@ -249,12 +314,12 @@
       },
 
       handle_map_loaded: function() {
-        jQuery('a', self.leftbutton).click();
-        jQuery('a', self.rightbutton).click();
+        // jQuery('a', self.leftbutton).click();
+        // jQuery('a', self.rightbutton).click();
       },
 
       handle_save: function() {
-        var fieldName = self.attr('id');
+        var fieldName = self.options.fieldName;
         var json = self.basket.options.geojson;
         // sort the geotags by name before sending it to object annotation
         json.features = json.features.sort(function(a, b) {
@@ -1813,9 +1878,9 @@
         });
 
         // Fix preview map
-        jQuery('form[name=edit_form] .formTab, .wizard-left, .wizard-right').click(function() {
+        jQuery('form .formTab, .wizard-left, .wizard-right').click(function() {
           // #5339 fix preview map also when using eea.forms
-          if (jQuery(this).closest('form').find('.formPanel:visible').find('#location-geopreview').length) {
+          if (jQuery(this).closest('form').find('.formPanel:visible').find('#' + self.options.fieldName + '-geopreview').length) {
             google.maps.event.trigger(self.Map, 'resize');
             self.options.fit_map_bounds(options.latlngbounds);
           }

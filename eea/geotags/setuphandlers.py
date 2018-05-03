@@ -1,37 +1,38 @@
 """ Setuphandlers
 """
 import logging
-from Products.CMFCore.utils import getToolByName
-from Products.ATVocabularyManager.utils.vocabs import createHierarchicalVocabs
-from eea.geotags.vocabularies.data.groups import VOC
-from eea.geotags.vocabularies.data.biogroups import VOC as BIOVOC
+import zope.deprecation
 
 logger = logging.getLogger('eea.geotags.setuphandlers')
 
 
-def setupGeonames(site):
-    """ Add geonames_key properties
+def setupGeonames(_):
+    """ portal_properties.geographical_properties has been moved to
+        plone.app.registry and is available in
+        eea.geotags.controlpanel.interfaces.IGeotagsSettings
     """
-    ptool = getToolByName(site, 'portal_properties')
-    if 'geographical_properties' not in ptool.objectIds():
-        ptool.addPropertySheet(id='geographical_properties',
-                               title='Geographical properties')
-    gprops = getattr(ptool, 'geographical_properties')
-    if not hasattr(gprops, 'geonames_key'):
-        gprops.manage_addProperty('geonames_key', '', 'string')
+    pass
 
 
-def importVocabularies(context):
-    """ Import groups vocabulary
+zope.deprecation.deprecated(
+    setupGeonames,
+    ('eea.geotags.setuphandlers.setupGeonames is no longer needed.'
+     + setupGeonames.__doc__)
+)
+
+
+def importVocabularies(_):
+    """ Vocabularies have been migrated to plone.app.registry
+        check eea.geotags.controlpanel.interfaces.IGeoVocabularies
     """
-    site = context.getSite()
-    atvm = getToolByName(site, 'portal_vocabularies', None)
+    pass
 
-    createHierarchicalVocabs(atvm, VOC)
-    logger.info("Added 'Geotags Tree' vocabulary")
 
-    createHierarchicalVocabs(atvm, BIOVOC)
-    logger.info('Added "Biogeographical regions" vocabulary')
+zope.deprecation.deprecated(
+    importVocabularies,
+    ('eea.geotags.setuphandlers.importVocabularies is no longer needed.'
+     + importVocabularies.__doc__)
+)
 
 
 def importVarious(context):
@@ -39,5 +40,3 @@ def importVarious(context):
     """
     if context.readDataFile('eea.geotags.txt') is None:
         return
-
-    importVocabularies(context)

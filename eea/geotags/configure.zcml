@@ -13,6 +13,7 @@
   <include package=".json" />
   <include package=".cache" />
   <include package=".catalog" />
+  <include package=".behavior" />
 
   <include package=".upgrades" />
 
@@ -28,5 +29,4 @@
     <include package=".rdf" />
   </configure>
 
-  
 </configure>
