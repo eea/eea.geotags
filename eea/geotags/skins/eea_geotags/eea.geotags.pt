@@ -55,7 +55,7 @@ Usage:
       <script type="text/javascript"
          tal:attributes="src python:'https://maps.google.com/maps/api/js?key={api_key}&amp;language=en'.format(api_key=widget_params['api_key'])"></script>
     </tal:google>
-    <script src="https://unpkg.com/split.js/split.min.js"></script>
+    <script src="++resource++eea.geotags.static/split.min.js"></script>
     <div tal:attributes="id widget_params/id; title string:Edit ${widget_params/label}"></div>
     <textarea style="display: none" rows="10" tal:attributes="name widget_params/name; title widget_params/label" tal:content="widget_params/geojson">{}</textarea>
     <div tal:attributes="id string:${widget_params/id}-geopreview"></div>

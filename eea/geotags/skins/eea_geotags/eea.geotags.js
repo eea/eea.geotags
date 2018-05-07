@@ -141,30 +141,16 @@
       },
 
       // Handlers
-      handle_leftbutton_dblclick: function(button, area) {
-        var width = self.leftarea.width();
-        var max_width = 300;
-        var min_width = 0;
-        if (width < 20) {
-          area.trigger('resize', [max_width]);
-          jQuery('a', self.leftbutton).html('&laquo;');
-        } else {
-          area.trigger('resize', [min_width]);
-          jQuery('a', self.leftbutton).html('&raquo;');
+      handle_split_doubleclick: function(split, idx, initial) {
+        var sizes = split.getSizes();
+        if (sizes[idx] < 1) {
+          var new_sizes = [].slice.call(sizes);
+          new_sizes[idx] = initial[idx];
+          new_sizes[1] += sizes[idx] - initial[idx];
+          split.setSizes(new_sizes);
         }
-      },
-
-      handle_rightbutton_dblclick: function(button, area) {
-        var width = self.rightarea.width();
-        var min_width = area.width();
-        var max_width = parseInt(3 * area.width() / 4, 10);
-
-        if (width < 20) {
-          area.trigger('resize', [max_width]);
-          jQuery('a', self.rightbutton).html('&raquo;');
-        } else {
-          area.trigger('resize', [min_width]);
-          jQuery('a', self.rightbutton).html('&laquo;');
+        else {
+          split.collapse(idx);
         }
       },
 
@@ -180,7 +166,9 @@
           self.empty();
           self.append($data);
 
-          var sizes_initial = [25, 50, 24];
+          var SIZES_INITIAL = [25, 50, 24];
+          var LAQUO = '«';
+          var RAQUO = '»';
 
           var split = Split(
             [
@@ -189,102 +177,50 @@
               '.geo-right'
             ],
             {
-              sizes: sizes_initial
+              sizes: SIZES_INITIAL
             }
           )
 
-          function toggleSplit(split, idx, initial) {
-            var sizes = split.getSizes();
-            if (sizes[idx] < 1) {
-              var new_sizes = [].slice.call(sizes);
-              new_sizes[idx] = initial[idx];
-              new_sizes[1] += sizes[idx] - initial[idx];
-              split.setSizes(new_sizes);
-            }
-            else {
-              split.collapse(idx);
-            }
+          function make_splitter_button(text, accesskey, split_idx) {
+            var button = document.createElement('a');
+            button.textContent = text;
+            button.setAttribute('href', '#');
+            button.setAttribute('accesskey', accesskey);
+            button.addEventListener('click', function(evt){
+              evt.preventDefault();
+              handle_split_doubleclick(button, split, split_idx, SIZES_INITIAL);
+              return false;
+            });
+            return button;
+          }
+
+          function update_button_text(button) {
+            var text = button.textContent;
+            button.textContent = (text === LAQUO ? RAQUO : LAQUO);
+          }
+
+          var handle_split_doubleclick = function(button, split, idx, initial) {
+            self.options.handle_split_doubleclick(split, idx, initial);
+            update_button_text(button);
           }
 
           var gutters = self.get(0).querySelectorAll('.gutter');
-          leftsplitter = gutters[0];
-          rightsplitter = gutters[1];
+          splitter_left = gutters[0];
+          splitter_right = gutters[1];
 
-          leftsplitter.addEventListener('dblclick', function(evt){
-            toggleSplit(split, 0, sizes_initial);
+          splitter_left_button = make_splitter_button(LAQUO, 'L', 0);
+          splitter_left.appendChild(splitter_left_button);
+
+          splitter_right_button = make_splitter_button(RAQUO, 'R', 2);
+          splitter_right.appendChild(splitter_right_button);
+
+          splitter_left.addEventListener('dblclick', function(evt){
+            handle_split_doubleclick(splitter_left_button, split, 0, SIZES_INITIAL);
           });
-          //   var sizes = split.getSizes();
-          //   if (sizes[0] < 1) {
-          //     var new_sizes = [
-          //       sizes_initial[0],
-          //       sizes[1] + sizes[0] - sizes_initial[0],
-          //       sizes[2]
-          //     ]
-          //     split.setSizes(new_sizes);
-          //   }
-          //   else {
-          //     split.collapse(0);
-          //   }
-          // });
 
-
-          rightsplitter.addEventListener('dblclick', function(evt){
-            toggleSplit(split, 2, sizes_initial);
+          splitter_right.addEventListener('dblclick', function(evt){
+            handle_split_doubleclick(splitter_right_button, split, 2, SIZES_INITIAL);
           });
-          //   var sizes = split.getSizes();
-          //   if (sizes[2] < 1) {
-          //     var new_sizes = [
-          //       sizes[0],
-          //       sizes[1] + sizes[2] - sizes_initial[2],
-          //       sizes_initial[2],
-          //     ]
-          //     split.setSizes(new_sizes);
-          //   }
-          //   else {
-          //     split.collapse(2);
-          //   }
-          // });
-
-          // // Left splitter
-          // var left = jQuery('.geo-leftside', self);
-          // left.splitter({
-          //   type: 'v',
-          //   outline: true,
-          //   accessKey: "L"
-          // });
-          //
-          // self.leftarea = jQuery('.geo-left', left);
-          // self.leftbutton = jQuery('.vsplitbar', left);
-          // jQuery('a', self.leftbutton).html('&raquo;');
-          //
-          // jQuery('a', self.leftbutton).click(function() {
-          //   self.options.handle_leftbutton_dblclick(self.leftbutton, left);
-          // });
-          //
-          // self.leftbutton.dblclick(function() {
-          //   self.options.handle_leftbutton_dblclick(self.leftbutton, left);
-          // });
-          //
-          // // Right splitter
-          // var right = jQuery('.geo-splitter', self);
-          // right.splitter({
-          //   type: 'v',
-          //   outline: true,
-          //   sizeRight: 0,
-          //   accessKey: "R"
-          // });
-          //
-          // self.rightarea = jQuery('.geo-right', right);
-          // self.rightbutton = jQuery(jQuery('.vsplitbar', right)[1]);
-          // jQuery('a', self.rightbutton).html('&laquo;');
-          //
-          // jQuery('a', self.rightbutton).click(function() {
-          //   self.options.handle_rightbutton_dblclick(self.rightbutton, right);
-          // });
-          //
-          // self.rightbutton.dblclick(function() {
-          //   self.options.handle_rightbutton_dblclick(self.rightbutton, right);
-          // });
 
           // Sidebar
           self.sidebar = jQuery('.geo-sidebar', self);
@@ -311,11 +247,6 @@
           jQuery.getJSON(self.map.mapping_url,  function(data) {
               jQuery.geocountrymapping = data;
           });
-      },
-
-      handle_map_loaded: function() {
-        // jQuery('a', self.leftbutton).click();
-        // jQuery('a', self.rightbutton).click();
       },
 
       handle_save: function() {
@@ -375,10 +306,6 @@
 
         self.bind(self.events.cancel, function() {
           jQuery(self).trigger(jQuery.geoevents.basket_cancel);
-        });
-
-        jQuery(self).bind(jQuery.geoevents.map_loaded, function(data) {
-          self.options.handle_map_loaded(data);
         });
       }
     };

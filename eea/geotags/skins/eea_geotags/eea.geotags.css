@@ -33,6 +33,7 @@
 .eea-geotags-popup {
   box-shadow: 0 0 100px #000;
   border-radius: 0;
+  z-index: 1000;
 }
 
 .eea-geotags-popup .ui-dialog-titlebar {
@@ -404,9 +405,10 @@ split {
   background-color: #fff;
 }
 .gutter {
-  background-color: transparent;
+  background-color: #efefef;
   background-repeat: no-repeat;
   background-position: 50%;
+  text-align: center;
 }
 .gutter.gutter-horizontal {
   cursor: col-resize;
