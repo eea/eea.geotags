@@ -166,7 +166,7 @@
           self.empty();
           self.append($data);
 
-          var SIZES_INITIAL = [25, 50, 24];
+          var SIZES_INITIAL = [25, 50, 24.9];
           var LAQUO = '«';
           var RAQUO = '»';
 
