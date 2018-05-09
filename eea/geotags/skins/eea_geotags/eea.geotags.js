@@ -179,7 +179,7 @@
             {
               sizes: SIZES_INITIAL
             }
-          )
+          );
 
           function make_splitter_button(text, accesskey, split_idx) {
             var button = document.createElement('a');
@@ -202,16 +202,18 @@
           var handle_split_doubleclick = function(button, split, idx, initial) {
             self.options.handle_split_doubleclick(split, idx, initial);
             update_button_text(button);
-          }
+          };
 
           var gutters = self.get(0).querySelectorAll('.gutter');
           splitter_left = gutters[0];
           splitter_right = gutters[1];
 
-          splitter_left_button = make_splitter_button(LAQUO, 'L', 0);
+          var splitter_left_button = make_splitter_button(LAQUO, 'L', 0);
+          splitter_left_button.className = 'split-button split-button-left';
           splitter_left.appendChild(splitter_left_button);
 
-          splitter_right_button = make_splitter_button(RAQUO, 'R', 2);
+          var splitter_right_button = make_splitter_button(RAQUO, 'R', 2);
+          splitter_right_button.className = 'split-button split-button-right';
           splitter_right.appendChild(splitter_right_button);
 
           splitter_left.addEventListener('dblclick', function(evt){

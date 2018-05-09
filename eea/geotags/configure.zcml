@@ -5,6 +5,7 @@
   <include package="Products.ATVocabularyManager" />
   <include package="eea.jquery" />
   <include package="eea.alchemy" />
+  <include package="eea.rdfmarshaller" />
 
 
   <include package=".browser" />
