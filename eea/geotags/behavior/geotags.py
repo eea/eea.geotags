@@ -22,8 +22,8 @@ from eea.geotags.field.common import get_tags
 class ISingleGeoTag(model.Schema):
 
     model.fieldset(
-        'categorization',
-        label=_(u'Categorization'),
+        'geo_coverage',
+        label=_(u'Geo coverage'),
         fields=('location', )
     )
 
@@ -35,8 +35,8 @@ class ISingleGeoTag(model.Schema):
 class IMultiGeoTag(model.Schema):
 
     model.fieldset(
-        'categorization',
-        label=_(u'Categorization'),
+        'geo_coverage',
+        label=_(u'Geo coverage'),
         fields=('location', )
     )
 
