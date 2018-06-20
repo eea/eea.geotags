@@ -41,7 +41,7 @@ Also read README.txt under eea.alchemy.
 
 More details about how to use this package can be found at the following link:
 
-1. http://taskman.eionet.europa.eu/projects/zope/wiki/HowToGeotag
+1. https://taskman.eionet.europa.eu/projects/zope/wiki/HowToGeotag
 
 
 Installation
@@ -57,7 +57,7 @@ To get started you will simply need to add the package to your "eggs" and
 "eea.geotags" package using the quick-installer or via the "Add-on
 Products" section in "Site Setup".
 
-.. _`zc.buildout`: http://pypi.python.org/pypi/zc.buildout/
+.. _`zc.buildout`: https://pypi.python.org/pypi/zc.buildout/
 
 You can download a sample buildout at:
 
@@ -102,7 +102,7 @@ More details under docs/License.txt
 Links
 =====
 
-1. EEA Geotags wiki page: http://taskman.eionet.europa.eu/projects/zope/wiki/HowToGeotag
+1. EEA Geotags wiki page: https://taskman.eionet.europa.eu/projects/zope/wiki/HowToGeotag
 
 
 Funding
@@ -110,4 +110,4 @@ Funding
 
 EEA_ - European Enviroment Agency (EU)
 
-.. _EEA: http://www.eea.europa.eu/
+.. _EEA: https://www.eea.europa.eu/
