@@ -1,6 +1,6 @@
 EEA Geotags
 
-  See "EEAGeowidget", http://taskman.eionet.europa.eu/projects/zope/wiki/EEAGeowidget
+  See "EEAGeowidget", https://taskman.eionet.europa.eu/projects/zope/wiki/EEAGeowidget
   wiki for more details
 
 Documentation

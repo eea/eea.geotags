@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 def create_obj_uri(obj):
     """ """
     obj_url = obj.absolute_url(1)
-    portalUrl = 'http://www.eea.europa.eu'
+    portalUrl = 'https://www.eea.europa.eu'
     if obj_url.find('www/SITE/') != -1:
         pub_url = portalUrl + obj_url[8:]
     else:
