@@ -61,7 +61,7 @@ Products" section in "Site Setup".
 
 You can download a sample buildout at:
 
-* https://svn.eionet.europa.eu/repositories/Zope/trunk/eea.geotags/buildouts
+* https://github.com/eea/eea.geotags/tree/master/buildouts/plone4
 
 
 Dependecies
@@ -79,10 +79,10 @@ Source code
 ===========
 
 Latest source code (Plone 4 compatible):
-   https://svn.eionet.europa.eu/repositories/Zope/trunk/eea.geotags/trunk
+   https://github.com/eea/eea.geotags
 
 Plone 2 and 3 compatible:
-   https://svn.eionet.europa.eu/repositories/Zope/trunk/eea.geotags/branches/plone25
+   https://github.com/eea/eea.geotags/tree/plone25
 
 
 Copyright and license
