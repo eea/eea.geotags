@@ -16,8 +16,8 @@ class IGeotagsSettings(Interface):
         description=_(
             u'This will be used to render the Google Maps widget'
             u'for eea.geotags enabled location fields.'
-            u'You can get one from https://developers.google.com/maps/'
-            u'documentation/javascript/get-api-key'
+            u'You can get one from https://developers.google.com/maps/documentation/javascript/get-api-key. '
+            u'Leave empty to use Open Street Map instead'
         ),
         required=False,
         default=u''
