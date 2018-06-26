@@ -1,6 +1,7 @@
 """ Configure
 """
-from Products.CMFPlone import PloneMessageFactory as _
+from zope.i18nmessageid import MessageFactory
+_ = MessageFactory("eea")
 
 PROJECTNAME = 'eea.geotags'
 ADD_CONTENT_PERMISSION = "Add portal content"

@@ -1,7 +1,5 @@
 """ Widget
 """
-import json
-
 from zope.interface import implements
 
 from zope.schema import Field

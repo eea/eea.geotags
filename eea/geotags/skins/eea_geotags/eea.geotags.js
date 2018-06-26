@@ -2029,7 +2029,7 @@
     if(window.OpenLayers !== undefined) {
       return jQuery(this).OpenStreetMapPreview(settings);
     }
-  }
+  };
 
 // End namespace
 }());
