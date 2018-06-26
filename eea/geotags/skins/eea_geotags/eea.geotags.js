@@ -321,253 +321,6 @@
     return this;
   };
 
-  /* Geo Map Canvas jQuery plugin */
-  jQuery.fn.geomap = function(settings) {
-    var self = this;
-
-    self.options = {
-      json: '',
-      fieldName: '',
-      map_options: {
-        latitude: 55,
-        longitude: 35,
-        center: null,
-        zoom: 4,
-        navigationControl: true,
-        navigationControlOptions: {
-          style: google.maps.NavigationControlStyle.ZOOM_PAN,
-          position: google.maps.ControlPosition.RIGHT
-        },
-        mapTypeControl: true,
-        mapTypeControlOptions: {
-          position: google.maps.ControlPosition.TOP_RIGHT,
-          style: google.maps.MapTypeControlStyle.DEFAULT
-        },
-        mapTypeId: google.maps.MapTypeId.TERRAIN
-      },
-
-      // Handlers
-      handle_select: function(data, autoclick) {
-        if (!data) {
-          return;
-        }
-
-        if (data.bbox.length) {
-          var lat = data.bbox[0];
-          var lng = data.bbox[1];
-          var sw = new google.maps.LatLng(lat, lng);
-
-          lat = data.bbox[2];
-          lng = data.bbox[3];
-          var ne = new google.maps.LatLng(lat, lng);
-
-          var viewport = new google.maps.LatLngBounds(sw, ne);
-          self.Map.fitBounds(viewport);
-        } else {
-          self.Map.setZoom(4);
-        }
-
-        // Marker
-        jQuery.geomarker({
-          fieldName: self.options.fieldName,
-          map: self.Map,
-          points: [data],
-          center: data.properties.center,
-          autoclick: autoclick
-        });
-      },
-
-      handle_rightclick: function(data, center) {
-        // Markers
-        jQuery.geomarker({
-          fieldName: self.options.fieldName,
-          map: self.Map,
-          points: data.features,
-          center: center
-        });
-      },
-
-      initialize: function() {
-        self.initialized = false;
-        self.addClass('geo-mapcanvas');
-        var options = self.options.map_options;
-        if (!options.latlng) {
-          options.center = new google.maps.LatLng(
-            options.latitude,
-            options.longitude
-          );
-        }
-
-        self.Map = new google.maps.Map(self[0], options);
-
-        self.Geocoder = new google.maps.Geocoder();
-
-        // Handle events
-        var context = jQuery('#' + self.options.fieldName);
-        jQuery(context).bind(jQuery.geoevents.select_point, function(evt, data) {
-          data.target.effect('transfer', {to: self}, 'slow', function() {
-            self.options.handle_select(data.point, data.autoclick);
-          });
-        });
-
-        // Map initialized
-        google.maps.event.addListener(self.Map, 'tilesloaded', function() {
-          if (self.initialized) {
-            return;
-          }
-          self.initialized = true;
-          jQuery(context).trigger(jQuery.geoevents.map_loaded);
-        });
-
-        // Right click
-        google.maps.event.addListener(self.Map, 'rightclick', function(data) {
-          var latlng = data.latLng;
-          var center = [latlng.lat(), latlng.lng()];
-
-          // Empty marker to clear map
-          jQuery.geomarker({
-            fieldName: self.options.fieldName,
-            map: self.Map,
-            center: center,
-            points: []
-          });
-
-          jQuery(context).trigger(jQuery.geoevents.ajax_start);
-          self.Geocoder.geocode({location: latlng}, function(results) {
-            var features = [];
-            jQuery.each(results, function() {
-              features.push(jQuery.google2geojson(this));
-            });
-
-            var results_obj = {
-              type: 'FeatureCollection',
-              features: features
-            };
-
-            self.options.handle_rightclick(results_obj, center);
-            jQuery(context).trigger(jQuery.geoevents.ajax_stop);
-          });
-        });
-      }
-    };
-
-    if (settings) {
-      jQuery.extend(self.options, settings);
-    }
-
-    // Return
-    self.options.initialize();
-    return this;
-  };
-
-  jQuery.geomarker = function(settings) {
-    var self = this;
-
-    self.options = {
-      fieldName: '',
-      template: '<div class="geo-marker">' +
-        '<h3 class="title"></h3>' +
-        '<h4 class="subtitle"></h4>' +
-        '<h5 class="tags"></h5>' +
-        '</div>',
-      map: null,
-      points: [],
-      center: [0, 0],
-      autoclick: false,
-
-      initialize: function() {
-        self.options.clear();
-        self.mappoints = {};
-
-        // Marker
-        var center = self.options.center;
-        var latlng = new google.maps.LatLng(center[0], center[1]);
-        self.marker = new google.maps.Marker({
-          position: latlng
-        });
-        self.marker.setMap(self.options.map);
-
-        // InfoWindow
-        var template = jQuery('<div>');
-        jQuery.each(self.options.points, function() {
-          var point = this;
-          var uid = point.properties.center[0] + '-' + point.properties.center[1];
-          self.mappoints[uid] = point;
-
-          var title = this.properties.title;
-          var subtitle = this.properties.description;
-          var tags = '';
-          if (typeof(this.properties.tags) === 'string') {
-            tags = this.properties.tags;
-          } else {
-            jQuery.each(this.properties.tags, function() {
-              tags += this + ', ';
-            });
-          }
-
-          var itemplate = jQuery(self.options.template);
-          itemplate.attr('id', uid).attr('title', 'Add');
-          var icon = jQuery('<div>')
-            .addClass('ui-icon')
-            .addClass('ui-icon-extlink')
-            .text('+');
-          itemplate.prepend(icon);
-          jQuery('.title', itemplate).text(title);
-          jQuery('.subtitle', itemplate).text(subtitle);
-          jQuery('.tags', itemplate).text(tags);
-
-          template.append(itemplate);
-        });
-
-        var context = jQuery('#' + self.options.fieldName);
-        if (self.options.points.length) {
-          // Add info window
-          self.info = new google.maps.InfoWindow({
-            content: template.html()
-          });
-
-          self.info.open(self.options.map, self.marker);
-          google.maps.event.addListener(self.info, 'domready', function() {
-            var $geo_marker = jQuery('.geo-marker');
-            $geo_marker.click(function() {
-              var _self = jQuery(this);
-              jQuery(context).trigger(jQuery.geoevents.select_marker, {
-                point: self.mappoints[_self.attr('id')],
-                button: _self
-              });
-            });
-
-            // Autoclick
-            if (self.options.autoclick) {
-              $geo_marker.click();
-            }
-          });
-
-          // Google event handlers
-          google.maps.event.addListener(self.marker, 'click', function() {
-            self.info.open(self.options.map, self.marker);
-          });
-        }
-      },
-
-      clear: function() {
-        if (self.marker) {
-          self.marker.setMap(null);
-        }
-        if (self.info) {
-          self.info.close();
-        }
-      }
-    };
-
-    if (settings) {
-      jQuery.extend(self.options, settings);
-    }
-
-    self.options.initialize();
-    return this;
-  };
-
   /* Geo basket jQuery plugin */
   jQuery.fn.geobasket = function(settings) {
     var self = this;
@@ -1168,7 +921,7 @@
         self.filters_ctl = self.filters_area.find('.filters-ctl');
         self.fcl_filters = self.filters_area.find('#toggle-fcl-filters');
         self.slide_ui_icons = self.options.init_ui_icons(self.filters_area);
-        self.Geocoder = new google.maps.Geocoder();
+        self.Geocoder = jQuery.GeoCoder();
 
         // Handle suggestions
         if (self.options.suggestions.length) {
@@ -1586,7 +1339,7 @@
         self.naturalfeatures = jQuery('select[name=naturalfeature]', self);
         self.data = {};
 
-        self.Geocoder = new google.maps.Geocoder();
+        self.Geocoder = jQuery.GeoCoder();
 
         // Hide
         self.countries.parent().hide();
@@ -1662,7 +1415,326 @@
     return this;
   };
 
-  jQuery.fn.geopreview = function(settings) {
+
+  /* ***************************************************** */
+
+  // Google Maps Geocoder
+  jQuery.GoogleMapsGeoCoder = function(settings) {
+    var self = this;
+    self.geocode = function(query, callback) {
+      var gcoder = new google.maps.Geocoder();
+      return gcoder.geocode(query, callback);
+    };
+    return this;
+  };
+
+  // Open Street Map Geocoder
+  jQuery.OpenStreetMapGeoCoder = function(settings) {
+    var self = this;
+    self.geocode = function(query, callback) {
+      console.log("Open Street Map Geocoder not implemented yet");
+    };
+    return this;
+  };
+
+  // Geo Coder jQuery plugin
+  jQuery.GeoCoder = function(settings) {
+    if(window.google){
+      return jQuery.GoogleMapsGeoCoder(settings);
+    }else{
+      return jQuery.OpenStreetMapGeoCoder(settings);
+    }
+  };
+  /* ***************************************************** */
+
+  // Google Maps Marker
+  jQuery.GoogleMapsMarker = function(settings) {
+    var self = this;
+
+    self.options = {
+      fieldName: '',
+      template: '<div class="geo-marker">' +
+        '<h3 class="title"></h3>' +
+        '<h4 class="subtitle"></h4>' +
+        '<h5 class="tags"></h5>' +
+        '</div>',
+      map: null,
+      points: [],
+      center: [0, 0],
+      autoclick: false,
+
+      initialize: function() {
+        self.options.clear();
+        self.mappoints = {};
+
+        // Marker
+        var center = self.options.center;
+        var latlng = new google.maps.LatLng(center[0], center[1]);
+        self.marker = new google.maps.Marker({
+          position: latlng
+        });
+        self.marker.setMap(self.options.map);
+
+        // InfoWindow
+        var template = jQuery('<div>');
+        jQuery.each(self.options.points, function() {
+          var point = this;
+          var uid = point.properties.center[0] + '-' + point.properties.center[1];
+          self.mappoints[uid] = point;
+
+          var title = this.properties.title;
+          var subtitle = this.properties.description;
+          var tags = '';
+          if (typeof(this.properties.tags) === 'string') {
+            tags = this.properties.tags;
+          } else {
+            jQuery.each(this.properties.tags, function() {
+              tags += this + ', ';
+            });
+          }
+
+          var itemplate = jQuery(self.options.template);
+          itemplate.attr('id', uid).attr('title', 'Add');
+          var icon = jQuery('<div>')
+            .addClass('ui-icon')
+            .addClass('ui-icon-extlink')
+            .text('+');
+          itemplate.prepend(icon);
+          jQuery('.title', itemplate).text(title);
+          jQuery('.subtitle', itemplate).text(subtitle);
+          jQuery('.tags', itemplate).text(tags);
+
+          template.append(itemplate);
+        });
+
+        var context = jQuery('#' + self.options.fieldName);
+        if (self.options.points.length) {
+          // Add info window
+          self.info = new google.maps.InfoWindow({
+            content: template.html()
+          });
+
+          self.info.open(self.options.map, self.marker);
+          google.maps.event.addListener(self.info, 'domready', function() {
+            var $geo_marker = jQuery('.geo-marker');
+            $geo_marker.click(function() {
+              var _self = jQuery(this);
+              jQuery(context).trigger(jQuery.geoevents.select_marker, {
+                point: self.mappoints[_self.attr('id')],
+                button: _self
+              });
+            });
+
+            // Autoclick
+            if (self.options.autoclick) {
+              $geo_marker.click();
+            }
+          });
+
+          // Google event handlers
+          google.maps.event.addListener(self.marker, 'click', function() {
+            self.info.open(self.options.map, self.marker);
+          });
+        }
+      },
+
+      clear: function() {
+        if (self.marker) {
+          self.marker.setMap(null);
+        }
+        if (self.info) {
+          self.info.close();
+        }
+      }
+    };
+
+    if (settings) {
+      jQuery.extend(self.options, settings);
+    }
+
+    self.options.initialize();
+    return this;
+  };
+
+  // Open Street Map Marker
+  jQuery.OpenStreetMapMarker = function(settings) {
+    var self = this;
+    console.log("Open street map marker not implemented yet");
+  };
+
+  // Geo Marker jQuery plugin
+  jQuery.geomarker = function(settings) {
+    if(window.google !== undefined) {
+      return jQuery.GoogleMapsMarker(settings);
+    }
+
+    if(window.OpenLayers !== undefined) {
+      return jQuery.OpenStreetMapMarker(settings);
+    }
+  };
+
+  /* ***************************************************** */
+
+  // Google Maps Canvas
+  jQuery.fn.GoogleMapCanvas = function(settings) {
+    var self = this;
+
+    self.options = {
+      json: '',
+      fieldName: '',
+      map_options: {
+        latitude: 55,
+        longitude: 35,
+        center: null,
+        zoom: 4,
+        navigationControl: true,
+        navigationControlOptions: {
+          style: google.maps.NavigationControlStyle.ZOOM_PAN,
+          position: google.maps.ControlPosition.RIGHT
+        },
+        mapTypeControl: true,
+        mapTypeControlOptions: {
+          position: google.maps.ControlPosition.TOP_RIGHT,
+          style: google.maps.MapTypeControlStyle.DEFAULT
+        },
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+      },
+
+      // Handlers
+      handle_select: function(data, autoclick) {
+        if (!data) {
+          return;
+        }
+
+        if (data.bbox.length) {
+          var lat = data.bbox[0];
+          var lng = data.bbox[1];
+          var sw = new google.maps.LatLng(lat, lng);
+
+          lat = data.bbox[2];
+          lng = data.bbox[3];
+          var ne = new google.maps.LatLng(lat, lng);
+
+          var viewport = new google.maps.LatLngBounds(sw, ne);
+          self.Map.fitBounds(viewport);
+        } else {
+          self.Map.setZoom(4);
+        }
+
+        // Marker
+        jQuery.geomarker({
+          fieldName: self.options.fieldName,
+          map: self.Map,
+          points: [data],
+          center: data.properties.center,
+          autoclick: autoclick
+        });
+      },
+
+      handle_rightclick: function(data, center) {
+        // Markers
+        jQuery.geomarker({
+          fieldName: self.options.fieldName,
+          map: self.Map,
+          points: data.features,
+          center: center
+        });
+      },
+
+      initialize: function() {
+        self.initialized = false;
+        self.addClass('geo-mapcanvas');
+        var options = self.options.map_options;
+        if (!options.latlng) {
+          options.center = new google.maps.LatLng(
+            options.latitude,
+            options.longitude
+          );
+        }
+
+        self.Map = new google.maps.Map(self[0], options);
+
+        self.Geocoder = jQuery.GeoCoder();
+
+        // Handle events
+        var context = jQuery('#' + self.options.fieldName);
+        jQuery(context).bind(jQuery.geoevents.select_point, function(evt, data) {
+          data.target.effect('transfer', {to: self}, 'slow', function() {
+            self.options.handle_select(data.point, data.autoclick);
+          });
+        });
+
+        // Map initialized
+        google.maps.event.addListener(self.Map, 'tilesloaded', function() {
+          if (self.initialized) {
+            return;
+          }
+          self.initialized = true;
+          jQuery(context).trigger(jQuery.geoevents.map_loaded);
+        });
+
+        // Right click
+        google.maps.event.addListener(self.Map, 'rightclick', function(data) {
+          var latlng = data.latLng;
+          var center = [latlng.lat(), latlng.lng()];
+
+          // Empty marker to clear map
+          jQuery.geomarker({
+            fieldName: self.options.fieldName,
+            map: self.Map,
+            center: center,
+            points: []
+          });
+
+          jQuery(context).trigger(jQuery.geoevents.ajax_start);
+          self.Geocoder.geocode({location: latlng}, function(results) {
+            var features = [];
+            jQuery.each(results, function() {
+              features.push(jQuery.google2geojson(this));
+            });
+
+            var results_obj = {
+              type: 'FeatureCollection',
+              features: features
+            };
+
+            self.options.handle_rightclick(results_obj, center);
+            jQuery(context).trigger(jQuery.geoevents.ajax_stop);
+          });
+        });
+      }
+    };
+
+    if (settings) {
+      jQuery.extend(self.options, settings);
+    }
+
+    // Return
+    self.options.initialize();
+    return this;
+  };
+
+  // Open Street Map Canvas
+  jQuery.fn.OpenStreetMapCanvas = function(settings) {
+    var self = this;
+    console.log("Open street map canvas not implemented yet");
+  };
+
+  // Geo Map Canvas jQuery plugin
+  jQuery.fn.geomap = function(settings) {
+    if(window.google !== undefined){
+      return jQuery(this).GoogleMapCanvas(settings);
+    }
+
+    if(window.OpenLayers !== undefined) {
+      return jQuery(this).OpenStreetMapCanvas(settings);
+    }
+  };
+
+  /* ***************************************************** */
+
+  // Google Maps Preview
+  jQuery.fn.GoogleMapsPreview = function(settings) {
     var self = this;
     self.options = {
       json: {},
@@ -1780,14 +1852,12 @@
         }
 
         self.Map = new google.maps.Map(self[0], options);
-        self.Geocoder = new google.maps.Geocoder();
+        self.Geocoder = jQuery.GeoCoder();
 
         self.options.handle_points(self.options.json);
         var context = jQuery('#' + self.options.fieldName);
         var latlngbounds;
-        var markers_length = self.markers.length;
-
-        if (markers_length > 1) {
+        if (self.markers.length > 1) {
           latlngbounds = self.options.set_map_bounds(self.markers);
         }
         else {
@@ -1825,6 +1895,141 @@
     self.options.initialize();
     return this;
   };
+
+  // Open Street Map Preview
+  jQuery.fn.OpenStreetMapPreview = function(settings) {
+    var self = this;
+    self.options = {
+      json: {},
+      fieldName: '',
+      template: '<div><div class="geo-preview-marker">' +
+        '<h3 class="title"></h3>' +
+        '<h4 class="subtitle"></h4>' +
+        '<h5 class="tags"></h5>' +
+        '</div></div>',
+      map_options: {
+        latitude: 54.5260,
+        longitude: 15.2551,
+        center: null,
+        zoom: 3
+      },
+
+      handle_cleanup: function() {
+        self.markers.clearMarkers();
+      },
+
+      handle_points: function(json) {
+        self.options.handle_cleanup();
+        if (!json.features) {
+          return;
+        }
+
+        jQuery.each(json.features, function() {
+          var center = this.properties.center;
+          var lonLat = new OpenLayers.LonLat(center[1], center[0]).transform(
+            new OpenLayers.Projection("EPSG:4326"),
+            self.Map.getProjectionObject()
+          );
+          var marker = new OpenLayers.Marker(lonLat);
+          self.markers.addMarker(marker);
+
+          var title = this.properties.title;
+          var subtitle = this.properties.description;
+          var tags = '';
+          if (typeof(this.properties.tags) === 'string') {
+            tags = this.properties.tags;
+          } else {
+            jQuery.each(this.properties.tags, function() {
+              tags += this + ', ';
+            });
+          }
+
+          var itemplate = jQuery(self.options.template);
+          jQuery('.title', itemplate).text(title);
+          jQuery('.subtitle', itemplate).text(subtitle);
+          jQuery('.tags', itemplate).text(tags);
+
+          // OpenLayers event handlers
+          marker.events.register("click", marker, function(){
+            self.info.lonlat = lonLat;
+            self.info.setContentHTML(itemplate.html());
+            self.info.show();
+          });
+        });
+      },
+
+      set_map_bounds: function() {
+        if(!self.options.map_options.center){
+          self.options.map_options.center = new OpenLayers.LonLat(
+            self.options.map_options.longitude,
+            self.options.map_options.latitude).transform(
+              new OpenLayers.Projection("EPSG:4326"),
+              self.Map.getProjectionObject()
+            );
+          self.Map.setCenter(self.options.map_options.center, self.options.map_options.zoom);
+        }
+
+        if(self.markers.markers.length > 1) {
+          var bounds = self.markers.getDataExtent();
+          self.Map.zoomToExtent(bounds);
+        }
+      },
+
+      initialize: function(){
+        self.height(400)
+            .width("100%")
+            .addClass('geo-preview-mapcanvas');
+
+        self.Map = new OpenLayers.Map(self.attr('id'));
+        self.Map.addLayer(new OpenLayers.Layer.OSM());
+
+        self.markers = new OpenLayers.Layer.Markers("Markers");
+
+        self.Map.addLayer(self.markers);
+        self.options.handle_points(self.options.json);
+        self.options.set_map_bounds();
+
+        self.info = new OpenLayers.Popup.FramedCloud("geotag",
+        self.options.map_options.center, new OpenLayers.Size(200, 200), "Europe", null, true);
+        self.info.autoSize = true;
+        self.info.hide();
+        self.Map.addPopup(self.info);
+
+        // Bind events
+        var context = jQuery('#' + self.options.fieldName);
+        context.bind(jQuery.geoevents.basket_save, function(evt, data) {
+          self.options.handle_points(data.json);
+          self.options.set_map_bounds();
+        });
+
+        // Fix preview map
+        jQuery('form .formTab, .wizard-left, .wizard-right').click(function() {
+          if (jQuery(this).closest('form').find('.formPanel:visible').find('#' + self.options.fieldName + '-geopreview').length) {
+            self.Map.updateSize();
+          }
+        });
+      }
+    };
+
+    if (settings) {
+      jQuery.extend(self.options, settings);
+    }
+
+    // Return
+    self.options.initialize();
+    return this;
+  };
+
+  // Geo Map Preview jQuery plugin
+  jQuery.fn.geopreview = function(settings) {
+    if(window.google !== undefined){
+      return jQuery(this).GoogleMapsPreview(settings);
+    }
+
+    if(window.OpenLayers !== undefined) {
+      return jQuery(this).OpenStreetMapPreview(settings);
+    }
+  }
 
 // End namespace
 }());
