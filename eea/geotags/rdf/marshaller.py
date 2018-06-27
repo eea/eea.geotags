@@ -2,59 +2,40 @@
 """ RDF Marshaller module for geotags """
 
 from eea.geotags.field.location import GeotagsFieldMixin
+from eea.geotags.field.common import json2list
+from eea.geotags.field.common import get_tags
 from eea.geotags.interfaces import IGeoTags
 from eea.geotags.rdf.country_groups import COUNTRY_GROUPS
+from eea.geotags.storage.interfaces import IGeoTagged
 from eea.rdfmarshaller.archetypes.fields import ATField2Surf
 from eea.rdfmarshaller.archetypes.interfaces import IATField2Surf
+from eea.rdfmarshaller.dexterity.fields import DXField2Surf
+from eea.rdfmarshaller.dexterity.interfaces import IDXField2Surf
 from eea.rdfmarshaller.interfaces import ISurfSession
 from zope.component import adapts, getAdapter
-from zope.interface import implements, Interface
+from zope.interface import implements
+from zope.schema import Field
 
-import surf
 import rdflib
+import surf
 
 
-class GeotagsField2Surf(ATField2Surf):
-    """Adapter to express geotags field with RDF using Surf."""
-    implements(IATField2Surf)
-    adapts(GeotagsFieldMixin, Interface, ISurfSession)
+class GeotagsField2Surf(object):
 
-    prefix = "dcterms"
-    name = "spatial"
+    def __init__(self, field, context, session):
+        # Override init for DXField2Surf and ATField2Surf here.
+        # Necessary because DXField2Surf.__init__ sets
+        # self.name = field.__name__ which overwrites the class level
+        # `name` property of any subclass. Making it impossible to set a
+        # name different from the field name.
+        super(GeotagsField2Surf, self).__init__(field, context, session)
+        self.prefix = 'dcterms'
+        self.name = 'spatial'
+
+    def get_location(self):
+        raise NotImplementedError('Subclassess must implement this!')
 
     def value(self):
-        """desired RDF output is like:
-
-        <document:Document
-        rdf:about="
-        http://www.eea.europa.eu/data-and-maps/daviz/learn-more/prepare-data">
-        ...
-        <dct:spatial>
-            <geo:SpatialThing>
-            <rdfs:label>Rome (Latium, Italy)</rdfs:label>
-            <dcterms:title>Rome (Latium, Italy)</dcterms:title>
-            <rdfs:comment>Latium, Italy</rdfs:comment>
-            <dcterms:type>capital of a political entity</dcterms:type>
-            <geo:lat>41.901514</geo:lat>
-            <geo:long>12.460774</geo:long>
-            <owl:sameAs rdf:resource="http://sws.geonames.org/3169070/">
-            </geo:SpatialThing>
-        </dct:spatial>
-        <dct:spatial>
-            <geo:SpatialThing>
-            <rdfs:label>Bucharest (București, Romania)</rdfs:label>
-            <dcterms:title>Bucharest (București, Romania)</dcterms:title>
-            <rdfs:comment>Bucureşti, Romania</rdfs:comment>
-            <dcterms:type>capital of a political entity</dcterms:type>
-            <geo:lat>44.437711</geo:lat>
-            <geo:long>26.097367</geo:long>
-            <owl:sameAs rdf:resource="http://sws.geonames.org/683506/">
-            </geo:SpatialThing>
-        </dct:spatial>
-        ...
-        </document:Document>
-
-        """
         # create a GeoPoint Class
         SpatialThing = self.session.get_class(surf.ns.GEO.SpatialThing)
 
@@ -105,7 +86,7 @@ class GeotagsField2Surf(ATField2Surf):
             other = feature['properties'].get('other', {})
             if other.has_key('geonameId'):
                 geonamesURI = 'http://sws.geonames.org/%s/' % (
-                            str(feature['properties']['other']['geonameId']))
+                    str(feature['properties']['other']['geonameId']))
                 rdfp[surf.ns.OWL['sameAs']] = rdflib.URIRef(geonamesURI)
             rdfp.update()
             output.append(rdfp)
@@ -113,7 +94,7 @@ class GeotagsField2Surf(ATField2Surf):
 
         # 85617 add country groups to rdf output
         found_groups = []
-        location = set(self.context.location)
+        location = self.get_location()
         correct_country_names = cty_names.values()
         for k, v in country_groups.items():
             differences = set(v).difference(location)
@@ -135,7 +116,8 @@ class GeotagsField2Surf(ATField2Surf):
             rdfp[surf.ns.DCTERMS['title']] = full_title
             rdfp[surf.ns.RDFS['label']] = full_title
             rdfp[surf.ns.RDFS['comment']] = title + ': ' + \
-                                    ', '.join(country_groups[(label, title)])
+                                            ', '.join(
+                                                country_groups[(label, title)])
             rdfp[surf.ns.DCTERMS['type']] = 'countries_group'
             rdfp[surf.ns.SKOS['notation']] = label
             uri = 'http://rdfdata.eionet.europa.eu/eea/countries/%s' % label
@@ -145,3 +127,26 @@ class GeotagsField2Surf(ATField2Surf):
             i += 1
 
         return output
+
+
+class GeotagsField2SurfDX(GeotagsField2Surf, DXField2Surf):
+    implements(IDXField2Surf)
+    adapts(Field, IGeoTagged, ISurfSession)
+
+    def get_location(self):
+        return json2list(get_tags(self.context)) or []
+
+
+class GeotagsField2SurfAT(GeotagsField2Surf, ATField2Surf):
+    """Adapter to express geotags field with RDF using Surf."""
+    implements(IATField2Surf)
+    adapts(GeotagsFieldMixin, IGeoTagged, ISurfSession)
+
+    def get_location(self):
+        location_value = self.context.location
+        try:
+            location = location_value.split('\n')
+        except AttributeError:
+            location = location_value
+
+        return set(location)

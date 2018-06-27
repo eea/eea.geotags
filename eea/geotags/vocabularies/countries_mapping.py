@@ -1,9 +1,12 @@
 """ Countries
 """
+from zope.component import getUtility
 from zope.interface import implements
 from zope.schema.vocabulary import SimpleVocabulary
-from Products.CMFCore.utils import getToolByName
+from zope.schema.vocabulary import SimpleTerm
+from plone.registry.interfaces import IRegistry
 from eea.geotags.vocabularies.interfaces import IGeoCountriesMapping
+from eea.geotags.controlpanel.interfaces import IGeoVocabularies
 
 
 class Countries_Mapping(object):
@@ -15,8 +18,11 @@ class Countries_Mapping(object):
         self.context = context
 
     def __call__(self):
-        atvm = getToolByName(self.context, 'portal_vocabularies', '')
-        voc = atvm.get('countries_mapping')
-        if not voc:
-            return SimpleVocabulary([])
-        return voc
+
+        registry = getUtility(IRegistry).forInterface(IGeoVocabularies)
+        countries_mapping = getattr(registry, 'countries_mapping', dict())
+        items = [
+            SimpleTerm(key, key, val)
+            for key, val in countries_mapping.items()
+        ]
+        return SimpleVocabulary(items)

@@ -1,10 +1,15 @@
 """ Groups
 """
+from zope.component import getUtility
 from zope.interface import implements
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
-from Products.CMFCore.utils import getToolByName
+
+from plone.registry.interfaces import IRegistry
+
 from eea.geotags.vocabularies.interfaces import IBioGroups
+from eea.geotags.controlpanel.interfaces import IGeoVocabularies
+
 
 class BioGroups(object):
     """ Biogeographical regions
@@ -15,11 +20,10 @@ class BioGroups(object):
         self.context = context
 
     def __call__(self):
-        atvm = getToolByName(self.context, 'portal_vocabularies')
-        if not 'biotags' in atvm.objectIds():
-            return SimpleVocabulary([])
-
-        voc = atvm['biotags']
-        items = voc.objectItems()
-        items = [SimpleTerm(key, key, item.title) for key, item in items]
+        registry = getUtility(IRegistry).forInterface(IGeoVocabularies)
+        biotags = getattr(registry, 'biotags', dict())
+        items = [
+            SimpleTerm(key, key, val['title'])
+            for key, val in biotags.items()
+        ]
         return SimpleVocabulary(items)

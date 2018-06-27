@@ -6,13 +6,14 @@
   <include package="eea.jquery" />
   <include package="eea.alchemy" />
 
-
   <include package=".browser" />
+  <include package=".controlpanel" />
   <include package=".storage" />
   <include package=".vocabularies" />
   <include package=".json" />
   <include package=".cache" />
   <include package=".catalog" />
+  <include package=".behavior" />
 
   <include package=".upgrades" />
 
@@ -28,5 +29,4 @@
     <include package=".rdf" />
   </configure>
 
-  
 </configure>
