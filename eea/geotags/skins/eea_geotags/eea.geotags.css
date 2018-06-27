@@ -200,6 +200,10 @@
   border: 1px solid #8CACBB;
 }
 
+.geo-preview-mapcanvas .olControlAttribution {
+  z-index: 800 !important;
+}
+
 .geo-marker {
   padding-bottom: 1em;
   border: 1px dotted #ffffff;
@@ -388,7 +392,7 @@
 /* split buttons */
 .split-button {
   position: absolute;
-  z-index: 100;
+  z-index: 800;
   text-decoration: none;
   color: #8CACBB;
   font-size: 18px;

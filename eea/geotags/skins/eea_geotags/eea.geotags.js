@@ -1,6 +1,7 @@
 /*global window, jQuery, $, google*/
 
 (function() {
+
     $.fn.clicktoggle = function(a, b) {
         return this.each(function() {
             var clicked = false;
@@ -14,6 +15,7 @@
             });
         });
     };
+
   jQuery.geoevents = {
     select_point: 'geo-event-select-point',
     select_marker: 'geo-event-select-marker',
@@ -24,79 +26,8 @@
     basket_update: 'geo-events-basket-update',
     basket_cancel: 'geo-events-basket-cancel',
     ajax_start: 'geo-events-ajax-start',
-    ajax_stop: 'geo-events-ajax-stop'
-  };
-
-// Convert google geocoder to geojson
-  jQuery.google2geojson = function(googlejson) {
-    var feature = {
-      type: 'Feature',
-      bbox: [],
-      geometry: {
-        type: 'Point',
-        coordinates: []
-      },
-      properties: {
-        name: '',
-        title: '',
-        description: '',
-        tags: '',
-        center: [],
-        other: googlejson
-      }
-    };
-    var title = googlejson.address_components[0].long_name;
-    var description = googlejson.formatted_address;
-    var country_mappings = $.geocountrymapping;
-    $.each(country_mappings, function(k,v){
-        if (k === 'Macedonia') {
-          return true;
-        }
-        if (title.indexOf(k) !== -1 || description.indexOf(k) !== -1) {
-          title = title.replace(k, v);
-          description = description.replace(k, v);
-          return false;
-        }
-        return true;
-    });
-    feature.properties.title = title;
-    feature.properties.description = description;
-    feature.properties.tags = googlejson.types;
-
-    // Geometry
-    feature.properties.center = [
-      googlejson.geometry.location.lat(),
-      googlejson.geometry.location.lng()
-    ];
-
-    var bounds = googlejson.geometry.bounds;
-    var type = 'Point';
-    if (bounds) {
-      type = 'Polygon';
-    } else {
-      bounds = googlejson.geometry.viewport;
-    }
-    feature.geometry.type = type;
-
-    var ne = bounds.getNorthEast();
-    var sw = bounds.getSouthWest();
-    if (type === 'Polygon') {
-      feature.geometry.coordinates = [
-        [sw.lat(), sw.lng()],
-        [sw.lat(), ne.lng()],
-        [ne.lat(), ne.lng()],
-        [ne.lat(), sw.lng()]
-      ];
-    } else {
-      feature.geometry.type = 'Point';
-      feature.geometry.coordinates = [
-        googlejson.geometry.location.lat(),
-        googlejson.geometry.location.lng()
-      ];
-    }
-
-    feature.bbox = [sw.lat(), sw.lng(), ne.lat(), ne.lng()];
-    return feature;
+    ajax_stop: 'geo-events-ajax-stop',
+    split_resize: 'geo-events-split-resize'
   };
 
   /* Geolocator dialog jQuery plugin */
@@ -152,6 +83,7 @@
         else {
           split.collapse(idx);
         }
+        jQuery(self).trigger(jQuery.geoevents.split_resize);
       },
 
       handle_initialize: function() {
@@ -727,7 +659,7 @@
           self.Geocoder.geocode(xquery, function(data) {
             var features = [];
             jQuery.each(data, function() {
-              features.push(jQuery.google2geojson(this));
+              features.push(jQuery.json2geojson(this));
             });
 
             var geojson = {
@@ -771,7 +703,7 @@
             self.Geocoder.geocode(xquery, function(data) {
               var features = [];
               jQuery.each(data, function() {
-                features.push(jQuery.google2geojson(this));
+                features.push(jQuery.json2geojson(this));
               });
 
               var data_obj = {
@@ -1149,7 +1081,7 @@
             return;
           }
 
-          var data_point = jQuery.google2geojson(data[0]);
+          var data_point = jQuery.json2geojson(data[0]);
           jQuery(context).trigger(jQuery.geoevents.select_point, {
             point: data_point,
             target: self.countries
@@ -1220,7 +1152,7 @@
             return;
           }
 
-          var data_point = jQuery.google2geojson(data[0]);
+          var data_point = jQuery.json2geojson(data[0]);
           jQuery(context).trigger(jQuery.geoevents.select_point, {
             point: data_point,
             target: self.nuts
@@ -1290,7 +1222,7 @@
             return;
           }
 
-          var data_point = jQuery.google2geojson(data[0]);
+          var data_point = jQuery.json2geojson(data[0]);
           jQuery(context).trigger(jQuery.geoevents.select_point, {
             point: data_point,
             target: self.cities
@@ -1317,7 +1249,7 @@
             return;
           }
 
-          var data_point = jQuery.google2geojson(data[0]);
+          var data_point = jQuery.json2geojson(data[0]);
           jQuery(context).trigger(jQuery.geoevents.select_point, {
             point: data_point,
             target: self.naturalfeatures
@@ -1415,6 +1347,149 @@
     return this;
   };
 
+  /* ***************************************************** */
+
+  // Convert google geocoder to geojson
+  jQuery.google2geojson = function(googlejson) {
+    var feature = {
+      type: 'Feature',
+      bbox: [],
+      geometry: {
+        type: 'Point',
+        coordinates: []
+      },
+      properties: {
+        name: '',
+        title: '',
+        description: '',
+        tags: '',
+        center: [],
+        other: googlejson
+      }
+    };
+    var title = googlejson.address_components[0].long_name;
+    var description = googlejson.formatted_address;
+    var country_mappings = $.geocountrymapping;
+    $.each(country_mappings, function(k,v){
+        if (k === 'Macedonia') {
+          return true;
+        }
+        if (title.indexOf(k) !== -1 || description.indexOf(k) !== -1) {
+          title = title.replace(k, v);
+          description = description.replace(k, v);
+          return false;
+        }
+        return true;
+    });
+    feature.properties.title = title;
+    feature.properties.description = description;
+    feature.properties.tags = googlejson.types;
+
+    // Geometry
+    feature.properties.center = [
+      googlejson.geometry.location.lat(),
+      googlejson.geometry.location.lng()
+    ];
+
+    var bounds = googlejson.geometry.bounds;
+    var type = 'Point';
+    if (bounds) {
+      type = 'Polygon';
+    } else {
+      bounds = googlejson.geometry.viewport;
+    }
+    feature.geometry.type = type;
+
+    var ne = bounds.getNorthEast();
+    var sw = bounds.getSouthWest();
+    if (type === 'Polygon') {
+      feature.geometry.coordinates = [
+        [sw.lat(), sw.lng()],
+        [sw.lat(), ne.lng()],
+        [ne.lat(), ne.lng()],
+        [ne.lat(), sw.lng()]
+      ];
+    } else {
+      feature.geometry.type = 'Point';
+      feature.geometry.coordinates = [
+        googlejson.geometry.location.lat(),
+        googlejson.geometry.location.lng()
+      ];
+    }
+
+    feature.bbox = [sw.lat(), sw.lng(), ne.lat(), ne.lng()];
+    return feature;
+  };
+
+  // Convert Open Street Map Geocoder to geojson
+  jQuery.osm2geojson = function(osmjson) {
+    var feature = {
+      type: 'Feature',
+      bbox: [],
+      geometry: {
+        type: 'Point',
+        coordinates: []
+      },
+      properties: {
+        name: '',
+        title: '',
+        description: '',
+        tags: '',
+        center: [],
+        other: osmjson
+      }
+    };
+    var title = osmjson.display_name;
+    var description = osmjson.display_name;
+    var country_mappings = $.geocountrymapping;
+    $.each(country_mappings, function(k,v){
+        if (k === 'Macedonia') {
+          return true;
+        }
+        if (title.indexOf(k) !== -1 || description.indexOf(k) !== -1) {
+          title = title.replace(k, v);
+          description = description.replace(k, v);
+          return false;
+        }
+        return true;
+    });
+    feature.properties.title = title;
+    feature.properties.description = description;
+    feature.properties.tags = osmjson.type;
+
+    // Geometry
+    feature.properties.center = [
+      parseFloat(osmjson.lat),
+      parseFloat(osmjson.lon)
+    ];
+
+    var bounds = osmjson.boundingbox;
+    var type = 'Polygon';
+    feature.geometry.type  = type;
+    feature.geometry.coordinates = [
+      [bounds[0], bounds[2]],
+      [bounds[0], bounds[3]],
+      [bounds[1], bounds[3]],
+      [bounds[1], bounds[2]]
+    ];
+
+    feature.bbox = [bounds[0], bounds[2], bounds[1], bounds[3]];
+    return feature;
+  };
+
+  // Convert other json formats to geojson
+  jQuery.json2geojson = function(ojson) {
+    if(window.google !== undefined){
+      return jQuery.google2geojson(ojson);
+    }
+
+    if(window.OpenLayers !== undefined) {
+      return jQuery.osm2geojson(ojson);
+    }
+
+    return {};
+  };
+
 
   /* ***************************************************** */
 
@@ -1431,20 +1506,27 @@
   // Open Street Map Geocoder
   jQuery.OpenStreetMapGeoCoder = function(settings) {
     var self = this;
+    var xquery = {
+      "format": "json"
+    };
+
+    self.gcoder =  "https://nominatim.openstreetmap.org/search";
     self.geocode = function(query, callback) {
-      console.log("Open Street Map Geocoder not implemented yet");
+      xquery.q = query.address;
+      jQuery.getJSON(self.gcoder, xquery, callback);
     };
     return this;
   };
 
   // Geo Coder jQuery plugin
   jQuery.GeoCoder = function(settings) {
-    if(window.google){
+    if(window.google !== undefined){
       return jQuery.GoogleMapsGeoCoder(settings);
-    }else{
-      return jQuery.OpenStreetMapGeoCoder(settings);
     }
+
+    return jQuery.OpenStreetMapGeoCoder(settings);
   };
+
   /* ***************************************************** */
 
   // Google Maps Marker
@@ -1559,7 +1641,102 @@
   // Open Street Map Marker
   jQuery.OpenStreetMapMarker = function(settings) {
     var self = this;
-    console.log("Open street map marker not implemented yet");
+
+    self.options = {
+      fieldName: '',
+      template: '<div class="geo-marker">' +
+          '<h3 class="title"></h3>' +
+          '<h4 class="subtitle"></h4>' +
+          '<h5 class="tags"></h5>' +
+          '</div>',
+      map: null,
+      info: null,
+      markers: null,
+      points: [],
+      center: [0, 0],
+      autoclick: false,
+
+      initialize: function() {
+        self.options.clear();
+        self.mappoints = {};
+
+        var center = new OpenLayers.LonLat(self.options.center[1], self.options.center[0])
+          .transform(new OpenLayers.Projection("EPSG:4326"), self.options.map.getProjectionObject());
+        var marker = new OpenLayers.Marker(center);
+        marker.events.register("click", marker, function(){
+          self.options.info.show();
+        });
+
+        self.options.markers.addMarker(marker);
+        self.options.info.lonlat = center;
+
+        var template = jQuery('<div>');
+        jQuery.each(self.options.points, function() {
+          var point = this;
+          var uid = point.properties.center[0] + '-' + point.properties.center[1];
+          self.mappoints[uid] = point;
+
+          var title = this.properties.title;
+          var subtitle = this.properties.description;
+          var tags = '';
+          if (typeof(this.properties.tags) === 'string') {
+            tags = this.properties.tags;
+          } else {
+            jQuery.each(this.properties.tags, function() {
+              tags += this + ', ';
+            });
+          }
+
+          var itemplate = jQuery(self.options.template);
+          itemplate.attr('id', uid).attr('title', 'Add');
+          var icon = jQuery('<div>')
+            .addClass('ui-icon')
+            .addClass('ui-icon-extlink')
+            .text('+');
+          itemplate.prepend(icon);
+          jQuery('.title', itemplate).text(title);
+          jQuery('.subtitle', itemplate).text(subtitle);
+          jQuery('.tags', itemplate).text(tags);
+
+          template.append(itemplate);
+        });
+
+        var context = jQuery('#' + self.options.fieldName);
+        if (self.options.points.length) {
+          self.options.info.setContentHTML(template.html());
+          self.options.info.show();
+          var $geo_marker = jQuery('.geo-marker');
+          $geo_marker.click(function() {
+            var _self = jQuery(this);
+            jQuery(context).trigger(jQuery.geoevents.select_marker, {
+              point: self.mappoints[_self.attr('id')],
+              button: _self
+            });
+          });
+
+          // Autoclick
+          if (self.options.autoclick) {
+            $geo_marker.click();
+          }
+        }
+      },
+
+      clear: function() {
+        if(self.options.info){
+          self.options.info.hide();
+        }
+        if(self.options.markers){
+          self.options.markers.clearMarkers();
+        }
+      }
+    };
+
+    if (settings) {
+      jQuery.extend(self.options, settings);
+    }
+
+    self.options.initialize();
+    return this;
   };
 
   // Geo Marker jQuery plugin
@@ -1690,7 +1867,7 @@
           self.Geocoder.geocode({location: latlng}, function(results) {
             var features = [];
             jQuery.each(results, function() {
-              features.push(jQuery.google2geojson(this));
+              features.push(jQuery.json2geojson(this));
             });
 
             var results_obj = {
@@ -1717,7 +1894,97 @@
   // Open Street Map Canvas
   jQuery.fn.OpenStreetMapCanvas = function(settings) {
     var self = this;
-    console.log("Open street map canvas not implemented yet");
+    self.options = {
+      json: {},
+      fieldName: '',
+      map_options: {
+        latitude: 54.5260,
+        longitude: 15.2551,
+        center: null,
+        zoom: 3
+      },
+
+      set_map_bounds: function() {
+        self.options.map_options.center = new OpenLayers.LonLat(
+          self.options.map_options.longitude,
+          self.options.map_options.latitude).transform(
+            new OpenLayers.Projection("EPSG:4326"),
+            self.Map.getProjectionObject()
+          );
+        self.Map.setCenter(self.options.map_options.center, self.options.map_options.zoom);
+      },
+
+      handle_select: function(data, autoclick) {
+        if (!data) {
+          return;
+        }
+
+        self.options.map_options.latitude = data.properties.center[0];
+        self.options.map_options.longitude = data.properties.center[1];
+        self.options.set_map_bounds();
+
+        // Marker
+        jQuery.geomarker({
+          fieldName: self.options.fieldName,
+          map: self.Map,
+          info: self.info,
+          markers: self.markers,
+          points: [data],
+          center: data.properties.center,
+          autoclick: autoclick
+        });
+      },
+
+      initialize: function(){
+        self.initialized = false;
+        self.attr('id', self.options.fieldName + '-geo-map');
+        self.addClass('geo-mapcanvas');
+
+        self.Map = new OpenLayers.Map(self.attr('id'));
+        self.Map.events.on({
+          "loadend": function(){
+            if (self.initialized) {
+              return;
+            }
+          self.initialized = true;
+          jQuery(context).trigger(jQuery.geoevents.map_loaded);
+          }
+        });
+
+        self.Map.addLayer(new OpenLayers.Layer.OSM());
+
+        self.markers = new OpenLayers.Layer.Markers("Markers");
+        self.Map.addLayer(self.markers);
+
+        self.options.set_map_bounds();
+
+        self.info = new OpenLayers.Popup.FramedCloud("geotag",
+          self.options.map_options.center, new OpenLayers.Size(200, 200), "Europe", null, true);
+        self.info.autoSize = true;
+        self.info.hide();
+        self.Map.addPopup(self.info);
+
+        // Handle events
+        var context = jQuery('#' + self.options.fieldName);
+        jQuery(context).bind(jQuery.geoevents.split_resize, function(){
+          self.Map.updateSize();
+        });
+
+        jQuery(context).bind(jQuery.geoevents.select_point, function(evt, data) {
+          data.target.effect('transfer', {to: self}, 'slow', function() {
+            self.options.handle_select(data.point, data.autoclick);
+          });
+        });
+      }
+    };
+
+    if (settings) {
+      jQuery.extend(self.options, settings);
+    }
+
+    // Return
+    self.options.initialize();
+    return this;
   };
 
   // Geo Map Canvas jQuery plugin
@@ -1984,13 +2251,13 @@
         self.Map.addLayer(new OpenLayers.Layer.OSM());
 
         self.markers = new OpenLayers.Layer.Markers("Markers");
-
         self.Map.addLayer(self.markers);
+
         self.options.handle_points(self.options.json);
         self.options.set_map_bounds();
 
         self.info = new OpenLayers.Popup.FramedCloud("geotag",
-        self.options.map_options.center, new OpenLayers.Size(200, 200), "Europe", null, true);
+          self.options.map_options.center, new OpenLayers.Size(200, 200), "Europe", null, true);
         self.info.autoSize = true;
         self.info.hide();
         self.Map.addPopup(self.info);
