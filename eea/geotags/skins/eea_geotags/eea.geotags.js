@@ -1455,7 +1455,7 @@
     });
     feature.properties.title = title;
     feature.properties.description = description;
-    feature.properties.tags = osmjson.type;
+    feature.properties.tags = osmjson.type || "";
 
     // Geometry
     feature.properties.center = [
@@ -1510,10 +1510,22 @@
       "format": "json"
     };
 
-    self.gcoder =  "https://nominatim.openstreetmap.org/search";
+    self.gcoder = "https://nominatim.openstreetmap.org/search";
+    self.rcoder = "https://nominatim.openstreetmap.org/reverse";
     self.geocode = function(query, callback) {
-      xquery.q = query.address;
-      jQuery.getJSON(self.gcoder, xquery, callback);
+      var url = self.gcoder;
+      if(query.address) {
+        // Geocoding
+        xquery.q = query.address;
+      } else {
+        // Reverse Geocoding
+        xquery.lat = query.location.lat;
+        xquery.lon = query.location.lon;
+        xquery.addressdetails = 1;
+        xquery.zoom = query.zoom || 3;
+        url = self.rcoder;
+      }
+      jQuery.getJSON(url, xquery, callback);
     };
     return this;
   };
@@ -1753,7 +1765,7 @@
   /* ***************************************************** */
 
   // Google Maps Canvas
-  jQuery.fn.GoogleMapCanvas = function(settings) {
+  jQuery.fn.GoogleMapsCanvas = function(settings) {
     var self = this;
 
     self.options = {
@@ -1808,7 +1820,7 @@
         });
       },
 
-      handle_rightclick: function(data, center) {
+      handle_click: function(data, center) {
         // Markers
         jQuery.geomarker({
           fieldName: self.options.fieldName,
@@ -1850,8 +1862,8 @@
           jQuery(context).trigger(jQuery.geoevents.map_loaded);
         });
 
-        // Right click
-        google.maps.event.addListener(self.Map, 'rightclick', function(data) {
+        // Click
+        google.maps.event.addListener(self.Map, 'click', function(data) {
           var latlng = data.latLng;
           var center = [latlng.lat(), latlng.lng()];
 
@@ -1875,7 +1887,7 @@
               features: features
             };
 
-            self.options.handle_rightclick(results_obj, center);
+            self.options.handle_click(results_obj, center);
             jQuery(context).trigger(jQuery.geoevents.ajax_stop);
           });
         });
@@ -1935,6 +1947,18 @@
         });
       },
 
+      handle_click: function(data, center) {
+        // Markers
+        jQuery.geomarker({
+          fieldName: self.options.fieldName,
+          map: self.Map,
+          info: self.info,
+          markers: self.markers,
+          points: data.features,
+          center: center
+        });
+      },
+
       initialize: function(){
         self.initialized = false;
         self.attr('id', self.options.fieldName + '-geo-map');
@@ -1964,7 +1988,33 @@
         self.info.hide();
         self.Map.addPopup(self.info);
 
+        self.Geocoder = jQuery.GeoCoder();
+
         // Handle events
+        self.Map.events.register('click', self.Map, function(evt){
+          var latlng = self.Map.getLonLatFromPixel(evt.xy).transform(
+            self.Map.getProjectionObject(), new OpenLayers.Projection("EPSG:4326"));
+
+          var center = [latlng.lat, latlng.lon];
+          jQuery(context).trigger(jQuery.geoevents.ajax_start);
+          self.Geocoder.geocode({location: latlng, zoom: self.Map.getZoom()}, function(results) {
+            if(results.error){
+              return;
+            }
+
+            var features = [];
+            features.push(jQuery.json2geojson(results));
+
+            var results_obj = {
+              type: 'FeatureCollection',
+              features: features
+            };
+
+            self.options.handle_click(results_obj, center);
+            jQuery(context).trigger(jQuery.geoevents.ajax_stop);
+          });
+        });
+
         var context = jQuery('#' + self.options.fieldName);
         jQuery(context).bind(jQuery.geoevents.split_resize, function(){
           self.Map.updateSize();
@@ -1990,7 +2040,7 @@
   // Geo Map Canvas jQuery plugin
   jQuery.fn.geomap = function(settings) {
     if(window.google !== undefined){
-      return jQuery(this).GoogleMapCanvas(settings);
+      return jQuery(this).GoogleMapsCanvas(settings);
     }
 
     if(window.OpenLayers !== undefined) {
@@ -2079,28 +2129,26 @@
         }
       },
 
-      set_map_bounds: function(markers) {
-        if (!markers.length) {
+      set_map_bounds: function() {
+        var markers_length = self.markers.length;
+        if (!markers_length) {
           return;
         }
+
         var latlngbounds = new google.maps.LatLngBounds();
-        var markers_length = markers.length;
-        for (var i = 0, length = markers_length; i < length; i++) {
-          latlngbounds.extend(markers[i].position);
-        }
+        jQuery.each(self.markers, function(){
+          latlngbounds.extend(this.position);
+        });
         self.options.map_options.center = latlngbounds.getCenter();
         return latlngbounds;
       },
 
       fit_map_bounds: function(map_bounds) {
-        // fit bounds if we have markers otherwise center map on Europe
+        // fit bounds if we have markers otherwise center map
         if (map_bounds && self.markers.length > 1) {
-          self.Map.fitBounds(map_bounds);
+          return self.Map.fitBounds(map_bounds);
         }
-        else {
-          self.Map.setCenter(self.options.map_options.center);
-        }
-
+        return self.Map.setCenter(self.options.map_options.center);
       },
 
       initialize: function() {
@@ -2125,7 +2173,7 @@
         var context = jQuery('#' + self.options.fieldName);
         var latlngbounds;
         if (self.markers.length > 1) {
-          latlngbounds = self.options.set_map_bounds(self.markers);
+          latlngbounds = self.options.set_map_bounds();
         }
         else {
           latlngbounds = null;
@@ -2139,7 +2187,7 @@
 
           options.handle_points(data.json);
 
-          map_options.latlngbounds = self.options.set_map_bounds(self.markers);
+          map_options.latlngbounds = self.options.set_map_bounds();
           options.fit_map_bounds(map_options.latlngbounds);
         });
 
