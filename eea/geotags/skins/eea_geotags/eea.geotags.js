@@ -1507,7 +1507,7 @@
   jQuery.OpenStreetMapGeoCoder = function(settings) {
     var self = this;
     var xquery = {
-      "format": "json"
+      "format": "jsonv2"
     };
 
     self.gcoder = "https://nominatim.openstreetmap.org/search";
