@@ -2245,6 +2245,9 @@
             new OpenLayers.Projection("EPSG:4326"),
             self.Map.getProjectionObject()
           );
+          self.options.map_options.latitude = center[0];
+          self.options.map_options.longitude = center[1];
+
           var marker = new OpenLayers.Marker(lonLat);
           self.markers.addMarker(marker);
 
@@ -2281,9 +2284,9 @@
               new OpenLayers.Projection("EPSG:4326"),
               self.Map.getProjectionObject()
             );
-          self.Map.setCenter(self.options.map_options.center, self.options.map_options.zoom);
         }
 
+        self.Map.setCenter(self.options.map_options.center, self.options.map_options.zoom);
         if(self.markers.markers.length > 1) {
           var bounds = self.markers.getDataExtent();
           self.Map.zoomToExtent(bounds);
@@ -2321,6 +2324,7 @@
         jQuery('form .formTab, .wizard-left, .wizard-right').click(function() {
           if (jQuery(this).closest('form').find('.formPanel:visible').find('#' + self.options.fieldName + '-geopreview').length) {
             self.Map.updateSize();
+            self.options.set_map_bounds();
           }
         });
       }
