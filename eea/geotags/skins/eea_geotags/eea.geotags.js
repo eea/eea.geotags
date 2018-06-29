@@ -2277,15 +2277,12 @@
       },
 
       set_map_bounds: function() {
-        if(!self.options.map_options.center){
-          self.options.map_options.center = new OpenLayers.LonLat(
-            self.options.map_options.longitude,
-            self.options.map_options.latitude).transform(
-              new OpenLayers.Projection("EPSG:4326"),
-              self.Map.getProjectionObject()
-            );
-        }
-
+        self.options.map_options.center = new OpenLayers.LonLat(
+          self.options.map_options.longitude,
+          self.options.map_options.latitude).transform(
+            new OpenLayers.Projection("EPSG:4326"),
+            self.Map.getProjectionObject()
+        );
         self.Map.setCenter(self.options.map_options.center, self.options.map_options.zoom);
         if(self.markers.markers.length > 1) {
           var bounds = self.markers.getDataExtent();
