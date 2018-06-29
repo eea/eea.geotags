@@ -1479,7 +1479,7 @@
 
   // Convert other json formats to geojson
   jQuery.json2geojson = function(ojson) {
-    if(window.google !== undefined){
+    if(window.google && window.google.maps){
       return jQuery.google2geojson(ojson);
     }
 
@@ -1532,7 +1532,7 @@
 
   // Geo Coder jQuery plugin
   jQuery.GeoCoder = function(settings) {
-    if(window.google !== undefined){
+    if(window.google && window.google.maps){
       return jQuery.GoogleMapsGeoCoder(settings);
     }
 
@@ -1753,7 +1753,7 @@
 
   // Geo Marker jQuery plugin
   jQuery.geomarker = function(settings) {
-    if(window.google !== undefined) {
+    if(window.google && window.google.maps) {
       return jQuery.GoogleMapsMarker(settings);
     }
 
@@ -2039,7 +2039,7 @@
 
   // Geo Map Canvas jQuery plugin
   jQuery.fn.geomap = function(settings) {
-    if(window.google !== undefined){
+    if(window.google && window.google.maps){
       return jQuery(this).GoogleMapsCanvas(settings);
     }
 
@@ -2338,7 +2338,7 @@
 
   // Geo Map Preview jQuery plugin
   jQuery.fn.geopreview = function(settings) {
-    if(window.google !== undefined){
+    if(window.google && window.google.maps){
       return jQuery(this).GoogleMapsPreview(settings);
     }
 

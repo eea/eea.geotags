@@ -3,6 +3,8 @@ Changelog
 
 10.0-dev0 - (unreleased)
 ------------------------
+* Upgrade step: "Plone > Site setup > Add-ons" upgrade eea.geotags
+  [avoinea refs #95147]
 * Change: Fallback to Open Street Map if no Google API Key provided
   [avoinea refs #95147]
 * Change: updated URLs pointing to eea.europa.eu with https://
