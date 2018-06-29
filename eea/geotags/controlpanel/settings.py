@@ -42,5 +42,5 @@ class ControlPanelAdapter(object):
         """
         if self._settings is None:
             self._settings = queryUtility(
-                IRegistry).forInterface(IGeotagsSettings, None)
+                IRegistry).forInterface(IGeotagsSettings, False)
         return self._settings

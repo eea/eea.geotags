@@ -18,8 +18,8 @@ class Countries(object):
         self.context = context
 
     def __call__(self, group=''):
-        registry = getUtility(IRegistry).forInterface(IGeoVocabularies)
-        geotags = getattr(registry, 'geotags', dict())
+        registry = getUtility(IRegistry).forInterface(IGeoVocabularies, False)
+        geotags = registry.geotags or dict()
         items = [
             SimpleTerm(key, key, val)
             for key, val in geotags.get(group, dict()).items()

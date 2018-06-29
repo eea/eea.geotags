@@ -19,8 +19,8 @@ class Countries_Mapping(object):
 
     def __call__(self):
 
-        registry = getUtility(IRegistry).forInterface(IGeoVocabularies)
-        countries_mapping = getattr(registry, 'countries_mapping', dict())
+        registry = getUtility(IRegistry).forInterface(IGeoVocabularies, False)
+        countries_mapping = registry.countries_mapping or dict()
         items = [
             SimpleTerm(key, key, val)
             for key, val in countries_mapping.items()

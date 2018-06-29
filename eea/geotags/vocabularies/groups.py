@@ -18,8 +18,8 @@ class Groups(object):
         self.context = context
 
     def __call__(self):
-        registry = getUtility(IRegistry).forInterface(IGeoVocabularies)
-        geotags = getattr(registry, 'geotags', dict())
+        registry = getUtility(IRegistry).forInterface(IGeoVocabularies, False)
+        geotags = registry.geotags or dict()
         items = [
             SimpleTerm(key, key, val['title'])
             for key, val in geotags.items()

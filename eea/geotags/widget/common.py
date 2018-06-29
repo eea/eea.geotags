@@ -23,11 +23,8 @@ def get_base_url(request):
 
 
 def get_maps_api_key():
-    try:
-        settings = getUtility(IRegistry).forInterface(IGeotagsSettings)
-        return settings.maps_api_key
-    except KeyError:
-        return ''
+    settings = getUtility(IRegistry).forInterface(IGeotagsSettings, False)
+    return settings.maps_api_key
 
 
 def get_js_props(multiline, field_id, field_name, base_url, geojson):

@@ -20,8 +20,8 @@ class BioGroups(object):
         self.context = context
 
     def __call__(self):
-        registry = getUtility(IRegistry).forInterface(IGeoVocabularies)
-        biotags = getattr(registry, 'biotags', dict())
+        registry = getUtility(IRegistry).forInterface(IGeoVocabularies, False)
+        biotags = registry.biotags or dict()
         items = [
             SimpleTerm(key, key, val['title'])
             for key, val in biotags.items()

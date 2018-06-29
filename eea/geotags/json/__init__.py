@@ -34,7 +34,8 @@ class GeoNamesJsonProvider(object):
         """
         if self._username is None:
             # Try to get key from registry
-            settings = getUtility(IRegistry).forInterface(IGeotagsSettings)
+            settings = getUtility(IRegistry).forInterface(
+                    IGeotagsSettings, False)
             key = getattr(settings, 'geonames_key', '')
             if key:
                 self._username = key
@@ -105,7 +106,8 @@ class GeoNamesJsonProvider(object):
         terms = [term for term in voc()]
         terms.sort(key=operator.attrgetter('title'))
 
-        biotags = getUtility(IRegistry).forInterface(IGeoVocabularies).biotags
+        biotags = getUtility(IRegistry).forInterface(
+                IGeoVocabularies, False).biotags
 
         for term in terms:
             feature = {
