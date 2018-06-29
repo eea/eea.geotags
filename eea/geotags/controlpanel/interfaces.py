@@ -1,6 +1,6 @@
 """ Interfaces
 """
-
+from zope import schema
 from plone.registry import field
 from zope.interface import Interface
 
@@ -11,7 +11,7 @@ class IGeotagsSettings(Interface):
     """ Geotags settings
     """
 
-    maps_api_key = field.TextLine(
+    maps_api_key = schema.TextLine(
         title=_(u"Google Maps API key"),
         description=_(
             u'This will be used to render the Google Maps widget'
@@ -23,7 +23,7 @@ class IGeotagsSettings(Interface):
         default=u''
     )
 
-    geonames_key = field.TextLine(
+    geonames_key = schema.TextLine(
         title=_(u"Geonames key"),
         description=_(u'http://www.geonames.org/'),
         required=False,
