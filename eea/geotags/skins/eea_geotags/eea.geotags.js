@@ -2197,6 +2197,8 @@
           if (jQuery(this).closest('form').find('.formPanel:visible').find('#' + self.options.fieldName + '-geopreview').length) {
             google.maps.event.trigger(self.Map, 'resize');
             self.options.fit_map_bounds(options.latlngbounds);
+            // XXX Hack to fix blank white map within EEA context
+            jQuery(self.Map.layerContainerDiv).css('position', 'relative');
           }
         });
       }
