@@ -2229,27 +2229,17 @@
         zoom: 3
       },
 
-      handle_cleanup: function() {
-        self.markers.clearMarkers();
-      },
-
       handle_points: function(json) {
-        self.options.handle_cleanup();
+        self.markers.clear();
         if (!json.features) {
           return;
         }
 
         jQuery.each(json.features, function() {
           var center = this.properties.center;
-          var lonLat = new OpenLayers.LonLat(center[1], center[0]).transform(
-            new OpenLayers.Projection("EPSG:4326"),
-            self.Map.getProjectionObject()
-          );
+
           self.options.map_options.latitude = center[0];
           self.options.map_options.longitude = center[1];
-
-          var marker = new OpenLayers.Marker(lonLat);
-          self.markers.addMarker(marker);
 
           var title = this.properties.title;
           var subtitle = this.properties.description;
@@ -2267,26 +2257,21 @@
           jQuery('.subtitle', itemplate).text(subtitle);
           jQuery('.tags', itemplate).text(tags);
 
-          // OpenLayers event handlers
-          marker.events.register("click", marker, function(){
-            self.info.lonlat = lonLat;
-            self.info.setContentHTML(itemplate.html());
-            self.info.show();
-          });
+          self.markers.push(new ol.Feature({
+            geometry: new ol.geom.Point(ol.proj.fromLonLat([center[1], center[0]])),
+            name: this.properties.title,
+            info: itemplate.html()
+          }));
         });
       },
 
       set_map_bounds: function() {
-        self.options.map_options.center = new OpenLayers.LonLat(
-          self.options.map_options.longitude,
-          self.options.map_options.latitude).transform(
-            new OpenLayers.Projection("EPSG:4326"),
-            self.Map.getProjectionObject()
-        );
-        self.Map.setCenter(self.options.map_options.center, self.options.map_options.zoom);
-        if(self.markers.markers.length > 1) {
-          var bounds = self.markers.getDataExtent();
-          self.Map.zoomToExtent(bounds);
+        self.options.map_options.center = ol.proj.fromLonLat([self.options.map_options.longitude, self.options.map_options.latitude]);
+        self.Map.getView().setCenter(self.options.map_options.center);
+        if(self.markers.getLength() > 1) {
+          var source = self.Markers.getSource();
+          var ext = source.getExtent();
+          self.Map.getView().fit(ext, self.Map.getSize());
         }
       },
 
@@ -2295,20 +2280,60 @@
             .width("100%")
             .addClass('geo-preview-mapcanvas');
 
-        self.Map = new OpenLayers.Map(self.attr('id'));
-        self.Map.addLayer(new OpenLayers.Layer.OSM());
+        self.markers = new ol.Collection();
 
-        self.markers = new OpenLayers.Layer.Markers("Markers");
-        self.Map.addLayer(self.markers);
+        self.Map = new ol.Map({
+          target: self.attr('id'),
+          layers: [
+            new ol.layer.Tile({
+              source: new ol.source.OSM()
+            })
+          ],
+          view: new ol.View({
+            center: ol.proj.fromLonLat([self.options.map_options.longitude, self.options.map_options.latitude]),
+            zoom: self.options.map_options.zoom
+          })
+        });
+
+        self.Markers = new ol.layer.Vector({
+            source: new ol.source.Vector({features: self.markers}),
+            style: new ol.style.Style({
+            image: new ol.style.Circle({
+              radius: 6,
+              stroke: new ol.style.Stroke({
+                color: 'white',
+                width: 2
+              }),
+              fill: new ol.style.Fill({
+                color: 'red'
+              })
+            })
+          })
+        });
+        self.Map.addLayer(self.Markers);
 
         self.options.handle_points(self.options.json);
         self.options.set_map_bounds();
 
-        self.info = new OpenLayers.Popup.FramedCloud("geotag",
-          self.options.map_options.center, new OpenLayers.Size(200, 200), "Europe", null, true);
-        self.info.autoSize = true;
-        self.info.hide();
-        self.Map.addPopup(self.info);
+        self.popup = self.find('.ol-popup');
+        self.info = new ol.Overlay({
+          element: self.popup[0]
+        });
+        self.Map.addOverlay(self.info);
+
+        self.Map.on('click', function(evt) {
+          const feature = self.Map.forEachFeatureAtPixel(evt.pixel, function(feature) {
+            return feature;
+          });
+          if (feature) {
+            const coordinates = feature.getGeometry().getCoordinates();
+            self.info.setPosition(coordinates);
+            self.popup.html(feature.get('info'));
+            self.popup.show();
+          } else {
+            self.popup.hide();
+          }
+        });
 
         // Bind events
         var context = jQuery('#' + self.options.fieldName);
@@ -2321,7 +2346,7 @@
         jQuery('form .formTab, .wizard-left, .wizard-right').click(function() {
           if (jQuery(this).closest('form').find('.formPanel:visible').find('#' + self.options.fieldName + '-geopreview').length) {
             self.Map.updateSize();
-            self.options.set_map_bounds();
+//            self.options.set_map_bounds();
           }
         });
       }
@@ -2342,7 +2367,7 @@
       return jQuery(this).GoogleMapsPreview(settings);
     }
 
-    if(window.OpenLayers !== undefined) {
+    if(window.ol !== undefined) {
       return jQuery(this).OpenStreetMapPreview(settings);
     }
   };
