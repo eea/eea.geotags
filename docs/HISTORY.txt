@@ -5,6 +5,8 @@ Changelog
 ------------------------
 * Upgrade step: "Plone > Site setup > Add-ons" upgrade eea.geotags
   [avoinea refs #95147]
+* Upgrade step: "Plone > Site setup > EEA Geotags Settings" add/remove Google Maps API key and Geonames username
+  [avoinea refs #95147]
 * Change: Fallback to Open Street Map if no Google API Key provided
   [avoinea refs #95147]
 * Change: updated URLs pointing to eea.europa.eu with https://
