@@ -2,7 +2,7 @@ Changelog
 =========
 
 10.0 - (2018-07-04)
-------------------------
+-------------------
 * Upgrade step: "Plone > Site setup > Add-ons" upgrade eea.geotags
   [avoinea refs #95147]
 * Upgrade step: "Plone > Site setup > EEA Geotags Settings" add/remove Google Maps API key and Geonames username
