@@ -2313,6 +2313,7 @@
         // Bind events
         var context = jQuery('#' + self.options.fieldName);
         context.bind(jQuery.geoevents.basket_save, function(evt, data) {
+          self.info.hide();
           self.options.handle_points(data.json);
           self.options.set_map_bounds();
         });
@@ -2323,7 +2324,9 @@
             self.Map.updateSize();
             self.options.set_map_bounds();
             // XXX Hack to fix blank white map within EEA context
-            jQuery(self.Map.layerContainerDiv).css('position', 'relative');
+            if(jQuery('body.site-SITE').length){
+              jQuery(self.Map.layerContainerDiv).css('position', 'relative');
+            }
           }
         });
       }
