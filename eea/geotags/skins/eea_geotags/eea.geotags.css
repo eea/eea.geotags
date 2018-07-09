@@ -1,30 +1,32 @@
 /* =Helpers */
-.pointer {
+.input-block {
+  display: block;
+  width: 100%;
+  min-height: 2rem;
+  background-color: #205c90;
+  color: white;
+}
+
+/* Dialog */
+.geo-dialog .pointer {
   cursor: pointer;
 }
 
-.formHelp {
+.geo-dialog .formHelp {
   font-size: 90%;
   color: #808285;
   margin: 0 0 0.2em 0;
   display: block;
 }
 
-.pull-left {
+.geo-dialog .pull-left {
   float: left;
 }
 
-.visualHidden {
+.geo-dialog .visualHidden {
   display: none !important;
 }
 
-.input-block {
-  display: block;
-  width: 100%;
-}
-
-
-/* Dialog */
 .geo-dialog {
   width: 100%;
   height: 100%;
@@ -33,6 +35,7 @@
 .eea-geotags-popup {
   box-shadow: 0 0 100px #000;
   border-radius: 0;
+  z-index: 1000;
 }
 
 .eea-geotags-popup .ui-dialog-titlebar {
@@ -50,44 +53,6 @@
   border: 1px solid #8CACBB;
   width: 100%;
   height: 100%;
-}
-
-.geo-splitter .vsplitbar {
-  width: 5px;
-  background-color: #ffffff;
-}
-
-.geo-splitter .vsplitbar a {
-  text-decoration: none;
-  color: #8CACBB;
-  font-size: 18px;
-  border: 1px solid #8CACBB;
-  background-color: #ffffff;
-  opacity: 0.5;
-  filter: alpha(opacity = 50);
-}
-
-.geo-splitter .vsplitbar a:hover {
-  opacity: 1;
-  filter: alpha(opacity = 100);
-}
-
-.geo-splitter .vsplitbar a {
-  float: right;
-  margin-left: 0;
-  margin-right: 4px;
-  padding: 5px 5px 10px 5px;
-  border-style: none none solid solid;
-  -moz-border-radius-bottomleft:5px;
-  -webkit-border-bottom-left-radius:5px;
-}
-
-.geo-leftside .vsplitbar a {
-  float: left;
-  margin-left: 4px;
-  border-style: none solid solid none;
-  -moz-border-radius-bottomright:5px;
-  -webkit-border-bottom-right-radius:5px;
 }
 
 .geo-left {
@@ -237,6 +202,10 @@
   border: 1px solid #8CACBB;
 }
 
+.geo-preview-mapcanvas .olControlAttribution {
+  z-index: 800 !important;
+}
+
 .geo-marker {
   padding-bottom: 1em;
   border: 1px dotted #ffffff;
@@ -368,25 +337,105 @@
   background-color: #e9efcd;
 }
 
-.filters-ctl {
+.geo-dialog .filters-ctl {
   padding: 1em 0;
   border-bottom: 1px solid #ccc;
 }
 
-.filters-area {
+.geo-dialog .filters-area {
   font-weight: bold;
 }
-.filters-area label {
+
+.geo-dialog .filters-area label {
   display: inline-block;
   width: 92%;
   padding-left: 0.4em;
   cursor: pointer;
 }
 
-.filters-area .eea-icon {
+.geo-dialog .filters-area .eea-icon {
   display: inline-block;
   vertical-align: bottom;
   float: right;
   margin-top: -3em;
 }
 
+/* split */
+.geo-dialog .split {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+}
+
+.geo-dialog .content {
+  border: 1px solid #C0C0C0;
+  box-shadow: inset 0 1px 2px #e4e4e4;
+  background-color: #fff;
+}
+
+.geo-dialog .gutter {
+  background-color: #efefef;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  text-align: center;
+}
+
+.geo-dialog .gutter.gutter-horizontal {
+  cursor: col-resize;
+  background-image: url('../grips/vertical.png');
+}
+
+.geo-dialog .gutter.gutter-vertical {
+  cursor: row-resize;
+  background-image: url('../grips/horizontal.png');
+}
+
+.geo-dialog .split.split-horizontal, .gutter.gutter-horizontal {
+  height: 100%;
+  float: left;
+}
+
+/* split buttons */
+.geo-dialog .split-button {
+  position: absolute;
+  z-index: 800;
+  text-decoration: none;
+  color: #8CACBB;
+  font-size: 18px;
+  border: 1px solid #8CACBB;
+  background-color: #ffffff;
+  opacity: 0.5;
+  filter: alpha(opacity = 50);
+  text-decoration: none;
+  padding: 5px 5px 10px 5px;
+}
+
+.geo-dialog .split-button:hover {
+  opacity: 1;
+  filter: alpha(opacity = 100);
+  text-decoration: none;
+}
+
+.geo-dialog .split-button-left {
+  margin-left: 6px;
+  border-style: none solid solid none;
+  -moz-border-radius-bottomright: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+}
+
+.geo-dialog .split-button-right {
+  margin-left: -27px;
+  border-style: none none solid solid;
+  -moz-border-radius-bottomleft: 5px;
+  -webkit-border-bottom-left-radius: 5px;
+}
+
+#geotag img {
+  max-width: inherit;
+}
+
+#geotag_contentDiv {
+  overflow: hidden;
+}
