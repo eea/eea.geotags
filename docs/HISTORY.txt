@@ -1,6 +1,9 @@
 Changelog
 =========
 
+10.1-dev0 - (unreleased)
+---------------------
+
 10.0 - (2018-07-04)
 -------------------
 * Upgrade step: "Plone > Site setup > Add-ons" upgrade eea.geotags
@@ -508,4 +511,3 @@ Changelog
 1.0 - (2010-10-12)
 ------------------
 * Initial release
-
