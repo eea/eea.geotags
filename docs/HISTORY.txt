@@ -1,6 +1,9 @@
 Changelog
 =========
 
+10.2-dev0 - (unreleased)
+---------------------
+
 10.1 - (2018-07-10)
 ---------------------
 * Bug fix: Fixed Mixed Content by loading openlayers API over https
