@@ -1,6 +1,11 @@
 Changelog
 =========
 
+10.1 - (2018-07-10)
+---------------------
+* Bug fix: Fixed Mixed Content by loading openlayers API over https
+ [avoinea refs #96619]
+
 10.0 - (2018-07-04)
 -------------------
 * Upgrade step: "Plone > Site setup > Add-ons" upgrade eea.geotags
@@ -508,4 +513,3 @@ Changelog
 1.0 - (2010-10-12)
 ------------------
 * Initial release
-
