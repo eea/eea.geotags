@@ -42,7 +42,6 @@ setup(name=NAME,
       install_requires=[
           'setuptools',
           'eventlet',
-          'Products.ATVocabularyManager',
           'archetypes.schemaextender',
           'eea.jquery',
           'eea.alchemy',

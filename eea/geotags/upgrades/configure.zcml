@@ -5,8 +5,6 @@
   xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="eea">
 
-  <include file="eea.design.zcml" zcml:condition="installed eea.design" />
-
   <genericsetup:upgradeSteps
     source="*"
     destination="4.0"
