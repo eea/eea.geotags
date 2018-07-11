@@ -1,6 +1,9 @@
 Changelog
 =========
 
+10.4-dev0 - (unreleased)
+---------------------
+
 10.3 - (2018-07-11)
 ---------------------
 * Cleanup: Remove Products.ATVocabularyManager dependency
