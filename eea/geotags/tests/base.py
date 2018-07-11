@@ -9,8 +9,6 @@ from Products.PloneTestCase.layer import onsetup
 
 logger = logging.getLogger('eea.geotags.tests.base')
 
-PloneTestCase.installProduct('ATVocabularyManager')
-
 @onsetup
 def setup_eea_geotags():
     """Set up the additional products.

@@ -1,6 +1,13 @@
 Changelog
 =========
 
+10.3 - (2018-07-11)
+---------------------
+* Cleanup: Remove Products.ATVocabularyManager dependency
+  [avoinea refs #97067]
+* Change: Added missing country groups (EU33, EU28, etc.)
+  [avoinea refs #97067]
+
 10.2 - (2018-07-11)
 ---------------------
 * Bug fix: Fixed Mixed Content by loading openlayers API over https

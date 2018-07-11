@@ -68,7 +68,6 @@ Dependecies
 ===========
 
 1. Plone 4.x
-2. Products.ATVocabularyManager
 3. archetypes.schemaextender
 4. eea.jquery
 5. eea.alchemy

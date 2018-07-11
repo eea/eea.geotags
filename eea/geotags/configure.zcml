@@ -2,7 +2,6 @@
            xmlns:zcml="http://namespaces.zope.org/zcml"
            i18n_domain="eea">
 
-  <include package="Products.ATVocabularyManager" />
   <include package="eea.jquery" />
   <include package="eea.alchemy" />
 
