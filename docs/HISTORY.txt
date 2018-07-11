@@ -3,6 +3,8 @@ Changelog
 
 10.3-dev0 - (unreleased)
 ---------------------
+* Change: Added missing country groups (EU33, EU28, etc.)
+  [avoinea refs #97067]
 
 10.2 - (2018-07-11)
 ---------------------
