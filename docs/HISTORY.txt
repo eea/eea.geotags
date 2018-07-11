@@ -1,7 +1,7 @@
 Changelog
 =========
 
-10.2-dev0 - (unreleased)
+10.2 - (2018-07-11)
 ---------------------
 * Bug fix: Fixed Mixed Content by loading openlayers API over https
  [avoinea refs #96619]
