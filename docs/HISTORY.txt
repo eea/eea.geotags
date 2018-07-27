@@ -1,6 +1,11 @@
 Changelog
 =========
 
+10.4 - (2018-07-27)
+---------------------
+* Bug fix: The id "++resource++eea.geotags.static" contains characters illegal in URLs.
+  [avoinea refs #97380]
+
 10.3 - (2018-07-11)
 ---------------------
 * Cleanup: Remove Products.ATVocabularyManager dependency
@@ -11,12 +16,12 @@ Changelog
 10.2 - (2018-07-11)
 ---------------------
 * Bug fix: Fixed Mixed Content by loading openlayers API over https
- [avoinea refs #96619]
+  [avoinea refs #96619]
 
 10.1 - (2018-07-10)
 ---------------------
 * Bug fix: Fixed Mixed Content by loading openlayers API over https
- [avoinea refs #96619]
+  [avoinea refs #96619]
 
 10.0 - (2018-07-04)
 -------------------
