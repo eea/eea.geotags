@@ -1,6 +1,9 @@
 Changelog
 =========
 
+10.5-dev0 - (unreleased)
+---------------------
+
 10.4 - (2018-07-27)
 ---------------------
 * Bug fix: The id "++resource++eea.geotags.static" contains characters illegal in URLs.
