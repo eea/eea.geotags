@@ -3,6 +3,8 @@ Changelog
 
 10.4-dev0 - (unreleased)
 ---------------------
+* Bug fix: The id "++resource++eea.geotags.static" contains characters illegal in URLs.
+  [avoinea refs #97380]
 
 10.3 - (2018-07-11)
 ---------------------
