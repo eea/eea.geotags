@@ -1,6 +1,9 @@
 Changelog
 =========
 
+10.6-dev0 - (unreleased)
+---------------------
+
 10.5 - (2018-08-31)
 ---------------------
 * Feature: Add EEA 39 to country groups in geo tagging interface
