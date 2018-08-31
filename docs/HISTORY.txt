@@ -3,6 +3,8 @@ Changelog
 
 10.5-dev0 - (unreleased)
 ---------------------
+* Feature: Add EEA 39 to country groups in geo tagging interface
+  [avoinea refs #87954]
 
 10.4 - (2018-07-27)
 ---------------------

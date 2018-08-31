@@ -83,6 +83,19 @@
 
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeSteps
+    source="10.0"
+    destination="10.5"
+    profile="eea.geotags:default">
+
+    <genericsetup:upgradeDepends
+        title="Import all steps from eea.geotags profile upgrade 10.5"
+        description="Add EEA39 countries group"
+        import_profile="eea.geotags:upgrade105"
+    />
+
+  </genericsetup:upgradeSteps>
+
   <browser:page
     for="eea.geotags.interfaces.IGeoTaggable"
     name="eea.geotags.migrate_country_names"
