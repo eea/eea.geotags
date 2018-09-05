@@ -1,7 +1,7 @@
 Changelog
 =========
 
-10.6-dev0 - (unreleased)
+10.6 - (2018-09-05)
 ---------------------
 * Cleanup: Remove obsolete FormlibGeotagWidget
   [avoinea refs #98073]
