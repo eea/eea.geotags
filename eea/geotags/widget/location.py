@@ -5,11 +5,6 @@ from zope.interface import implements
 from zope.schema import Field
 from zope.schema.interfaces import IField
 
-from zope.app.form.browser.interfaces import IBrowserWidget
-from zope.app.form.interfaces import IInputWidget
-
-from zope.browserpage.viewpagetemplatefile import ViewPageTemplateFile
-
 from Products.Archetypes.atapi import StringWidget
 
 from eea.geotags.field.location import GeotagsFieldMixin
