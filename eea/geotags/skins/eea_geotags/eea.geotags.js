@@ -2329,6 +2329,10 @@
             }
           }
         });
+        if (jQuery(self.selector + ':visible').length){
+            $("#fieldsetlegend-categorization").trigger("click");
+            $(document).trigger('eea-wizard-changed');
+        }
       }
     };
 
