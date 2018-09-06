@@ -3,6 +3,8 @@ Changelog
 
 10.6-dev0 - (unreleased)
 ---------------------
+* Bugfix: Fixed map behaviour when it's mandatorry, but nothing was selected, and trying to saved
+  [szabozo0 refs #97571]
 
 10.5 - (2018-08-31)
 ---------------------

@@ -2331,6 +2331,7 @@
         });
         if (jQuery(self.selector + ':visible').length){
             $("#fieldsetlegend-categorization").trigger("click");
+            self.parent().parent().css("display", "block");
             $(document).trigger('eea-wizard-changed');
         }
       }
