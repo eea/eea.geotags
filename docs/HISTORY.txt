@@ -1,6 +1,9 @@
 Changelog
 =========
 
+10.7-dev0 - (unreleased)
+---------------------
+
 10.6 - (2018-09-05)
 ---------------------
 * Bugfix: Fixed map behaviour when it's mandatorry, but nothing was selected, and trying to saved
