@@ -51,7 +51,9 @@ Usage:
   <div metal:define-macro="location" tal:define="
     widget_params widget_params|nothing;
     widget_params python: widget_params or widget.get_params(field, fieldName, context, request);
-    api_key python:widget_params.get('api_key')">
+    api_key python:widget_params.get('api_key')
+    portal_url portal_state/portal_url;
+    ">
 
     <tal:google condition="python:'schemata_edit' not in context.REQUEST.URL">
       <script type="text/javascript" tal:condition="api_key"

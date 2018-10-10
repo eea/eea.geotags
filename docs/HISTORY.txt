@@ -1,6 +1,11 @@
 Changelog
 =========
 
+10.7 - (unreleased)
+---------------------
+* Bug fix: fix missing variable definition in eea.geotags.pt
+  [tiberich #91504]
+
 10.6 - (2018-09-05)
 ---------------------
 * Bugfix: Fixed map behaviour when it's mandatorry, but nothing was selected, and trying to saved
