@@ -1,7 +1,7 @@
 Changelog
 =========
 
-10.7-dev0 - (unreleased)
+10.7 - (2019-01-15)
 ---------------------
 * Bug fix: fixed loading of resources from grips skin folder
   [alecghica refs #101256]
