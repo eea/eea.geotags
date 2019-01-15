@@ -3,10 +3,12 @@ Changelog
 
 10.7-dev0 - (unreleased)
 ---------------------
+* Bug fix: fixed loading of resources from grips skin folder
+  [alecghica refs #101256]
 
 10.6 - (2018-09-05)
 ---------------------
-* Bugfix: Fixed map behaviour when it's mandatorry, but nothing was selected, and trying to saved
+* Bug fix: Fixed map behaviour when it's mandatorry, but nothing was selected, and trying to saved
   [szabozo0 refs #97571]
 * Cleanup: Remove obsolete FormlibGeotagWidget
   [avoinea refs #98073]
