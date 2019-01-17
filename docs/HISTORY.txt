@@ -1,7 +1,7 @@
 Changelog
 =========
 
-10.7-dev0 - (unreleased)
+10.7 - (2019-01-17)
 ---------------------
 * Feature: fully serve OpenLayers over HTTPS
   [alecghica refs #101256]
