@@ -1,8 +1,12 @@
 Changelog
 =========
 
-10.7 - (2019-01-15)
+10.7-dev0 - (unreleased)
 ---------------------
+* Feature: serve OpenLayers over HTTPS
+  [alecghica refs #101256]
+* Feature: serve OpenLayers tiles stored localy
+  [alecghica refs #101256]
 * Bug fix: fixed loading of resources from grips skin folder
   [alecghica refs #101256]
 
