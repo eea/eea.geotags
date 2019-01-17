@@ -3,9 +3,9 @@ Changelog
 
 10.7-dev0 - (unreleased)
 ---------------------
-* Feature: serve OpenLayers over HTTPS
+* Feature: fully serve OpenLayers over HTTPS
   [alecghica refs #101256]
-* Feature: serve OpenLayers tiles stored localy
+* Feature: serve OpenLayers tiles stored locally
   [alecghica refs #101256]
 * Bug fix: fixed loading of resources from grips skin folder
   [alecghica refs #101256]
