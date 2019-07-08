@@ -346,7 +346,7 @@ COUNTRY_GROUPS = {
         u'Switzerland',
         u'United Kingdom',
         u'Turkey',
-        u'Former Yugoslav Republic of Macedonia, the',
+        u'North Macedonia',
     ],
 
     (u'NMS10', u'New Member States (10 countries)'): [
@@ -411,7 +411,7 @@ COUNTRY_GROUPS = {
         u'Bosnia and Herzegovina',
         u'Croatia',
         u'Montenegro',
-        u'Former Yugoslav Republic of Macedonia, the',
+        u'North Macedonia',
         u'Serbia'
     ],
 
@@ -421,7 +421,7 @@ COUNTRY_GROUPS = {
         u'Croatia',
         u'Montenegro',
         u'Kosovo (UNSCR 1244/99)',
-        u'Former Yugoslav Republic of Macedonia, the',
+        u'North Macedonia',
         u'Serbia'
     ],
 
@@ -429,7 +429,7 @@ COUNTRY_GROUPS = {
         u'Bosnia and Herzegovina',
         u'Croatia',
         u'Montenegro',
-        u'Former Yugoslav Republic of Macedonia, the',
+        u'North Macedonia',
         u'Serbia',
         u'Slovenia',
         u'Kosovo (UNSCR 1244/99)'
@@ -473,7 +473,7 @@ COUNTRY_GROUPS = {
         u'Belarus',
         u'Bosnia and Herzegovina',
         u'Croatia',
-        u'Former Yugoslav Republic of Macedonia, the',
+        u'North Macedonia',
         u'Georgia',
         u'Kazakhstan',
         u'Kyrgyzstan',

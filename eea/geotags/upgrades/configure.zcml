@@ -96,6 +96,20 @@
 
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeSteps
+    source="10.5"
+    destination="10.9"
+    profile="eea.geotags:default">
+
+    <genericsetup:upgradeDepends
+        title="Import all steps from eea.geotags profile upgrade 10.9"
+        description="Added correct country name for Macedonia"
+        import_profile="eea.geotags:upgrade109"
+    />
+
+  </genericsetup:upgradeSteps>
+
+
   <browser:page
     for="eea.geotags.interfaces.IGeoTaggable"
     name="eea.geotags.migrate_country_names"

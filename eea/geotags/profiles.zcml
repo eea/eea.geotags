@@ -29,6 +29,14 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
         for="Products.CMFPlone.interfaces.IPloneSiteRoot" />
 
+  <genericsetup:registerProfile
+        name="upgrade109"
+        title="EEA Geotags upgrade profile for v10.9"
+        directory="profiles/upgrades/to_109"
+        description='EEA Geotags upgrade profile for v10.9'
+        provides="Products.GenericSetup.interfaces.EXTENSION"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot" />
+
   <genericsetup:importStep
         name="eea-geotags-various"
         title="EEA Geotags Various"

@@ -918,9 +918,9 @@
                    return false;
                } else if (k.indexOf('Macedonia') !== -1 && subtitle.indexOf('Greece') !== -1) {
                    return false;
-               } else if (k === 'Macedonia' && title.indexOf('Former Yugoslav Republic of Macedonia, the') !== -1) {
+               } else if (k === 'Macedonia' && title.indexOf('North Macedonia') !== -1) {
                    return false;
-               } else if (k === 'Macedonia' && subtitle.indexOf('Former Yugoslav Republic of Macedonia, the') !== -1) {
+               } else if (k === 'Macedonia' && subtitle.indexOf('North Macedonia') !== -1) {
                    return false;
                } else {
                    title = title.replace(k, v);

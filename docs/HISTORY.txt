@@ -3,6 +3,8 @@ Changelog
 
 10.9-dev0 - (unreleased)
 ---------------------
+* Task: Updated migration script and added upgrade step to fix macedonia country name
+  [iulianpetchesi refs #106742]
 
 10.8 - (2019-01-28)
 ---------------------

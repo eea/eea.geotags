@@ -76,10 +76,12 @@ def migrate_country_names(context, content_type=None):
     # create country names vocab
     country_name = {
         'Czechia': 'Czech Republic',
-        'Macedonia (ARYM)': 'Former Yugoslav Republic of Macedonia, the',
-        'Macedonia (FYR)': 'Former Yugoslav Republic of Macedonia, the',
-        'Macedonia (FYROM)': 'Former Yugoslav Republic of Macedonia, the',
-        'Macedonia': 'Former Yugoslav Republic of Macedonia, the',
+        'Macedonia (ARYM)': 'North Macedonia',
+        'Macedonia (FYR)': 'North Macedonia',
+        'Macedonia (FYROM)': 'North Macedonia',
+        'Macedonia': 'North Macedonia',
+        'Former Yugoslav Republic of Macedonia, the': 'North Macedonia',
+        'North Former Yugoslav Republic of Macedonia, the': 'North Macedonia',
         'Kosova (Kosovo)': 'Kosovo (UNSCR 1244/99)',
         'Kosovo': 'Kosovo (UNSCR 1244/99)'
     }
@@ -131,7 +133,7 @@ def migrate_country_names(context, content_type=None):
         u'Turkey',
     ]
     
-    correct_macedonia = 'Former Yugoslav Republic of Macedonia, the'
+    correct_macedonia = 'North Macedonia'
     total_brains_number = len(brains)
     logger.info("Start checking %s objects." % total_brains_number)
     obj_with_groups = {}
@@ -182,22 +184,14 @@ def migrate_country_names(context, content_type=None):
                 title = feature['properties']['title']
                 description = feature['properties']['description']
                 if country in title:
-                    if country == "Macedonia" and 'Macedonia (ARYM)' in title:
+                    if country == "Macedonia" and "Greece" in description:
                         continue
-                    if country == "Macedonia" and 'Macedonia (FYR)' in title:
-                        continue
-                    if country == "Macedonia" and 'Macedonia (FYROM)' in title:
-                        continue
-                    if country == "Macedonia" and 'Former Yugoslav Republic of Macedonia, the' == title:
-                        continue
-                    if country == "Macedonia" and 'Yugoslav' in title:
+                    if "Macedonia" in country:
                         if title != correct_macedonia:
                             feature['properties']['title'] = correct_macedonia
                             update_detected = True
                             count_countries_detected += 1
                             obj_with_bad_country_name[obj_uri] = True
-                            continue
-                    if country == "Macedonia" and "Greece" in description:
                         continue
                     if country == "Kosovo" and 'Kosovo (UNSCR 1244/99)' in title:
                         continue
@@ -208,25 +202,18 @@ def migrate_country_names(context, content_type=None):
                     update_detected = True
                     count_countries_detected += 1
                     obj_with_bad_country_name[obj_uri] = True
+
             for feature in features:
                 description = feature['properties']['description']
                 if country in description:
-                    if country == "Macedonia" and 'Macedonia (ARYM)' in description:
+                    if country == "Macedonia" and "Greece" in description:
                         continue
-                    if country == "Macedonia" and 'Macedonia (FYR)' in description:
-                        continue
-                    if country == "Macedonia" and 'Macedonia (FYROM)' in description:
-                        continue
-                    if country == "Macedonia" and 'Former Yugoslav Republic of Macedonia, the' == description:
-                        continue
-                    if country == "Macedonia" and 'Yugoslav' in description:
+                    if "Macedonia" in country:
                         if description != correct_macedonia:
                             feature['properties']['description'] = correct_macedonia
                             update_detected = True
                             count_countries_detected += 1
                             obj_with_bad_country_name[obj_uri] = True
-                            continue
-                    if country == "Macedonia" and "Greece" in description:
                         continue
                     if country == "Kosovo" and 'Kosovo (UNSCR 1244/99)' in description:
                         continue
