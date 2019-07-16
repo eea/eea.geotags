@@ -75,15 +75,15 @@ def migrate_country_names(context, content_type=None):
 
     # create country names vocab
     country_name = {
-        'Czechia': 'Czech Republic',
         'Macedonia (ARYM)': 'North Macedonia',
         'Macedonia (FYR)': 'North Macedonia',
         'Macedonia (FYROM)': 'North Macedonia',
         'Macedonia': 'North Macedonia',
         'Former Yugoslav Republic of Macedonia, the': 'North Macedonia',
-        'North Former Yugoslav Republic of Macedonia, the': 'North Macedonia',
-        'Kosova (Kosovo)': 'Kosovo (UNSCR 1244/99)',
-        'Kosovo': 'Kosovo (UNSCR 1244/99)'
+        'North Former Yugoslav Republic of Macedonia, the': 'North Macedonia'
+        # 'Czechia': 'Czech Republic',
+        # 'Kosova (Kosovo)': 'Kosovo (UNSCR 1244/99)',
+        # 'Kosovo': 'Kosovo (UNSCR 1244/99)'
     }
 
     # create the country groups
