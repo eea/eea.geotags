@@ -1,7 +1,7 @@
 Changelog
 =========
 
-10.9-dev0 - (unreleased)
+10.9 - (2019-07-16)
 ---------------------
 * Task: Updated migration script and added upgrade step to fix macedonia country name
   [iulianpetchesi refs #106742]
