@@ -127,7 +127,7 @@
         <element key="geo-630336">Belarus</element>
         <element key="geo-3277605">Bosnia and Herzegovina</element>
         <element key="geo-3202326">Croatia</element>
-        <element key="geo-718075">The former Yugoslav Republic of Macedonia</element>
+        <element key="geo-718075">North Macedonia</element>
         <element key="geo-614540">Georgia</element>
         <element key="geo-1522867">Kazakhstan</element>
         <element key="geo-1527747">Kyrgyzstan</element>
@@ -258,7 +258,7 @@
         <element key="geo-2623032">Denmark</element>
         <element key="geo-453733">Estonia</element>
         <element key="geo-660013">Finland</element>
-        <element key="geo-718075">The former Yugoslav Republic of Macedonia</element>
+        <element key="geo-718075">North Macedonia</element>
         <element key="geo-3017382">France</element>
         <element key="geo-2921044">Germany</element>
         <element key="geo-390903">Greece</element>
@@ -391,10 +391,10 @@
   <record name="eea.geotags.controlpanel.interfaces.IGeoVocabularies.countries_mapping">
     <value purge="True">
       <element key="Czechia">Czech Republic</element>
-      <element key="Macedonia (ARYM)">Former Yugoslav Republic of Macedonia, the</element>
-      <element key="Macedonia (FYR)">Former Yugoslav Republic of Macedonia, the</element>
-      <element key="Macedonia (FYROM)">Former Yugoslav Republic of Macedonia, the</element>
-      <element key="Macedonia">Former Yugoslav Republic of Macedonia, the</element>
+      <element key="Macedonia (ARYM)">North Macedonia</element>
+      <element key="Macedonia (FYR)">North Macedonia</element>
+      <element key="Macedonia (FYROM)">North Macedonia</element>
+      <element key="Macedonia">North Macedonia</element>
       <element key="Kosova (Kosovo)">Kosovo (UNSCR 1244/99)</element>
       <element key="Kosovo">Kosovo (UNSCR 1244/99)</element>
     </value>

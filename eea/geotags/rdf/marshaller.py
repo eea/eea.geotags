@@ -44,8 +44,7 @@ class GeotagsField2Surf(object):
         output = []
         i = 0
 
-        cty_names = {u'Macedonia': u'Former Yugoslav Republic of'
-                                   u' Macedonia, the',
+        cty_names = {u'Macedonia': u'North Macedonia',
                      u'Czechia': u'Czech Republic',
                      u'Kosovo': u'Kosovo (UNSCR 1244/99)'}
         cty_names_keys = cty_names.keys()

@@ -1,6 +1,11 @@
 Changelog
 =========
 
+10.9 - (2019-07-16)
+---------------------
+* Task: Updated migration script and added upgrade step to fix macedonia country name
+  [iulianpetchesi refs #106742]
+
 10.8 - (2019-01-28)
 ---------------------
 * Jenkins: Add sonarqube step
