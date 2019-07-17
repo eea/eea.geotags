@@ -275,9 +275,9 @@ def migrate_country_names(context, content_type=None, email=None):
             logger.info(k)
         if email:
             mailhost = getToolByName(context, 'MailHost')
-            text = """Finished fixing country names for %s """ % content_type
+            text = """Finished fixing country names for '%s'. """ % content_type
             email_from = "no-reply@eea.europa.eu"
-            subject = "Macedonia data migration"
+            subject = "Macedonia data migration for: %s" % content_type
 
             return_msg = "Sending email for %s ." % content_type
 
@@ -295,9 +295,9 @@ def migrate_country_names(context, content_type=None, email=None):
     except Exception, err:
         if email:
             mailhost = getToolByName(context, 'MailHost')
-            text = """ Migration script failed for %s with %s """ % (content_type, err)
+            text = """ Migration script failed for '%s' with error: %s """ % (content_type, err)
             email_from = "no-reply@eea.europa.eu"
-            subject = "Macedonia data migration FAILURE"
+            subject = "Macedonia data migration FAILURE for: %s" % content_type
 
             return_msg = "Sending email for %s ." % content_type
 
