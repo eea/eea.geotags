@@ -103,7 +103,7 @@
 
     <genericsetup:upgradeDepends
         title="Import all steps from eea.geotags profile upgrade 10.9"
-        description="Added correct country name for Macedonia"
+        description="Added correct country name for North Macedonia"
         import_profile="eea.geotags:upgrade109"
     />
 
