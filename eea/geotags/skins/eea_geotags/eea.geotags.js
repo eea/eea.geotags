@@ -1699,6 +1699,11 @@
             });
           }
 
+          if (title.toLowerCase().indexOf('macedonia') !== -1 && subtitle.toLowerCase().indexOf('greece') === -1) {
+            title = title.replace("Macedonia", "North Macedonia");
+            subtitle = subtitle.replace("Macedonia", "North Macedonia");
+          }
+
           var itemplate = jQuery(self.options.template);
           itemplate.attr('id', uid).attr('title', 'Add');
           var icon = jQuery('<div>')
