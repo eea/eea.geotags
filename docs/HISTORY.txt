@@ -1,6 +1,11 @@
 Changelog
 =========
 
+11.2 - (2019-07-22)
+---------------------
+* Task: Updated migration script and added upgrade step to fix czechia country name
+  [iulianpetchesi refs #106742]
+
 11.0 - (2019-07-17)
 ---------------------
 * Change: Added email paramater and fixed geo widget macedonia name

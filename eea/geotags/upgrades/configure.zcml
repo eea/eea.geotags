@@ -109,6 +109,19 @@
 
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeSteps
+    source="10.9"
+    destination="11.2"
+    profile="eea.geotags:default">
+
+    <genericsetup:upgradeDepends
+        title="Import all steps from eea.geotags profile upgrade 11.2"
+        description="Added correct country name for Czechias"
+        import_profile="eea.geotags:upgrade112"
+    />
+
+  </genericsetup:upgradeSteps>
+
 
   <browser:page
     for="eea.geotags.interfaces.IGeoTaggable"
