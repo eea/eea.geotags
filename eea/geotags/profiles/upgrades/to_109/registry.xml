@@ -52,7 +52,7 @@
         <element key="geo-831053">Kosovo</element>
         <element key="geo-2264397">Portugal</element>
         <element key="geo-174982">Armenia</element>
-        <element key="geo-3077311">Czech Republic</element>
+        <element key="geo-3077311">Czechia</element>
         <element key="geo-587116">Azerbaijan</element>
         <element key="geo-2629691">Iceland</element>
         <element key="geo-614540">Georgia</element>
@@ -96,7 +96,7 @@
         <element key="geo-597427">Lithuania</element>
         <element key="geo-718075">North Macedonia</element>
         <element key="geo-2264397">Portugal</element>
-        <element key="geo-3077311">Czech Republic</element>
+        <element key="geo-3077311">Czechia</element>
         <element key="geo-2629691">Iceland</element>
         <element key="geo-2658434">Switzerland</element>
       </element>
@@ -108,7 +108,7 @@
       <element key="Macedonia">North Macedonia</element>
       <element key="Macedonia (ARYM)">North Macedonia</element>
       <element key="Macedonia (FYROM)">North Macedonia</element>
-      <element key="Czechia">Czech Republic</element>
+      <element key="Czechia">Czechia</element>
       <element key="Kosovo">Kosovo (UNSCR 1244/99)</element>
       <element key="Kosova (Kosovo)">Kosovo (UNSCR 1244/99)</element>
     </value>

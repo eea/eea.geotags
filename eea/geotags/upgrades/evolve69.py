@@ -81,7 +81,8 @@ def migrate_country_names(context, content_type=None, email=None):
             'Macedonia (FYROM)': 'North Macedonia',
             'Macedonia': 'North Macedonia',
             'Former Yugoslav Republic of Macedonia, the': 'North Macedonia',
-            'North Former Yugoslav Republic of Macedonia, the': 'North Macedonia'
+            'North Former Yugoslav Republic of Macedonia, the': 'North Macedonia',
+            'Czech Republic': 'Czechia'
             # 'Czechia': 'Czech Republic',
             # 'Kosova (Kosovo)': 'Kosovo (UNSCR 1244/99)',
             # 'Kosovo': 'Kosovo (UNSCR 1244/99)'
@@ -114,7 +115,7 @@ def migrate_country_names(context, content_type=None, email=None):
             u'Ireland',
             u'France',
             u'Slovakia',
-            u'Czech Republic',
+            u'Czechia',
             u'Italy',
             u'Slovenia',
             u'Greece',
