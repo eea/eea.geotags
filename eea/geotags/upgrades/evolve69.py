@@ -83,7 +83,6 @@ def migrate_country_names(context, content_type=None, email=None):
             'Former Yugoslav Republic of Macedonia, the': 'North Macedonia',
             'North Former Yugoslav Republic of Macedonia, the': 'North Macedonia',
             'Czech Republic': 'Czechia'
-            # 'Czechia': 'Czech Republic',
             # 'Kosova (Kosovo)': 'Kosovo (UNSCR 1244/99)',
             # 'Kosovo': 'Kosovo (UNSCR 1244/99)'
         }

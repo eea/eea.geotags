@@ -1,9 +1,14 @@
 Changelog
 =========
 
+11.3-dev0 - (unreleased)
+---------------------
+* Bug fix: fixed HISTORY.txt structure and some cosmetics
+  [alecghica refs #106742]
+
 11.2 - (2019-07-22)
 ---------------------
-* Task: Updated migration script and added upgrade step to fix czechia country name
+* Task: Updated migration script and added upgrade step to fix Czechia country name
   [iulianpetchesi refs #106742]
 
 11.0 - (2019-07-17)
