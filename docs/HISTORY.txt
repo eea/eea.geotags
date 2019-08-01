@@ -1,6 +1,9 @@
 Changelog
 =========
 
+11.5-dev0 - (unreleased)
+---------------------
+
 11.4 - (2019-07-30)
 ---------------------
 * Bug fix: fixed HISTORY.txt structure and some cosmetics
