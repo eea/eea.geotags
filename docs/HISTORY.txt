@@ -1,7 +1,7 @@
 Changelog
 =========
 
-11.3 - (2019-07-30)
+11.4 - (2019-07-30)
 ---------------------
 * Bug fix: fixed HISTORY.txt structure and some cosmetics
   [alecghica refs #106742]
