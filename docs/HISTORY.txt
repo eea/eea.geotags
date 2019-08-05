@@ -1,6 +1,11 @@
 Changelog
 =========
 
+11.5 - (2019-08-05)
+---------------------------
+* Bug fix: fixed MANIFEST.in to include docs and txt files in egg release
+  [valentinab refs #106933]
+
 11.4 - (2019-07-30)
 ---------------------
 * Bug fix: fixed HISTORY.txt structure and some cosmetics
