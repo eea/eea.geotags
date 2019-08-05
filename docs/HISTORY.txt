@@ -1,6 +1,9 @@
 Changelog
 =========
 
+11.6-dev0 - (unreleased)
+---------------------
+
 11.5 - (2019-08-05)
 ---------------------------
 * Bug fix: fixed MANIFEST.in to include docs and txt files in egg release
