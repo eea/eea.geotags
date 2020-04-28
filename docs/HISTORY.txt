@@ -3,6 +3,8 @@ Changelog
 
 11.6-dev0 - (unreleased)
 ---------------------
+* Bug fix: include plone.behavior in ZCML
+  [alecghica refs #111954]
 
 11.5 - (2019-08-05)
 ---------------------------
