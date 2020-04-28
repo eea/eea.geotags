@@ -1,7 +1,7 @@
 Changelog
 =========
 
-11.6-dev0 - (unreleased)
+11.6 - (2020-04-28)
 --------------------------
 * Bug fix: include plone.behavior in ZCML
   [alecghica refs #111954]
