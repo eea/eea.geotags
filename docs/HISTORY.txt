@@ -2,7 +2,7 @@ Changelog
 =========
 
 11.6-dev0 - (unreleased)
----------------------
+--------------------------
 * Bug fix: include plone.behavior in ZCML
   [alecghica refs #111954]
 
@@ -12,32 +12,32 @@ Changelog
   [valentinab refs #106933]
 
 11.4 - (2019-07-30)
----------------------
+--------------------------
 * Bug fix: fixed HISTORY.txt structure and some cosmetics
   [alecghica refs #106742]
 
 11.2 - (2019-07-22)
----------------------
+--------------------------
 * Task: Updated migration script and added upgrade step to fix Czechia country name
   [iulianpetchesi refs #106742]
 
 11.0 - (2019-07-17)
----------------------
+--------------------------
 * Change: Added email paramater and fixed geo widget macedonia name
   [iulianpetchesi refs #106742]
 
 10.9 - (2019-07-16)
----------------------
+--------------------------
 * Task: Updated migration script and added upgrade step to fix macedonia country name
   [iulianpetchesi refs #106742]
 
 10.8 - (2019-01-28)
----------------------
+--------------------------
 * Jenkins: Add sonarqube step
   [avoinea refs #101552]
 
 10.7 - (2019-01-17)
----------------------
+--------------------------
 * Feature: fully serve OpenLayers over HTTPS
   [alecghica refs #101256]
 * Feature: serve OpenLayers tiles stored locally
@@ -46,36 +46,36 @@ Changelog
   [alecghica refs #101256]
 
 10.6 - (2018-09-05)
----------------------
+--------------------------
 * Bug fix: Fixed map behaviour when it's mandatorry, but nothing was selected, and trying to saved
   [szabozo0 refs #97571]
 * Cleanup: Remove obsolete FormlibGeotagWidget
   [avoinea refs #98073]
 
 10.5 - (2018-08-31)
----------------------
+--------------------------
 * Feature: Add EEA 39 to country groups in geo tagging interface
   [avoinea refs #87954]
 
 10.4 - (2018-07-27)
----------------------
+--------------------------
 * Bug fix: The id "++resource++eea.geotags.static" contains characters illegal in URLs.
   [avoinea refs #97380]
 
 10.3 - (2018-07-11)
----------------------
+--------------------------
 * Cleanup: Remove Products.ATVocabularyManager dependency
   [avoinea refs #97067]
 * Change: Added missing country groups (EU33, EU28, etc.)
   [avoinea refs #97067]
 
 10.2 - (2018-07-11)
----------------------
+--------------------------
 * Bug fix: Fixed Mixed Content by loading openlayers API over https
   [avoinea refs #96619]
 
 10.1 - (2018-07-10)
----------------------
+--------------------------
 * Bug fix: Fixed Mixed Content by loading openlayers API over https
   [avoinea refs #96619]
 
