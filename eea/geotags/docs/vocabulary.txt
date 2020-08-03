@@ -13,7 +13,7 @@ Returns a SimpleVocabulary instance with Country Groups
     >>> values = [term.value for term in voc()]
     >>> values.sort()
     >>> values
-    [u'eea32', u'eea33', u'eea39', u'efta4', u'eu15', u'eu25', u'eu27', u'eu28', u'pan-europe', u'eu27_2020', u'eea32_2020', u'eea38_2020']
+    [u'eea32', u'eea32_2020', u'eea33', u'eea38_2020', u'eea39', u'efta4', u'eu15', u'eu25', u'eu27', u'eu27_2020', u'eu28', u'pan-europe']
 
 eea.geotags.interfaces.IBioGroups
 ---------------------------------
