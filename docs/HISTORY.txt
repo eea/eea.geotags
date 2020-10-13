@@ -1,6 +1,9 @@
 Changelog
 =========
 
+11.8-dev0 - (unreleased)
+---------------------------
+
 11.7 - (2020-08-03)
 ---------------------------
 * Task: Added 3 new EU country groups for geotags EU27_2020/EEA32_2020/EEA38_2020
