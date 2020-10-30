@@ -3,6 +3,8 @@ Changelog
 
 11.8-dev0 - (unreleased)
 ---------------------------
+* Task: Removed geotags from eea.geotags and ported them to eea.geolocation
+  [iulianpetchesi refs #122622]
 
 11.7 - (2020-08-03)
 ---------------------------
