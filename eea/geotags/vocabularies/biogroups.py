@@ -20,6 +20,25 @@ class BioGroups(object):
         self.context = context
 
     def __call__(self):
+        # from collective.taxonomy.interfaces import ITaxonomy
+        # from plone.i18n.normalizer.interfaces import IIDNormalizer
+        # from zope.component import queryUtility
+
+        # normalizer = getUtility(IIDNormalizer)
+        # name = 'eea.geolocation.geotags.taxonomy'
+        # normalized_name = normalizer.normalize(name).replace("-", "")
+        # utility_name = "collective.taxonomy." + normalized_name
+        # taxonomy = queryUtility(ITaxonomy, name=utility_name)
+        # data = taxonomy.data['en']
+        # import pdb; pdb.set_trace()
+        # items = []
+        # for key, val in data.items():
+        #     import pdb; pdb.set_trace()
+        #     continue
+            # key = key.encode('ascii', 'ignore').decode('ascii')
+            # term = SimpleTerm(key, key, val)
+            # items.append(term)
+
         registry = getUtility(IRegistry).forInterface(IGeoVocabularies, False)
         biotags = registry.biotags or dict()
         items = [
