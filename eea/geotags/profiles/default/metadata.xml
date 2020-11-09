@@ -6,5 +6,6 @@
   <dependency>profile-eea.alchemy:default</dependency>
   <dependency>profile-eea.jquery:13-splitter</dependency>
   <dependency>profile-eea.jquery:23-select2</dependency>
+  <dependency>profile-eea.geolocation:default</dependency>
  </dependencies>
 </metadata>
