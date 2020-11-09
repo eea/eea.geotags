@@ -11,7 +11,6 @@ from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
 from eea.geotags.config import WEBSERVICE
 from eea.geolocation.interfaces import IGeolocationClientSettings
-from eea.geotags.vocabularies.interfaces import IGeoVocabularies
 from eea.geotags.interfaces import IGeoGroups
 from eea.geotags.interfaces import IBioGroups
 from eea.geotags.interfaces import IGeoCountries
@@ -136,8 +135,6 @@ class GeoNamesJsonProvider(object):
 
         # TODO: test
         # import pdb; pdb.set_trace()
-        # biotags = getUtility(IRegistry).forInterface(
-        #         IGeoVocabularies, False).biotags
         biotags = identifier_data
 
         for term in terms:
