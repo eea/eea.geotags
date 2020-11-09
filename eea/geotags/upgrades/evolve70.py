@@ -3,7 +3,6 @@
 
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-# from eea.geotags.controlpanel.interfaces import IGeotagsSettings
 from eea.geolocation.interfaces import IGeolocationClientSettings
 
 

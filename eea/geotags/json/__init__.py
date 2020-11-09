@@ -134,11 +134,11 @@ class GeoNamesJsonProvider(object):
         identifier_data.update({identifier: data})
         del identifier_data['placeholderidentifier']
 
-
-        # TODO
-        import pdb; pdb.set_trace()
-        biotags = getUtility(IRegistry).forInterface(
-                IGeoVocabularies, False).biotags
+        # TODO: test
+        # import pdb; pdb.set_trace()
+        # biotags = getUtility(IRegistry).forInterface(
+        #         IGeoVocabularies, False).biotags
+        biotags = identifier_data
 
         for term in terms:
             feature = {
