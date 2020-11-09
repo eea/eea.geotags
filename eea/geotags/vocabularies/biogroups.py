@@ -20,29 +20,44 @@ class BioGroups(object):
         self.context = context
 
     def __call__(self):
-        # from collective.taxonomy.interfaces import ITaxonomy
-        # from plone.i18n.normalizer.interfaces import IIDNormalizer
-        # from zope.component import queryUtility
+        from collective.taxonomy.interfaces import ITaxonomy
+        from plone.i18n.normalizer.interfaces import IIDNormalizer
+        from zope.component import queryUtility
 
-        # normalizer = getUtility(IIDNormalizer)
-        # name = 'eea.geolocation.geotags.taxonomy'
-        # normalized_name = normalizer.normalize(name).replace("-", "")
-        # utility_name = "collective.taxonomy." + normalized_name
-        # taxonomy = queryUtility(ITaxonomy, name=utility_name)
+        normalizer = getUtility(IIDNormalizer)
+        name = 'eea.geolocation.biotags.taxonomy'
+        normalized_name = normalizer.normalize(name).replace("-", "")
+        utility_name = "collective.taxonomy." + normalized_name
+        taxonomy = queryUtility(ITaxonomy, name=utility_name)
+
         # data = taxonomy.data['en']
-        # import pdb; pdb.set_trace()
-        # items = []
-        # for key, val in data.items():
-        #     import pdb; pdb.set_trace()
-        #     continue
-            # key = key.encode('ascii', 'ignore').decode('ascii')
-            # term = SimpleTerm(key, key, val)
-            # items.append(term)
+        vocabulary = taxonomy(self)
+        identifier_data = {}
+        data = {}
+        identifier = 'placeholderidentifier'
+        for value, key in vocabulary.iterEntries():
+            value = value.encode('ascii', 'ignore').decode('ascii')
+            key = key.split('||')[-1]
 
-        registry = getUtility(IRegistry).forInterface(IGeoVocabularies, False)
-        biotags = registry.biotags or dict()
+            if identifier not in value:
+                data.update({'title': identifier})
+                identifier_data.update({identifier: data})
+                identifier = value
+                data = {}
+            else:
+                data.update({key: value.split(identifier)[-1]})
+        data.update({'title': identifier})
+        identifier_data.update({identifier: data})
+        del identifier_data['placeholderidentifier']
+
         items = [
             SimpleTerm(key, key, val['title'])
-            for key, val in biotags.items()
+            for key, val in identifier_data.items()
         ]
+        # registry = getUtility(IRegistry).forInterface(IGeoVocabularies, False)
+        # biotags = registry.biotags or dict()
+        # items = [
+        #     SimpleTerm(key, key, val['title'])
+        #     for key, val in biotags.items()
+        # ]
         return SimpleVocabulary(items)
