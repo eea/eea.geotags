@@ -10,8 +10,8 @@ from zope.component import getUtility
 from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
 from eea.geotags.config import WEBSERVICE
-from eea.geotags.controlpanel.interfaces import IGeotagsSettings
-from eea.geotags.controlpanel.interfaces import IGeoVocabularies
+from eea.geolocation.interfaces import IGeolocationClientSettings
+from eea.geotags.vocabularies.interfaces import IGeoVocabularies
 from eea.geotags.interfaces import IGeoGroups
 from eea.geotags.interfaces import IBioGroups
 from eea.geotags.interfaces import IGeoCountries
@@ -35,7 +35,7 @@ class GeoNamesJsonProvider(object):
         if self._username is None:
             # Try to get key from registry
             settings = getUtility(IRegistry).forInterface(
-                    IGeotagsSettings, False)
+                    IGeolocationClientSettings, False)
             key = getattr(settings, 'geonames_key', '')
             if key:
                 self._username = key
@@ -106,6 +106,37 @@ class GeoNamesJsonProvider(object):
         terms = [term for term in voc()]
         terms.sort(key=operator.attrgetter('title'))
 
+        from plone.i18n.normalizer.interfaces import IIDNormalizer
+        from zope.component import getUtility, queryUtility
+        from collective.taxonomy.interfaces import ITaxonomy
+        name = 'eea.geolocation.biotags.taxonomy'
+        identifier = 'placeholderidentifier'
+        identifier_data = {}
+        data = {}
+        normalizer = getUtility(IIDNormalizer)
+        normalized_name = normalizer.normalize(name).replace("-", "")
+        utility_name = "collective.taxonomy." + normalized_name
+        taxonomy = queryUtility(ITaxonomy, name=utility_name)
+
+        vocabulary = taxonomy(self)
+        for value, key in vocabulary.iterEntries():
+            value = value.encode('ascii', 'ignore').decode('ascii')
+            key = key.split('||')[-1]
+
+            if identifier not in value:
+                data.update({'title': identifier})
+                identifier_data.update({identifier: data})
+                identifier = value
+                data = {}
+            else:
+                data.update({key: value.split(identifier)[-1]})
+        data.update({'title': identifier})
+        identifier_data.update({identifier: data})
+        del identifier_data['placeholderidentifier']
+
+
+        # TODO
+        import pdb; pdb.set_trace()
         biotags = getUtility(IRegistry).forInterface(
                 IGeoVocabularies, False).biotags
 
