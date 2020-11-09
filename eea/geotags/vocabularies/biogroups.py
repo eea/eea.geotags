@@ -46,7 +46,7 @@ class BioGroups(object):
         del identifier_data['placeholderidentifier']
 
         items = [
-            SimpleTerm(key, key, val['title'])
-            for key, val in identifier_data.items()
+            SimpleTerm(dictkey, dictkey, val['title'])
+            for dictkey, val in identifier_data.items()
         ]
         return SimpleVocabulary(items)

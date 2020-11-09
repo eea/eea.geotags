@@ -44,8 +44,8 @@ class Countries(object):
         del identifier_data['placeholderidentifier']
 
         items = [
-            SimpleTerm(key, key, val)
-            for key, val in identifier_data.get(group, dict()).items()
-            if key != 'title' # exclude the group title
+            SimpleTerm(dictkey, dictkey, val)
+            for dictkey, val in identifier_data.get(group, dict()).items()
+            if dictkey != 'title' # exclude the group title
         ]
         return SimpleVocabulary(items)

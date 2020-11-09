@@ -44,7 +44,7 @@ class Countries_Mapping(object):
         del identifier_data['placeholderidentifier']
 
         items = [
-            SimpleTerm(key, key, val)
-            for key, val in identifier_data.items()
+            SimpleTerm(dictkey, dictkey, val)
+            for dictkey, val in identifier_data.items()
         ]
         return SimpleVocabulary(items)
