@@ -4,10 +4,8 @@ from zope.component import getUtility, queryUtility
 from zope.interface import implements
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
-from plone.registry.interfaces import IRegistry
 from plone.i18n.normalizer.interfaces import IIDNormalizer
 from eea.geotags.vocabularies.interfaces import IGeoCountriesMapping
-from eea.geotags.controlpanel.interfaces import IGeoVocabularies
 from collective.taxonomy.interfaces import ITaxonomy
 
 
