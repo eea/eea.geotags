@@ -22,8 +22,7 @@ zope.deprecation.deprecated(
 
 
 def importVocabularies(_):
-    """ Vocabularies have been migrated to plone.app.registry
-        check eea.geotags.vocabularies.interfaces.IGeoVocabularies
+    """ Vocabularies have been migrated to eea.geolocation
     """
     pass
 

@@ -6,15 +6,17 @@ import json as simplejson
 import operator
 from eventlet.green import urllib2
 from zope.component import queryAdapter
-from zope.component import getUtility
+from zope.component import getUtility, queryUtility
 from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 from eea.geotags.config import WEBSERVICE
 from eea.geolocation.interfaces import IGeolocationClientSettings
 from eea.geotags.interfaces import IGeoGroups
 from eea.geotags.interfaces import IBioGroups
 from eea.geotags.interfaces import IGeoCountries
 from eea.geotags.json.interfaces import IJsonProviderSearchMutator
+from collective.taxonomy.interfaces import ITaxonomy
 
 
 logger = logging.getLogger('eea.geotags.json')
@@ -105,9 +107,6 @@ class GeoNamesJsonProvider(object):
         terms = [term for term in voc()]
         terms.sort(key=operator.attrgetter('title'))
 
-        from plone.i18n.normalizer.interfaces import IIDNormalizer
-        from zope.component import getUtility, queryUtility
-        from collective.taxonomy.interfaces import ITaxonomy
         name = 'eea.geolocation.biotags.taxonomy'
         identifier = 'placeholderidentifier'
         identifier_data = {}

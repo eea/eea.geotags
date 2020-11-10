@@ -41,29 +41,3 @@ class IGeoCountriesMapping(Interface):
         """ Returns a SimpleVocabulary instance of geo countries with custom
             name
         """
-
-
-class IGeoVocabularies(Interface):
-    geotags = field.Dict(
-        title=_(u'Geotags tree'),
-        key_type=field.TextLine(),
-        value_type=field.Dict(
-            key_type=field.TextLine(),
-            value_type=field.TextLine(),
-        ),
-    )
-
-    biotags = field.Dict(
-        title=_(u'Biogeographical regions'),
-        key_type=field.TextLine(),
-        value_type=field.Dict(
-            key_type=field.TextLine(),
-            value_type=field.TextLine(),
-        ),
-    )
-
-    countries_mapping = field.Dict(
-        title=_(u'EEA Custom Country Name Mappings'),
-        key_type=field.TextLine(),
-        value_type=field.TextLine(),
-    )
