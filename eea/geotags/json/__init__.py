@@ -116,7 +116,11 @@ class GeoNamesJsonProvider(object):
         utility_name = "collective.taxonomy." + normalized_name
         taxonomy = queryUtility(ITaxonomy, name=utility_name)
 
-        vocabulary = taxonomy(self)
+        try:
+            vocabulary = taxonomy(self)
+        except:
+            vocabulary = taxonomy.makeVocabulary('en')
+
         for value, key in vocabulary.iterEntries():
             value = value.encode('ascii', 'ignore').decode('ascii')
             key = key.split('||')[-1]
