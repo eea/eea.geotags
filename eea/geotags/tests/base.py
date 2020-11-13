@@ -22,6 +22,7 @@ def setup_eea_geotags():
 
     PloneTestCase.installPackage('eea.alchemy')
     PloneTestCase.installPackage('eea.jquery')
+    PloneTestCase.installPackage('eea.geolocation')
 
 setup_eea_geotags()
 PloneTestCase.setupPloneSite(extension_profiles=('eea.geotags:default',
