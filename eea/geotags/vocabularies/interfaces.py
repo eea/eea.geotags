@@ -1,9 +1,6 @@
 """ Interfaces
 """
 from zope.interface import Interface
-from plone.registry import field
-
-from eea.geotags.config import _
 
 
 class IGeoGroups(Interface):
