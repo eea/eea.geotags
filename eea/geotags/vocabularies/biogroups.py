@@ -29,21 +29,30 @@ class BioGroups(object):
         utility_name = "collective.taxonomy." + normalized_name
         taxonomy = queryUtility(ITaxonomy, name=utility_name)
 
-        vocabulary = taxonomy(self)
+        try:
+            vocabulary = taxonomy(self)
+        except:
+            vocabulary = taxonomy.makeVocabulary('en')
+
         for value, key in vocabulary.iterEntries():
             value = value.encode('ascii', 'ignore').decode('ascii')
             key = key.split('||')[-1]
 
+            if len(key) <= 4:
+                backup_key = key
+
             if identifier not in value:
                 data.update({'title': identifier})
-                identifier_data.update({identifier: data})
+                identifier_data.update({key: data})
                 identifier = value
                 data = {}
             else:
                 data.update({key: value.split(identifier)[-1]})
         data.update({'title': identifier})
-        identifier_data.update({identifier: data})
-        del identifier_data['placeholderidentifier']
+        identifier_data.update({backup_key: data})
+
+        # identifier_data.update({identifier: data})
+        # del identifier_data['placeholderidentifier']
 
         items = [
             SimpleTerm(dictkey, dictkey, val['title'])

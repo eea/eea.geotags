@@ -25,7 +25,7 @@ Returns a SimpleVocabulary instance with Biogeographical regions
     >>> values = [term.value for term in voc()]
     >>> values.sort()
     >>> values
-    [u'ALP', u'ANA', u'ARC', u'ATL', u'BLS', u'BOR', u'CON', u'MAC', u'MARC', u'MATL', u'MBAL', u'MBLS', u'MCAS', u'MED', u'MMAC', u'MMED', u'MNOS', u'PAN', u'STE']
+    ['ALP', 'ANA', 'ARC', 'ATL', 'BLS', 'BOR', 'CON', 'MAC', 'MARC', 'MATL', 'MBAL', 'MBLS', 'MCAS', 'MED', 'MMAC', 'MMED', 'MNOS', 'PAN', 'STE']
 
 eea.geotags.interfaces.IGeoCountries
 ------------------------------------
