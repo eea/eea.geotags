@@ -27,6 +27,7 @@ def setup_eea_geotags():
 setup_eea_geotags()
 PloneTestCase.setupPloneSite(extension_profiles=('eea.geotags:default',
                                                  'eea.geotags:demo',
+                                                 'collective.taxonomy:default',
                                                  'eea.geolocation:default'))
 
 class EEAGeotagsTestCase(PloneTestCase.PloneTestCase):
