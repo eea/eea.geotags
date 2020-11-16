@@ -125,16 +125,18 @@ class GeoNamesJsonProvider(object):
             value = value.encode('ascii', 'ignore').decode('ascii')
             key = key.split('||')[-1]
 
+            if len(key) <= 4:
+                backup_key = key
+
             if identifier not in value:
                 data.update({'title': identifier})
-                identifier_data.update({identifier: data})
+                identifier_data.update({key: data})
                 identifier = value
                 data = {}
             else:
                 data.update({key: value.split(identifier)[-1]})
         data.update({'title': identifier})
-        identifier_data.update({identifier: data})
-        del identifier_data['placeholderidentifier']
+        identifier_data.update({backup_key: data})
 
         biotags = identifier_data
 
