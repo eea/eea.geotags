@@ -136,8 +136,6 @@ class GeoNamesJsonProvider(object):
         identifier_data.update({identifier: data})
         del identifier_data['placeholderidentifier']
 
-        # TODO: test
-        # import pdb; pdb.set_trace()
         biotags = identifier_data
 
         for term in terms:
