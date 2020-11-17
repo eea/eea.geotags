@@ -51,9 +51,6 @@ class BioGroups(object):
         data.update({'title': identifier})
         identifier_data.update({backup_key: data})
 
-        # identifier_data.update({identifier: data})
-        # del identifier_data['placeholderidentifier']
-
         items = [
             SimpleTerm(dictkey, dictkey, val['title'])
             for dictkey, val in identifier_data.items()
