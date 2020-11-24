@@ -33,11 +33,11 @@ Returns a SimpleVocabulary instance of Countries for given group
 
     >>> from eea.geotags.interfaces import IGeoCountries
     >>> voc = queryAdapter(folder, IGeoCountries)
-    >>> voc = voc('EFTA4')
+    >>> voc = voc('efta4')
     >>> values = [term.value for term in voc]
     >>> values.sort()
     >>> values
-    ['geo-2629691', 'geo-2658434', 'geo-3042058', 'geo-3144096']
+    [u'geo-2629691', u'geo-2658434', u'geo-3042058', u'geo-3144096']
 
     >>> titles = [term.title for term in voc]
     >>> titles.sort()
