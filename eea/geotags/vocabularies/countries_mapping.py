@@ -20,7 +20,6 @@ class Countries_Mapping(object):
     def __call__(self):
         name = 'eea.geolocation.countries_mapping.taxonomy'
         identifier = 'placeholderidentifier'
-        identifier_data = {}
         data = {}
         normalizer = getUtility(IIDNormalizer)
         normalized_name = normalizer.normalize(name).replace("-", "")
@@ -34,21 +33,17 @@ class Countries_Mapping(object):
 
         for value, key in vocabulary.iterEntries():
             value = value.encode('ascii', 'ignore').decode('ascii')
-            key = key.split('||')[-1]
 
             if identifier not in value:
-                data.update({'title': identifier})
-                identifier_data.update({identifier: data})
                 identifier = value
-                data = {}
             else:
-                data.update({key: value.split(identifier)[-1]})
-        data.update({'title': identifier})
-        identifier_data.update({identifier: data})
-        del identifier_data['placeholderidentifier']
+                country = value.split(identifier)[-1]
+                if country == "":
+                    country = identifier
+                data.update({country: identifier})
 
         items = [
             SimpleTerm(dictkey, dictkey, val)
-            for dictkey, val in identifier_data.items()
+            for dictkey, val in data.items()
         ]
         return SimpleVocabulary(items)

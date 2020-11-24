@@ -42,11 +42,11 @@ class Groups(object):
                 identifier_key =  "_".join(value.split(" ")).lower()
                 identifier_data.update({identifier_key: data})
 
-            if 'geo' in value:
+            if 'geo' not in value:
+                country = value.split(identifier)[-1]
+            else:
                 geo = value.split(country)[-1]
                 data.update({geo: country})
-            else:
-                country = value.split(identifier)[-1]
 
         items = [
             SimpleTerm(dictkey, dictkey, val['title'])

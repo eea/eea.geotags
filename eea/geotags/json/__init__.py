@@ -134,8 +134,8 @@ class GeoNamesJsonProvider(object):
                 data.update({'latitude': latitude})
 
             if 'longitude' in value:
-                latitude = value.split('longitude')[-1]
-                data.update({'longitude': latitude})
+                longitude = value.split('longitude')[-1]
+                data.update({'longitude': longitude})
 
             if 'Abbreviation' in value:
                 identifier_key = value.split('Abbreviation')[-1]
