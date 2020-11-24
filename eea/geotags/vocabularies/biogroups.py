@@ -36,21 +36,24 @@ class BioGroups(object):
 
         for value, key in vocabulary.iterEntries():
             value = value.encode('ascii', 'ignore').decode('ascii')
-            key = key.split('||')[-1]
-
-            if len(key) <= 4:
-                backup_key = key
 
             if identifier not in value:
-                data.update({'title': identifier})
-                identifier_data.update({key: data})
                 identifier = value
                 data = {}
-            else:
-                data.update({key: value.split(identifier)[-1]})
-        data.update({'title': identifier})
-        identifier_data.update({backup_key: data})
+                data.update({'title': identifier})
 
+            if 'latitude' in value:
+                latitude = value.split('latitude')[-1]
+                data.update({'latitude': latitude})
+
+            if 'longitude' in value:
+                latitude = value.split('longitude')[-1]
+                data.update({'longitude': latitude})
+
+            if 'Abbreviation' in value:
+                identifier_key = value.split('Abbreviation')[-1]
+                identifier_data.update({identifier_key: data})
+        del identifier_data['']
         items = [
             SimpleTerm(dictkey, dictkey, val['title'])
             for dictkey, val in identifier_data.items()

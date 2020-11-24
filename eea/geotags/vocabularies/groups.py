@@ -34,18 +34,19 @@ class Groups(object):
 
         for value, key in vocabulary.iterEntries():
             value = value.encode('ascii', 'ignore').decode('ascii')
-            key = key.split('||')[-1]
 
             if identifier not in value:
-                data.update({'title': identifier})
-                identifier_data.update({identifier: data})
                 identifier = value
                 data = {}
+                data.update({'title': identifier})
+                identifier_key =  "_".join(value.split(" ")).lower()
+                identifier_data.update({identifier_key: data})
+
+            if 'geo' in value:
+                geo = value.split(country)[-1]
+                data.update({geo: country})
             else:
-                data.update({key: value.split(identifier)[-1]})
-        data.update({'title': identifier})
-        identifier_data.update({identifier: data})
-        del identifier_data['placeholderidentifier']
+                country = value.split(identifier)[-1]
 
         items = [
             SimpleTerm(dictkey, dictkey, val['title'])
