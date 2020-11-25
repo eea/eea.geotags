@@ -9,7 +9,7 @@ logger = logging.getLogger('eea.geotags.setuphandlers')
 def setupGeonames(_):
     """ portal_properties.geographical_properties has been moved to
         plone.app.registry and is available in
-        eea.geotags.controlpanel.interfaces.IGeotagsSettings
+        eea.geolocation.interfaces.IGeolocationClientSettings
     """
     pass
 
@@ -22,8 +22,7 @@ zope.deprecation.deprecated(
 
 
 def importVocabularies(_):
-    """ Vocabularies have been migrated to plone.app.registry
-        check eea.geotags.controlpanel.interfaces.IGeoVocabularies
+    """ Vocabularies have been migrated to eea.geolocation
     """
     pass
 

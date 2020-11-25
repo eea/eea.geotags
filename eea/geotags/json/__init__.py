@@ -6,16 +6,17 @@ import json as simplejson
 import operator
 from eventlet.green import urllib2
 from zope.component import queryAdapter
-from zope.component import getUtility
+from zope.component import getUtility, queryUtility
 from Products.CMFCore.utils import getToolByName
 from plone.registry.interfaces import IRegistry
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 from eea.geotags.config import WEBSERVICE
-from eea.geotags.controlpanel.interfaces import IGeotagsSettings
-from eea.geotags.controlpanel.interfaces import IGeoVocabularies
+from eea.geolocation.interfaces import IGeolocationClientSettings
 from eea.geotags.interfaces import IGeoGroups
 from eea.geotags.interfaces import IBioGroups
 from eea.geotags.interfaces import IGeoCountries
 from eea.geotags.json.interfaces import IJsonProviderSearchMutator
+from collective.taxonomy.interfaces import ITaxonomy
 
 
 logger = logging.getLogger('eea.geotags.json')
@@ -35,7 +36,7 @@ class GeoNamesJsonProvider(object):
         if self._username is None:
             # Try to get key from registry
             settings = getUtility(IRegistry).forInterface(
-                    IGeotagsSettings, False)
+                    IGeolocationClientSettings, False)
             key = getattr(settings, 'geonames_key', '')
             if key:
                 self._username = key
@@ -106,8 +107,42 @@ class GeoNamesJsonProvider(object):
         terms = [term for term in voc()]
         terms.sort(key=operator.attrgetter('title'))
 
-        biotags = getUtility(IRegistry).forInterface(
-                IGeoVocabularies, False).biotags
+        name = 'eea.geolocation.biotags.taxonomy'
+        identifier = 'placeholderidentifier'
+        identifier_data = {}
+        data = {}
+        normalizer = getUtility(IIDNormalizer)
+        normalized_name = normalizer.normalize(name).replace("-", "")
+        utility_name = "collective.taxonomy." + normalized_name
+        taxonomy = queryUtility(ITaxonomy, name=utility_name)
+
+        try:
+            vocabulary = taxonomy(self)
+        except:
+            vocabulary = taxonomy.makeVocabulary('en')
+
+        for value, key in vocabulary.iterEntries():
+            value = value.encode('ascii', 'ignore').decode('ascii')
+
+            if identifier not in value:
+                identifier = value
+                data = {}
+                data.update({'title': identifier})
+
+            if 'latitude' in value:
+                latitude = value.split('latitude')[-1]
+                data.update({'latitude': latitude})
+
+            if 'longitude' in value:
+                longitude = value.split('longitude')[-1]
+                data.update({'longitude': longitude})
+
+            if 'Abbreviation' in value:
+                identifier_key = value.split('Abbreviation')[-1]
+                identifier_data.update({identifier_key: data})
+        del identifier_data['']
+
+        biotags = identifier_data
 
         for term in terms:
             feature = {

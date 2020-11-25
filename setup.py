@@ -46,6 +46,8 @@ setup(name=NAME,
           'archetypes.schemaextender',
           'eea.jquery',
           'eea.alchemy',
+          'eea.geolocation',
+          'collective.taxonomy<2.0.0',
       ],
       entry_points="""
       [z3c.autoinclude.plugin]
