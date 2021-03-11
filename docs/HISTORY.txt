@@ -1,7 +1,7 @@
 Changelog
 =========
 
-11.8-dev0 - (unreleased)
+11.8 - (2021-03-11)
 ---------------------------
 * Task: Removed geotags from eea.geotags and ported them to eea.geolocation
   [iulianpetchesi refs #122622]
