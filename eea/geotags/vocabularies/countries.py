@@ -1,12 +1,12 @@
 """ Countries
 """
-from zope.component import getUtility
+from zope.component import getUtility, queryUtility
 from zope.interface import implements
 from zope.schema.vocabulary import SimpleVocabulary
 from zope.schema.vocabulary import SimpleTerm
-from plone.registry.interfaces import IRegistry
+from plone.i18n.normalizer.interfaces import IIDNormalizer
 from eea.geotags.vocabularies.interfaces import IGeoCountries
-from eea.geotags.controlpanel.interfaces import IGeoVocabularies
+from collective.taxonomy.interfaces import ITaxonomy
 
 
 class Countries(object):
@@ -18,11 +18,39 @@ class Countries(object):
         self.context = context
 
     def __call__(self, group=''):
-        registry = getUtility(IRegistry).forInterface(IGeoVocabularies, False)
-        geotags = registry.geotags or dict()
+        name = 'eea.geolocation.geotags.taxonomy'
+        identifier = 'placeholderidentifier'
+        identifier_data = {}
+        data = {}
+        normalizer = getUtility(IIDNormalizer)
+        normalized_name = normalizer.normalize(name).replace("-", "")
+        utility_name = "collective.taxonomy." + normalized_name
+        taxonomy = queryUtility(ITaxonomy, name=utility_name)
+
+        try:
+            vocabulary = taxonomy(self)
+        except:
+            vocabulary = taxonomy.makeVocabulary('en')
+
+        for value, key in vocabulary.iterEntries():
+            value = value.encode('ascii', 'ignore').decode('ascii')
+
+            if identifier not in value:
+                identifier = value
+                data = {}
+                data.update({'title': identifier})
+                identifier_key =  "_".join(value.split(" ")).lower()
+                identifier_data.update({identifier_key: data})
+
+            if 'geo' not in value:
+                country = value.split(identifier)[-1]
+            else:
+                geo = value.split(country)[-1]
+                data.update({geo: country})
+
         items = [
-            SimpleTerm(key, key, val)
-            for key, val in geotags.get(group, dict()).items()
-            if key != 'title' # exclude the group title
+            SimpleTerm(dictkey, dictkey, val)
+            for dictkey, val in identifier_data.get(group, dict()).items()
+            if dictkey != 'title' # exclude the group title
         ]
         return SimpleVocabulary(items)

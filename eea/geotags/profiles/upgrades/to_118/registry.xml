@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<registry>
+  <records interface="eea.geotags.controlpanel.interfaces.IGeotagsSettings" remove="true"/>
+  <records interface="eea.geotags.controlpanel.interfaces.IGeoVocabularies" remove="true"/>
+
+  <record name="eea.geotags.controlpanel.interfaces.IGeoVocabularies.geotags" remove="true"/>
+  <record name="eea.geotags.controlpanel.interfaces.IGeoVocabularies.biotags" remove="true"/>
+  <record name="eea.geotags.controlpanel.interfaces.IGeoVocabularies.countries_mapping" remove="true"/>
+</registry>

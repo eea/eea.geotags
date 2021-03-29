@@ -6,7 +6,7 @@
   <include package="eea.alchemy" />
 
   <include package=".browser" />
-  <include package=".controlpanel" />
+<!--  <include package=".controlpanel" />-->
   <include package=".storage" />
   <include package=".vocabularies" />
   <include package=".json" />

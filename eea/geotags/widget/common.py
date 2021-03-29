@@ -4,7 +4,7 @@ from zope.component import getUtility
 
 from plone.registry.interfaces import IRegistry
 
-from eea.geotags.controlpanel.interfaces import IGeotagsSettings
+from eea.geolocation.interfaces import IGeolocationClientSettings
 
 STR_PF = 'portal_factory'
 
@@ -23,7 +23,8 @@ def get_base_url(request):
 
 
 def get_maps_api_key():
-    settings = getUtility(IRegistry).forInterface(IGeotagsSettings, False)
+    settings = getUtility(IRegistry).forInterface(
+            IGeolocationClientSettings, False)
     return settings.maps_api_key
 
 

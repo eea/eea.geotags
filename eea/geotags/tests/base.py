@@ -22,10 +22,12 @@ def setup_eea_geotags():
 
     PloneTestCase.installPackage('eea.alchemy')
     PloneTestCase.installPackage('eea.jquery')
+    PloneTestCase.installPackage('eea.geolocation')
 
 setup_eea_geotags()
 PloneTestCase.setupPloneSite(extension_profiles=('eea.geotags:default',
-                                                 'eea.geotags:demo'))
+                                                 'eea.geotags:demo',
+                                                 'eea.geolocation:default'))
 
 class EEAGeotagsTestCase(PloneTestCase.PloneTestCase):
     """ Base class for integration tests for the 'EEA Geotags' product.

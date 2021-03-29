@@ -3,7 +3,7 @@
 
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
-from eea.geotags.controlpanel.interfaces import IGeotagsSettings
+from eea.geolocation.interfaces import IGeolocationClientSettings
 
 
 import plone.api as api
@@ -15,7 +15,7 @@ def migrate_to_registry(_):
     google_key = getattr(gprops, 'google_key', u'')
     geonames_key = getattr(gprops, 'geonames_key', u'')
 
-    settings = getUtility(IRegistry).forInterface(IGeotagsSettings, False)
+    settings = getUtility(IRegistry).forInterface(IGeolocationClientSettings, False)
     settings.maps_api_key = (
         google_key.decode('utf-8') if google_key
         else settings.maps_api_key)
