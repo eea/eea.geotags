@@ -3,6 +3,8 @@ Changelog
 
 11.9-dev0 - (unreleased)
 ---------------------------
+* Bug fix: fixed upgrade step regarding the country groups.
+  [alecghica refs #126549]
 
 11.8 - (2021-03-11)
 ---------------------------
