@@ -3,6 +3,8 @@ Changelog
 
 12.0-dev0 - (unreleased)
 ---------------------------
+* Bug fix: Remove collective.taxonomy pin to older version
+  [avoinea refs #130852]
 
 11.9 - (2021-03-30)
 ---------------------------
