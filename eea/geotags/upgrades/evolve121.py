@@ -4,8 +4,11 @@
 
 import json
 import logging
+import re
+import transaction
 from Products.CMFCore.utils import getToolByName
 from eea.geotags.interfaces import IGeoTaggable
+from eea.geotags.storage.storage import GeoTags
 
 
 logger = logging.getLogger(__name__)
@@ -30,6 +33,7 @@ def missing_ascii(context):
 
                 for loc in location:
                     if key in loc:
+                        # import pdb; pdb.set_trace()
                         loc = loc.replace(key, value)
 
                     new_location.append(loc)
@@ -39,48 +43,30 @@ def missing_ascii(context):
             if isinstance(brain.geotags, str) or isinstance(brain.geotags, unicode):
                 if brain.geotags != "":
                     geo = json.loads(brain.geotags)
-                    print geo
 
-                    if key in geo['features'][-1]['properties']['name']:
-                        # first we encode the geo
-                        new_geo = geo['features'][-1]['properties']['name'].encode("latin-1", "ignore")
-                        
-                        # then we replace
-                        new_geo = new_geo.replace(key, value)
-                        
-                        # then we decode back to unicode
-                        new_geo = new_geo.decode("latin-1")
-    
-                        # finally set the new geo value
-                        geo['features'][-1]['properties']['name'] = new_geo
+                    if key in geo['features'][-1]['properties']['name'] or \
+                       key in geo['features'][-1]['properties']['description'] or \
+                       key in geo['features'][-1]['properties']['title']:
+                        obj = brain.getObject()
+                        storage = GeoTags(obj)
 
-                    if key in geo['features'][-1]['properties']['description']:
-                        # first we encode the geo
-                        new_geo = geo['features'][-1]['properties']['description'].encode("latin-1", "ignore")
-                        
-                        # then we replace
-                        new_geo = new_geo.replace(key, value)
-                        
-                        # then we decode back to unicode
-                        new_geo = new_geo.decode("latin-1")
-    
-                        # finally set the new geo value
-                        geo['features'][-1]['properties']['description'] = new_geo
+                        tags = storage._get_tags()
 
-                    if key in geo['features'][-1]['properties']['title']:
-                        # first we encode the geo
-                        new_geo = geo['features'][-1]['properties']['title'].encode("latin-1", "ignore")
-                        
-                        # then we replace
-                        new_geo = new_geo.replace(key, value)
-                        
-                        # then we decode back to unicode
-                        new_geo = new_geo.decode("latin-1")
-    
-                        # finally set the new geo value
-                        geo['features'][-1]['properties']['title'] = new_geo
+                        # tags = json.dumps(storage._get_tags())
+                        # tags = re.sub(key, value, tags)
+                        # tags = json.loads(tags)
 
-                    brain.geotags = json.dumps(geo)
+                        # print tags
+                        # import pdb; pdb.set_trace()
+
+                        tags['features'][-1]['properties']['name'] = tags['features'][-1]['properties']['name'].encode('latin-1').replace(key, value).decode('latin-1')
+                        tags['features'][-1]['properties']['title'] = tags['features'][-1]['properties']['title'].encode('latin-1').replace(key, value).decode('latin-1')
+                        tags['features'][-1]['properties']['description'] = tags['features'][-1]['properties']['description'].encode('latin-1').replace(key, value).decode('latin-1')
+
+                        storage._set_tags(tags)
+
+                        portal_catalog.reindexObject(obj, idxs=['geotags'], update_metadata=1)
+                        transaction.commit()
 
         count += 1
         if count % 1000 == 0:
