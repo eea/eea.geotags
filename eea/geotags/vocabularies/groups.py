@@ -52,4 +52,5 @@ class Groups(object):
             SimpleTerm(dictkey, dictkey, val['title'])
             for dictkey, val in identifier_data.items()
         ]
+
         return SimpleVocabulary(items)

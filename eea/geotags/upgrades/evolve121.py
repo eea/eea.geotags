@@ -30,15 +30,23 @@ def missing_ascii(context):
             if brain.location not in [(), "", []]:
                 new_location = []
                 location = brain.location
+                changed = False
 
                 for loc in location:
                     if key in loc:
-                        # import pdb; pdb.set_trace()
                         loc = loc.replace(key, value)
+                        changed = True
 
                     new_location.append(loc)
 
                 brain.location = tuple(new_location)
+                if changed:
+                    obj = brain.getObject()
+
+                    new_location[0] = new_location[0].decode('utf-8')
+                    obj.location = tuple(new_location)
+
+                    portal_catalog.reindexObject(obj, idxs=['location'], update_metadata=1)
 
             if isinstance(brain.geotags, str) or isinstance(brain.geotags, unicode):
                 if brain.geotags != "":
@@ -52,16 +60,9 @@ def missing_ascii(context):
 
                         tags = storage._get_tags()
 
-                        # tags = json.dumps(storage._get_tags())
-                        # tags = re.sub(key, value, tags)
-                        # tags = json.loads(tags)
-
-                        # print tags
-                        # import pdb; pdb.set_trace()
-
-                        tags['features'][-1]['properties']['name'] = tags['features'][-1]['properties']['name'].encode('latin-1').replace(key, value).decode('latin-1')
-                        tags['features'][-1]['properties']['title'] = tags['features'][-1]['properties']['title'].encode('latin-1').replace(key, value).decode('latin-1')
-                        tags['features'][-1]['properties']['description'] = tags['features'][-1]['properties']['description'].encode('latin-1').replace(key, value).decode('latin-1')
+                        tags['features'][-1]['properties']['name'] = tags['features'][-1]['properties']['name'].encode('utf-8').replace(key, value).decode('utf-8')
+                        tags['features'][-1]['properties']['title'] = tags['features'][-1]['properties']['title'].encode('utf-8').replace(key, value).decode('utf-8')
+                        tags['features'][-1]['properties']['description'] = tags['features'][-1]['properties']['description'].encode('utf-8').replace(key, value).decode('utf-8')
 
                         storage._set_tags(tags)
 
