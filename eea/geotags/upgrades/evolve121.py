@@ -4,7 +4,6 @@
 
 import json
 import logging
-import re
 import transaction
 from Products.CMFCore.utils import getToolByName
 from eea.geotags.interfaces import IGeoTaggable
