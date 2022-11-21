@@ -34,7 +34,7 @@ class Countries(object):
 
         for value, key in vocabulary.iterEntries():
             # value = value.encode('utf-8', 'ignore').decode('utf-8')
-            value = value.encode('latin-1', 'ignore').decode('latin-1')
+            value = value.encode('ascii', 'ignore').decode('ascii')
 
 
             if identifier not in value:
