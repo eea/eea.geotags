@@ -33,7 +33,9 @@ class Countries(object):
             vocabulary = taxonomy.makeVocabulary('en')
 
         for value, key in vocabulary.iterEntries():
-            value = value.encode('ascii', 'ignore').decode('ascii')
+            # value = value.encode('utf-8', 'ignore').decode('utf-8')
+            value = value.encode('latin-1', 'ignore').decode('latin-1')
+
 
             if identifier not in value:
                 identifier = value

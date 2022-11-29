@@ -33,7 +33,7 @@ class Groups(object):
             vocabulary = taxonomy.makeVocabulary('en')
 
         for value, key in vocabulary.iterEntries():
-            value = value.encode('ascii', 'ignore').decode('ascii')
+            value = value.encode('latin-1', 'ignore').decode('latin-1')
 
             if identifier not in value:
                 identifier = value
@@ -52,4 +52,5 @@ class Groups(object):
             SimpleTerm(dictkey, dictkey, val['title'])
             for dictkey, val in identifier_data.items()
         ]
+
         return SimpleVocabulary(items)

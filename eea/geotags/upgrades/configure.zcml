@@ -148,6 +148,21 @@
 
   </genericsetup:upgradeSteps>
 
+  <genericsetup:upgradeSteps
+    source="11.8"
+    destination="12.1"
+    profile="eea.geotags:default">
+
+    <genericsetup:upgradeStep
+      title="Fix geodata information to include ascii characters"
+      description="Correct missing geo data with ascii characters"
+      handler="eea.geotags.upgrades.evolve121.missing_ascii"
+    />
+
+  </genericsetup:upgradeSteps>
+
+
+
 
   <browser:page
     for="eea.geotags.interfaces.IGeoTaggable"
