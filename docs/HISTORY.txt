@@ -4,7 +4,7 @@ Changelog
 12.1 - (2022-11-02)
 ---------------------------
 * Change: Changed encoding from ascii to latin-1 in order to better
-  represent ascii characters in taxonomies
+  represent ascii characters in taxonomies.
   [iulianpetchesi refs #153129]
 
 12.0 - (2021-04-17)
